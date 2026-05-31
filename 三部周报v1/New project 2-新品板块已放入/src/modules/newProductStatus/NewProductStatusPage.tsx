@@ -2246,12 +2246,12 @@ export default function NewProductStatusPage() {
   });
   const { dataPeriod: _autoDataPeriod, periodTypeLabel, sourceStatusLabel } = useModulePeriodInfo('newProductStatus');
 
-  // 覆盖自动计算的周期显示，使用 corrected_data 的实际数据周期
-  const dataPeriod = '4/30 - 5/6';
-  const previousDataPeriod = '4/23 - 4/29';
-  
-  // 从 corrected_data.json 加载真实数据
-  const data = loadCorrectedNewProductData();
+  // 使用当前周期数据
+  const dataPeriod = '5/14 - 5/20';
+  const previousDataPeriod = '5/7 - 5/13';
+
+  // 复用模块级 demoData，避免渲染内抛异常导致白屏
+  const data = demoData;
   const anomalies = demoAnomalies;
   const summary = generateNewProductStatusSummary(data, anomalies);
 
