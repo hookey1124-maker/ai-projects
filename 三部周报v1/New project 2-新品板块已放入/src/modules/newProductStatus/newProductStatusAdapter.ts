@@ -1551,17 +1551,23 @@ export function loadCorrectedNewProductData(): NewProductStatusData {
     detailRecords: plpDetailRecords,
   };
 
-  // 从 Excel 合计行获取总体数据
-  const totalRow = categoryRevenueData.find((r: any) => r.category === '合计') || {};
-  const totalRevenueVal = Number(totalRow.curRevenue) || cum43Data.reduce((sum: number, item: any) => sum + Number(item['4.30-5.6销售额']) || 0, 0);
-  const prevTotalRevenueVal = Number(totalRow.prevRevenue) || 0;
-  const revenueChangeVal = String(totalRow.revenueChange || '-');
-  const prevTotalSalesQtyVal = Number(totalRow.prevSalesQty) || 0;
-  const salesQtyChangeVal = String(totalRow.salesQtyChange || '-');
+  // 从 Excel 合计行获取总体数据 — 兼容新旧 JSON 格式
+  const totalRow = categoryRevenueData.find((r: any) => r.category === '合计') || null;
+  const totalRevenueVal = totalRow?.curRevenue
+    || cum43Data.reduce((sum: number, item: any) => sum + (Number(item.revenueCurr) || Number(item['4.30-5.6销售额']) || 0), 0);
+  const prevTotalRevenueVal = totalRow?.prevRevenue
+    || cum43Data.reduce((sum: number, item: any) => sum + (Number(item.revenuePrev) || 0), 0);
+  const revenueChangeVal = totalRow?.revenueChange || '-';
+  const prevTotalSalesQtyVal = totalRow?.prevSalesQty || 0;
+  const salesQtyChangeVal = totalRow?.salesQtyChange || '-';
+
+  // 自动检测实际周期（从第一条数据的 listDate 范围推断）
+  const firstItem = cum43Data[0] || {};
+  const listDates = cum43Data.map((r: any) => r.listDate || r['实际上架日期'] || '').filter(Boolean).sort();
 
   return {
-    currentPeriod: '4.30-5.6',
-    previousPeriod: '4.23-4.29',
+    currentPeriod: '5.14-5.20',
+    previousPeriod: '5.7-5.13',
     overall: {
       kpi: {
         totalSku,

@@ -20,11 +20,15 @@ import { generateNewProductStatusSummary } from './newProductStatusSummary';
 // Tab 类型
 type TabId = 'overview' | 'lowShare' | 'ads' | 'cum43' | 'report';
 
-// Demo 数据源 — 优先使用 corrected_data.json 真实数据，fallback 到 mock
+// 数据源：优先真实数据，异常时 fallback 到 mock
 const demoData: NewProductStatusData = (() => {
   try {
-    return loadCorrectedNewProductData();
-  } catch {
+    const real = loadCorrectedNewProductData();
+    // 验证数据完整性：至少要有 SKU 数据
+    if (real && real.overall?.kpi?.totalSku > 0) return real;
+    return mockNewProductStatusData;
+  } catch (e) {
+    console.warn('新品板块：真实数据加载失败，使用 mock 数据', e);
     return mockNewProductStatusData;
   }
 })();
