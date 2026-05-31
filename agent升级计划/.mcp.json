@@ -1,0 +1,86 @@
+{
+  "mcpServers": {
+    "serena": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "serena@latest",
+        "--context",
+        "claude-code"
+      ],
+      "env": {}
+    },
+    "markitdown": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "markitdown-mcp@0.0.1a4"
+      ],
+      "env": {}
+    },
+    "chrome-devtools": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "--registry",
+        "https://registry.npmjs.org",
+        "chrome-devtools-mcp@1.0.1"
+      ],
+      "env": {}
+    },
+    "playwright": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest"
+      ],
+      "env": {}
+    },
+    "github-mcp": {
+      "transport": "http",
+      "url": "https://api.githubcopilot.com/mcp/"
+    },
+    "github": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "@fre4x/github@latest"],
+      "env": {
+        "GITHUB_TOKEN": "YOUR_GITHUB_PAT_HERE"
+      }
+    },
+    "memory": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "env": {}
+    },
+    "sequential-thinking": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "env": {}
+    },
+    "context7": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"],
+      "env": {}
+    },
+    "image-vision": {
+      "transport": "stdio",
+      "command": "node",
+      "args": ["C:/Users/Administrator/Desktop/AI项目/agent升级计划/MCP/mcp-image-vision/index.js", "--api-key=YOUR_ZHIPU_API_KEY", "--model=GLM-4V-Plus"],
+      "env": {}
+    },
+    "image-gen": {
+      "transport": "stdio",
+      "command": "node",
+      "args": ["C:/Users/Administrator/Desktop/AI项目/agent升级计划/MCP/mcp-image-gen/index.js", "--api-key=YOUR_MAIZI_API_KEY"],
+      "env": {}
+    }
+  }
+}

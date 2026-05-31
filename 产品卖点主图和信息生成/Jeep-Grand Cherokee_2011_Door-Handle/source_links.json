@@ -1,0 +1,57 @@
+{
+  "mother_name": "Jeep-Grand Cherokee_2011_Door-Handle",
+  "created_at": "2026-05-23T12:07:09.270205",
+  "total_links": 3,
+  "benchmark": {
+    "url": "https://www.ebay.com/itm/313609582145",
+    "title": "Door Handle Rearview Mirror Shell Trim Cover Black For Jeep Grand Cherokee 2011+",
+    "reason": "图片最多的 listing（待爬虫确认）"
+  },
+  "links": [
+    {
+      "url": "https://www.ebay.com/itm/313609582145",
+      "title": "Door Handle Rearview Mirror Shell Trim Cover Black For Jeep Grand Cherokee 2011+",
+      "identity": {
+        "make": "Jeep",
+        "model": "Grand Cherokee",
+        "year_start": 2011,
+        "year_end": 2011,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "Door Handle Rearview Mirror Shell Trim Cover Black For Jeep Grand Cherokee 2011+",
+        "url": "https://www.ebay.com/itm/313609582145"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/233634310585",
+      "title": "10x Door Handle Cover &amp; Rearview Mirror Shell Trim for Jeep Grand Cherokee 2011+",
+      "identity": {
+        "make": "Jeep",
+        "model": "Grand Cherokee",
+        "year_start": 2011,
+        "year_end": 2011,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "10x Door Handle Cover &amp; Rearview Mirror Shell Trim for Jeep Grand Cherokee 2011+",
+        "url": "https://www.ebay.com/itm/233634310585"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/233637514451",
+      "title": "Black Rearview Mirror Cover/Door Handle Cover Trim For Jeep Grand Cherokee 2011+",
+      "identity": {
+        "make": "Jeep",
+        "model": "Grand Cherokee",
+        "year_start": 2011,
+        "year_end": 2011,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "Black Rearview Mirror Cover/Door Handle Cover Trim For Jeep Grand Cherokee 2011+",
+        "url": "https://www.ebay.com/itm/233637514451"
+      },
+      "status": "pending"
+    }
+  ]
+}

@@ -1,0 +1,2380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>品类调研报告模板</title>
+<style>
+/* ===== 全局 ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Microsoft YaHei', 'PingFang SC', 'Noto Sans SC', sans-serif;
+  background: #f0f2f5; color: #1a1a2e; display: flex; min-height: 100vh;
+  line-height: 1.6;
+}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+
+/* ===== 侧边栏 ===== */
+.sidebar {
+  width: 220px; min-width: 220px; background: #fff;
+  height: 100vh; position: sticky; top: 0; overflow-y: auto;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.06); z-index: 10;
+}
+.sidebar-header {
+  font-size: 15px; font-weight: 700; color: #0f3460;
+  padding: 20px 16px 12px; border-bottom: 2px solid #e8f0fe;
+}
+.sidebar-header small { font-size: 11px; color: #888; display: block; font-weight: 400; margin-top: 2px; }
+.sidebar ul { list-style: none; padding: 8px 0; }
+.sidebar li a {
+  display: block; padding: 12px 16px; color: #555; text-decoration: none;
+  font-size: 13px; border-left: 3px solid transparent; transition: all 0.2s; cursor: pointer;
+}
+.sidebar li a:hover, .sidebar li a.active {
+  background: #f0f6ff; color: #0f3460; border-left-color: #0f3460; font-weight: 600;
+}
+.sidebar li a .nav-num {
+  display: inline-block; width: 20px; height: 20px; line-height: 20px;
+  text-align: center; background: #e8f0fe; color: #0f3460; border-radius: 4px;
+  font-size: 11px; font-weight: 700; margin-right: 6px;
+}
+.sidebar li a.active .nav-num { background: #0f3460; color: #fff; }
+
+/* ===== 主内容区 ===== */
+.main-content { flex: 1; padding: 0; overflow: auto; }
+
+/* ===== 顶部Header ===== */
+.header {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color: #fff; padding: 24px 32px;
+}
+.header h1 { font-size: 22px; font-weight: 700; letter-spacing: 1px; }
+.header .meta { font-size: 12px; opacity: 0.7; margin-top: 6px; }
+.header .meta span { margin-right: 20px; }
+
+/* ===== 内容区 ===== */
+.content-area { padding: 24px; }
+
+/* ===== Tab切换 ===== */
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ===== 板块标题 ===== */
+.section-header { margin-bottom: 20px; }
+.section-header h2 { font-size: 20px; color: #0f3460; margin-bottom: 4px; }
+.section-header p { font-size: 13px; color: #888; }
+
+/* ===== 子导航 ===== */
+.subnav { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+.subnav button {
+  background: #f5f7ff; border: 1px solid #ddd; color: #555;
+  font-size: 12px; padding: 6px 14px; border-radius: 20px; cursor: pointer;
+  transition: all 0.15s; white-space: nowrap; font-family: inherit;
+}
+.subnav button.active { background: #0f3460; border-color: #0f3460; color: #fff; font-weight: 600; }
+.subnav button:hover:not(.active) { border-color: #0f3460; color: #0f3460; }
+
+/* ===== KPI卡片网格 ===== */
+.kpi-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px; margin-bottom: 20px;
+}
+.kpi-card {
+  background: #fff; border-radius: 8px; padding: 16px 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center;
+}
+.kpi-card .kpi-val { font-size: 24px; font-weight: 700; color: #0f3460; font-family: 'Consolas', 'SF Mono', monospace; }
+.kpi-card .kpi-label { font-size: 11px; color: #888; margin-top: 4px; }
+.kpi-card .kpi-sub { font-size: 11px; margin-top: 4px; font-weight: 600; }
+.kpi-card.success .kpi-val { color: #08845a; }
+.kpi-card.warning .kpi-val { color: #e07b24; }
+.kpi-card.danger .kpi-val { color: #c0392b; }
+.kpi-card.info .kpi-val { color: #2980b9; }
+
+/* ===== 内容Section ===== */
+.section-box {
+  background: #fff; border-radius: 8px; padding: 20px; margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.section-box h3 {
+  font-size: 15px; color: #0f3460; padding-bottom: 10px;
+  border-bottom: 2px solid #e8f0fe; margin-bottom: 14px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+/* ===== 数据来源标签 ===== */
+.data-source {
+  font-size: 11px; font-weight: 400; color: #888;
+  background: #f5f7ff; border: 1px solid #e0e4ed;
+  padding: 3px 10px; border-radius: 12px; white-space: nowrap;
+}
+.data-source .ds-icon { margin-right: 3px; }
+
+/* ===== 子模块 ===== */
+.sub-module { margin-bottom: 18px; }
+.sub-module:last-child { margin-bottom: 0; }
+.sub-module h4 {
+  font-size: 13px; color: #0f3460; background: #f5f7ff;
+  padding: 8px 12px; border-left: 3px solid #0f3460;
+  margin-bottom: 12px; border-radius: 0 4px 4px 0;
+}
+
+/* ===== 图表占位 ===== */
+.chart-placeholder {
+  background: #fafbfc; border: 2px dashed #d0d5dd; border-radius: 8px;
+  min-height: 240px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; color: #999; font-size: 13px; gap: 8px;
+}
+.chart-placeholder .chart-icon { font-size: 32px; opacity: 0.5; }
+.chart-placeholder .chart-hint { font-size: 11px; color: #bbb; }
+
+/* ===== 双列/三列/四列网格 ===== */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+
+/* ===== 数据表格 ===== */
+.data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.data-table th {
+  background: #0f3460; color: #fff; padding: 8px 10px;
+  font-weight: 600; white-space: nowrap; text-align: center;
+}
+.data-table td { padding: 7px 10px; border-bottom: 1px solid #eee; text-align: left; vertical-align: middle; }
+.data-table th:first-child, .data-table td:first-child { text-align: left; }
+.data-table .center { text-align: center; }
+.data-table tr:hover td { background: #f5f7ff; }
+.data-table tr:nth-child(even) td { background: #fafbfc; }
+.data-table tr:nth-child(even):hover td { background: #f5f7ff; }
+.data-table .num { text-align: right; font-family: 'Consolas', 'SF Mono', monospace; }
+.data-table .total-row td { font-weight: 700; background: #e8f0fe !important; }
+
+/* ===== 洞察要点盒 ===== */
+.insight-box {
+  background: #f5f7ff; border-left: 4px solid #0f3460;
+  border-radius: 0 6px 6px 0; padding: 12px 16px; margin-bottom: 10px;
+  font-size: 13px; color: #444; line-height: 1.7;
+}
+.insight-box.warning { border-left-color: #e07b24; background: #fffdf5; }
+.insight-box.danger { border-left-color: #c0392b; background: #fff5f5; }
+.insight-box.success { border-left-color: #08845a; background: #f5fff5; }
+.insight-box strong { color: #1a1a2e; }
+
+/* ===== 度量条 ===== */
+.metric-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.metric-label { font-size: 12px; color: #555; width: 130px; flex-shrink: 0; }
+.metric-bar-wrap { flex: 1; height: 6px; background: #e8e8e8; border-radius: 3px; overflow: hidden; }
+.metric-bar-fill { height: 100%; border-radius: 3px; }
+.metric-val { font-size: 12px; color: #888; width: 42px; text-align: right; font-weight: 600; flex-shrink: 0; }
+
+/* ===== 对手卡片 ===== */
+.competitor-card {
+  background: #fafbfc; border: 1px solid #e8e8e8; border-radius: 8px; padding: 16px;
+}
+.competitor-card h5 { font-size: 14px; color: #0f3460; margin-bottom: 8px; }
+.competitor-card .comp-meta { font-size: 12px; color: #888; margin-bottom: 6px; }
+.competitor-card .comp-row { display: flex; gap: 16px; font-size: 12px; color: #555; flex-wrap: wrap; }
+.competitor-card .comp-row span strong { color: #1a1a2e; }
+
+/* ===== 环比标识 ===== */
+.hb-up { color: #08845a; font-weight: 600; }
+.hb-down { color: #c0392b; font-weight: 600; }
+.hb-flat { color: #888; }
+
+/* ===== 打印按钮 ===== */
+.print-btn {
+  position: fixed; bottom: 20px; right: 20px;
+  background: #0f3460; color: #fff; border: none;
+  border-radius: 30px; padding: 10px 22px; font-size: 13px;
+  font-family: inherit; cursor: pointer;
+  box-shadow: 0 4px 12px rgba(15,52,96,0.3); z-index: 100;
+  transition: all 0.2s;
+}
+.print-btn:hover { background: #16213e; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(15,52,96,0.4); }
+
+/* ===== 总结板块样式 ===== */
+.summary-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.summary-table th { background: #0f3460; color: #fff; padding: 10px 12px; font-weight: 600; text-align: left; white-space: nowrap; }
+.summary-table th:first-child { width: 10%; text-align: center; }
+.summary-table th:nth-child(2) { width: 20%; }
+.summary-table th:nth-child(3) { width: 35%; }
+.summary-table th:nth-child(4) { width: 35%; }
+.summary-table td { padding: 10px 12px; border-bottom: 1px solid #eee; vertical-align: top; line-height: 1.7; font-size: 12px; }
+.summary-table tr:hover td { background: #f5f7ff; }
+.summary-table tr:nth-child(even) td { background: #fafbfc; }
+.summary-table tr:nth-child(even):hover td { background: #f5f7ff; }
+.summary-table .sec-label { font-weight: 700; color: #0f3460; text-align: center; font-size: 13px; }
+
+.strategy-card {
+  background: #fff; border-radius: 8px; padding: 16px 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid #0f3460;
+  margin-bottom: 12px;
+}
+.strategy-card.industry { border-left-color: #2980b9; }
+.strategy-card.market { border-left-color: #08845a; }
+.strategy-card.price { border-left-color: #e07b24; }
+.strategy-card.competition { border-left-color: #c0392b; }
+.strategy-card.product { border-left-color: #8e44ad; }
+.strategy-card.advertising { border-left-color: #0f3460; }
+.strategy-card h5 { font-size: 13px; margin-bottom: 6px; }
+.strategy-card p { font-size: 12px; color: #555; line-height: 1.7; }
+.strategy-card .action-tag {
+  display: inline-block; padding: 3px 10px; border-radius: 12px;
+  font-size: 11px; font-weight: 600; margin-right: 6px;
+}
+.action-tag.p0 { background: #fff5f5; color: #c0392b; border: 1px solid #f5c6cb; }
+.action-tag.p1 { background: #fffdf5; color: #e07b24; border: 1px solid #fce4b8; }
+.action-tag.p2 { background: #f5f7ff; color: #2980b9; border: 1px solid #c5d3f0; }
+
+.swot-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; gap: 0; border-radius: 10px; overflow: hidden; border: 1px solid #ddd; }
+.swot-cell { padding: 18px 20px; }
+.swot-cell.swot-s { background: #f5fff5; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; }
+.swot-cell.swot-w { background: #fffdf5; border-bottom: 1px solid #ddd; }
+.swot-cell.swot-o { background: #f5f9ff; border-right: 1px solid #ddd; }
+.swot-cell.swot-t { background: #fff5f5; }
+.swot-cell h5 { font-size: 14px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.swot-cell ul { font-size: 12px; color: #555; padding-left: 18px; line-height: 2; }
+
+.conclusion-box {
+  background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+  color: #fff; border-radius: 10px; padding: 24px; margin-top: 16px;
+}
+.conclusion-box h4 { font-size: 15px; margin-bottom: 12px; color: #fff; }
+.conclusion-box p { font-size: 13px; line-height: 1.9; opacity: 0.9; }
+.conclusion-box strong { color: #ffd700; }
+
+/* ===== 响应式 ===== */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .content-area { padding: 16px; }
+}
+
+/* ===== 打印样式 ===== */
+@media print {
+  .sidebar, .subnav, .print-btn { display: none !important; }
+  .main-content { margin-left: 0; }
+  body { background: #fff; display: block; }
+  .header { background: #0f3460 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .tab-content { display: block !important; margin-bottom: 20px; }
+  .tab-content:not(:last-child) { page-break-after: always; }
+  .section-box { break-inside: avoid; page-break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
+  .content-area { padding: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== 侧边栏 ===== -->
+<nav class="sidebar">
+  <div class="sidebar-header">
+    品类调研报告
+    <small>[品类名称] · 美区市场</small>
+  </div>
+  <ul>
+    <li><a class="active" data-tab="industry" onclick="switchTab('industry', this)">
+      <span class="nav-num">1</span> 行业概况
+    </a></li>
+    <li><a data-tab="market" onclick="switchTab('market', this)">
+      <span class="nav-num">2</span> 市场分析
+    </a></li>
+    <li><a data-tab="price" onclick="switchTab('price', this)">
+      <span class="nav-num">3</span> 价格分析
+    </a></li>
+    <li><a data-tab="competition" onclick="switchTab('competition', this)">
+      <span class="nav-num">4</span> 竞争分析
+    </a></li>
+    <li><a data-tab="product" onclick="switchTab('product', this)">
+      <span class="nav-num">5</span> 产品分析
+    </a></li>
+    <li><a data-tab="advertising" onclick="switchTab('advertising', this)">
+      <span class="nav-num">6</span> 广告与站外
+    </a></li>
+    <li><a data-tab="summary" onclick="switchTab('summary', this)">
+      <span class="nav-num">7</span> 总结与策略
+    </a></li>
+  </ul>
+</nav>
+
+<!-- ===== 主内容区 ===== -->
+<div class="main-content">
+  <div class="header">
+    <h1>[品类名称] · 美区市场调研报告</h1>
+    <div class="meta">
+      <span>报告日期: [YYYY-MM-DD]</span>
+      <span>数据周期: [数据时间范围]</span>
+      <span>调研平台: eBay / Amazon</span>
+    </div>
+  </div>
+
+  <div class="content-area">
+
+    <!-- ==================== 板块一：行业概况 ==================== -->
+    <div class="tab-content active" id="tab-industry">
+      <div class="section-header">
+        <h2>一、行业概况</h2>
+        <p>建立对[品类名称]的基本认知，了解产业链结构、市场规模和准入门槛。</p>
+      </div>
+      <div class="subnav" id="subnav-industry">
+        <button class="active" onclick="scrollToModule('ind-1', this)">品类定义与产业链</button>
+        <button onclick="scrollToModule('ind-2', this)">市场规模参考</button>
+        <button onclick="scrollToModule('ind-3', this)">政策与合规</button>
+      </div>
+
+      <!-- 1.1 品类定义与产业链 -->
+      <div class="section-box" id="ind-1">
+        <h3>
+          1.1 品类定义与产业链
+          <span class="data-source"><span class="ds-icon">📊</span> Google/Wikipedia · 平台品类树 · ChatGPT研究</span>
+        </h3>
+        <div class="grid-2">
+          <div class="sub-module">
+            <h4>品类范围界定</h4>
+            <p style="font-size:13px;color:#555;line-height:1.8;">
+              [品类名称]属于汽车配件大类下的<strong>[子类目路径]</strong>，核心产品包括：
+            </p>
+            <ul style="font-size:13px;color:#555;line-height:1.8;padding-left:20px;margin-top:6px;">
+              <li><strong>[产品类型A]</strong> — [简要描述，如适用车型/位置/功能]</li>
+              <li><strong>[产品类型B]</strong> — [简要描述]</li>
+              <li><strong>[产品类型C]</strong> — [简要描述]</li>
+              <li><strong>[产品类型D]</strong> — [简要描述]</li>
+            </ul>
+          </div>
+          <div class="sub-module">
+            <h4>产业链结构</h4>
+            <div style="font-size:13px;color:#555;line-height:1.8;">
+              <p><strong>上游 — </strong>[原材料供应商/制造设备，如玻璃原片/塑料粒子/模具厂]</p>
+              <p><strong>中游 — </strong>[生产制造商/品牌商，如中国工厂/美国品牌贴牌]</p>
+              <p><strong>下游 — </strong>[批发商/电商卖家/安装服务商/终端车主]</p>
+            </div>
+            <div class="chart-placeholder" style="min-height:120px;margin-top:12px;">
+              <span class="chart-icon">🔗</span>
+              <span>产业链关系图（建议使用流程图或层级图）</span>
+              <span class="chart-hint">上游→中游→下游的关键环节和利润分配</span>
+            </div>
+          </div>
+        </div>
+        <div class="insight-box">
+          <strong>💡 关键认知：</strong>[该品类的核心特征一句话总结，如"重货+易碎+长尾SKU，物流成本和退货率是利润的核心变量"]
+        </div>
+      </div>
+
+      <!-- 1.2 市场规模参考 -->
+      <div class="section-box" id="ind-2">
+        <h3>
+          1.2 市场规模参考
+          <span class="data-source"><span class="ds-icon">📊</span> 行业报告(IBISWorld/Statista) · Google Trends长期趋势</span>
+        </h3>
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-val">[XX]亿</div>
+            <div class="kpi-label">美区市场规模(美元/年)</div>
+          </div>
+          <div class="kpi-card success">
+            <div class="kpi-val">[X.X]%</div>
+            <div class="kpi-label">年复合增长率(CAGR)</div>
+          </div>
+          <div class="kpi-card info">
+            <div class="kpi-val">[XX]%</div>
+            <div class="kpi-label">电商渗透率(线上占比)</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-val">[XX]%</div>
+            <div class="kpi-label">占汽配大类比例</div>
+          </div>
+        </div>
+        <div class="sub-module">
+          <h4>增长驱动因素</h4>
+          <div class="grid-2">
+            <div class="insight-box success">
+              <strong>✅ 正向驱动</strong><br>
+              • [驱动因素1，如美国平均车龄12.5年持续老化]<br>
+              • [驱动因素2，如道路碎石事故频发推动更换需求]<br>
+              • [驱动因素3，如DIY文化渗透/线上配件购买习惯增强]
+            </div>
+            <div class="insight-box danger">
+              <strong>⚠️ 制约因素</strong><br>
+              • [制约因素1，如重货物流成本高企限制电商化]<br>
+              • [制约因素2，如安装专业门槛导致退货/投诉风险]<br>
+              • [制约因素3，如线下连锁服务体系成熟(如Safelite)]
+            </div>
+          </div>
+        </div>
+        <div class="chart-placeholder">
+          <span class="chart-icon">📈</span>
+          <span>近5年市场规模趋势图（折线图）</span>
+          <span class="chart-hint">数据来源：行业报告摘录 + Google Trends长期趋势辅助验证</span>
+        </div>
+      </div>
+
+      <!-- 1.3 政策与合规 -->
+      <div class="section-box" id="ind-3">
+        <h3>
+          1.3 政策与合规门槛
+          <span class="data-source"><span class="ds-icon">📊</span> DOT/NHTSA官网 · 平台政策页面 · 美国海关关税表</span>
+        </h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>合规类型</th>
+              <th>具体要求</th>
+              <th>适用产品范围</th>
+              <th>认证难度</th>
+              <th>违规后果</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>DOT认证</strong></td>
+              <td>[如FMVSS 205玻璃透光率/强度标准，需DOT标记]</td>
+              <td>[适用范围]</td>
+              <td><span class="hb-flat">中等</span></td>
+              <td>下架/退货/法律风险</td>
+            </tr>
+            <tr>
+              <td><strong>平台禁售规则</strong></td>
+              <td>[如eBay对破损/二手玻璃的刊登限制]</td>
+              <td>[适用范围]</td>
+              <td><span class="hb-flat">—</span></td>
+              <td>Listing下架/账号限制</td>
+            </tr>
+            <tr>
+              <td><strong>关税政策</strong></td>
+              <td>[如Section 301中国进口汽车玻璃关税税率]</td>
+              <td>[适用范围]</td>
+              <td><span class="hb-flat">—</span></td>
+              <td>成本增加[XX]%</td>
+            </tr>
+            <tr>
+              <td><strong>[其他合规项]</strong></td>
+              <td>[如CARB/EPA对某些材料的要求]</td>
+              <td>[适用范围]</td>
+              <td><span class="hb-up">较低</span></td>
+              <td>[后果说明]</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="insight-box warning" style="margin-top:12px;">
+          <strong>⚠️ 关键风险提示：</strong>[该品类最需要注意的合规雷区，如"DOT标记必须永久标记在玻璃上，不能仅贴在包装上"]
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 板块二：市场分析 ==================== -->
+    <div class="tab-content" id="tab-market">
+      <div class="section-header">
+        <h2>二、市场分析</h2>
+        <p>分析[品类名称]在目标平台的流量、需求和买家特征。</p>
+      </div>
+      <div class="subnav" id="subnav-market">
+        <button class="active" onclick="scrollToModule('mkt-1', this)">市场容量与格局</button>
+        <button onclick="scrollToModule('mkt-2', this)">搜索趋势与关键词</button>
+        <button onclick="scrollToModule('mkt-3', this)">季节与周期</button>
+        <button onclick="scrollToModule('mkt-4', this)">需求场景与买家</button>
+        <button onclick="scrollToModule('mkt-5', this)">渠道对比</button>
+      </div>
+
+      <!-- 2.1 市场容量与格局 -->
+      <div class="section-box" id="mkt-1">
+        <h3>
+          2.1 市场容量与格局
+          <span class="data-source"><span class="ds-icon">📊</span> Terapeak（按核心关键词搜索汇总）</span>
+        </h3>
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-val">[XXX,XXX]</div>
+            <div class="kpi-label">平台Active Listing总数</div>
+          </div>
+          <div class="kpi-card info">
+            <div class="kpi-val">[X,XXX]</div>
+            <div class="kpi-label">活跃卖家数量</div>
+          </div>
+          <div class="kpi-card warning">
+            <div class="kpi-val">[XX]%</div>
+            <div class="kpi-label">Top10卖家集中度(CR10)</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-val">[XXX]/月</div>
+            <div class="kpi-label">月均新增Listing</div>
+          </div>
+        </div>
+        <div class="sub-module">
+          <h4>Listing分类构成</h4>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>子品类</th>
+                <th>核心搜索词</th>
+                <th>Listing数量</th>
+                <th>占比</th>
+                <th>卖家数</th>
+                <th>竞争评估</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>[子品类A]</td>
+                <td>[关键词]</td>
+                <td class="num">[XX,XXX]</td>
+                <td>[XX]%</td>
+                <td>[XXX]</td>
+                <td><span class="hb-up">蓝海</span> / <span class="hb-down">红海</span></td>
+              </tr>
+              <tr>
+                <td>[子品类B]</td>
+                <td>[关键词]</td>
+                <td class="num">[XX,XXX]</td>
+                <td>[XX]%</td>
+                <td>[XXX]</td>
+                <td><span class="hb-up">蓝海</span> / <span class="hb-down">红海</span></td>
+              </tr>
+              <tr>
+                <td>[子品类C]</td>
+                <td>[关键词]</td>
+                <td class="num">[XX,XXX]</td>
+                <td>[XX]%</td>
+                <td>[XXX]</td>
+                <td><span class="hb-up">蓝海</span> / <span class="hb-down">红海</span></td>
+              </tr>
+              <tr class="total-row">
+                <td><strong>合计</strong></td>
+                <td>—</td>
+                <td class="num"><strong>[XXX,XXX]</strong></td>
+                <td><strong>100%</strong></td>
+                <td><strong>[X,XXX]</strong></td>
+                <td>—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="insight-box">
+          <strong>💡 格局判断：</strong>[市场集中度解读，如"头部集中度低(CR10仅XX%)，属于分散型市场，新进入者仍有空间"/"头部集中度高(CR10>70%)，进入需差异化策略"]
+        </div>
+      </div>
+
+      <!-- 2.2 搜索趋势与关键词 -->
+      <div class="section-box" id="mkt-2">
+        <h3>
+          2.2 搜索趋势与关键词
+          <span class="data-source"><span class="ds-icon">📊</span> Google Trends · Terapeak关键词研究 · Keyword Planner</span>
+        </h3>
+        <div class="grid-2">
+          <div class="sub-module">
+            <h4>核心关键词搜索量趋势</h4>
+            <div class="chart-placeholder" style="min-height:220px;">
+              <span class="chart-icon">🔍</span>
+              <span>Google Trends核心词搜索趋势（折线图，建议12-24个月）</span>
+              <span class="chart-hint">数据来源：Google Trends | 对比3-5个核心搜索词</span>
+            </div>
+          </div>
+          <div class="sub-module">
+            <h4>区域搜索热度</h4>
+            <div class="chart-placeholder" style="min-height:220px;">
+              <span class="chart-icon">🗺️</span>
+              <span>美国各州搜索热度分布（热力图占位）</span>
+              <span class="chart-hint">数据来源：Google Trends by Region</span>
+            </div>
+          </div>
+        </div>
+        <div class="sub-module">
+          <h4>关键词分层表</h4>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>层级</th>
+                <th>关键词</th>
+                <th>月搜索量</th>
+                <th>Listing数</th>
+                <th>供需比</th>
+                <th>机会评级</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>核心大词</td>
+                <td>[如 "door glass"]</td>
+                <td class="num">[XX,XXX]</td>
+                <td class="num">[XX,XXX]</td>
+                <td>1:[X]</td>
+                <td><span class="hb-down">高竞争</span></td>
+              </tr>
+              <tr>
+                <td>品类词</td>
+                <td>[如 "rear window glass"]</td>
+                <td class="num">[X,XXX]</td>
+                <td class="num">[X,XXX]</td>
+                <td>1:[X]</td>
+                <td><span class="hb-flat">中等</span></td>
+              </tr>
+              <tr>
+                <td>车型词</td>
+                <td>[如 "F150 driver side glass"]</td>
+                <td class="num">[XXX]</td>
+                <td class="num">[XXX]</td>
+                <td>1:[X]</td>
+                <td><span class="hb-up">机会</span></td>
+              </tr>
+              <tr>
+                <td>长尾精准词</td>
+                <td>[如 "2018 Silverado left rear glass tinted"]</td>
+                <td class="num">[XX]</td>
+                <td class="num">[X]</td>
+                <td>1:[X]</td>
+                <td><span class="hb-up">蓝海</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="font-size:11px;color:#999;margin-top:6px;">供需比 = 月搜索量 / Listing数量，数值越高代表需求相对供给越旺盛</p>
+        </div>
+      </div>
+
+      <!-- 2.3 季节与周期 -->
+      <div class="section-box" id="mkt-3">
+        <h3>
+          2.3 季节与周期规律
+          <span class="data-source"><span class="ds-icon">📊</span> Google Trends（5年数据） · Terapeak历史销量趋势</span>
+        </h3>
+        <div class="grid-2">
+          <div class="sub-module">
+            <h4>月度需求指数</h4>
+            <div class="chart-placeholder" style="min-height:220px;">
+              <span class="chart-icon">📅</span>
+              <span>月度搜索量/销量指数（柱状图，1-12月）</span>
+              <span class="chart-hint">数据来源：Google Trends 5年按月均值</span>
+            </div>
+          </div>
+          <div class="sub-module">
+            <h4>季节特征总结</h4>
+            <table class="data-table">
+              <thead>
+                <tr><th>时段</th><th>需求等级</th><th>驱动因素</th><th>备货建议</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1-2月</td><td>[低/中/高]</td><td>[冬季事故/年终翻新等]</td><td>[提前X周备货]</td></tr>
+                <tr><td>3-5月</td><td>[低/中/高]</td><td>[春季风暴/换季保养等]</td><td>[提前X周备货]</td></tr>
+                <tr><td>6-8月</td><td>[低/中/高]</td><td>[夏季出行/冰雹季等]</td><td>[提前X周备货]</td></tr>
+                <tr><td>9-11月</td><td>[低/中/高]</td><td>[秋季风暴/年检翻新等]</td><td>[提前X周备货]</td></tr>
+                <tr><td>12月</td><td>[低/中/高]</td><td>[假期影响/年末促销等]</td><td>[提前X周备货]</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="insight-box success">
+          <strong>📌 备货建议：</strong>高峰期为[XX月-XX月]，建议提前[X]周备货至海外仓；低谷期[XX月-XX月]适合做Listing优化和新品开发。
+        </div>
+      </div>
+
+      <!-- 2.4 需求场景与买家类型 -->
+      <div class="section-box" id="mkt-4">
+        <h3>
+          2.4 需求场景与买家类型
+          <span class="data-source"><span class="ds-icon">📊</span> 竞品评论分析 · Reddit/Facebook讨论观察</span>
+        </h3>
+        <div class="grid-2">
+          <div class="sub-module">
+            <h4>主要购买场景</h4>
+            <table class="data-table">
+              <thead>
+                <tr><th>场景</th><th>触发因素</th><th>需求特征</th><th>占比估计</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>事故更换</td><td>[碎石/冰雹/碰撞损坏]</td><td>急迫、价格不敏感、重适配</td><td>[XX]%</td></tr>
+                <tr><td>老化替换</td><td>[原厂玻璃老化/划痕/模糊]</td><td>非急迫、比价、关注品质</td><td>[XX]%</td></tr>
+                <tr><td>改装升级</td><td>[定制/隐私/隔音需求]</td><td>愿意溢价、关注功能</td><td>[XX]%</td></tr>
+                <tr><td>二手翻新</td><td>[二手车整备/经销商采购]</td><td>批量、价格敏感、复购率高</td><td>[XX]%</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="sub-module">
+            <h4>买家类型推断</h4>
+            <div class="insight-box">
+              <strong>🔩 DIY车主（约占[XX]%）</strong><br>
+              从评论中"[引用典型评论片段]"等表述推断，这类买家动手能力强，关注安装难度和配件完整性。
+            </div>
+            <div class="insight-box">
+              <strong>🏪 修理厂/经销商（约占[XX]%）</strong><br>
+              从评论中"[引用典型评论片段]"等表述推断，批量采购，关注价格稳定性和物流时效。
+            </div>
+            <div class="insight-box">
+              <strong>🚗 改装爱好者（约占[XX]%）</strong><br>
+              从评论中"[引用典型评论片段]"等表述推断，关注产品功能和差异化，愿意为特殊功能买单。
+            </div>
+            <p style="font-size:11px;color:#999;margin-top:8px;">注：占比为基于评论和社媒讨论的定性推断，精确画像需问卷调研验证。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.5 渠道对比 -->
+      <div class="section-box" id="mkt-5">
+        <h3>
+          2.5 渠道对比（eBay vs Amazon）
+          <span class="data-source"><span class="ds-icon">📊</span> 两平台分别搜索统计</span>
+        </h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>对比维度</th>
+              <th>eBay</th>
+              <th>Amazon</th>
+              <th>差异分析</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>[品类]Listing总量</td>
+              <td class="num">[XXX,XXX]</td>
+              <td class="num">[XX,XXX]</td>
+              <td>eBay约为Amazon的[X]倍</td>
+            </tr>
+            <tr>
+              <td>活跃卖家数</td>
+              <td class="num">[X,XXX]</td>
+              <td class="num">[XXX]</td>
+              <td>[解读]</td>
+            </tr>
+            <tr>
+              <td>中国卖家占比（估计）</td>
+              <td>[XX]%</td>
+              <td>[XX]%</td>
+              <td>[解读]</td>
+            </tr>
+            <tr>
+              <td>价格水平</td>
+              <td>均价$[XX]</td>
+              <td>均价$[XX]</td>
+              <td>Amazon溢价约[X]%</td>
+            </tr>
+            <tr>
+              <td>Listing质量</td>
+              <td>[描述]</td>
+              <td>[描述]</td>
+              <td>[解读]</td>
+            </tr>
+            <tr>
+              <td>评价活跃度</td>
+              <td>[描述]</td>
+              <td>[描述]</td>
+              <td>[解读]</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="insight-box" style="margin-top:12px;">
+          <strong>💡 渠道策略建议：</strong>[基于对比的渠道策略，如"eBay品类供给量大但Listing质量普遍偏低，适合通过专业Listing+品牌故事进行差异化；Amazon门槛更高但溢价空间大"]
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 板块三：价格分析 ==================== -->
+    <div class="tab-content" id="tab-price">
+      <div class="section-header">
+        <h2>三、价格分析</h2>
+        <p>集中呈现[品类名称]的价格全景，包含整体价格带、细分均价、竞争烈度和利润模型。</p>
+      </div>
+      <div class="subnav" id="subnav-price">
+        <button class="active" onclick="scrollToModule('prc-1', this)">市场价格带全景</button>
+        <button onclick="scrollToModule('prc-2', this)">细分品类均价</button>
+        <button onclick="scrollToModule('prc-3', this)">车型维度均价</button>
+        <button onclick="scrollToModule('prc-4', this)">价格竞争烈度</button>
+        <button onclick="scrollToModule('prc-5', this)">量价关系</button>
+        <button onclick="scrollToModule('prc-6', this)">利润模型参考</button>
+      </div>
+
+      <!-- 3.1 市场价格带全景 -->
+      <div class="section-box" id="prc-1">
+        <h3>
+          3.1 市场价格带全景
+          <span class="data-source"><span class="ds-icon">📊</span> eBay/Amazon前台浏览 + Terapeak均价</span>
+        </h3>
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-val">$[XX]</div>
+            <div class="kpi-label">最低价</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-val">$[XX]</div>
+            <div class="kpi-label">最高价</div>
+          </div>
+          <div class="kpi-card info">
+            <div class="kpi-val">$[XX.XX]</div>
+            <div class="kpi-label">中位数价格</div>
+          </div>
+          <div class="kpi-card success">
+            <div class="kpi-val">$[XX.XX]</div>
+            <div class="kpi-label">加权均价</div>
+          </div>
+          <div class="kpi-card warning">
+            <div class="kpi-val">$[XX]-$[XX]</div>
+            <div class="kpi-label">主力价格区间（占[XX]%）</div>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="sub-module">
+            <h4>价格带分布</h4>
+            <div class="chart-placeholder" style="min-height:200px;">
+              <span class="chart-icon">📊</span>
+              <span>价格带销量/销售额分布（柱状图）</span>
+              <span class="chart-hint">X轴：$0-50 / $50-100 / $100-200 / $200-300 / $300+</span>
+            </div>
+          </div>
+          <div class="sub-module">
+            <h4>价格带占比表</h4>
+            <table class="data-table">
+              <thead>
+                <tr><th>价格带</th><th>Listing占比</th><th>销量占比</th><th>销售额占比</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>$0 - $50</td><td class="num">[XX]%</td><td class="num">[XX]%</td><td class="num">[XX]%</td></tr>
+                <tr><td>$50 - $100</td><td class="num">[XX]%</td><td class="num">[XX]%</td><td class="num">[XX]%</td></tr>
+                <tr><td>$100 - $200</td><td class="num">[XX]%</td><td class="num">[XX]%</td><td class="num">[XX]%</td></tr>
+                <tr><td>$200 - $300</td><td class="num">[XX]%</td><td class="num">[XX]%</td><td class="num">[XX]%</td></tr>
+                <tr><td>$300+</td><td class="num">[XX]%</td><td class="num">[XX]%</td><td class="num">[XX]%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.2 细分品类均价 -->
+      <div class="section-box" id="prc-2">
+        <h3>
+          3.2 细分品类均价对比
+          <span class="data-source"><span class="ds-icon">📊</span> Terapeak按子类关键词查询 + 前台抽样验证</span>
+        </h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>子品类</th>
+              <th>最低价</th>
+              <th>最高价</th>
+              <th>中位数</th>
+              <th>均价</th>
+              <th>样本量</th>
+              <th>溢价空间判断</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>[子品类A]</td><td class="num">$[XX]</td><td class="num">$[XXX]</td><td class="num">$[XX]</td><td class="num">$[XX.XX]</td><td class="num">[XXX]</td><td>[大/中/小]</td></tr>
+            <tr><td>[子品类B]</td><td class="num">$[XX]</td><td class="num">$[XXX]</td><td class="num">$[XX]</td><td class="num">$[XX.XX]</td><td class="num">[XXX]</td><td>[大/中/小]</td></tr>
+            <tr><td>[子品类C]</td><td class="num">$[XX]</td><td class="num">$[XXX]</td><td class="num">$[XX]</td><td class="num">$[XX.XX]</td><td class="num">[XXX]</td><td>[大/中/小]</td></tr>
+            <tr><td>[子品类D]</td><td class="num">$[XX]</td><td class="num">$[XXX]</td><td class="num">$[XX]</td><td class="num">$[XX.XX]</td><td class="num">[XXX]</td><td>[大/中/小]</td></tr>
+          </tbody>
+        </table>
+        <div class="insight-box success" style="margin-top:12px;">
+          <strong>💡 溢价机会：</strong>[子品类X]均价$[XX]但高端可达$[XXX]，溢价空间最大；[子品类Y]价格高度集中在$[XX]-$[XX]，差异化空间有限。
+        </div>
+      </div>
+
+      <!-- 3.3 车型维度均价 -->
+      <div class="section-box" id="prc-3">
+        <h3>
+          3.3 车型/适配维度均价
+          <span class="data-source"><span class="ds-icon">📊</span> 前台搜索（按车型关键词统计搜索结果价格）</span>
+        </h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>车型</th>
+              <th>车型类别</th>
+              <th>该车型[品类]Listing数</th>
+              <th>价格区间</th>
+              <th>均价</th>
+              <th>卖家竞争数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Ford F-150</td><td>皮卡</td><td class="num">[XXX]</td><td>$[XX]-$[XXX]</td><td class="num">$[XX]</td><td class="num">[XX]</td></tr>
+            <tr><td>Chevy Silverado</td><td>皮卡</td><td class="num">[XXX]</td><td>$[XX]-$[XXX]</td><td class="num">$[XX]</td><td class="num">[XX]</td></tr>
+            <tr><td>Toyota Camry</td><td>轿车</td><td class="num">[XXX]</td><td>$[XX]-$[XXX]</td><td class="num">$[XX]</td><td class="num">[XX]</td></tr>
+            <tr><td>Honda CR-V</td><td>SUV</td><td class="num">[XXX]</td><td>$[XX]-$[XXX]</td><td class="num">$[XX]</td><td class="num">[XX]</td></tr>
+            <tr><td>[车型E]</td><td>[类别]</td><td class="num">[XXX]</td><td>$[XX]-$[XXX]</td><td class="num">$[XX]</td><td class="num">[XX]</td></tr>
+          </tbody>
+        </table>
+        <div class="chart-placeholder" style="min-height:200px;margin-top:12px;">
+          <span class="chart-icon">🚗</span>
+          <span>车型类别均价对比（柱状图：皮卡 vs 轿车 vs SUV vs 卡车）</span>
+          <span class="chart-hint">数据来源：前台按车型类别关键词搜索统计均价</span>
+        </div>
+      </div>
+
+      <!-- 3.4 价格竞争烈度 -->
+      <div class="section-box" id="prc-4">
+        <h3>
+          3.4 价格竞争烈度
+          <span class="data-source"><span class="ds-icon">📊</span> Terapeak历史价格趋势 + 前台同款对比</span>
+        </h3>
+        <div class="grid-2">
+          <div class="sub-module">
+            <h4>竞争烈度指标</h4>
+            <div class="metric-row">
+              <span class="metric-label">价格离散度</span>
+              <div class="metric-bar-wrap"><div class="metric-bar-fill" style="width:[XX]%;background:#c0392b;"></div></div>
+              <span class="metric-val">[高/中/低]</span>
+            </div>
+            <p style="font-size:11px;color:#888;margin:-6px 0 12px 142px;">同类产品最高价/最低价比值，越高说明价格离散越大</p>
+            <div class="metric-row">
+              <span class="metric-label">同质化产品价差</span>
+              <div class="metric-bar-wrap"><div class="metric-bar-fill" style="width:[XX]%;background:#e07b24;"></div></div>
+              <span class="metric-val">$[XX]</span>
+            </div>
+            <p style="font-size:11px;color:#888;margin:-6px 0 12px 142px;">相同规格产品在不同卖家间的平均价差</p>
+            <div class="metric-row">
+              <span class="metric-label">降价频率（行业均）</span>
+              <div class="metric-bar-wrap"><div class="metric-bar-fill" style="width:[XX]%;background:#2980b9;"></div></div>
+              <span class="metric-val">[X]次/月</span>
+            </div>
+            <p style="font-size:11px;color:#888;margin:-6px 0 0 142px;">头部Listing月均价格调整次数</p>
+          </div>
+          <div class="sub-module">
+            <h4>典型产品价格追踪</h4>
+            <div class="chart-placeholder" style="min-height:200px;">
+              <span class="chart-icon">📉</span>
+              <span>Top5同款产品价格走势对比（折线图，3-6个月）</span>
+              <span class="chart-hint">数据来源：Terapeak商品历史价格 + Keepa(Amazon)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.5 量价关系 -->
+      <div class="section-box" id="prc-5">
+        <h3>
+          3.5 量价关系
+          <span class="data-source"><span class="ds-icon">📊</span> Terapeak（按价格段筛选看销量分布）</span>
+        </h3>
+        <div class="grid-2">
+          <div class="sub-module">
+            <h4>各价格带出单效率</h4>
+            <table class="data-table">
+              <thead>
+                <tr><th>价格带</th><th>Listing占比</th><th>销量占比</th><th>出单率指数</th><th>最优区间?</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>$0 - $50</td><td class="num">[XX]%</td><td class="num">[XX]%</td><td class="num">[X.XX]</td><td></td></tr>
+                <tr><td>$50 - $100</td><td class="num">[XX]%</td><td class="num">[XX]%</td><td class="num">[X.XX]</td><td>✅ 最优</td></tr>
+                <tr><td>$100 - $200</td><td class="num">[XX]%</td><td class="num">[XX]%</td><td class="num">[X.XX]</td><td></td></tr>
+                <tr><td>$200 - $300</td><td class="num">[XX]%</td><td class="num">[XX]%</td><td class="num">[X.XX]</td><td></td></tr>
+                <tr><td>$300+</td><td class="num">[XX]%</td><td class="num">[XX]%</td><td class="num">[X.XX]</td><td></td></tr>
+              </tbody>
+            </table>
+            <p style="font-size:11px;color:#999;margin-top:4px;">出单率指数 = 销量占比 / Listing占比，>1表示该价格带转化效率高于平均</p>
+          </div>
+          <div class="sub-module">
+            <h4>定价策略建议</h4>
+            <div class="insight-box success">
+              <strong>✅ 推荐切入区间：</strong>$[XX] - $[XX]<br>
+              理由：出单率指数[X.XX]，竞争密度适中，利润空间充足
+            </div>
+            <div class="insight-box warning">
+              <strong>⚠️ 谨慎区间：</strong>$[XX] - $[XX]<br>
+              理由：价格战激烈/转化率低/Listing数量过多
+            </div>
+            <div class="insight-box">
+              <strong>💡 溢价机会区间：</strong>$[XX] - $[XX]<br>
+              理由：竞争少/买家价格不敏感/功能型产品可支撑溢价
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.6 利润模型参考 -->
+      <div class="section-box" id="prc-6">
+        <h3>
+          3.6 利润模型参考
+          <span class="data-source"><span class="ds-icon">📊</span> 自身采购+物流数据 · 平台费率公开 · 广告费经验值</span>
+        </h3>
+        <p style="font-size:12px;color:#888;margin-bottom:14px;">以下为参考模型模板，请根据自身实际成本和平台费率填入数据。</p>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>成本项</th>
+              <th>低端产品($[XX]售价)</th>
+              <th>中端产品($[XX]售价)</th>
+              <th>高端产品($[XXX]售价)</th>
+              <th>占比参考</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>售价（含运费）</strong></td><td class="num"><strong>$[XX.XX]</strong></td><td class="num"><strong>$[XX.XX]</strong></td><td class="num"><strong>$[XXX.XX]</strong></td><td>100%</td></tr>
+            <tr><td>采购成本(FOB)</td><td class="num">$[XX]</td><td class="num">$[XX]</td><td class="num">$[XX]</td><td>[XX]%</td></tr>
+            <tr><td>头程运费(海运+清关)</td><td class="num">$[XX]</td><td class="num">$[XX]</td><td class="num">$[XX]</td><td>[XX]%</td></tr>
+            <tr><td>平台佣金</td><td class="num">$[XX]</td><td class="num">$[XX]</td><td class="num">$[XX]</td><td>[XX]%</td></tr>
+            <tr><td>尾程运费</td><td class="num">$[XX]</td><td class="num">$[XX]</td><td class="num">$[XX]</td><td>[XX]%</td></tr>
+            <tr><td>广告费(参考)</td><td class="num">$[XX]</td><td class="num">$[XX]</td><td class="num">$[XX]</td><td>[XX]%</td></tr>
+            <tr><td>退货/损耗预留</td><td class="num">$[XX]</td><td class="num">$[XX]</td><td class="num">$[XX]</td><td>[XX]%</td></tr>
+            <tr class="total-row"><td><strong>净利润</strong></td><td class="num"><strong>$[XX]</strong></td><td class="num"><strong>$[XX]</strong></td><td class="num"><strong>$[XX]</strong></td><td><strong>[XX]%</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ==================== 板块四：竞争分析 ==================== -->
+    <div class="tab-content" id="tab-competition">
+      <div class="section-header">
+        <h2>四、竞争分析</h2>
+        <p>深度拆解头部对手，从店铺到Listing到评价，找出可攻击的弱点。</p>
+      </div>
+      <div class="subnav" id="subnav-competition">
+        <button class="active" onclick="scrollToModule('cmp-1', this)">竞争格局总览</button>
+        <button onclick="scrollToModule('cmp-2', this)">核心对手画像</button>
+        <button onclick="scrollToModule('cmp-3', this)">Listing对标</button>
+        <button onclick="scrollToModule('cmp-4', this)">对手评价挖掘</button>
+        <button onclick="scrollToModule('cmp-5', this)">自身相对位置</button>
+      </div>
+
+      <!-- 4.1 竞争格局总览 -->
+      <div class="section-box" id="cmp-1">
+        <h3>
+          4.1 竞争格局总览
+          <span class="data-source"><span class="ds-icon">📊</span> Terapeak卖家排名 + 前台搜索统计</span>
+        </h3>
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-val">[XX]</div>
+            <div class="kpi-label">Top10卖家</div>
+            <div class="kpi-sub">占品类[XX]%销量</div>
+          </div>
+          <div class="kpi-card info">
+            <div class="kpi-val">[XX]%</div>
+            <div class="kpi-label">中国卖家占比(估)</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-val">[XX]%</div>
+            <div class="kpi-label">专业卖家比例</div>
+          </div>
+          <div class="kpi-card warning">
+            <div class="kpi-val">[XX]</div>
+            <div class="kpi-label">月均新进入卖家</div>
+          </div>
+        </div>
+        <div class="sub-module">
+          <h4>Top卖家排名</h4>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>排名</th><th>卖家ID</th><th>来源国</th>
+                <th>[品类]Listing数</th><th>预估月销量</th><th>均价</th>
+                <th>卖家类型</th><th>威胁等级</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>[Seller A]</td><td>[US/CN/...]</td><td class="num">[XXX]</td><td class="num">[XXX]</td><td class="num">$[XX]</td><td>品牌大卖</td><td><span class="hb-down">高</span></td></tr>
+              <tr><td>2</td><td>[Seller B]</td><td>[US/CN/...]</td><td class="num">[XXX]</td><td class="num">[XXX]</td><td class="num">$[XX]</td><td>专业卖家</td><td><span class="hb-down">高</span></td></tr>
+              <tr><td>3</td><td>[Seller C]</td><td>[US/CN/...]</td><td class="num">[XXX]</td><td class="num">[XXX]</td><td class="num">$[XX]</td><td>铺货型</td><td><span class="hb-flat">中</span></td></tr>
+              <tr><td>4</td><td>[Seller D]</td><td>[US/CN/...]</td><td class="num">[XXX]</td><td class="num">[XXX]</td><td class="num">$[XX]</td><td>专业卖家</td><td><span class="hb-flat">中</span></td></tr>
+              <tr><td>5</td><td>[Seller E]</td><td>[US/CN/...]</td><td class="num">[XXX]</td><td class="num">[XXX]</td><td class="num">$[XX]</td><td>个人/小规模</td><td><span class="hb-up">低</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4.2 核心对手画像 -->
+      <div class="section-box" id="cmp-2">
+        <h3>
+          4.2 核心对手深度画像
+          <span class="data-source"><span class="ds-icon">📊</span> Terapeak卖家数据 · 对手eBay Store · 前台全部Listing浏览</span>
+        </h3>
+        <p style="font-size:12px;color:#888;margin-bottom:14px;">以下为对手画像卡片模板，建议选择Top 3-5对手逐一填写。</p>
+        <div class="grid-3">
+          <!-- 对手卡片模板 x3 -->
+          <div class="competitor-card">
+            <h5>对手一：[卖家名称]</h5>
+            <div class="comp-meta">📊 数据来源：Terapeak + Store页面</div>
+            <div class="comp-row">
+              <span>📍 国家：<strong>[CN/US]</strong></span>
+              <span>📦 产品数：<strong>[XXX]</strong></span>
+              <span>💰 均价：<strong>$[XX]</strong></span>
+            </div>
+            <div class="comp-row" style="margin-top:4px;">
+              <span>📈 月销预估：<strong>[XXX]件</strong></span>
+              <span>⭐ 评价均分：<strong>[X.X]</strong></span>
+            </div>
+            <p style="font-size:12px;color:#555;margin-top:8px;"><strong>定位：</strong>[如"低价铺货型/品牌溢价型/细分专精型"]</p>
+            <p style="font-size:12px;color:#555;"><strong>优势品类：</strong>[如"侧窗玻璃覆盖广，F-150独占X个SKU"]</p>
+            <p style="font-size:12px;color:#c0392b;"><strong>弱点：</strong>[如"图片质量差/描述简单/无A+页面/评价低/售后差"]</p>
+            <p style="font-size:12px;color:#555;"><strong>威胁等级：</strong><span class="hb-down">高 / </span><span class="hb-flat">中 / </span><span class="hb-up">低</span></p>
+          </div>
+          <div class="competitor-card">
+            <h5>对手二：[卖家名称]</h5>
+            <div class="comp-meta">📊 数据来源：Terapeak + Store页面</div>
+            <div class="comp-row">
+              <span>📍 国家：<strong>[CN/US]</strong></span>
+              <span>📦 产品数：<strong>[XXX]</strong></span>
+              <span>💰 均价：<strong>$[XX]</strong></span>
+            </div>
+            <div class="comp-row" style="margin-top:4px;">
+              <span>📈 月销预估：<strong>[XXX]件</strong></span>
+              <span>⭐ 评价均分：<strong>[X.X]</strong></span>
+            </div>
+            <p style="font-size:12px;color:#555;margin-top:8px;"><strong>定位：</strong>[定位描述]</p>
+            <p style="font-size:12px;color:#555;"><strong>优势品类：</strong>[优势描述]</p>
+            <p style="font-size:12px;color:#c0392b;"><strong>弱点：</strong>[弱点描述]</p>
+            <p style="font-size:12px;color:#555;"><strong>威胁等级：</strong>[高/中/低]</p>
+          </div>
+          <div class="competitor-card">
+            <h5>对手三：[卖家名称]</h5>
+            <div class="comp-meta">📊 数据来源：Terapeak + Store页面</div>
+            <div class="comp-row">
+              <span>📍 国家：<strong>[CN/US]</strong></span>
+              <span>📦 产品数：<strong>[XXX]</strong></span>
+              <span>💰 均价：<strong>$[XX]</strong></span>
+            </div>
+            <div class="comp-row" style="margin-top:4px;">
+              <span>📈 月销预估：<strong>[XXX]件</strong></span>
+              <span>⭐ 评价均分：<strong>[X.X]</strong></span>
+            </div>
+            <p style="font-size:12px;color:#555;margin-top:8px;"><strong>定位：</strong>[定位描述]</p>
+            <p style="font-size:12px;color:#555;"><strong>优势品类：</strong>[优势描述]</p>
+            <p style="font-size:12px;color:#c0392b;"><strong>弱点：</strong>[弱点描述]</p>
+            <p style="font-size:12px;color:#555;"><strong>威胁等级：</strong>[高/中/低]</p>
+          </div>
+        </div>
+        <p style="font-size:11px;color:#999;margin-top:12px;">如需更多对手画像，复制上述卡片模板并填充即可。</p>
+      </div>
+
+      <!-- 4.3 Listing对标 -->
+      <div class="section-box" id="cmp-3">
+        <h3>
+          4.3 Listing对标拆解
+          <span class="data-source"><span class="ds-icon">📊</span> eBay/Amazon前台逐一查看头部Listing</span>
+        </h3>
+        <p style="font-size:12px;color:#888;margin-bottom:14px;">选取该品类搜索结果前5-10名的Listing进行要素对比。</p>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>对比项</th>
+              <th>自身Listing</th>
+              <th>对手A: [名称]</th>
+              <th>对手B: [名称]</th>
+              <th>对手C: [名称]</th>
+              <th>差距/优化方向</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>标题结构</strong></td>
+              <td>[自身标题模式]</td>
+              <td>[对手标题模式]</td>
+              <td>[对手标题模式]</td>
+              <td>[对手标题模式]</td>
+              <td>[如"缺少车型年份/功能词覆盖不足"]</td>
+            </tr>
+            <tr>
+              <td><strong>主图质量</strong></td>
+              <td>[白底/场景/多角度]</td>
+              <td>[描述]</td>
+              <td>[描述]</td>
+              <td>[描述]</td>
+              <td>[改进方向]</td>
+            </tr>
+            <tr>
+              <td><strong>图片数量</strong></td>
+              <td class="num">[X]张</td>
+              <td class="num">[X]张</td>
+              <td class="num">[X]张</td>
+              <td class="num">[X]张</td>
+              <td>[建议增加到X张]</td>
+            </tr>
+            <tr>
+              <td><strong>视频</strong></td>
+              <td>[有/无]</td>
+              <td>[有/无]</td>
+              <td>[有/无]</td>
+              <td>[有/无]</td>
+              <td>[建议添加安装教程视频]</td>
+            </tr>
+            <tr>
+              <td><strong>描述详细度</strong></td>
+              <td>[简单/详细/含规格表]</td>
+              <td>[描述]</td>
+              <td>[描述]</td>
+              <td>[描述]</td>
+              <td>[改进方向]</td>
+            </tr>
+            <tr>
+              <td><strong>A+/品牌页面</strong></td>
+              <td>[有/无]</td>
+              <td>[有/无]</td>
+              <td>[有/无]</td>
+              <td>[有/无]</td>
+              <td>[建议]</td>
+            </tr>
+            <tr>
+              <td><strong>评价数量</strong></td>
+              <td class="num">[XX]</td>
+              <td class="num">[XXX]</td>
+              <td class="num">[XXX]</td>
+              <td class="num">[XXX]</td>
+              <td>[差距分析]</td>
+            </tr>
+            <tr>
+              <td><strong>评分</strong></td>
+              <td>[X.X]</td>
+              <td>[X.X]</td>
+              <td>[X.X]</td>
+              <td>[X.X]</td>
+              <td>[差距分析]</td>
+            </tr>
+            <tr>
+              <td><strong>售价</strong></td>
+              <td class="num">$[XX]</td>
+              <td class="num">$[XX]</td>
+              <td class="num">$[XX]</td>
+              <td class="num">$[XX]</td>
+              <td>[高/低/持平]</td>
+            </tr>
+            <tr>
+              <td><strong>Promoted Listing</strong></td>
+              <td>[有/无]</td>
+              <td>[有/无]</td>
+              <td>[有/无]</td>
+              <td>[有/无]</td>
+              <td>[投放情况分析]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 4.4 对手评价挖掘 -->
+      <div class="section-box" id="cmp-4">
+        <h3>
+          4.4 对手评价挖掘（差评分析）
+          <span class="data-source"><span class="ds-icon">📊</span> 前台差评阅读 + ChatGPT辅助总结</span>
+        </h3>
+        <div class="grid-2">
+          <div class="sub-module">
+            <h4>差评高频词/主题</h4>
+            <table class="data-table">
+              <thead>
+                <tr><th>痛点类别</th><th>出现频率</th><th>典型评论摘录</th><th>可改进方向</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>产品破损</td>
+                  <td><span class="hb-down">高</span></td>
+                  <td>"[引用评论原文片段]"</td>
+                  <td>加强包装方案（如加厚泡沫+木架）</td>
+                </tr>
+                <tr>
+                  <td>尺寸/适配不准</td>
+                  <td><span class="hb-flat">中</span></td>
+                  <td>"[引用评论原文片段]"</td>
+                  <td>完善Compatibility表+安装前测量指南</td>
+                </tr>
+                <tr>
+                  <td>描述不符</td>
+                  <td><span class="hb-flat">中</span></td>
+                  <td>"[引用评论原文片段]"</td>
+                  <td>实物拍摄+颜色/色调如实标注</td>
+                </tr>
+                <tr>
+                  <td>物流太慢</td>
+                  <td><span class="hb-up">低</span></td>
+                  <td>"[引用评论原文片段]"</td>
+                  <td>海外仓备货/明确标注handling time</td>
+                </tr>
+                <tr>
+                  <td>客服差</td>
+                  <td><span class="hb-up">低</span></td>
+                  <td>"[引用评论原文片段]"</td>
+                  <td>建立破损快速补发SOP</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="sub-module">
+            <h4>机会清单</h4>
+            <div class="insight-box success">
+              <strong>✅ 机会1：[改进方向]</strong><br>
+              对手普遍在[问题A]上收到差评，如果我们在[对应环节]做到[改进措施]，可以形成明显差异化优势。
+            </div>
+            <div class="insight-box success">
+              <strong>✅ 机会2：[改进方向]</strong><br>
+              [具体描述]
+            </div>
+            <div class="insight-box success">
+              <strong>✅ 机会3：[改进方向]</strong><br>
+              [具体描述]
+            </div>
+            <div class="chart-placeholder" style="min-height:160px;margin-top:12px;">
+              <span class="chart-icon">☁️</span>
+              <span>差评关键词词云（占位）</span>
+              <span class="chart-hint">使用ChatGPT或词云工具对差评文本进行关键词提取</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4.5 自身相对位置 -->
+      <div class="section-box" id="cmp-5">
+        <h3>
+          4.5 自身相对位置评估
+          <span class="data-source"><span class="ds-icon">📊</span> Terapeak（自身销量 vs 对手销量对比）</span>
+        </h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>对比维度</th>
+              <th>自身</th>
+              <th>对手A</th>
+              <th>对手B</th>
+              <th>对手C</th>
+              <th>行业均值</th>
+              <th>自身定位</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>[品类]Listing数</td>
+              <td class="num"><strong>[XX]</strong></td>
+              <td class="num">[XXX]</td>
+              <td class="num">[XXX]</td>
+              <td class="num">[XXX]</td>
+              <td class="num">[XX]</td>
+              <td>[偏少/适中/偏多]</td>
+            </tr>
+            <tr>
+              <td>月均销量(估)</td>
+              <td class="num"><strong>[XX]</strong></td>
+              <td class="num">[XXX]</td>
+              <td class="num">[XXX]</td>
+              <td class="num">[XXX]</td>
+              <td class="num">[XX]</td>
+              <td>[偏少/适中/偏多]</td>
+            </tr>
+            <tr>
+              <td>均价</td>
+              <td class="num"><strong>$[XX]</strong></td>
+              <td class="num">$[XX]</td>
+              <td class="num">$[XX]</td>
+              <td class="num">$[XX]</td>
+              <td class="num">$[XX]</td>
+              <td>[偏低/持平/偏高]</td>
+            </tr>
+            <tr>
+              <td>评价数</td>
+              <td class="num"><strong>[XX]</strong></td>
+              <td class="num">[XXX]</td>
+              <td class="num">[XXX]</td>
+              <td class="num">[XXX]</td>
+              <td class="num">[XX]</td>
+              <td>[偏少/适中/偏多]</td>
+            </tr>
+            <tr>
+              <td>评分</td>
+              <td class="num"><strong>[X.X]</strong></td>
+              <td class="num">[X.X]</td>
+              <td class="num">[X.X]</td>
+              <td class="num">[X.X]</td>
+              <td class="num">[X.X]</td>
+              <td>[偏低/持平/偏高]</td>
+            </tr>
+            <tr>
+              <td>覆盖车型数</td>
+              <td class="num"><strong>[XX]</strong></td>
+              <td class="num">[XX]</td>
+              <td class="num">[XX]</td>
+              <td class="num">[XX]</td>
+              <td class="num">[XX]</td>
+              <td>[偏少/适中/偏多]</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="insight-box" style="margin-top:12px;">
+          <strong>💡 位置判断：</strong>[一句话总结自身在市场中的相对位置，如"SKU量处于中游，但销量和评价数远低于头部对手，需要在Listing质量和广告投入上加大力度"]
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 板块五：产品分析 ==================== -->
+    <div class="tab-content" id="tab-product">
+      <div class="section-header">
+        <h2>五、产品分析</h2>
+        <p>拆解[品类名称]的产品体系，识别规格覆盖缺口和选品机会。</p>
+      </div>
+      <div class="subnav" id="subnav-product">
+        <button class="active" onclick="scrollToModule('prd-1', this)">产品分类体系</button>
+        <button onclick="scrollToModule('prd-2', this)">规格与功能维度</button>
+        <button onclick="scrollToModule('prd-3', this)">热门车型覆盖</button>
+        <button onclick="scrollToModule('prd-4', this)">选品机会识别</button>
+        <button onclick="scrollToModule('prd-5', this)">互补品与关联拓展</button>
+      </div>
+
+      <!-- 5.1 产品分类体系 -->
+      <div class="section-box" id="prd-1">
+        <h3>
+          5.1 产品分类体系
+          <span class="data-source"><span class="ds-icon">📊</span> 平台品类树 · Terapeak按子类统计</span>
+        </h3>
+        <div class="grid-2">
+          <div class="sub-module">
+            <h4>品类树（占位）</h4>
+            <div class="chart-placeholder" style="min-height:240px;">
+              <span class="chart-icon">🌳</span>
+              <span>产品分类树状图</span>
+              <span class="chart-hint">一级分类 → 二级分类 → 三级分类，每个节点标注SKU数和销量占比</span>
+            </div>
+          </div>
+          <div class="sub-module">
+            <h4>各分类数据总览</h4>
+            <table class="data-table">
+              <thead>
+                <tr><th>分类</th><th>SKU数</th><th>SKU占比</th><th>销量占比</th><th>销售额占比</th><th>增长趋势</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>[子类A]</td><td class="num">[XXX]</td><td class="num">[XX]%</td><td class="num">[XX]%</td><td class="num">[XX]%</td><td><span class="hb-up">↑</span></td></tr>
+                <tr><td>[子类B]</td><td class="num">[XXX]</td><td class="num">[XX]%</td><td class="num">[XX]%</td><td class="num">[XX]%</td><td><span class="hb-flat">→</span></td></tr>
+                <tr><td>[子类C]</td><td class="num">[XXX]</td><td class="num">[XX]%</td><td class="num">[XX]%</td><td class="num">[XX]%</td><td><span class="hb-down">↓</span></td></tr>
+                <tr><td>[子类D]</td><td class="num">[XXX]</td><td class="num">[XX]%</td><td class="num">[XX]%</td><td class="num">[XX]%</td><td><span class="hb-up">↑</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5.2 规格与功能维度 -->
+      <div class="section-box" id="prd-2">
+        <h3>
+          5.2 规格与功能维度
+          <span class="data-source"><span class="ds-icon">📊</span> 前台Listing抽样统计（建议样本≥100条）</span>
+        </h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>维度</th>
+              <th>选项</th>
+              <th>出现频率</th>
+              <th>对价格的影响</th>
+              <th>买家关注度</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td rowspan="3"><strong>材质</strong></td>
+              <td>[材质A，如Tempered钢化]</td><td class="num">[XX]%</td><td>基础价</td><td>基础需求</td>
+            </tr>
+            <tr>
+              <td>[材质B，如Laminated夹层]</td><td class="num">[XX]%</td><td>溢价+[XX]%</td><td>安全敏感型买家</td>
+            </tr>
+            <tr>
+              <td>[材质C]</td><td class="num">[XX]%</td><td>[影响描述]</td><td>[关注度]</td>
+            </tr>
+            <tr>
+              <td rowspan="4"><strong>功能</strong></td>
+              <td>[功能A，如Heated加热]</td><td class="num">[XX]%</td><td>溢价+[XX]%</td><td>[买家画像]</td>
+            </tr>
+            <tr>
+              <td>[功能B，如Privacy隐私]</td><td class="num">[XX]%</td><td>溢价+[XX]%</td><td>[买家画像]</td>
+            </tr>
+            <tr>
+              <td>[功能C，如Acoustic隔音]</td><td class="num">[XX]%</td><td>溢价+[XX]%</td><td>[买家画像]</td>
+            </tr>
+            <tr>
+              <td>[功能D]</td><td class="num">[XX]%</td><td>[影响描述]</td><td>[买家画像]</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="insight-box success" style="margin-top:12px;">
+          <strong>💡 差异化方向：</strong>[如"加热后窗占比仅XX%但溢价高达XX%，且当前供给不足——这是值得优先拓展的方向"]
+        </div>
+      </div>
+
+      <!-- 5.3 热门车型覆盖 -->
+      <div class="section-box" id="prd-3">
+        <h3>
+          5.3 热门车型适配覆盖
+          <span class="data-source"><span class="ds-icon">📊</span> 自身SKU数据 vs 竞品适配数据 · 公开车型销量排名</span>
+        </h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>排名</th><th>车型</th><th>车型类别</th>
+              <th>美国年销量(估)</th><th>对手覆盖情况</th>
+              <th>自身覆盖</th><th>覆盖差距</th><th>优先级</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Ford F-150</td><td>皮卡</td><td class="num">[XXX,XXX]</td><td>✅ 大量</td><td>✅ 已覆盖</td><td>无</td><td>—</td></tr>
+            <tr><td>2</td><td>Chevy Silverado</td><td>皮卡</td><td class="num">[XXX,XXX]</td><td>✅ 大量</td><td>⚠️ 部分</td><td>[缺口描述]</td><td><span class="hb-down">高</span></td></tr>
+            <tr><td>3</td><td>Toyota RAV4</td><td>SUV</td><td class="num">[XXX,XXX]</td><td>✅ 大量</td><td>❌ 未覆盖</td><td>[缺口描述]</td><td><span class="hb-down">高</span></td></tr>
+            <tr><td>4</td><td>Honda CR-V</td><td>SUV</td><td class="num">[XXX,XXX]</td><td>⚠️ 少量</td><td>❌ 未覆盖</td><td>对手也少</td><td><span class="hb-flat">中</span></td></tr>
+            <tr><td>5</td><td>[车型E]</td><td>[类别]</td><td class="num">[XXX,XXX]</td><td>[描述]</td><td>[描述]</td><td>[描述]</td><td>[高/中/低]</td></tr>
+          </tbody>
+        </table>
+        <div class="insight-box warning" style="margin-top:12px;">
+          <strong>⚠️ 重点关注：</strong>[列出最需要优先补齐的车型和年份，如"Silverado 2015-2019款侧窗、RAV4全系后挡风玻璃"]
+        </div>
+      </div>
+
+      <!-- 5.4 选品机会识别 -->
+      <div class="section-box" id="prd-4">
+        <h3>
+          5.4 选品机会识别
+          <span class="data-source"><span class="ds-icon">📊</span> Terapeak（高搜索量低Listing数）+ 竞品未覆盖车型</span>
+        </h3>
+        <div class="sub-module">
+          <h4>蓝海机会矩阵</h4>
+          <p style="font-size:12px;color:#888;margin-bottom:10px;">交叉分析：搜索需求 × 竞争密度 × 利润空间，识别优先级。</p>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>机会方向</th>
+                <th>目标关键词</th>
+                <th>月搜索量</th>
+                <th>当前Listing数</th>
+                <th>竞争密度</th>
+                <th>均价</th>
+                <th>利润预估</th>
+                <th>优先级</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>[如 "2015-2020 Silverado Rear Window"]</td>
+                <td>[关键词]</td>
+                <td class="num">[XXX]</td>
+                <td class="num">[XX]</td>
+                <td><span class="hb-up">低</span></td>
+                <td class="num">$[XX]</td>
+                <td>[XX]%</td>
+                <td><span class="hb-down">P0</span></td>
+              </tr>
+              <tr>
+                <td>[机会方向B]</td>
+                <td>[关键词]</td>
+                <td class="num">[XXX]</td>
+                <td class="num">[XX]</td>
+                <td><span class="hb-up">低</span></td>
+                <td class="num">$[XX]</td>
+                <td>[XX]%</td>
+                <td><span class="hb-down">P0</span></td>
+              </tr>
+              <tr>
+                <td>[机会方向C]</td>
+                <td>[关键词]</td>
+                <td class="num">[XXX]</td>
+                <td class="num">[XX]</td>
+                <td><span class="hb-flat">中</span></td>
+                <td class="num">$[XX]</td>
+                <td>[XX]%</td>
+                <td><span class="hb-flat">P1</span></td>
+              </tr>
+              <tr>
+                <td>[机会方向D]</td>
+                <td>[关键词]</td>
+                <td class="num">[XXX]</td>
+                <td class="num">[XX]</td>
+                <td><span class="hb-flat">中</span></td>
+                <td class="num">$[XX]</td>
+                <td>[XX]%</td>
+                <td><span class="hb-flat">P1</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="font-size:11px;color:#999;margin-top:4px;">P0 = 高需求+低竞争+高利润，优先开发；P1 = 次优，按资源情况推进</p>
+        </div>
+      </div>
+
+      <!-- 5.5 互补品与关联拓展 -->
+      <div class="section-box" id="prd-5">
+        <h3>
+          5.5 互补品与关联拓展
+          <span class="data-source"><span class="ds-icon">📊</span> 平台FBT/关联推荐 · 关联搜索词 · 竞品店铺品类布局</span>
+        </h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>互补品类</th>
+              <th>与[品类]的关联度</th>
+              <th>单价区间</th>
+              <th>需求来源</th>
+              <th>套装机会</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>[如 密封条/Weatherstrip]</td>
+              <td><span class="hb-down">强关联</span></td>
+              <td>$[X] - $[XX]</td>
+              <td>换玻璃时通常需要同时更换密封条</td>
+              <td>"[品类]+密封条"套装</td>
+            </tr>
+            <tr>
+              <td>[如 PU胶水/Adhesive]</td>
+              <td><span class="hb-down">强关联</span></td>
+              <td>$[X] - $[XX]</td>
+              <td>DIY安装必需品</td>
+              <td>"[品类]+安装工具"套装</td>
+            </tr>
+            <tr>
+              <td>[如 吸盘工具/Suction Cup]</td>
+              <td><span class="hb-flat">中关联</span></td>
+              <td>$[X] - $[XX]</td>
+              <td>安装辅助工具</td>
+              <td>安装礼包组合</td>
+            </tr>
+            <tr>
+              <td>[其他关联品类]</td>
+              <td>[强/中/弱]</td>
+              <td>$[X] - $[XX]</td>
+              <td>[描述]</td>
+              <td>[组合方案]</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="insight-box success" style="margin-top:12px;">
+          <strong>💡 客单价提升路径：</strong>[如"单独玻璃均价$80，搭配安装套装(密封条+胶水+工具)后可提升至$120-150，同时减少买家因缺少配件导致的退货"]
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 板块六：广告与站外 ==================== -->
+    <div class="tab-content" id="tab-advertising">
+      <div class="section-header">
+        <h2>六、广告与站外</h2>
+        <p>了解[品类名称]的广告位竞争状况和站外流量来源。</p>
+      </div>
+      <div class="subnav" id="subnav-advertising">
+        <button class="active" onclick="scrollToModule('adv-1', this)">广告类型总览</button>
+        <button onclick="scrollToModule('adv-2', this)">PLP关键词竞价(CPC)</button>
+        <button onclick="scrollToModule('adv-3', this)">PLG费率策略(CPS)</button>
+        <button onclick="scrollToModule('adv-4', this)">站外推广渠道</button>
+        <button onclick="scrollToModule('adv-5', this)">站内投放综合建议</button>
+      </div>
+
+      <!-- 6.1 广告类型总览 -->
+      <div class="section-box" id="adv-1">
+        <h3>
+          6.1 eBay广告类型总览
+          <span class="data-source"><span class="ds-icon">📊</span> eBay Seller Hub · 前台搜索观察</span>
+        </h3>
+
+        <h4 style="font-size:13px;color:#0f3460;margin-bottom:8px;">PLP vs PLG 核心对比</h4>
+        <p style="font-size:12px;color:#888;margin-bottom:10px;">eBay站内广告分为两类，计费模式和控制能力完全不同，需根据词的类型和阶段选择或组合使用。</p>
+        <table class="data-table">
+          <thead>
+            <tr><th style="width:16%;">对比维度</th><th style="width:42%;">PLP — Promoted Listings Advanced<br><span style="font-weight:400;font-size:11px;">关键词竞价推广（CPC）</span></th><th style="width:42%;">PLG — Promoted Listings Standard<br><span style="font-weight:400;font-size:11px;">费率佣金推广（CPS）</span></th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>计费模式</strong></td><td>CPC（Cost Per Click）— 按点击付费，点击即扣费</td><td>CPS（Cost Per Sale）— 按成交付费，售出后按成交价×费率扣费</td></tr>
+            <tr><td><strong>扣费条件</strong></td><td>买家点击广告即产生费用（无论是否购买）</td><td>买家点击广告后30天内成交才产生费用</td></tr>
+            <tr><td><strong>关键词控制</strong></td><td>✅ 完全自主：选词、出价、匹配类型均由卖家控制</td><td>❌ 无关键词控制：eBay算法根据Listing信息自动匹配搜索词</td></tr>
+            <tr><td><strong>否定关键词</strong></td><td>✅ 支持：可屏蔽无效搜索词，减少浪费点击</td><td>❌ 不支持</td></tr>
+            <tr><td><strong>广告位</strong></td><td>搜索结果页Top 4 Promoted位 + 底部广告位</td><td>搜索结果页 + 商品详情页推荐位（eBay算法动态分配）</td></tr>
+            <tr><td><strong>出价/费率</strong></td><td>按关键词竞价，实际CPC由竞争决定（通常$0.20-$2.00）</td><td>按成交价%设置费率，一般范围2%-15%</td></tr>
+            <tr><td><strong>数据粒度</strong></td><td>✅ 关键词级别：展现量/点击量/点击率/CPC/转化/ACOS</td><td>⚠️ 汇总级别：仅总展现/点击/成交/ROAS，无搜索词报告</td></tr>
+            <tr><td><strong>优化空间</strong></td><td>高：可精准调词出价、加减词、调整匹配类型、分广告组管理</td><td>中：仅可调整费率%，无法针对具体词做优化</td></tr>
+            <tr><td><strong>适用场景</strong></td><td>精准关键词卡位、新品打词排名、竞品词截流、长尾词获取</td><td>全店基线曝光、自然流量补充、老品维稳、长尾自动匹配</td></tr>
+            <tr><td><strong>核心风险</strong></td><td>点而不买 = 白花点击费，需要持续优化否定词和出价</td><td>售出才扣费所以风险极低，但曝光量不可控、无法抢占特定词</td></tr>
+            <tr><td><strong>可否并行</strong></td><td colspan="2" style="text-align:center;background:#f0f5ff;"><strong>✅ 同一Listing可同时开启PLP和PLG</strong> — PLG保基线曝光（低成本广撒网），PLP攻精准关键词（重点词卡位）。两者不冲突，互为补充。</td></tr>
+          </tbody>
+        </table>
+
+        <h4 style="font-size:13px;color:#0f3460;margin-top:20px;margin-bottom:8px;">广告位饱和度观察（eBay前台）</h4>
+        <p style="font-size:12px;color:#888;margin-bottom:10px;">在eBay前台逐一搜索以下关键词，统计搜索结果中带"Sponsored"标识的Promoted Listing占比，判断各关键词的广告竞争强度。</p>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>核心搜索词</th>
+              <th>搜索结果总数</th>
+              <th>Sponsored Listing数</th>
+              <th>广告位占比</th>
+              <th>广告竞争评级</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>[核心大词A，如"door glass"]</td>
+              <td class="num">[XX,XXX]</td>
+              <td class="num">[XX]</td>
+              <td class="num">[XX]%</td>
+              <td><span class="hb-down">激烈</span></td>
+            </tr>
+            <tr>
+              <td>[品类词B，如"rear window glass"]</td>
+              <td class="num">[X,XXX]</td>
+              <td class="num">[XX]</td>
+              <td class="num">[XX]%</td>
+              <td><span class="hb-flat">适中</span></td>
+            </tr>
+            <tr>
+              <td>[车型词C，如"2018 Silverado driver glass"]</td>
+              <td class="num">[XXX]</td>
+              <td class="num">[X]</td>
+              <td class="num">[XX]%</td>
+              <td><span class="hb-up">低</span></td>
+            </tr>
+            <tr>
+              <td>[长尾词D]</td>
+              <td class="num">[XX]</td>
+              <td class="num">[X]</td>
+              <td class="num">[XX]%</td>
+              <td><span class="hb-up">低</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="insight-box" style="margin-top:12px;">
+          <strong>💡 广告位观察与策略启示：</strong>[如"核心大词广告位占比达XX%，PLP竞价激烈CPC高，但PLG仍有自然补充空间；车型长尾词广告位占比仅XX%，PLP以低CPC即可抢占Top 4位——这类词是新品冷启动的优先切入点"]
+        </div>
+      </div>
+
+      <!-- 6.2 PLP关键词竞价分析（CPC） -->
+      <div class="section-box" id="adv-2">
+        <h3>
+          6.2 PLP关键词竞价分析（CPC）
+          <span class="data-source"><span class="ds-icon">📊</span> Terapeak关键词研究 · eBay前台Promoted饱和度 · Seller Hub PLP建议出价</span>
+        </h3>
+        <p style="font-size:12px;color:#888;margin-bottom:10px;">PLP（Promoted Listings Advanced）为CPC关键词竞价模式，卖家自主选词、出价、设置否定词。以下为基于Terapeak数据和前台观察的关键词投放分析。</p>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>关键词</th>
+              <th>Terapeak月搜索量</th>
+              <th>Listing数</th>
+              <th>供需比</th>
+              <th>出单率(STR)</th>
+              <th>建议CPC出价</th>
+              <th>PLP竞争度</th>
+              <th>投放优先级</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>[词1，如"door glass"]</td>
+              <td class="num">[XX,XXX]</td>
+              <td class="num">[XX,XXX]</td>
+              <td class="num">1:[X.X]</td>
+              <td><span class="hb-down">XX%</span></td>
+              <td class="num">$[X.XX]</td>
+              <td><span class="hb-down">高</span></td>
+              <td>小预算测试，密切监控ACOS</td>
+            </tr>
+            <tr>
+              <td>[词2，如"rear window glass"]</td>
+              <td class="num">[X,XXX]</td>
+              <td class="num">[X,XXX]</td>
+              <td class="num">1:[X.X]</td>
+              <td><span class="hb-flat">XX%</span></td>
+              <td class="num">$[X.XX]</td>
+              <td><span class="hb-flat">中</span></td>
+              <td>性价比词，中等出价获取稳定曝光</td>
+            </tr>
+            <tr>
+              <td>[词3，如"2018 Silverado driver side glass"]</td>
+              <td class="num">[XXX]</td>
+              <td class="num">[XX]</td>
+              <td class="num">1:[X.X]</td>
+              <td><span class="hb-up">XX%</span></td>
+              <td class="num">$[X.XX]</td>
+              <td><span class="hb-up">低</span></td>
+              <td><strong>重点投放</strong>，高出价抢占Top 4位</td>
+            </tr>
+            <tr>
+              <td>[词4]</td>
+              <td class="num">[XX]</td>
+              <td class="num">[X]</td>
+              <td class="num">1:[X.X]</td>
+              <td><span class="hb-up">XX%</span></td>
+              <td class="num">$[X.XX]</td>
+              <td><span class="hb-up">低</span></td>
+              <td>蓝海长尾词，优先投放</td>
+            </tr>
+            <tr>
+              <td>[竞品品牌词5]</td>
+              <td class="num">[X,XXX]</td>
+              <td class="num">[XXX]</td>
+              <td class="num">1:[X.X]</td>
+              <td><span class="hb-flat">XX%</span></td>
+              <td class="num">$[X.XX]</td>
+              <td><span class="hb-flat">中</span></td>
+              <td>截流词，视转化决定是否追加</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size:11px;color:#999;margin-top:4px;">供需比 = 月搜索量 / Listing数，>1表示需求大于供给；STR = Terapeak该词下Listing出单率；建议CPC出价参考eBay Seller Hub中PLP建议出价范围，实际出价需结合预算和ACOS目标调整。</p>
+
+        <div class="grid-2" style="margin-top:16px;">
+          <div class="sub-module">
+            <h4>PLP否定关键词清单</h4>
+            <p style="font-size:12px;color:#555;margin-bottom:6px;">以下关键词虽相关但不产生购买转化，必须在PLP广告组中设为否定词以控制无效点击花费：</p>
+            <ul style="font-size:12px;color:#888;padding-left:18px;line-height:2;">
+              <li>[repair / how to / install / replace / fix — 教程/DIY类搜索意图]</li>
+              <li>[free / cheap / used / broken / junkyard — 低价/二手/报废搜索意图]</li>
+              <li>[job / salary / technician / shop near me — 求职/找店类搜索]</li>
+              <li>[manual / diagram / size / specs / dimensions — 信息查询类搜索]</li>
+              <li>[warranty / insurance / claim — 售后/保险类非购买搜索]</li>
+              <li>[其他经PLP搜索词报告验证转化率为0的关键词]</li>
+            </ul>
+          </div>
+          <div class="sub-module">
+            <h4>PLP广告组结构建议</h4>
+            <p style="font-size:12px;color:#555;margin-bottom:6px;">建议按以下层次组织PLP广告系列，便于分预算管理和ACOS追踪：</p>
+            <ul style="font-size:12px;color:#888;padding-left:18px;line-height:2;">
+              <li><strong>广告组1 — 精准词：</strong>车型+位置+年份（如"2018 F150 driver window"），高出价，预算占比60%</li>
+              <li><strong>广告组2 — 品类词：</strong>位置+品类（如"rear window glass"），中等出价，预算占比25%</li>
+              <li><strong>广告组3 — 泛词测试：</strong>品类大词（如"door glass"），低出价测试，预算占比10%</li>
+              <li><strong>广告组4 — 竞品截流：</strong>竞品品牌词+品类词，视转化表现调整，预算占比5%</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6.3 PLG费率策略（CPS） -->
+      <div class="section-box" id="adv-3">
+        <h3>
+          6.3 PLG费率策略（CPS）
+          <span class="data-source"><span class="ds-icon">📊</span> eBay Seller Hub Promoted Listings Standard · Terapeak销量参考</span>
+        </h3>
+        <p style="font-size:12px;color:#888;margin-bottom:10px;">PLG（Promoted Listings Standard）为CPS模式，售出后按成交价×费率扣除广告费。无需选词、无法控制广告位，但风险极低（不成交不扣费），适合作为全店基线推广工具。</p>
+
+        <h4 style="font-size:13px;color:#0f3460;margin-bottom:8px;">PLG费率建议（按Listing类型）</h4>
+        <table class="data-table">
+          <thead>
+            <tr><th>Listing类型</th><th>建议PLG费率</th><th>预估广告成本占售价</th><th>逻辑说明</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>高转化长尾Listing（车型+位置+年份精准适配）</td><td class="num">8-12%</td><td class="num">$X.XX - $XX.XX</td><td>转化率天然高 → 值得高费率获取更多eBay算法推荐曝光</td></tr>
+            <tr><td>品类热销Listing（有评价积累的成熟链接）</td><td class="num">5-8%</td><td class="num">$X.XX - $XX.XX</td><td>已有自然流量基础，PLG做增量补充</td></tr>
+            <tr><td>新品测试Listing（0-5个评价）</td><td class="num">2-5%</td><td class="num">$X.XX - $XX.XX</td><td>转化率不确定时低费率试探，避免高费率拉低利润</td></tr>
+            <tr><td>清仓/滞销Listing</td><td class="num">10-15%</td><td class="num">$X.XX - $XX.XX</td><td>优先出清库存，利润让位于现金流</td></tr>
+          </tbody>
+        </table>
+
+        <div class="grid-2" style="margin-top:16px;">
+          <div class="sub-module">
+            <h4>PLG适用场景</h4>
+            <ul style="font-size:12px;color:#555;padding-left:18px;line-height:2;">
+              <li><strong>全店基线覆盖：</strong>所有Listing统一设置2-5%基础费率，获取eBay算法自然推荐</li>
+              <li><strong>长尾自动匹配：</strong>PLG无需手动选词，eBay算法自动将Listing匹配到相关长尾搜索——这些词你未必能通过Terapeak发现</li>
+              <li><strong>关联推荐位：</strong>PLG广告会出现在竞品Listing详情页的推荐栏，截流正在浏览竞品的买家</li>
+              <li><strong>老品提量：</strong>自然排名已稳定的老Listing，PLG以低费率获取增量曝光而不冲击自然出单</li>
+            </ul>
+          </div>
+          <div class="sub-module">
+            <h4>PLG vs PLP 配合策略</h4>
+            <ul style="font-size:12px;color:#555;padding-left:18px;line-height:2;">
+              <li><strong>PLG打底 + PLP攻坚：</strong>所有Listing开启PLG 2-8%（根据利润空间），重点Listing叠加PLP精准关键词竞价</li>
+              <li><strong>PLG先跑数据：</strong>新品先开PLG 2-5%跑2周，观察自然转化率 → 转化率达标后再开PLP放大</li>
+              <li><strong>PLP发现的词反哺PLG：</strong>PLP搜索词报告中转化好的词，其对应的Listing可适当提高PLG费率</li>
+              <li><strong>PLG保利润底线：</strong>PLP的CPC点击不转化=纯成本，PLG成交才扣费=成本与收入绑定，利润敏感期优先PLG</li>
+            </ul>
+          </div>
+        </div>
+        <p style="font-size:11px;color:#999;margin-top:8px;">注意：PLG费率×成交价 = 实际广告成本。如售价$100、费率8%，每单广告成本$8。设置费率时需确保：售价 - 采购成本 - 物流 - 平台佣金 - PLG费率 > 目标净利润。</p>
+      </div>
+
+      <!-- 6.4 站外推广渠道扫描 -->
+      <div class="section-box" id="adv-4">
+        <h3>
+          6.4 站外推广渠道扫描
+          <span class="data-source"><span class="ds-icon">📊</span> YouTube/TikTok/Reddit/Instagram搜索 · Google Ads Keyword Planner</span>
+        </h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>渠道</th>
+              <th>搜索关键词</th>
+              <th>内容数量/搜索量</th>
+              <th>头部内容互动量</th>
+              <th>内容类型</th>
+              <th>机会评估</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>YouTube</strong></td>
+              <td>"[品类] replacement / install"</td>
+              <td class="num">[XXX]个视频</td>
+              <td>Top视频 [XX]K views</td>
+              <td>安装教程/评测对比/DIY指南</td>
+              <td>[高/中/低]曝光潜力，[有/无]商业引导</td>
+            </tr>
+            <tr>
+              <td><strong>TikTok</strong></td>
+              <td>"#[品类hashtag]"</td>
+              <td class="num">[XXX]个帖子</td>
+              <td>Top帖子 [XX]K likes</td>
+              <td>短视频教程/改造前后对比</td>
+              <td>[高/中/低]曝光潜力</td>
+            </tr>
+            <tr>
+              <td><strong>Reddit</strong></td>
+              <td>"r/[相关subreddit]"</td>
+              <td class="num">[XXX]个讨论</td>
+              <td>Top帖 [XX]K upvotes</td>
+              <td>求助帖/经验分享/产品推荐求</td>
+              <td>[高/中/低]商业转化潜力</td>
+            </tr>
+            <tr>
+              <td><strong>Instagram</strong></td>
+              <td>"#[品类hashtag]"</td>
+              <td class="num">[X,XXX]个帖子</td>
+              <td>Top帖子 [XX]K likes</td>
+              <td>改装展示/成品图/车友分享</td>
+              <td>[高/中/低]展示潜力</td>
+            </tr>
+            <tr>
+              <td><strong>Facebook Groups</strong></td>
+              <td>"[车型] owners / enthusiasts"</td>
+              <td class="num">[XXX]个群组</td>
+              <td>最大群组 [XX]K members</td>
+              <td>车主交流/问题求助/二手交易</td>
+              <td>[高/中/低]信任转化潜力</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="sub-module" style="margin-top:16px;">
+          <h4>Google Ads关键词竞价参考（用于辅助站内PLP选词）</h4>
+          <p style="font-size:12px;color:#888;margin-bottom:10px;">Google Ads Keyword Planner中的关键词搜索量和竞争度数据可作为eBay PLP选词的<strong>辅助参考</strong>：Google上搜索量高且竞争低的词，往往在eBay上也有需求且竞争较少。同时，如果后续建立独立站，以下数据可直接用于Google Ads投放。</p>
+          <table class="data-table">
+            <thead>
+              <tr><th>关键词</th><th>Google月搜索量</th><th>竞争程度</th><th>页首出价区间</th><th>对应eBay PLP投放建议</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>[词1，如"buy door glass online"]</td><td class="num">[X,XXX]</td><td><span class="hb-down">高</span></td><td>$[X.XX] - $[X.XX]</td><td>Google高搜索量 → eBay找对应词PLP投放</td></tr>
+              <tr><td>[词2，如"auto glass replacement cost"]</td><td class="num">[XX,XXX]</td><td><span class="hb-down">高</span></td><td>$[X.XX] - $[X.XX]</td><td>信息型词 → 设为PLP否定词（无购买意图）</td></tr>
+              <tr><td>[词3，如"2018 F150 driver window"]</td><td class="num">[XXX]</td><td><span class="hb-up">低</span></td><td>$[X.XX] - $[X.XX]</td><td>精准购买词 → PLP重点投放词</td></tr>
+              <tr><td>[词4]</td><td class="num">[XX]</td><td><span class="hb-up">低</span></td><td>$[X.XX] - $[X.XX]</td><td>[说明]</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:11px;color:#999;margin-top:4px;">数据来源：Google Ads Keyword Planner。注意Google和eBay的搜索意图不完全一致——Google上的信息型搜索（how/why/what）在eBay上通常没有购买转化，需结合eBay Terapeak验证。</p>
+        </div>
+
+        <div class="insight-box success" style="margin-top:16px;">
+          <strong>💡 站外洞察辅助站内投放：</strong>[如"YouTube上'[品类] install'头部视频XX万播放但无人引导购买 —— 可考虑制作教程视频并在描述区链接eBay店铺（免费长尾流量）；Reddit [某subreddit]月均XX条'求推荐[品类]'帖子 —— 这些高频出现的车型/位置词可作为PLP新增关键词；Google Ads中'[某长尾词]'搜索量高但eBay上Listing少 —— 这是PLP蓝海词的信号"]
+        </div>
+      </div>
+
+      <!-- 6.5 站内投放综合建议 -->
+      <div class="section-box" id="adv-5">
+        <h3>
+          6.5 站内投放综合建议
+          <span class="data-source"><span class="ds-icon">📊</span> 综合6.1-6.4数据推断 · 站外关键词数据辅助站内PLP选词</span>
+        </h3>
+        <p style="font-size:12px;color:#888;margin-bottom:14px;">本建议聚焦<strong>eBay站内广告投放</strong>（PLP + PLG组合），站外渠道（Google Ads/社交媒体）的关键词和搜索意图数据作为辅助选词参考，不涉及站外广告购买策略。</p>
+
+        <div class="grid-2">
+          <div class="sub-module">
+            <h4>三阶段投放策略（PLP + PLG组合）</h4>
+            <div class="insight-box">
+              <strong>阶段一：冷启动（新品上架0-2周，0-5个评价）</strong><br>
+              • <strong>PLG：</strong>全Listing开启2-5%基础费率，获取eBay算法自动匹配曝光<br>
+              • <strong>PLP：</strong>仅投放精准长尾词（车型+位置+年份），日出价预算$[XX]，3-5个核心词<br>
+              • <strong>站外辅助：</strong>参考Google Ads Keyword Planner中低竞争高转化的购买意图词，补充PLP词表<br>
+              • 目标：获取前5个评价，验证Listing在精准词上的转化率 > [X]%
+            </div>
+            <div class="insight-box">
+              <strong>阶段二：增长期（5-20个评价，转化率验证通过后）</strong><br>
+              • <strong>PLG：</strong>热销Listing费率提升至5-8%，保持全店基线覆盖<br>
+              • <strong>PLP：</strong>扩展至品类词+车型词+竞品品牌词，日出价预算$[XX]，10-15个词，分3个广告组管理<br>
+              • <strong>站外辅助：</strong>从Reddit/YouTube评论区提取买家高频使用的搜索词，补充至PLP精准词组<br>
+              • 目标：稳定日出[XX]单，ACOS控制在 < [XX]%
+            </div>
+            <div class="insight-box success">
+              <strong>阶段三：稳定期（20+评价，自然排名进入前3页）</strong><br>
+              • <strong>PLG：</strong>根据利润空间微调费率（5-10%），长尾Listing可适度降低费率<br>
+              • <strong>PLP：</strong>防守核心词+持续拓展新长尾词+定期更新否定词清单，日出价预算$[XX]<br>
+              • <strong>站外辅助：</strong>监控Google Trends/社媒上新兴车型话题，提前布局新车型关键词PLP投放<br>
+              • 目标：维持排名，ACOS优化至 < [XX]%，PLP+PLG综合广告成本占销售额 < [XX]%
+            </div>
+          </div>
+          <div class="sub-module">
+            <h4>PLP预算分配建议</h4>
+            <table class="data-table">
+              <thead>
+                <tr><th>关键词类型</th><th>预算占比</th><th>目标ACOS</th><th>出价策略</th><th>优先级</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>精准长尾词（车型+位置+年份）</td><td class="num">60%</td><td>< [XX]%</td><td>高出价抢占Top 4</td><td><span class="action-tag p0">P0</span></td></tr>
+                <tr><td>品类词（位置+品类）</td><td class="num">25%</td><td>< [XX]%</td><td>中等出价稳定曝光</td><td><span class="action-tag p1">P1</span></td></tr>
+                <tr><td>品类大词（品类泛词）</td><td class="num">10%</td><td>< [XX]%</td><td>低出价谨慎测试</td><td><span class="action-tag p2">P2</span></td></tr>
+                <tr><td>竞品品牌词</td><td class="num">5%</td><td>< [XX]%</td><td>低出价试探，视转化调整</td><td><span class="action-tag p2">P2</span></td></tr>
+              </tbody>
+            </table>
+
+            <h4 style="margin-top:14px;">PLP + PLG 费用结构估算模板</h4>
+            <table class="data-table">
+              <thead>
+                <tr><th>费用项</th><th>计算方式</th><th>示例（售价$100）</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>PLP点击成本</td><td>日预算 × 30天</td><td>$[XX]/天 × 30 = $[XXX]/月</td></tr>
+                <tr><td>PLG成交成本</td><td>售价 × PLG费率 × 月销量</td><td>$100 × 8% × [XX]单 = $[XXX]/月</td></tr>
+                <tr><td>综合广告费率</td><td>(PLP花费 + PLG花费) ÷ 总销售额</td><td>($[XXX] + $[XXX]) ÷ $[X,XXX] = [XX]%</td></tr>
+              </tbody>
+            </table>
+            <p style="font-size:11px;color:#999;margin-top:4px;">PLG费率设置需确保：售价 - 采购成本 - 物流 - 平台佣金(约13%) - PLG费率 - PLP摊销 > 目标净利。建议先算PLG底线费率再定PLP日预算。</p>
+
+            <div class="chart-placeholder" style="min-height:140px;margin-top:12px;">
+              <span class="chart-icon">📈</span>
+              <span>PLP+PLG投放节奏甘特图（占位）</span>
+              <span class="chart-hint">横轴按周展示冷启动→增长→稳定三阶段，纵轴展示PLP日预算/PLG费率/关键词数量的变化曲线</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="insight-box" style="margin-top:16px;">
+          <strong>💡 站外数据辅助站内PLP选词方法：</strong>
+          <ul style="font-size:12px;color:#555;padding-left:18px;line-height:1.8;margin-top:4px;">
+            <li><strong>Google Ads Keyword Planner → </strong>导出高搜索量低竞争的购买意图词，在Terapeak验证eBay搜索量后加入PLP精准词组</li>
+            <li><strong>Reddit/Facebook车主群组 → </strong>提取买家高频使用的非标准说法（如"window" vs "glass"、口语化车型缩写），补充PLP关键词覆盖</li>
+            <li><strong>YouTube评论区 → </strong>观察安装教程下买家提问中反复出现的车型+年份组合，识别PLP长尾机会词</li>
+            <li><strong>Google Trends → </strong>监控品类+车型搜索趋势，旺季前1-2周提前提升PLP预算和出价抢占先机</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 板块七：总结与策略 ==================== -->
+    <div class="tab-content" id="tab-summary">
+      <div class="section-header">
+        <h2>七、总结与策略建议</h2>
+        <p>汇总前六大板块的核心发现，提炼可执行的策略方向和优先级行动清单。</p>
+      </div>
+      <div class="subnav" id="subnav-summary">
+        <button class="active" onclick="scrollToModule('sum-1', this)">各板块核心发现</button>
+        <button onclick="scrollToModule('sum-2', this)">SWOT综合分析</button>
+        <button onclick="scrollToModule('sum-3', this)">优先级行动清单</button>
+        <button onclick="scrollToModule('sum-4', this)">最终结论</button>
+      </div>
+
+      <!-- 7.1 各板块核心发现汇总 -->
+      <div class="section-box" id="sum-1">
+        <h3>
+          7.1 各板块核心发现与策略转化
+          <span class="data-source"><span class="ds-icon">📊</span> 综合前六大板块分析结果</span>
+        </h3>
+        <table class="summary-table">
+          <thead>
+            <tr><th>板块</th><th>核心发现（What）</th><th>为什么重要（Why）</th><th>策略转化（So What）</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="sec-label">一<br>行业</td>
+              <td>
+                1. [行业特征发现1，如"美区汽配品类电商化率仅XX%，线上渗透还在加速"]<br>
+                2. [痛点发现2，如"重货物流成本占售价XX%-XX%，是全行业共同痛点"]<br>
+                3. [门槛发现3，如"DOT认证+关税构成XXX美元的固定准入门槛"]<br>
+                4. [趋势发现4，如"平均车龄老化推动后装需求CAGR X.X%"]
+              </td>
+              <td>
+                1. 线上化窗口期还在，先进入者优势明显<br>
+                2. 谁能解决物流成本问题谁就掌握定价权<br>
+                3. 合规不是可选项，是一次性准入投资<br>
+                4. 需求端趋势确定，赛道本身不会消失
+              </td>
+              <td>
+                <span class="action-tag p0">P0</span> 建立海外仓前置备货模式，降低尾程运费占比<br>
+                <span class="action-tag p1">P1</span> 完成DOT认证后在全Listing突出标注，建立合规信任<br>
+                <span class="action-tag p2">P2</span> 持续跟踪车龄数据和事故率趋势，预判需求峰值
+              </td>
+            </tr>
+            <tr>
+              <td class="sec-label">二<br>市场</td>
+              <td>
+                1. [容量发现1，如"eBay该品类listing XXX,XXX个，Top10集中度仅XX%"]<br>
+                2. [搜索发现2，如"核心词月搜索量XX,XXX，长尾车型词供需比最高"]<br>
+                3. [季节发现3，如"XX月-XX月为旺季，搜索量是淡季X倍"]<br>
+                4. [需求发现4，如"事故更换场景占XX%，是最主要需求驱动"]
+              </td>
+              <td>
+                1. 市场分散=新进入者仍有机会，不需要直面头部<br>
+                2. 车型长尾词是低成本精准流量入口<br>
+                3. 备货节奏直接影响全年60%+的销售额<br>
+                4. 事故场景买家价格不敏感、时效敏感
+              </td>
+              <td>
+                <span class="action-tag p0">P0</span> 优先布局车型长尾词，从低竞争高转化词切入<br>
+                <span class="action-tag p0">P0</span> 旺季前[X]周完成海外仓补货，避免断货<br>
+                <span class="action-tag p1">P1</span> Listing标题覆盖"场景词+车型+位置+年份"四要素<br>
+                <span class="action-tag p2">P2</span> 春/秋风暴季前做季节促销活动
+              </td>
+            </tr>
+            <tr>
+              <td class="sec-label">三<br>价格</td>
+              <td>
+                1. [价格带发现1，如"主力成交区间$XX-$XX，占销量XX%"]<br>
+                2. [品类价差发现2，如"[子品类X]比[子品类Y]溢价XX%，利润空间更大"]<br>
+                3. [竞争发现3，如"同质产品价差$XX-$XX，价格战集中在低端"]<br>
+                4. [利润发现4，如"综合净利润率约XX%-XX%，退货率是利润最大变量"]
+              </td>
+              <td>
+                1. 主力价格带确定后，定价偏离太多会直接影响转化<br>
+                2. 高附加值子品类值得优先铺货<br>
+                3. 避免陷入低端价格战，中高端竞争缓和<br>
+                4. 每降低1%退货率=净利润提升约X%
+              </td>
+              <td>
+                <span class="action-tag p0">P0</span> 主力产品定价锚定$XX-$XX最优区间<br>
+                <span class="action-tag p0">P0</span> [高利润子品类]优先开发上架<br>
+                <span class="action-tag p1">P1</span> 通过包装升级+安装指导降低退货率X%<br>
+                <span class="action-tag p1">P1</span> 功能型产品（加热/隐私/隔音）定溢价$XX+
+              </td>
+            </tr>
+            <tr>
+              <td class="sec-label">四<br>竞争</td>
+              <td>
+                1. [对手发现1，如"Top3对手[名称]月销XXX件，优势是SKU多/覆盖广"]<br>
+                2. [弱点发现2，如"头部对手普遍差评集中在[破损/适配/描述不符]"]<br>
+                3. [Listing发现3，如"80%对手Listing图片<6张，无A+页面"]<br>
+                4. [评价发现4，如"头部对手评价均分X.X，最大不满来自[具体问题]"]
+              </td>
+              <td>
+                1. 明确对手强势区（不硬碰）和弱势区（集中突破）<br>
+                2. 对手的差评=我们的产品优化地图<br>
+                3. Listing质量普遍偏低意味着用专业Listing可以快速拉开差距<br>
+                4. 评价是买家最终决策的核心依据
+              </td>
+              <td>
+                <span class="action-tag p0">P0</span> 针对[对手差评高频问题]做专项改进（包装/适配表/描述）<br>
+                <span class="action-tag p0">P0</span> 上架即做到8张图+视频+A+页面，超越80%对手<br>
+                <span class="action-tag p1">P1</span> 对标[对手A]的定价策略采取"同品质低$X"切入<br>
+                <span class="action-tag p2">P2</span> 建立对手监控表，月度更新对手动态
+              </td>
+            </tr>
+            <tr>
+              <td class="sec-label">五<br>产品</td>
+              <td>
+                1. [品类发现1，如"[子品类X]销量占比XX%但SKU仅XX%，供不应求"]<br>
+                2. [规格发现2，如"加热功能溢价+XX%，但仅XX%的Listing有此功能"]<br>
+                3. [车型发现3，如"[车型X/Y/Z]对手覆盖少但年销量>XXX,XXX台"]<br>
+                4. [互补发现4，如"密封条/胶水/工具可提升客单价$30-$60"]
+              </td>
+              <td>
+                1. 供不应求的子品类是优先级最高的开发方向<br>
+                2. 功能差异化可以绕开标品价格战<br>
+                3. 未覆盖的高销量车型=现成的需求池<br>
+                4. 套装策略在不增加SKU的前提下提升利润
+              </td>
+              <td>
+                <span class="action-tag p0">P0</span> 首发[车型X+Y]的[子品类Z]，关键词供需比>X<br>
+                <span class="action-tag p0">P0</span> 开发[加热/隐私/隔音]功能款，溢价$XX-$XXX<br>
+                <span class="action-tag p1">P1</span> 将[密封条+胶水+工具]打包为安装套装出售<br>
+                <span class="action-tag p2">P2</span> 补充[车型列表]未覆盖年份的适配
+              </td>
+            </tr>
+            <tr>
+              <td class="sec-label">六<br>广告<br>站外</td>
+              <td>
+                1. [PLP发现1，如"车型长尾词PLP竞争度低，CPC仅$X.XX，Top 4位可抢占"]<br>
+                2. [PLG发现2，如"品类大词PLP竞争激烈但PLG费率X%仍有自然补充空间"]<br>
+                3. [站外发现3，如"YouTube安装教程头部视频XX万播放，无商业转化引导"]<br>
+                4. [站外辅助发现4，如"Google Ads中[某词]搜索量高但eBay Listing少→PLP蓝海信号"]
+              </td>
+              <td>
+                1. PLP精准长尾词CPC低转化高，是冷启动核心驱动力<br>
+                2. PLG做全店基线覆盖（低风险广撒网），PLP攻重点词（精准卡位）<br>
+                3. 站外关键词数据可辅助PLP选词，发现Terapeak未覆盖的长尾机会<br>
+                4. YouTube/Reddit存在免费流量洼地，可反哺站内搜索权重
+              </td>
+              <td>
+                <span class="action-tag p0">P0</span> PLP预算60%精准长尾词+PLG全店2-5%费率基线覆盖<br>
+                <span class="action-tag p1">P1</span> 用Google Ads Keyword Planner辅助PLP选词，补充Terapeak盲区<br>
+                <span class="action-tag p1">P1</span> 制作[品类]安装教程YouTube视频，标题含关键词<br>
+                <span class="action-tag p2">P2</span> 2周后根据PLP搜索词报告更新否定词+调价
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 7.2 SWOT综合分析 -->
+      <div class="section-box" id="sum-2">
+        <h3>
+          7.2 SWOT综合分析
+          <span class="data-source"><span class="ds-icon">📊</span> 综合前六大板块所有分析结果</span>
+        </h3>
+        <div class="swot-grid">
+          <div class="swot-cell swot-s">
+            <h5 style="color:#08845a;">S 优势 Strengths</h5>
+            <ul>
+              <li><strong>供应链成本优势：</strong>中国直采FOB价仅为美国批发价的XX%，单位成本低$XX</li>
+              <li><strong>Listing质量超越：</strong>投入专业拍摄+A+页面后可超越80%竞品当前的Listing水平</li>
+              <li><strong>平台生态成熟：</strong>eBay Parts Compatibility系统天然适配该品类，Fitment搜索是天然流量入口</li>
+              <li><strong>[其他优势，如海外仓布局/团队专业度/已有品类经验]</strong></li>
+            </ul>
+          </div>
+          <div class="swot-cell swot-w">
+            <h5 style="color:#e07b24;">W 劣势 Weaknesses</h5>
+            <ul>
+              <li><strong>品牌认知度低：</strong>新店0评价起步，买家信任建立需要时间和销量积累</li>
+              <li><strong>物流破损风险：</strong>行业平均破损率XX%，每破损一单=成本$XX+买家体验受损</li>
+              <li><strong>SKU起步慢：</strong>初期覆盖车型有限，与头部对手XXX个SKU差距大</li>
+              <li><strong>[其他劣势，如团队人力有限/资金压力/缺乏安装服务体系]</strong></li>
+            </ul>
+          </div>
+          <div class="swot-cell swot-o">
+            <h5 style="color:#2980b9;">O 机会 Opportunities</h5>
+            <ul>
+              <li><strong>车型长尾蓝海：</strong>[车型X/Y/Z]高销量但对手覆盖极少，搜索量:Listing比高达XX:1</li>
+              <li><strong>功能升级溢价：</strong>[加热/隐私/隔音]等功能款溢价XX%-XX%，且对手参与度低</li>
+              <li><strong>套装提升客单价：</strong>搭配密封条/胶水/工具后客单价可从$XX提升至$XX+</li>
+              <li><strong>站外流量洼地：</strong>YouTube/Reddit该品类内容几乎无商业引导，可低成本占领</li>
+              <li><strong>[其他机会，如新车型换代带来配件需求/关税政策变化]</strong></li>
+            </ul>
+          </div>
+          <div class="swot-cell swot-t">
+            <h5 style="color:#c0392b;">T 威胁 Threats</h5>
+            <ul>
+              <li><strong>价格战蔓延：</strong>低端价格带利润率已压缩至XX%，新进入者持续涌入可能加剧</li>
+              <li><strong>头部跟进：</strong>如我们的策略奏效，[对手A/B]可能在X个月内跟进模仿</li>
+              <li><strong>合规风险：</strong>DOT认证/关税政策变化可能导致成本波动+XX%</li>
+              <li><strong>物流成本上升：</strong>海运/尾程运费波动直接吞噬XX%的利润空间</li>
+              <li><strong>[其他威胁，如平台政策变化/经济下行影响消费力]</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7.3 优先级行动清单 -->
+      <div class="section-box" id="sum-3">
+        <h3>
+          7.3 优先级行动清单
+          <span class="data-source"><span class="ds-icon">📊</span> 由各板块策略转化汇总排序</span>
+        </h3>
+        <p style="font-size:12px;color:#888;margin-bottom:16px;">按"对业务影响 × 执行难度"排序，P0为立即执行，P1为本周内，P2为资源允许时推进。</p>
+
+        <!-- P0 -->
+        <div style="margin-bottom:20px;">
+          <h4 style="font-size:14px;color:#c0392b;margin-bottom:10px;"><span class="action-tag p0" style="font-size:12px;">P0</span> 立即执行（本周完成）</h4>
+          <div class="grid-2">
+            <div class="strategy-card competition">
+              <h5>1. 针对对手差评痛点做产品/包装专项改进</h5>
+              <p>根据4.4差评分析发现的[破损/适配/描述]三大问题，在首批产品中做到：①包装升级（加厚泡沫+护角+木架可选）；②完善Compatibility表（精确到Submodel）；③实物拍摄标注颜色/色调。</p>
+            </div>
+            <div class="strategy-card market">
+              <h5>2. 首批Listing做到行业标杆水平</h5>
+              <p>8张以上专业图片 + 安装视频 + A+品牌页面 + 标题覆盖"场景+车型+年份+位置+功能"五要素。根据4.3对标分析，这将直接超越80%现有对手的Listing质量。</p>
+            </div>
+            <div class="strategy-card price">
+              <h5>3. 锚定最优价格带定价</h5>
+              <p>根据3.5量价关系分析，主力产品定价$[XX]-$[XX]（出单率指数最高区间），功能升级款在此基础上溢价$[XX]-$[XXX]。</p>
+            </div>
+            <div class="strategy-card product">
+              <h5>4. 首发高需求低竞争的产品方向</h5>
+              <p>根据5.4选品机会矩阵，首发[具体车型+品类组合]，关键词供需比>X，当前竞争密度低。</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- P1 -->
+        <div style="margin-bottom:20px;">
+          <h4 style="font-size:14px;color:#e07b24;margin-bottom:10px;"><span class="action-tag p1" style="font-size:12px;">P1</span> 本周内启动</h4>
+          <div class="grid-2">
+            <div class="strategy-card advertising">
+              <h5>5. 广告预算分配方案落地</h5>
+              <p>根据6.5投放建议，PLP预算60%投精准长尾词+25%品类词+10%大词+5%竞品词，同时全Listing开启PLG 2-5%基线费率，首周PLP日预算$[XX]测试，优化否定词清单。</p>
+            </div>
+            <div class="strategy-card industry">
+              <h5>6. 完成合规认证并在Listing中突出展示</h5>
+              <p>根据1.3合规要求确认DOT认证完备，在Listing标题/描述/图片中明确展示合规标志，建立买家信任。</p>
+            </div>
+            <div class="strategy-card product">
+              <h5>7. 开发安装套装组合</h5>
+              <p>根据5.5互补品分析，将密封条+PU胶水+吸盘工具打包，在Listing中设置Variation或关联推荐，目标客单价提升至$XXX+。</p>
+            </div>
+            <div class="strategy-card market">
+              <h5>8. 旺季备货计划启动</h5>
+              <p>根据2.3季节规律，高峰期为[XX月-XX月]，现在启动海外仓补货，预留[X]周海运+清关时间。</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- P2 -->
+        <div>
+          <h4 style="font-size:14px;color:#2980b9;margin-bottom:10px;"><span class="action-tag p2" style="font-size:12px;">P2</span> 资源允许时推进</h4>
+          <div class="grid-2">
+            <div class="strategy-card advertising">
+              <h5>9. YouTube安装教程视频制作</h5>
+              <p>根据6.4站外扫描，YouTube上[品类]安装教程有流量但无商业引导。制作1-2条专业安装教程，标题含核心关键词，描述区链接店铺。</p>
+            </div>
+            <div class="strategy-card competition">
+              <h5>10. 建立对手月度监控表</h5>
+              <p>根据4.2对手画像，对Top5对手的Listing数/价格/评价/广告位进行月度跟踪，及时发现对手策略变化和新的机会窗口。</p>
+            </div>
+            <div class="strategy-card product">
+              <h5>11. 补充高销量未覆盖车型</h5>
+              <p>根据5.3车型覆盖分析，逐步补充[车型列表]的适配SKU，优先覆盖年销量>XXX,XXX台且对手覆盖少的车型。</p>
+            </div>
+            <div class="strategy-card market">
+              <h5>12. Reddit/社媒口碑铺垫</h5>
+              <p>根据6.4分析，在Reddit [相关subreddit]和Facebook [车主群组]中主动回答[品类]相关问题，建立专业形象后引导到店铺。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7.4 最终结论 -->
+      <div class="section-box" id="sum-4">
+        <h3>7.4 最终结论</h3>
+        <div class="conclusion-box">
+          <h4>核心判断</h4>
+          <p>
+            <strong>[品类名称]</strong>在美区eBay/Amazon市场是一个<strong>[市场规模描述，如"年规模XX亿美元、线上渗透率快速提升的蓝海品类"]</strong>。
+            当前市场<strong>[竞争特征，如"集中度低、Listing质量整体偏低、头部对手差评集中在可改进的产品问题上"]</strong>，
+            为有供应链能力和专业运营的卖家提供了清晰的切入窗口。
+          </p>
+          <p style="margin-top:10px;">
+            <strong>核心策略一句话：</strong>[如"以车型长尾词精准切入，用超越80%对手的Listing质量和包装方案建立差异化，通过功能升级款+安装套装提升客单价和利润空间，同时YouTube/Reddit站外引流构建长期壁垒。"]
+          </p>
+          <p style="margin-top:10px;">
+            <strong>关键成功指标：</strong>首发[X]周内出单率><strong>[XX]%</strong>，退货率控制在<strong>[X]%</strong>以内，
+            广告ACOS<<strong>[XX]%</strong>，首月客单价><strong>$[XXX]</strong>。
+          </p>
+          <p style="margin-top:10px;">
+            <strong>最大风险：</strong>[如"物流破损率控制——这是该品类利润的第一变量，包装方案需要持续迭代优化。"]
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content-area -->
+</div><!-- /main-content -->
+
+<!-- ===== 打印按钮 ===== -->
+<button class="print-btn" onclick="window.print()" title="打印报告">🖨 打印报告</button>
+
+<!-- ===== JavaScript ===== -->
+<script>
+// 主导航切换
+function switchTab(tabId, el) {
+  // 更新侧边栏高亮
+  document.querySelectorAll('.sidebar li a').forEach(function(a) { a.classList.remove('active'); });
+  if (el) el.classList.add('active');
+
+  // 更新内容区显示
+  document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
+  var target = document.getElementById('tab-' + tabId);
+  if (target) target.classList.add('active');
+
+  // 重置该板块的子导航为第一个
+  var subnavId = 'subnav-' + tabId;
+  var subnav = document.getElementById(subnavId);
+  if (subnav) {
+    var btns = subnav.querySelectorAll('button');
+    if (btns.length > 0) {
+      btns.forEach(function(b) { b.classList.remove('active'); });
+      btns[0].classList.add('active');
+    }
+  }
+}
+
+// 子模块滚动
+function scrollToModule(moduleId, btn) {
+  // 更新子导航高亮
+  var subnav = btn.parentElement;
+  subnav.querySelectorAll('button').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+
+  // 滚动到目标模块
+  var target = document.getElementById(moduleId);
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+</script>
+
+</body>
+</html>

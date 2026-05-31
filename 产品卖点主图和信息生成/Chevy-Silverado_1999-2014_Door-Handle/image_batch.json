@@ -1,0 +1,34 @@
+{
+  "main": {
+    "label": "主图-白底",
+    "path": "..\\产品卖点主图和信息生成\\Chevy-Silverado_1999-2014_Door-Handle\\gen_main_fast_1779515265.png",
+    "status": "ok"
+  },
+  "scene": {
+    "label": "场景图",
+    "path": "..\\产品卖点主图和信息生成\\Chevy-Silverado_1999-2014_Door-Handle\\gen_main_fast_1779515289.png",
+    "status": "ok"
+  },
+  "detail": {
+    "label": "细节图",
+    "path": "..\\产品卖点主图和信息生成\\Chevy-Silverado_1999-2014_Door-Handle\\gen_main_fast_1779515315.png",
+    "status": "ok"
+  },
+  "angle": {
+    "label": "多视角图",
+    "path": "gen_main_fast_1779515975.png",
+    "status": "ok",
+    "regenerated": true
+  },
+  "install": {
+    "label": "安装效果图",
+    "path": "..\\产品卖点主图和信息生成\\Chevy-Silverado_1999-2014_Door-Handle\\gen_main_fast_1779515366.png",
+    "status": "ok"
+  },
+  "kit": {
+    "label": "套装展示图",
+    "path": "gen_main_fast_1779515750.png",
+    "status": "ok",
+    "regenerated": true
+  }
+}

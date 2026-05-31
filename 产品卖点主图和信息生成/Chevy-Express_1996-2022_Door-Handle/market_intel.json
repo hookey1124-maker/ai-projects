@@ -1,0 +1,215 @@
+{
+  "mother_name": "Chevy-Express_1996-2022_Door-Handle",
+  "generated_at": "2026-05-23T14:05:31.146118",
+  "total_links_analyzed": 5,
+  "valid_listings": 5,
+  "price_range": "$8.99 - $29.95",
+  "avg_price": 17.92,
+  "product_count_mentions": [],
+  "image_counts": {
+    "min": 12,
+    "max": 36,
+    "avg": 18.4
+  },
+  "best_image_listing": {
+    "title": "For GMC Chevy Express 96-09 Outside Outer Exterior Door Handle Left Front Driver",
+    "images": [
+      "https://i.ebayimg.com/images/g/xK4AAeSwtppp-mcu/s-l500.webp",
+      "https://i.ebayimg.com/images/g/r-8AAeSwTU5p-mcv/s-l500.webp",
+      "https://i.ebayimg.com/images/g/w5kAAeSw3Hxp-mcx/s-l500.webp",
+      "https://i.ebayimg.com/images/g/xoUAAeSwmT1p-mcy/s-l500.webp",
+      "https://i.ebayimg.com/images/g/dEEAAeSwJSpp-mcz/s-l500.webp"
+    ],
+    "item_id": "127848473496"
+  },
+  "reference_images": [
+    "https://i.ebayimg.com/images/g/xK4AAeSwtppp-mcu/s-l500.webp",
+    "https://i.ebayimg.com/images/g/r-8AAeSwTU5p-mcv/s-l500.webp",
+    "https://i.ebayimg.com/images/g/w5kAAeSw3Hxp-mcx/s-l500.webp",
+    "https://i.ebayimg.com/images/g/xoUAAeSwmT1p-mcy/s-l500.webp",
+    "https://i.ebayimg.com/images/g/dEEAAeSwJSpp-mcz/s-l500.webp",
+    "https://i.ebayimg.com/images/g/cf8AAeSwZLVp-mc1/s-l500.webp"
+  ],
+  "key_specs": {
+    "Compatibility": {
+      "value": "See compatible vehicles",
+      "consensus": 1.0
+    },
+    "Delivery": {
+      "value": "Estimated between Tue, May 26 and Fri, May 29 to ?",
+      "consensus": 0.6
+    },
+    "Returns": {
+      "value": "Accepted within 30 days",
+      "consensus": 0.8
+    },
+    "Payments": {
+      "value": ". See details",
+      "consensus": 1.0
+    },
+    "Condition": {
+      "value": "New: A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is ... Read more\nabout the condition",
+      "consensus": 1.0
+    },
+    "Color": {
+      "value": "Black",
+      "consensus": 0.8
+    },
+    "Number of Pieces": {
+      "value": "1",
+      "consensus": 0.8
+    },
+    "Type": {
+      "value": "Door Handle",
+      "consensus": 0.6
+    },
+    "Fitment Type": {
+      "value": "Direct Replacement",
+      "consensus": 1.0
+    },
+    "Country of Origin": {
+      "value": "Taiwan",
+      "consensus": 0.8
+    },
+    "Taxes": {
+      "value": "Taxes may be applicable at checkout. Learn moreLearn more about paying tax on eBay purchases.",
+      "consensus": 1.0
+    },
+    "Returns shipping": {
+      "value": "Seller pays return shipping",
+      "consensus": 1.0
+    },
+    "Return policy": {
+      "value": "Refer to eBay Return policyopens in a new tab or window for more details. You are covered by the eBay Money Back Guaranteeopens in a new tab or window if you receive an item that is not as described in the listing.",
+      "consensus": 1.0
+    },
+    "Finish": {
+      "value": "Textured",
+      "consensus": 0.6
+    }
+  },
+  "title_samples": [
+    "For GMC Chevy Express 96-09 Outside Outer Exterior Door Handle Left Front Driver",
+    "LH Driver Side Outside Front Door Handle for 96-09 Chevy Express GMC Savana Van",
+    "NEW Driver Side Outside Front Door Handle for 96-09 Chevy Express GMC Savana Van",
+    "Outside Door Handle For Chevy Express Savana Van 1996-2022 Left Front Check Lock",
+    "Front Left Exterior Door Handle For 03-21 Chevy Express 2500 03-14 Express 1500"
+  ],
+  "title_strategies": [
+    {
+      "title": "For GMC Chevy Express 96-09 Outside Outer Exterior Door Handle Left Front Driver",
+      "keywords": [
+        "For",
+        "Chevy Express",
+        "Outside Outer Exterior Door Handle Left Front Driver"
+      ],
+      "has_count": false,
+      "has_chrome": false,
+      "has_exterior": true
+    },
+    {
+      "title": "LH Driver Side Outside Front Door Handle for 96-09 Chevy Express GMC Savana Van",
+      "keywords": [
+        "Driver Side Outside Front Door Handle",
+        "Chevy Express",
+        "Savana Van"
+      ],
+      "has_count": false,
+      "has_chrome": false,
+      "has_exterior": false
+    },
+    {
+      "title": "NEW Driver Side Outside Front Door Handle for 96-09 Chevy Express GMC Savana Van",
+      "keywords": [
+        "Driver Side Outside Front Door Handle",
+        "Chevy Express",
+        "Savana Van"
+      ],
+      "has_count": false,
+      "has_chrome": false,
+      "has_exterior": false
+    }
+  ],
+  "common_keywords": [
+    [
+      "express",
+      6
+    ],
+    [
+      "chevy",
+      5
+    ],
+    [
+      "door",
+      5
+    ],
+    [
+      "handle",
+      5
+    ],
+    [
+      "front",
+      5
+    ],
+    [
+      "outside",
+      4
+    ],
+    [
+      "for",
+      3
+    ],
+    [
+      "96",
+      3
+    ],
+    [
+      "09",
+      3
+    ],
+    [
+      "left",
+      3
+    ],
+    [
+      "driver",
+      3
+    ],
+    [
+      "savana",
+      3
+    ],
+    [
+      "van",
+      3
+    ],
+    [
+      "exterior",
+      2
+    ],
+    [
+      "side",
+      2
+    ],
+    [
+      "03",
+      2
+    ],
+    [
+      "outer",
+      1
+    ],
+    [
+      "1996",
+      1
+    ],
+    [
+      "2022",
+      1
+    ],
+    [
+      "check",
+      1
+    ]
+  ]
+}

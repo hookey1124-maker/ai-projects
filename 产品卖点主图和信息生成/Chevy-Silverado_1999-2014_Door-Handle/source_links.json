@@ -1,0 +1,327 @@
+{
+  "mother_name": "Chevy-Silverado_1999-2014_Door-Handle",
+  "created_at": "2026-05-23T12:07:09.262417",
+  "total_links": 21,
+  "benchmark": {
+    "url": "https://www.ebay.com/itm/177494642767",
+    "title": "NEW Outer Door Handles Set of 4 Chrome No Keyhole for 99-06 Silverado Sierra EXD",
+    "reason": "图片最多的 listing（待爬虫确认）"
+  },
+  "links": [
+    {
+      "url": "https://www.ebay.com/itm/177494642767",
+      "title": "NEW Outer Door Handles Set of 4 Chrome No Keyhole for 99-06 Silverado Sierra EXD",
+      "identity": {
+        "make": "Chevy",
+        "model": "Silverado",
+        "year_start": 1999,
+        "year_end": 2006,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "NEW Outer Door Handles Set of 4 Chrome No Keyhole for 99-06 Silverado Sierra EXD",
+        "url": "https://www.ebay.com/itm/177494642767"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/396656496465",
+      "title": "4 Outer Exterior Door Handle For 99-06 Chevy Silverado Tahoe Cadillac Escalade",
+      "identity": {
+        "make": "Chevy",
+        "model": "Silverado",
+        "year_start": 1999,
+        "year_end": 2006,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "4 Outer Exterior Door Handle For 99-06 Chevy Silverado Tahoe Cadillac Escalade",
+        "url": "https://www.ebay.com/itm/396656496465"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/397493125040",
+      "title": "2PCS Front Exterior Door Handles for 99-06 Chevrolet Silverado GMC Sierra 1500",
+      "identity": {
+        "make": "Chevy",
+        "model": "Silverado",
+        "year_start": 1999,
+        "year_end": 2006,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "2PCS Front Exterior Door Handles for 99-06 Chevrolet Silverado GMC Sierra 1500",
+        "url": "https://www.ebay.com/itm/397493125040"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/396090852123",
+      "title": "Front Rear Outer Door Handles For Chevy Silverado GMC Sierra Cadillac 1999-06",
+      "identity": {
+        "make": "Chevy",
+        "model": "Silverado",
+        "year_start": 1999,
+        "year_end": 2006,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "Front Rear Outer Door Handles For Chevy Silverado GMC Sierra Cadillac 1999-06",
+        "url": "https://www.ebay.com/itm/396090852123"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/265090525677",
+      "title": "NEW Outer Door Handles Set of 4 Chrome No Keyhole for 99-06 Silverado Sierra",
+      "identity": {
+        "make": "Chevy",
+        "model": "Silverado",
+        "year_start": 1999,
+        "year_end": 2006,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "NEW Outer Door Handles Set of 4 Chrome No Keyhole for 99-06 Silverado Sierra",
+        "url": "https://www.ebay.com/itm/265090525677"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/233932451178",
+      "title": "NEW Front Outside Door Handles Set Chrome for 99-06 Silverado Tahoe Sierra Yukon",
+      "identity": {
+        "make": "Chevy",
+        "model": "Silverado",
+        "year_start": 1999,
+        "year_end": 2006,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "NEW Front Outside Door Handles Set Chrome for 99-06 Silverado Tahoe Sierra Yukon",
+        "url": "https://www.ebay.com/itm/233932451178"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/177512409390",
+      "title": "Front Left Right Side Door Handle For 99-06 Chevrolet Silverado 1500 GMC Sierra",
+      "identity": {
+        "make": "Chevy",
+        "model": "Silverado",
+        "year_start": 1999,
+        "year_end": 2006,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "Front Left Right Side Door Handle For 99-06 Chevrolet Silverado 1500 GMC Sierra",
+        "url": "https://www.ebay.com/itm/177512409390"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/306551602214",
+      "title": "2pcs Front Outer Door Handle For 99-06 Chevy Silverado Tahoe Cadillac Escalade A",
+      "identity": {
+        "make": "Chevy",
+        "model": "Silverado",
+        "year_start": 1999,
+        "year_end": 2006,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "2pcs Front Outer Door Handle For 99-06 Chevy Silverado Tahoe Cadillac Escalade A",
+        "url": "https://www.ebay.com/itm/306551602214"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/305972627825",
+      "title": "NEW Front Outside Door Handles Set Chrome for 99-06 Silverado Tahoe Sierra Yukon",
+      "identity": {
+        "make": "Chevy",
+        "model": "Silverado",
+        "year_start": 1999,
+        "year_end": 2006,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "NEW Front Outside Door Handles Set Chrome for 99-06 Silverado Tahoe Sierra Yukon",
+        "url": "https://www.ebay.com/itm/305972627825"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/187344624648",
+      "title": "4pc Exterior Door Handles Set Chrome for Tahoe Silverado Yukon Escalade 2007-14",
+      "identity": {
+        "make": "Chevy",
+        "model": "Silverado",
+        "year_start": 2007,
+        "year_end": 2014,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "4pc Exterior Door Handles Set Chrome for Tahoe Silverado Yukon Escalade 2007-14",
+        "url": "https://www.ebay.com/itm/187344624648"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/389797381374",
+      "title": "Chrome Exterior Door Handle Set of 4 - Fits 2007-2014 Chevy Silverado GMC",
+      "identity": {
+        "make": "Chevy",
+        "model": "Silverado",
+        "year_start": 2007,
+        "year_end": 2014,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "Chrome Exterior Door Handle Set of 4 - Fits 2007-2014 Chevy Silverado GMC",
+        "url": "https://www.ebay.com/itm/389797381374"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/336191681130",
+      "title": "4PC Chrome Outside Door Handle For 07-14 Chevy Silverado Tahoe GMC Sierra Denali",
+      "identity": {
+        "make": "Chevy",
+        "model": "Silverado",
+        "year_start": 2007,
+        "year_end": 2014,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "4PC Chrome Outside Door Handle For 07-14 Chevy Silverado Tahoe GMC Sierra Denali",
+        "url": "https://www.ebay.com/itm/336191681130"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/143818438106",
+      "title": "4Pcs Front Rear Left Right For 2007-2014 Chevy Silverado GMC Sierra Door Handle",
+      "identity": {
+        "make": "Chevy",
+        "model": "Silverado",
+        "year_start": 2007,
+        "year_end": 2014,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "4Pcs Front Rear Left Right For 2007-2014 Chevy Silverado GMC Sierra Door Handle",
+        "url": "https://www.ebay.com/itm/143818438106"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/358280651726",
+      "title": "New Exterior Chrome Door Handle Set For Chevrolet GMC Cadillac 2007-2014 Chrome",
+      "identity": {
+        "make": "Chevy",
+        "model": "Silverado",
+        "year_start": 2007,
+        "year_end": 2014,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "New Exterior Chrome Door Handle Set For Chevrolet GMC Cadillac 2007-2014 Chrome",
+        "url": "https://www.ebay.com/itm/358280651726"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/376181001531",
+      "title": "Set of 4 Chrome Outer Outside Exterior Door Handles for 07-13 Chevy Pickup Truck",
+      "identity": {
+        "make": "Chevy",
+        "model": "Silverado",
+        "year_start": 2007,
+        "year_end": 2013,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "Set of 4 Chrome Outer Outside Exterior Door Handles for 07-13 Chevy Pickup Truck",
+        "url": "https://www.ebay.com/itm/376181001531"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/358425016456",
+      "title": "4PCS Chrome Door Handles Fits 2007-2013 Chevrolet Avalanche 5.3L Silverado 1500",
+      "identity": {
+        "make": "Chevy",
+        "model": "Silverado",
+        "year_start": 2007,
+        "year_end": 2013,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "4PCS Chrome Door Handles Fits 2007-2013 Chevrolet Avalanche 5.3L Silverado 1500",
+        "url": "https://www.ebay.com/itm/358425016456"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/227308059582",
+      "title": "Exterior Door Handle For 2007-2013 Chevrolet Silverado 1500 Set of 4 Chrome",
+      "identity": {
+        "make": "Chevy",
+        "model": "Silverado",
+        "year_start": 2007,
+        "year_end": 2013,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "Exterior Door Handle For 2007-2013 Chevrolet Silverado 1500 Set of 4 Chrome",
+        "url": "https://www.ebay.com/itm/227308059582"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/386094001060",
+      "title": "4X Exterior Chrome Door Handle Set for 07-13 Chevy Silverado GMC Sierra Escalade",
+      "identity": {
+        "make": "Chevy",
+        "model": "Silverado",
+        "year_start": 2007,
+        "year_end": 2013,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "4X Exterior Chrome Door Handle Set for 07-13 Chevy Silverado GMC Sierra Escalade",
+        "url": "https://www.ebay.com/itm/386094001060"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/126257230602",
+      "title": "A-Premium 4x Front &amp;Rear Metal Exterior Door Handle for Silverado 1500 2007-2013",
+      "identity": {
+        "make": "Chevy",
+        "model": "Silverado",
+        "year_start": 2007,
+        "year_end": 2013,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "A-Premium 4x Front &amp;Rear Metal Exterior Door Handle for Silverado 1500 2007-2013",
+        "url": "https://www.ebay.com/itm/126257230602"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/389438217451",
+      "title": "2Pcs Exterior Door Handle Fit 99-07 Chevy Silverado GMC Sierra Cadillac 15034985",
+      "identity": {
+        "make": "Chevy",
+        "model": "Silverado",
+        "year_start": 1999,
+        "year_end": 2007,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "2Pcs Exterior Door Handle Fit 99-07 Chevy Silverado GMC Sierra Cadillac 15034985",
+        "url": "https://www.ebay.com/itm/389438217451"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/186198784331",
+      "title": "4x Front&amp;Rear Chrome Exterior Door Handle for Chevy Silverado 1500 GMC Cadillac",
+      "identity": {
+        "make": "Chevy",
+        "model": "Silverado",
+        "year_start": null,
+        "year_end": null,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "4x Front&amp;Rear Chrome Exterior Door Handle for Chevy Silverado 1500 GMC Cadillac",
+        "url": "https://www.ebay.com/itm/186198784331"
+      },
+      "status": "pending"
+    }
+  ]
+}

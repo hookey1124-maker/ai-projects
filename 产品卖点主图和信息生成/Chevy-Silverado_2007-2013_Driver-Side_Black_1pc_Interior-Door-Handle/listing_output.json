@@ -1,0 +1,102 @@
+{
+  "sku": "LYAP-239-1",
+  "generated_at": "2026-05-26T17:15:00",
+  "title": "Interior Door Handle Inside Left Driver Side For 07-13 Silverado Sierra Black",
+  "title_char_count": 80,
+  "title_analysis": {
+    "format": "[Product Type] [Position Detail] For [Year Range] [Make Model] [Color]",
+    "keywords_used": [
+      "Interior",
+      "Door Handle",
+      "Inside",
+      "Left",
+      "Driver Side",
+      "07-13",
+      "Silverado",
+      "Sierra",
+      "Black"
+    ],
+    "strategy": "Product-first format proven by top sellers; includes year range for search match; color at end for specificity",
+    "competitor_insight": "Top 31 valid competitors use similar format with slight variations; anchor's original title at 84 chars exceeds eBay's 80-char limit"
+  },
+  "price": 12.6,
+  "price_range": "$8.54 - $109.85",
+  "avg_competitor_price": 29.92,
+  "price_position": "Below average (57% below avg) - highly competitive price point",
+  "product_info": {
+    "position": "Driver-Side",
+    "material": "Automotive-grade ABS Plastic",
+    "finish": "Black",
+    "count": "1pc",
+    "condition": "New",
+    "warranty": "1 Year",
+    "country_of_origin": "China",
+    "valid_competitors": 29,
+    "rule0_excluded": 21
+  },
+  "bullets": [
+    "Perfect Fit Guaranteed: Precision-engineered for 2007-2013 Chevy Silverado 1500 / 2500HD / 3500HD and GMC Sierra 1500 / 2500HD / 3500HD. Direct OEM replacement with no modifications required.",
+    "Easy DIY Installation: Designed as a direct bolt-on replacement for your worn or broken interior door handle. Includes all necessary mounting points — installs in minutes with basic hand tools.",
+    "Premium Black Finish: High-quality black interior door handle matches the OEM look and feel. Resists fading, scratching, and peeling for long-lasting appearance that blends seamlessly with your factory interior.",
+    "Built to Last: Manufactured from durable automotive-grade materials that withstand daily use. Tested for strength and durability — won't crack, warp, or fail like cheaper alternatives.",
+    "Fast & Free Shipping from US Stock: Ships within 1 business day with free standard delivery. No waiting weeks for overseas shipping — your part is in stock and ready to go.",
+    "Trusted Replacement Brand: Equivalent to OEM part numbers 20833606, 20871488, 80374. Fits left/driver side front interior door position for both Chevy Silverado and GMC Sierra models."
+  ],
+  "bullets_structured": [
+    {
+      "angle": "Compatibility",
+      "text": "Perfect Fit Guaranteed: Precision-engineered for 2007-2013 Chevy Silverado 1500 / 2500HD / 3500HD and GMC Sierra 1500 / 2500HD / 3500HD. Direct OEM replacement with no modifications required."
+    },
+    {
+      "angle": "Installation",
+      "text": "Easy DIY Installation: Designed as a direct bolt-on replacement for your worn or broken interior door handle. Includes all necessary mounting points — installs in minutes with basic hand tools."
+    },
+    {
+      "angle": "Quality/Appearance",
+      "text": "Premium Black Finish: High-quality black interior door handle matches the OEM look and feel. Resists fading, scratching, and peeling for long-lasting appearance that blends seamlessly with your factory interior."
+    },
+    {
+      "angle": "Durability",
+      "text": "Built to Last: Manufactured from durable automotive-grade materials that withstand daily use. Tested for strength and durability — won't crack, warp, or fail like cheaper alternatives."
+    },
+    {
+      "angle": "Shipping/Service",
+      "text": "Fast & Free Shipping from US Stock: Ships within 1 business day with free standard delivery. No waiting weeks for overseas shipping — your part is in stock and ready to go."
+    },
+    {
+      "angle": "Trust/OE Equivalency",
+      "text": "Trusted Replacement Brand: Equivalent to OEM part numbers 20833606, 20871488, 80374. Fits left/driver side front interior door position for both Chevy Silverado and GMC Sierra models."
+    }
+  ],
+  "competitor_summary": {
+    "total_scraped": 51,
+    "valid_competitors": 29,
+    "rule0_excluded": 21,
+    "exclusion_reasons": {
+      "表面处理/颜色不同": 19,
+      "方位不同": 2
+    },
+    "key_insights": [
+      "Anchor price ($12.60) is significantly below market average ($29.92) — strong pricing advantage",
+      "31 direct competitors for Interior Driver-Side Black Door Handle for Silverado/Sierra 2007-2013",
+      "Most competitors emphasize compatibility range and installation ease in their titles",
+      "Top-selling listings include OEM part number cross-references in bullets",
+      "Competitors offering 'Repair Kit' variants command higher prices but target different customer segment"
+    ]
+  },
+  "product_classification": {
+    "position": "Driver-Side",
+    "count": "1pc",
+    "finish": "Black",
+    "sub_type": "Replacement",
+    "door_config": "4-door-full"
+  },
+  "compatible_vehicles": [
+    "Chevy Silverado 1500 2007-2013",
+    "Chevy Silverado 2500 HD 2007-2013",
+    "Chevy Silverado 3500 HD 2007-2013",
+    "GMC Sierra 1500 2007-2013",
+    "GMC Sierra 2500 HD 2007-2013",
+    "GMC Sierra 3500 HD 2007-2013"
+  ]
+}

@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新品月报 · 2026年3月</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Microsoft YaHei', 'PingFang SC', Arial, sans-serif; background: #f0f2f5; color: #1a1a2e; }
+
+/* 顶部标题栏 */
+.header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; padding: 28px 40px; }
+.header h1 { font-size: 26px; font-weight: 700; letter-spacing: 2px; }
+.header .subtitle { font-size: 13px; opacity: 0.75; margin-top: 6px; }
+
+/* 导航侧边栏 */
+.container { display: flex; min-height: calc(100vh - 80px); }
+.sidebar { width: 220px; background: #fff; border-right: 1px solid #e8e8e8; padding: 20px 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; flex-shrink: 0; }
+.sidebar ul { list-style: none; }
+.sidebar li a { display: block; padding: 10px 20px; font-size: 13px; color: #555; text-decoration: none; border-left: 3px solid transparent; transition: all 0.2s; }
+.sidebar li a:hover, .sidebar li a.active { background: #f0f6ff; color: #0f3460; border-left-color: #0f3460; font-weight: 600; }
+
+/* 主内容区 */
+.main-content { flex: 1; padding: 24px; overflow: auto; }
+
+/* KPI卡片 */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.kpi-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center; }
+.kpi-card .val { font-size: 28px; font-weight: 700; color: #0f3460; }
+.kpi-card .label { font-size: 12px; color: #888; margin-top: 6px; }
+.kpi-card.green .val { color: #08845a; }
+.kpi-card.orange .val { color: #e07b24; }
+.kpi-card.red .val { color: #c0392b; }
+
+/* 页签 */
+.tab-nav { display: flex; gap: 4px; margin-bottom: 20px; flex-wrap: wrap; background: white; padding: 8px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.tab-btn { padding: 8px 18px; font-size: 13px; border: none; background: transparent; cursor: pointer; border-radius: 6px; color: #555; font-weight: 500; transition: all 0.2s; }
+.tab-btn.active { background: #0f3460; color: white; }
+.tab-btn:hover:not(.active) { background: #f0f6ff; color: #0f3460; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* 模块卡片 */
+.section { background: white; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.section h3 { font-size: 16px; font-weight: 700; color: #0f3460; padding-bottom: 12px; border-bottom: 2px solid #e8f0fe; margin-bottom: 16px; }
+.sub-module { margin-bottom: 20px; }
+.sub-module h4 { font-size: 13px; font-weight: 600; color: #444; margin-bottom: 10px; padding: 6px 12px; background: #f5f7ff; border-radius: 4px; border-left: 3px solid #0f3460; }
+
+/* 图表网格 */
+.chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 20px; margin-bottom: 20px; }
+.chart-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.chart-card h4 { font-size: 13px; font-weight: 600; color: #0f3460; margin-bottom: 14px; }
+.chart-card canvas { max-height: 280px; }
+
+/* 表格 */
+.table-wrap { overflow-x: auto; }
+.data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.data-table th { background: #0f3460; color: white; padding: 8px 10px; text-align: center; white-space: nowrap; font-weight: 600; }
+.data-table td { padding: 7px 10px; text-align: center; border-bottom: 1px solid #f0f0f0; white-space: nowrap; }
+.data-table tr:hover td { background: #f5f7ff; }
+.data-table .highlight { color: #0f3460; font-weight: 700; }
+.data-table .row-ordered { background: #f0fff4; }
+.main-table th { font-size: 11px; padding: 7px 8px; }
+.main-table td { font-size: 11px; padding: 6px 8px; }
+
+/* 趋势标签 */
+.trend-up { color: #c0392b; font-weight: 700; }
+.trend-down { color: #08845a; font-weight: 700; }
+
+/* 滚动条 */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+
+/* 响应式 */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .chart-grid { grid-template-columns: 1fr; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* 导出按钮 */
+.export-btn { background: linear-gradient(135deg, #0f3460, #16213e); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 13px; cursor: pointer; margin-bottom: 20px; }
+.export-btn:hover { opacity: 0.9; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🚀 新品月报 · 2026年3月</h1>
+  <div class="subtitle">统计周期：2026年3月 | 按月上架新品分别统计 | 生成时间：2026-04-08 | 数据来源：新品月报数据.xlsx</div>
+</div>
+
+<div class="container">
+<nav class="sidebar">
+  <ul>
+    <li><a href="#overview" onclick="showSection('overview',this)" class="active">📊 数据总览</a></li>
+    <li><a href="#pinxian" onclick="showSection('pinxian',this)">🏷️ 品线维度</a></li>
+    <li><a href="#analyst" onclick="showSection('analyst',this)">👤 分析人维度</a></li>
+    <li><a href="#expand" onclick="showSection('expand',this)">🔖 拓展类型维度</a></li>
+    <li><a href="#order" onclick="showSection('order',this)">📦 出单情况分析</a></li>
+    <li><a href="#unorder" onclick="showSection('unorder',this)">❌ 未出单市场</a></li>
+    <li><a href="#lowshare" onclick="showSection('lowshare',this)">📉 低占比新品</a></li>
+    <li><a href="#detail" onclick="showSection('detail',this)">📋 全量明细</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+<!-- KPI总览 -->
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <div class="val">156</div>
+    <div class="label">在跟SKU总数</div>
+  </div>
+  <div class="kpi-card green">
+    <div class="val">82</div>
+    <div class="label">3月已出单SKU</div>
+  </div>
+  <div class="kpi-card red">
+    <div class="val">74</div>
+    <div class="label">3月未出单SKU</div>
+  </div>
+  <div class="kpi-card orange">
+    <div class="val">52.6%</div>
+    <div class="label">3月出单率</div>
+  </div>
+  <div class="kpi-card">
+    <div class="val">1,464</div>
+    <div class="label">3月总销量</div>
+  </div>
+  <div class="kpi-card">
+    <div class="val">¥18.2万</div>
+    <div class="label">3月总销售额</div>
+  </div>
+</div>
+
+<!-- ============ 数据总览 ============ -->
+<div id="section-overview" class="section-wrap">
+  <div class="section">
+    <h3>📊 数据总览 · 图形可视化</h3>
+    
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h4>📈 各批次3月销量对比</h4>
+        <canvas id="chartBatchQty"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>💰 各批次3月销售额对比</h4>
+        <canvas id="chartBatchAmt"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>🏷️ 各品类3月销量对比</h4>
+        <canvas id="chartCategoryQty"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>📊 各品类出单率对比</h4>
+        <canvas id="chartCategoryRate"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>📦 3月8日出单情况分布</h4>
+        <canvas id="chartOrderStatus"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>🌍 3月市场状态分布</h4>
+        <canvas id="chartMarket"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>🔖 拓展类型销量对比</h4>
+        <canvas id="chartExpand"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>👤 分析人销量贡献</h4>
+        <canvas id="chartAnalyst"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 品线维度 ============ -->
+<div id="section-pinxian" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>🏷️ 品线维度</h3>
+    <div class="sub-module">
+<h4>各品类3月绩效汇总</h4>
+<table class="data-table">
+<thead><tr><th>品类</th><th>SKU数</th><th>总销量</th><th>总销售额</th><th>出单率</th><th>3月对手出单</th></tr></thead>
+<tbody id="cat-tbody"></tbody>
+</table>
+</div>
+    <div class="chart-grid" style="grid-template-columns: 1fr 1fr;">
+      <div class="chart-card">
+        <h4>📈 各品类3月销量对比</h4>
+        <canvas id="chartCatQty"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>💹 各品类销量+销售额</h4>
+        <canvas id="chartCatAmt"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 分析人维度 ============ -->
+<div id="section-analyst" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>👤 分析人维度</h3>
+    <div class="sub-module">
+<h4>各分析人3月绩效统计</h4>
+<table class="data-table">
+<thead><tr><th>分析人</th><th>SKU数</th><th>总销量</th><th>总销售额</th><th>出单率</th></tr></thead>
+<tbody id="analyst-tbody"></tbody>
+</table>
+</div>
+    <div class="chart-grid" style="grid-template-columns: 1fr 1fr;">
+      <div class="chart-card">
+        <h4>👤 各分析人3月销量对比</h4>
+        <canvas id="chartAnalystQty"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>📊 各分析人出单率对比</h4>
+        <canvas id="chartAnalystRate"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 拓展类型维度 ============ -->
+<div id="section-expand" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>🔖 拓展类型维度</h3>
+    <div class="sub-module">
+<h4>各拓展类型3月绩效统计</h4>
+<table class="data-table">
+<thead><tr><th>拓展类型</th><th>SKU数</th><th>总销量</th><th>出单率</th><th>平均市占比</th></tr></thead>
+<tbody id="expand-tbody"></tbody>
+</table>
+</div>
+    <div class="chart-grid" style="grid-template-columns: 1fr 1fr;">
+      <div class="chart-card">
+        <h4>📈 各拓展类型SKU数</h4>
+        <canvas id="chartExpandSku"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>📊 各拓展类型出单率</h4>
+        <canvas id="chartExpandRate"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 出单情况 ============ -->
+<div id="section-order" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>📦 出单情况分析</h3>
+    <div class="sub-module">
+<h4>各批次出单情况统计</h4>
+<table class="data-table">
+<thead><tr><th>批次</th><th>SKU数</th><th>8日Y出单</th><th>8日N出单</th><th>未出单</th><th>出单率</th></tr></thead>
+<tbody id="order-tbody"></tbody>
+</table>
+</div>
+    <div class="chart-grid" style="grid-template-columns: 1fr 1fr;">
+      <div class="chart-card">
+        <h4>📊 各批次出单情况</h4>
+        <canvas id="chartOrderBatch"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>🥧 3月出单状态分布</h4>
+        <canvas id="chartOrderPie"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 未出单市场 ============ -->
+<div id="section-unorder" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>❌ 未出单市场状态分布</h3>
+    <div class="sub-module">
+<h4>3月市场状态统计</h4>
+<table class="data-table">
+<thead><tr><th>市场状态</th><th>数量</th><th>占比</th></tr></thead>
+<tbody id="market-tbody"></tbody>
+</table>
+</div>
+    <div class="chart-grid" style="grid-template-columns: 1fr 1fr;">
+      <div class="chart-card">
+        <h4>🥧 市场状态分布</h4>
+        <canvas id="chartMarketPie"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>📊 正常 vs 异常对比</h4>
+        <canvas id="chartMarketCompare"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 低占比新品 ============ -->
+<div id="section-lowshare" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>📉 低市占比新品清单（阈值75% · 对手有出单）</h3>
+    <div style="margin-bottom:10px;">
+      <select id="low-share-batch" onchange="renderLowShare()" style="padding:6px 12px;border-radius:6px;border:1px solid #ddd;font-size:13px;">
+        <option value="all">全部批次</option>
+        <option value="1">1月新品（24个SKU）</option>
+        <option value="2">2月新品（13个SKU）</option>
+        <option value="3">3月新品（35个SKU）</option>
+      </select>
+    </div>
+    <div class="table-wrap">
+    <table class="data-table low-mkt-table">
+    <thead><tr><th>批次</th><th>SKU</th><th>商品类</th><th>分析人</th><th>拓展类型</th><th>销量</th><th>对手出单</th><th>市占比</th><th>8日出单</th><th>市场状态</th></tr></thead>
+    <tbody id="lowmkt-tbody"></tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 全量明细 ============ -->
+<div id="section-detail" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>📋 全量SKU明细（共156个SKU）</h3>
+    <p style="font-size:12px;color:#888;margin-bottom:10px;">绿色背景行为3月8日已出单SKU，橙色为未出单</p>
+    <div style="margin-bottom:10px;">
+      <select id="detail-batch" onchange="renderDetailTable()" style="padding:6px 12px;border-radius:6px;border:1px solid #ddd;font-size:13px;">
+        <option value="all">全部批次</option>
+        <option value="1">1月新品（53个SKU）</option>
+        <option value="2">2月新品（36个SKU）</option>
+        <option value="3">3月新品（67个SKU）</option>
+      </select>
+    </div>
+    <div class="table-wrap">
+    <table class="data-table main-table" id="detail-table">
+    <thead><tr><th>销售编号</th><th>SKU</th><th>最新上架</th><th>批次</th><th>分析人</th><th>品类</th><th>拓展类型</th><th>3月销量</th><th>3月销售额</th><th>对手出单</th><th>市占比</th><th>8日出单</th><th>市场状态</th></tr></thead>
+    <tbody id="detail-tbody"></tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<script>
+// ========== 数据定义 ==========
+const D = {"weeks": ["1月新品", "2月新品", "3月新品"], "batch_stats": {"1": {"sku": 53, "qty": 613, "amt": 52334.98, "comp": 371, "ordered": 24, "unorder": 28, "not_order": 1, "rate": 45.3, "share": 67.1}, "2": {"sku": 36, "qty": 483, "amt": 55262.55, "comp": 235, "ordered": 19, "unorder": 14, "not_order": 3, "rate": 52.8, "share": 68.5}, "3": {"sku": 67, "qty": 368, "amt": 74604, "comp": 467, "ordered": 39, "unorder": 9, "not_order": 19, "rate": 58.2, "share": 46.6}}, "analyst_stats": {"\u6731\u57f9\u6e90": {"sku": 35, "qty": 228, "amt": 28000.31, "rate": 54.3}, "\u80e1\u715c\u661f": {"sku": 29, "qty": 195, "amt": 23800.17, "rate": 65.5}, "\u4fde\u4e1c\u65ed": {"sku": 45, "qty": 348, "amt": 69430.57, "rate": 40}, "\u738b\u5076\u6c5f": {"sku": 26, "qty": 500, "amt": 44907.05, "rate": 57.7}, "\u7ae0\u9e4f": {"sku": 21, "qty": 193, "amt": 16063.43, "rate": 52.4}}, "cat_stats": {"\u673a\u76d6\u53ca\u9644\u4ef6": {"sku": 16, "qty": 138, "amt": 11774.78, "rate": 75}, "\u6321\u6ce5\u677f": {"sku": 20, "qty": 131, "amt": 12178.98, "rate": 40}, "\u8f66\u95e8\u7cfb\u7edf": {"sku": 61, "qty": 477, "amt": 99251.3, "rate": 50.8}, "\u8f66\u8eab\u5916\u6269\u4ef6": {"sku": 12, "qty": 170, "amt": 26645.53, "rate": 41.7}, "\u5176\u4ed6": {"sku": 16, "qty": 145, "amt": 9128.5, "rate": 75}, "\u9970\u6761": {"sku": 31, "qty": 403, "amt": 23222.44, "rate": 45.2}}, "expand_stats": {"\u539f\u5f00\u54c1": {"sku": 109, "qty": 1066, "rate": 56, "share": 58.9}, "\u62d3\u5c55\u54c1": {"sku": 46, "qty": 388, "rate": 43.5, "share": 57.2}, "\u7ec4\u5408\u4ef6": {"sku": 1, "qty": 10, "rate": 100, "share": 100}}, "market_dist": {"\u6b63\u5e38": 66, "\u7ade\u4e89\u65e0\u4f18\u52bf": 54, "\u65e0\u5e02\u573a": 23, "\u7ad9\u5916\u51fa\u5355": 11, "\u7ad9\u5185\u65e0\u4ef7\u683c\u4f18\u52bf": 2}, "order_dist": {"Y": 82, "N": 51, "\u672a\u51fa\u5355": 23}, "low_share": [{"\u9500\u552e\u7f16\u53f7": "11547", "sku": "LYAM-X2815-1", "\u6279\u6b21": "1", "cat": "\u673a\u76d6\u53ca\u9644\u4ef6", "analyst": "\u6731\u57f9\u6e90", "expand": "\u539f\u5f00\u54c1", "qty": 0, "comp": 2, "share": 0, "order": "N", "status": "\u7ad9\u5916\u51fa\u5355"}, {"\u9500\u552e\u7f16\u53f7": "11704", "sku": "LYAM-X2416-BK", "\u6279\u6b21": "1", "cat": "\u8f66\u8eab\u5916\u6269\u4ef6", "analyst": "\u4fde\u4e1c\u65ed", "expand": "\u62d3\u5c55\u54c1", "qty": 0, "comp": 3, "share": 0, "order": "N", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "11699", "sku": "LYAM-X2416-C", "\u6279\u6b21": "1", "cat": "\u8f66\u8eab\u5916\u6269\u4ef6", "analyst": "\u4fde\u4e1c\u65ed", "expand": "\u539f\u5f00\u54c1", "qty": 2, "comp": 1, "share": 0.6667, "order": "N", "status": "\u7ad9\u5185\u65e0\u4ef7\u683c\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "11911", "sku": "LYAM-X2575-1", "\u6279\u6b21": "1", "cat": "\u8f66\u95e8\u7cfb\u7edf", "analyst": "\u80e1\u715c\u661f", "expand": "\u539f\u5f00\u54c1", "qty": 6, "comp": 16, "share": 0.2727, "order": "N", "status": "\u7ad9\u5185\u65e0\u4ef7\u683c\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "11848", "sku": "LYAM-X2575-3", "\u6279\u6b21": "1", "cat": "\u8f66\u95e8\u7cfb\u7edf", "analyst": "\u80e1\u715c\u661f", "expand": "\u62d3\u5c55\u54c1", "qty": 0, "comp": 1, "share": 0, "order": "N", "status": "\u7ad9\u5185\u65e0\u4ef7\u683c\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "11745", "sku": "LYAP-X1914", "\u6279\u6b21": "1", "cat": "\u673a\u76d6\u53ca\u9644\u4ef6", "analyst": "\u6731\u57f9\u6e90", "expand": "\u539f\u5f00\u54c1", "qty": 1, "comp": 4, "share": 0.2, "order": "Y", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "11781", "sku": "LYAP-X1791-3L", "\u6279\u6b21": "1", "cat": "\u8f66\u95e8\u7cfb\u7edf", "analyst": "\u4fde\u4e1c\u65ed", "expand": "\u62d3\u5c55\u54c1", "qty": 5, "comp": 8, "share": 0.3846, "order": "N", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "11793", "sku": "LYAP-X1791-3R", "\u6279\u6b21": "1", "cat": "\u8f66\u95e8\u7cfb\u7edf", "analyst": "\u4fde\u4e1c\u65ed", "expand": "\u62d3\u5c55\u54c1", "qty": 1, "comp": 1, "share": 0.5, "order": "N", "status": "\u7ad9\u5185\u65e0\u4ef7\u683c\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "11904", "sku": "LYAM-X2305-1", "\u6279\u6b21": "1", "cat": "\u8f66\u8eab\u5916\u6269\u4ef6", "analyst": "\u4fde\u4e1c\u65ed", "expand": "\u539f\u5f00\u54c1", "qty": 0, "comp": 2, "share": 0, "order": "Y", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "11757", "sku": "LYAP-X1908-BK", "\u6279\u6b21": "1", "cat": "\u9970\u6761", "analyst": "\u6731\u57f9\u6e90", "expand": "\u62d3\u5c55\u54c1", "qty": 2, "comp": 1, "share": 0.6667, "order": "Y", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "11758", "sku": "LYAP-X1908-C", "\u6279\u6b21": "1", "cat": "\u9970\u6761", "analyst": "\u6731\u57f9\u6e90", "expand": "\u539f\u5f00\u54c1", "qty": 2, "comp": 3, "share": 0.4, "order": "Y", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "11808", "sku": "LYAP-X1910-BK", "\u6279\u6b21": "1", "cat": "\u9970\u6761", "analyst": "\u6731\u57f9\u6e90", "expand": "\u62d3\u5c55\u54c1", "qty": 1, "comp": 3, "share": 0.25, "order": "N", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "11809", "sku": "LYAP-X1910-C", "\u6279\u6b21": "1", "cat": "\u9970\u6761", "analyst": "\u6731\u57f9\u6e90", "expand": "\u539f\u5f00\u54c1", "qty": 3, "comp": 2, "share": 0.6, "order": "Y", "status": "\u6b63\u5e38"}, {"\u9500\u552e\u7f16\u53f7": "11823", "sku": "LYAP-X1939-1", "\u6279\u6b21": "1", "cat": "\u9970\u6761", "analyst": "\u738b\u5076\u6c5f", "expand": "\u539f\u5f00\u54c1", "qty": 1, "comp": 1, "share": 0.5, "order": "Y", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "11814", "sku": "LYAP-X2020", "\u6279\u6b21": "1", "cat": "\u9970\u6761", "analyst": "\u6731\u57f9\u6e90", "expand": "\u539f\u5f00\u54c1", "qty": 1, "comp": 2, "share": 0.3333, "order": "N", "status": "\u7ad9\u5185\u65e0\u4ef7\u683c\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "11815", "sku": "LYAP-X2021", "\u6279\u6b21": "1", "cat": "\u9970\u6761", "analyst": "\u6731\u57f9\u6e90", "expand": "\u539f\u5f00\u54c1", "qty": 0, "comp": 3, "share": 0, "order": "N", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "11856", "sku": "LYAP-X2081-1L", "\u6279\u6b21": "1", "cat": "\u6321\u6ce5\u677f", "analyst": "\u4fde\u4e1c\u65ed", "expand": "\u62d3\u5c55\u54c1", "qty": 1, "comp": 3, "share": 0.25, "order": "N", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "11857", "sku": "LYAP-X2081-1R", "\u6279\u6b21": "1", "cat": "\u6321\u6ce5\u677f", "analyst": "\u4fde\u4e1c\u65ed", "expand": "\u62d3\u5c55\u54c1", "qty": 1, "comp": 2, "share": 0.3333, "order": "N", "status": "\u7ad9\u5185\u65e0\u4ef7\u683c\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "11933", "sku": "LYAP-X1915", "\u6279\u6b21": "1", "cat": "\u9970\u6761", "analyst": "\u6731\u57f9\u6e90", "expand": "\u539f\u5f00\u54c1", "qty": 0, "comp": 3, "share": 0, "order": "N", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "11840", "sku": "LYAP-838-1R", "\u6279\u6b21": "1", "cat": "\u9970\u6761", "analyst": "\u738b\u5076\u6c5f", "expand": "\u539f\u5f00\u54c1", "qty": 6, "comp": 7, "share": 0.4615, "order": "Y", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "11866", "sku": "LYAP-X1994-RL", "\u6279\u6b21": "1", "cat": "\u8f66\u95e8\u7cfb\u7edf", "analyst": "\u4fde\u4e1c\u65ed", "expand": "\u539f\u5f00\u54c1", "qty": 3, "comp": 8, "share": 0.2727, "order": "N", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "11867", "sku": "LYAP-X1994-RR", "\u6279\u6b21": "1", "cat": "\u8f66\u95e8\u7cfb\u7edf", "analyst": "\u4fde\u4e1c\u65ed", "expand": "\u539f\u5f00\u54c1", "qty": 4, "comp": 3, "share": 0.5714, "order": "N", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "11890", "sku": "LYAM-X2575-4", "\u6279\u6b21": "2", "cat": "\u8f66\u95e8\u7cfb\u7edf", "analyst": "\u738b\u5076\u6c5f", "expand": "\u62d3\u5c55\u54c1", "qty": 0, "comp": 2, "share": 0, "order": "N", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "11989", "sku": "LYAM-X2732", "\u6279\u6b21": "2", "cat": "\u6321\u6ce5\u677f", "analyst": "\u7ae0\u9e4f", "expand": "\u539f\u5f00\u54c1", "qty": 1, "comp": 1, "share": 0.5, "order": "Y", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12088", "sku": "LYAP-X1920-BK", "\u6279\u6b21": "2", "cat": "\u9970\u6761", "analyst": "\u738b\u5076\u6c5f", "expand": "\u62d3\u5c55\u54c1", "qty": 2, "comp": 5, "share": 0.2857, "order": "Y", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12005", "sku": "LYAP-X1992", "\u6279\u6b21": "2", "cat": "\u9970\u6761", "analyst": "\u738b\u5076\u6c5f", "expand": "\u539f\u5f00\u54c1", "qty": 8, "comp": 4, "share": 0.6667, "order": "N", "status": "\u6b63\u5e38"}, {"\u9500\u552e\u7f16\u53f7": "12011", "sku": "LYAP-X2089", "\u6279\u6b21": "2", "cat": "\u673a\u76d6\u53ca\u9644\u4ef6", "analyst": "\u7ae0\u9e4f", "expand": "\u539f\u5f00\u54c1", "qty": 4, "comp": 2, "share": 0.6667, "order": "Y", "status": "\u6b63\u5e38"}, {"\u9500\u552e\u7f16\u53f7": "12021", "sku": "LYAP-X2135", "\u6279\u6b21": "2", "cat": "\u5176\u4ed6", "analyst": "\u738b\u5076\u6c5f", "expand": "\u539f\u5f00\u54c1", "qty": 2, "comp": 4, "share": 0.3333, "order": "Y", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12023", "sku": "LYAP-X2146", "\u6279\u6b21": "2", "cat": "\u6321\u6ce5\u677f", "analyst": "\u6731\u57f9\u6e90", "expand": "\u539f\u5f00\u54c1", "qty": 0, "comp": 1, "share": 0, "order": "\u672a\u51fa\u5355", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12058", "sku": "LYAM-X2569-1", "\u6279\u6b21": "2", "cat": "\u5176\u4ed6", "analyst": "\u7ae0\u9e4f", "expand": "\u539f\u5f00\u54c1", "qty": 5, "comp": 5, "share": 0.5, "order": "N", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12059", "sku": "LYAM-X2570-1", "\u6279\u6b21": "2", "cat": "\u5176\u4ed6", "analyst": "\u7ae0\u9e4f", "expand": "\u539f\u5f00\u54c1", "qty": 1, "comp": 7, "share": 0.125, "order": "Y", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12060", "sku": "LYAM-X2574-1", "\u6279\u6b21": "2", "cat": "\u9970\u6761", "analyst": "\u7ae0\u9e4f", "expand": "\u539f\u5f00\u54c1", "qty": 1, "comp": 25, "share": 0.0385, "order": "N", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12252", "sku": "LYAP-X1800-1", "\u6279\u6b21": "3", "cat": "\u8f66\u95e8\u7cfb\u7edf", "analyst": "\u80e1\u715c\u661f", "expand": "\u539f\u5f00\u54c1", "qty": 2, "comp": 4, "share": 0.3333, "order": "Y", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12165", "sku": "LYAP-X1877", "\u6279\u6b21": "3", "cat": "\u6321\u6ce5\u677f", "analyst": "\u6731\u57f9\u6e90", "expand": "\u539f\u5f00\u54c1", "qty": 0, "comp": 1, "share": 0, "order": "Y", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12205", "sku": "LYAP-X1800-1L", "\u6279\u6b21": "3", "cat": "\u8f66\u95e8\u7cfb\u7edf", "analyst": "\u80e1\u715c\u661f", "expand": "\u539f\u5f00\u54c1", "qty": 0, "comp": 32, "share": 0, "order": "Y", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12206", "sku": "LYAP-X1800-1R", "\u6279\u6b21": "3", "cat": "\u8f66\u95e8\u7cfb\u7edf", "analyst": "\u80e1\u715c\u661f", "expand": "\u539f\u5f00\u54c1", "qty": 0, "comp": 8, "share": 0, "order": "Y", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12244", "sku": "LYAP-X2190-L", "\u6279\u6b21": "3", "cat": "\u9970\u6761", "analyst": "\u738b\u5076\u6c5f", "expand": "\u539f\u5f00\u54c1", "qty": 1, "comp": 1, "share": 0.5, "order": "N", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12243", "sku": "LYAP-X2190-R", "\u6279\u6b21": "3", "cat": "\u9970\u6761", "analyst": "\u738b\u5076\u6c5f", "expand": "\u539f\u5f00\u54c1", "qty": 1, "comp": 1, "share": 0.5, "order": "N", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12086", "sku": "LYAP-X1911-C", "\u6279\u6b21": "3", "cat": "\u673a\u76d6\u53ca\u9644\u4ef6", "analyst": "\u7ae0\u9e4f", "expand": "\u539f\u5f00\u54c1", "qty": 2, "comp": 7, "share": 0.2222, "order": "Y", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12258", "sku": "LYAP-X1927", "\u6279\u6b21": "3", "cat": "\u673a\u76d6\u53ca\u9644\u4ef6", "analyst": "\u7ae0\u9e4f", "expand": "\u539f\u5f00\u54c1", "qty": 7, "comp": 12, "share": 0.3684, "order": "Y", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12210", "sku": "LYAP-X1934", "\u6279\u6b21": "3", "cat": "\u9970\u6761", "analyst": "\u7ae0\u9e4f", "expand": "\u539f\u5f00\u54c1", "qty": 1, "comp": 28, "share": 0.0345, "order": "N", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12250", "sku": "LYAP-X2148-1L", "\u6279\u6b21": "3", "cat": "\u9970\u6761", "analyst": "\u738b\u5076\u6c5f", "expand": "\u62d3\u5c55\u54c1", "qty": 0, "comp": 2, "share": 0, "order": "Y", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12251", "sku": "LYAP-X2148-1R", "\u6279\u6b21": "3", "cat": "\u9970\u6761", "analyst": "\u738b\u5076\u6c5f", "expand": "\u62d3\u5c55\u54c1", "qty": 0, "comp": 1, "share": 0, "order": "\u672a\u51fa\u5355", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12309", "sku": "MD-002-FL", "\u6279\u6b21": "3", "cat": "\u8f66\u95e8\u7cfb\u7edf", "analyst": "\u4fde\u4e1c\u65ed", "expand": "\u539f\u5f00\u54c1", "qty": 2, "comp": 2, "share": 0.5, "order": "N", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12310", "sku": "MD-002-FR", "\u6279\u6b21": "3", "cat": "\u8f66\u95e8\u7cfb\u7edf", "analyst": "\u4fde\u4e1c\u65ed", "expand": "\u539f\u5f00\u54c1", "qty": 0, "comp": 1, "share": 0, "order": "Y", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12311", "sku": "MD-002-RL", "\u6279\u6b21": "3", "cat": "\u8f66\u95e8\u7cfb\u7edf", "analyst": "\u4fde\u4e1c\u65ed", "expand": "\u539f\u5f00\u54c1", "qty": 1, "comp": 3, "share": 0.25, "order": "N", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12312", "sku": "MD-002-RR", "\u6279\u6b21": "3", "cat": "\u8f66\u95e8\u7cfb\u7edf", "analyst": "\u4fde\u4e1c\u65ed", "expand": "\u539f\u5f00\u54c1", "qty": 0, "comp": 3, "share": 0, "order": "Y", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12321", "sku": "LYAP-X1788-GR", "\u6279\u6b21": "3", "cat": "\u8f66\u95e8\u7cfb\u7edf", "analyst": "\u4fde\u4e1c\u65ed", "expand": "\u539f\u5f00\u54c1", "qty": 0, "comp": 4, "share": 0, "order": "\u672a\u51fa\u5355", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12333", "sku": "LYAP-X2429", "\u6279\u6b21": "3", "cat": "\u8f66\u95e8\u7cfb\u7edf", "analyst": "\u6731\u57f9\u6e90", "expand": "\u539f\u5f00\u54c1", "qty": 0, "comp": 2, "share": 0, "order": "\u672a\u51fa\u5355", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12307", "sku": "MD-001-RL", "\u6279\u6b21": "3", "cat": "\u8f66\u95e8\u7cfb\u7edf", "analyst": "\u4fde\u4e1c\u65ed", "expand": "\u539f\u5f00\u54c1", "qty": 1, "comp": 2, "share": 0.3333, "order": "Y", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}, {"\u9500\u552e\u7f16\u53f7": "12298", "sku": "LYAP-X2144-1L", "\u6279\u6b21": "3", "cat": "\u8f66\u95e8\u7cfb\u7edf", "analyst": "\u6731\u57f9\u6e90", "expand": "\u62d3\u5c55\u54c1", "qty": 0, "comp": 1, "share": 0, "order": "\u672a\u51fa\u5355", "status": "\u65e0\u5e02\u573a"}, {"\u9500\u552e\u7f16\u53f7": "12299", "sku": "LYAP-X2144-1R", "\u6279\u6b21": "3", "cat": "\u8f66\u95e8\u7cfb\u7edf", "analyst": "\u6731\u57f9\u6e90", "expand": "\u62d3\u5c55\u54c1", "qty": 0, "comp": 1, "share": 0, "order": "\u672a\u51fa\u5355", "status": "\u7ade\u4e89\u65e0\u4f18\u52bf"}], "summary": {"total_sku": 156, "ordered_sku": 82, "unordered_sku": 74, "total_qty": 1464, "total_amt": 182201.53}};
+
+const COLORS = ['#0f3460','#e07b24','#08845a','#c0392b','#8e44ad','#2980b9','#16a085','#d35400','#7f8c8d'];
+
+// ========== 图表函数 ==========
+function mkLine(id, labels, datasets) {
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: datasets.length > 1 } }, scales: { x: { ticks: { font: { size: 10 }, maxRotation: 45 } }, y: { ticks: { font: { size: 10 } }, beginAtZero: true } } }
+  });
+}
+function mkBar(id, labels, datasets) {
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'bar',
+    data: { labels, datasets },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: datasets.length > 1, position: 'top', labels: { font: { size: 10 } } } }, scales: { x: { ticks: { font: { size: 10 }, maxRotation: 30 } }, y: { ticks: { font: { size: 10 } }, beginAtZero: true } } }
+  });
+}
+function mkPie(id, labels, data) {
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: { labels, datasets: [{ data, backgroundColor: COLORS, borderWidth: 1 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { font: { size: 10 }, boxWidth: 12 } } } }
+  });
+}
+
+// ========== 初始化图表 ==========
+// 批次销量
+mkBar('chartBatchQty', ['1月新品', '2月新品', '3月新品'], [{ label: '销量', data: [D.batch_stats['1'].qty, D.batch_stats['2'].qty, D.batch_stats['3'].qty], backgroundColor: ['#adb5bd', '#667eea', '#e74c3c'] }]);
+// 批次销售额
+mkBar('chartBatchAmt', ['1月新品', '2月新品', '3月新品'], [{ label: '销售额', data: [Math.round(D.batch_stats['1'].amt/100)/100, Math.round(D.batch_stats['2'].amt/100)/100, Math.round(D.batch_stats['3'].amt/100)/100], backgroundColor: ['#adb5bd', '#667eea', '#e74c3c'] }]);
+// 品类销量
+const catLabels = Object.keys(D.cat_stats);
+const catQty = catLabels.map(k => D.cat_stats[k].qty);
+mkBar('chartCategoryQty', catLabels, [{ label: '销量', data: catQty, backgroundColor: COLORS }]);
+// 品类出单率
+const catRate = catLabels.map(k => D.cat_stats[k].rate);
+mkBar('chartCategoryRate', catLabels, [{ label: '出单率(%)', data: catRate, backgroundColor: COLORS }]);
+// 出单状态饼图
+mkPie('chartOrderStatus', Object.keys(D.order_dist), Object.values(D.order_dist));
+// 市场状态饼图
+mkPie('chartMarket', Object.keys(D.market_dist), Object.values(D.market_dist));
+// 拓展类型销量
+mkBar('chartExpand', Object.keys(D.expand_stats), [{ label: '销量', data: Object.values(D.expand_stats).map(v => v.qty), backgroundColor: ['#0f3460','#e07b24','#08845a'] }]);
+// 分析人销量
+mkBar('chartAnalyst', Object.keys(D.analyst_stats), [{ label: '销量', data: Object.values(D.analyst_stats).map(v => v.qty), backgroundColor: COLORS }]);
+
+// ========== 渲染品线表格 ==========
+function renderCatTable() {
+  let html = '';
+  for (const [cat, d] of Object.entries(D.cat_stats)) {
+    html += `<tr><td style="text-align:left;font-weight:600">${cat}</td><td>${d.sku}</td><td>${d.qty}</td><td>¥${d.amt.toFixed(0)}</td><td>${d.rate}%</td><td>-</td></tr>`;
+  }
+  document.getElementById('cat-tbody').innerHTML = html;
+}
+renderCatTable();
+mkBar('chartCatQty', catLabels, [{ label: '销量', data: catQty, backgroundColor: COLORS }]);
+mkBar('chartCatAmt', catLabels, [{ label: '销量', data: catQty, backgroundColor: 'rgba(15,52,96,0.7)' }, { label: '销售额(百元)', data: Object.values(D.cat_stats).map(v => Math.round(v.amt/100)), backgroundColor: 'rgba(224,123,36,0.7)' }]);
+
+// ========== 渲染分析人表格 ==========
+function renderAnalystTable() {
+  let html = '';
+  for (const [name, d] of Object.entries(D.analyst_stats)) {
+    html += `<tr><td style="text-align:left;font-weight:600">${name}</td><td>${d.sku}</td><td>${d.qty}</td><td>¥${d.amt.toFixed(0)}</td><td class="highlight">${d.rate}%</td></tr>`;
+  }
+  document.getElementById('analyst-tbody').innerHTML = html;
+}
+renderAnalystTable();
+mkBar('chartAnalystQty', Object.keys(D.analyst_stats), [{ label: '销量', data: Object.values(D.analyst_stats).map(v => v.qty), backgroundColor: COLORS }]);
+mkBar('chartAnalystRate', Object.keys(D.analyst_stats), [{ label: '出单率(%)', data: Object.values(D.analyst_stats).map(v => v.rate), backgroundColor: COLORS }]);
+
+// ========== 渲染拓展类型表格 ==========
+function renderExpandTable() {
+  let html = '';
+  for (const [exp, d] of Object.entries(D.expand_stats)) {
+    html += `<tr><td style="text-align:left;font-weight:600">${exp}</td><td>${d.sku}</td><td>${d.qty}</td><td>${d.rate}%</td><td>${d.share}%</td></tr>`;
+  }
+  document.getElementById('expand-tbody').innerHTML = html;
+}
+renderExpandTable();
+mkBar('chartExpandSku', Object.keys(D.expand_stats), [{ label: 'SKU数', data: Object.values(D.expand_stats).map(v => v.sku), backgroundColor: ['#0f3460','#e07b24','#08845a'] }]);
+mkBar('chartExpandRate', Object.keys(D.expand_stats), [{ label: '出单率(%)', data: Object.values(D.expand_stats).map(v => v.rate), backgroundColor: ['#0f3460','#e07b24','#08845a'] }]);
+
+// ========== 渲染出单情况表格 ==========
+function renderOrderTable() {
+  let html = '';
+  const batches = [['1', '1月新品'], ['2', '2月新品'], ['3', '3月新品']];
+  for (const [k, label] of batches) {
+    const d = D.batch_stats[k];
+    html += `<tr><td>${label}</td><td>${d.sku}</td><td style="color:#08845a;font-weight:700">${d.ordered}</td><td style="color:#e07b24;font-weight:700">${d.unorder}</td><td>${d.not_order}</td><td class="highlight">${d.rate}%</td></tr>`;
+  }
+  document.getElementById('order-tbody').innerHTML = html;
+}
+renderOrderTable();
+mkBar('chartOrderBatch', ['1月新品', '2月新品', '3月新品'], [
+  { label: '8日Y出单', data: [D.batch_stats['1'].ordered, D.batch_stats['2'].ordered, D.batch_stats['3'].ordered], backgroundColor: '#08845a' },
+  { label: '8日N出单', data: [D.batch_stats['1'].unorder, D.batch_stats['2'].unorder, D.batch_stats['3'].unorder], backgroundColor: '#e07b24' },
+  { label: '未出单', data: [D.batch_stats['1'].not_order, D.batch_stats['2'].not_order, D.batch_stats['3'].not_order], backgroundColor: '#c0392b' }
+]);
+mkPie('chartOrderPie', Object.keys(D.order_dist), Object.values(D.order_dist));
+
+// ========== 渲染市场状态表格 ==========
+function renderMarketTable() {
+  let html = '';
+  const total = Object.values(D.market_dist).reduce((a,b) => a+b, 0);
+  for (const [status, count] of Object.entries(D.market_dist)) {
+    const pct = (count / total * 100).toFixed(1);
+    html += `<tr><td style="text-align:left">${status}</td><td>${count}</td><td>${pct}%</td></tr>`;
+  }
+  document.getElementById('market-tbody').innerHTML = html;
+  
+  // 正常vs异常对比
+  const normalCount = D.market_dist['正常'] || 0;
+  const abnormalCount = total - normalCount;
+  mkBar('chartMarketCompare', ['正常', '异常'], [{ label: '数量', data: [normalCount, abnormalCount], backgroundColor: ['#08845a', '#c0392b'] }]);
+}
+renderMarketTable();
+mkPie('chartMarketPie', Object.keys(D.market_dist), Object.values(D.market_dist));
+
+// ========== 渲染低占比新品表格 ==========
+function renderLowShare() {
+  const batch = document.getElementById('low-share-batch').value;
+  const filtered = batch === 'all' ? D.low_share : D.low_share.filter(d => d.批次 === batch);
+  
+  let html = '';
+  for (const d of filtered) {
+    const sharePct = d.share > 0 ? (d.share * 100).toFixed(1) + '%' : '0%';
+    const shareColor = d.share >= 0.75 ? '#08845a' : '#c0392b';
+    const orderColor = d.order === 'Y' ? '#08845a' : d.order === 'N' ? '#e07b24' : '#c0392b';
+    html += `<tr>
+      <td><span class="badge" style="background:${d.批次==='1'?'#adb5bd':d.批次==='2'?'#667eea':'#e74c3c'};color:white;padding:2px 8px;border-radius:10px;font-size:10px">${d.批次}月</span></td>
+      <td style="text-align:left;font-weight:600">${d.sku}</td>
+      <td>${d.cat}</td>
+      <td>${d.analyst}</td>
+      <td>${d.expand}</td>
+      <td>${d.qty}</td>
+      <td>${d.comp}</td>
+      <td style="color:${shareColor};font-weight:700">${sharePct}</td>
+      <td style="color:${orderColor};font-weight:600">${d.order}</td>
+      <td>${d.status}</td>
+    </tr>`;
+  }
+  document.getElementById('lowmkt-tbody').innerHTML = html;
+}
+renderLowShare();
+
+// ========== 渲染全量明细 ==========
+function renderDetailTable() {
+  var batch = document.getElementById('detail-batch').value;
+  var allData = D.low_share || [];
+  var filtered = batch === 'all' ? allData : allData.filter(function(d){return d.批次 == batch;});
+  var html = '';
+  for (var i = 0; i < filtered.length; i++) {
+    var d = filtered[i];
+    var isOrdered = d.order === 'Y';
+    var bgClass = isOrdered ? 'row-ordered' : '';
+    var sharePct = d.share > 0 ? (d.share * 100).toFixed(1) + '%' : '0%';
+    html += '<tr class="' + bgClass + '">' +
+      '<td>' + d.销售编号 + '</td>' +
+      '<td style="text-align:left">' + d.sku + '</td>' +
+      '<td>-</td>' +
+      '<td>' + d.批次 + '月</td>' +
+      '<td>' + d.analyst + '</td>' +
+      '<td>' + d.cat + '</td>' +
+      '<td>' + d.expand + '</td>' +
+      '<td>' + d.qty + '</td>' +
+      '<td>-</td>' +
+      '<td>' + d.comp + '</td>' +
+      '<td>' + sharePct + '</td>' +
+      '<td style="color:' + (isOrdered ? '#08845a' : '#e07b24') + '">' + d.order + '</td>' +
+      '<td>' + d.status + '</td>' +
+    '</tr>';
+  }
+  if (html === '') {
+    html = '<tr><td colspan="13" style="text-align:center;color:#888;padding:20px">该批次暂无数据</td></tr>';
+  }
+  document.getElementById('detail-tbody').innerHTML = html;
+}
+renderDetailTable();
+
+// ========== 导航切换 ==========
+const sections = ['overview','pinxian','analyst','expand','order','unorder','lowshare','detail'];
+function showSection(name, el) {
+  sections.forEach(s => {
+    const wrap = document.getElementById('section-' + s);
+    if (wrap) wrap.style.display = s === name ? 'block' : 'none';
+  });
+  document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+  if (el) el.classList.add('active');
+  return false;
+}
+document.querySelector('.sidebar a').classList.add('active');
+</script>
+</body>
+</html>

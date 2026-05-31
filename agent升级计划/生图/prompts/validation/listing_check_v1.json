@@ -1,0 +1,22 @@
+{
+  "prompt_id": "VAL_LISTING_V1",
+  "version": "1.0",
+  "purpose": "文案生成后规则验证 — 检查标题长度/卖点数量/禁止词",
+  "last_updated": "2026-05-23",
+  "model": "rule-based",
+  "template": "n/a — 基于规则检查，不调用模型",
+  "variables": [],
+  "rules": {
+    "title": {
+      "max_length": 80,
+      "no_oem_brands": ["Ford", "BMW", "Toyota", "Honda", "Chevrolet", "Mercedes", "Audi"],
+      "no_trademark_chars": ["®", "™", "©"]
+    },
+    "bullets": {
+      "min_count": 5,
+      "min_length_per_bullet": 10,
+      "forbidden_words": ["100%", "perfect", "guaranteed fit", "no issues", "never used"]
+    }
+  },
+  "output_format": "json"
+}

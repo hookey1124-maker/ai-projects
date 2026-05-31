@@ -1,0 +1,27 @@
+[17:46:16] 母文件: Universal_Rear_Glossy-Black_4pcs_Bumper-Diffuser
+[17:46:16] 链接数: 486 (去重后 10)
+[17:46:16] 已有 product JSON: 5 个
+[17:46:16] 开始爬取 5 个新链接...
+[17:46:16] 启动浏览器批次 [1-5/5]
+[17:46:20] [1/5] https://www.ebay.com/itm/266764191060
+[17:46:30] [2/5] https://www.ebay.com/itm/376866024018
+[17:46:39] [3/5] https://www.ebay.com/itm/157805068718
+[17:46:47] [4/5] https://www.ebay.com/itm/317439596346
+[17:46:55] [5/5] https://www.ebay.com/itm/127475368904
+[17:47:01] 批次完成: 5 条
+[17:47:01]   saved: product_266764191060.json
+[17:47:01]   saved: product_376866024018.json
+[17:47:01]   saved: product_157805068718.json
+[17:47:01]   saved: product_317439596346.json
+[17:47:01]   saved: product_127475368904.json
+[17:47:01] market_intel.json 已更新 (10 条数据)
+
+==================================================
+  价格区间: $9.61 - $54.11
+  平均价格: $21.48
+  产品数量表述: ['4PC', '4 PC', '4pc', '4Pc']
+  图片数范围: {'min': 18, 'max': 42, 'avg': 27.0}
+  高共识规格: ['Payments', 'Condition', 'Country of Origin', 'Color', 'Fitment Type', 'Superseded Part Number', 'Brand', 'Return policy']
+  参考图: 6 张
+  标题样例: ['For Chevrolet Chevy Camaro Rear Diffuser Shark Fins Bumper Lip Splitter Glossy', 'For Ford Mustang 2000-2021 Rear Bumper Diffuser Shark Fins Spoiler Lip Splitter']
+==================================================

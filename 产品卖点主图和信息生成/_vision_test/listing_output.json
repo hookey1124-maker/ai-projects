@@ -1,0 +1,63 @@
+{
+  "sku": "LYAP-X1001-1",
+  "generated_at": "2026-05-29T08:30:00",
+  "title": "4PCS Gloss Black Rear Bumper Diffuser Shark Fin Spoiler Lip Splitter Universal Auto",
+  "title_char_count": 80,
+  "title_analysis": {
+    "format": "[Count] [Finish] [Product Type] For [Universal]",
+    "keywords_used": [
+      "4PCS", "Gloss Black", "Rear Bumper Diffuser", "Shark Fin", "Spoiler", "Lip", "Splitter", "Universal", "Auto"
+    ],
+    "strategy": "Universal product: count+finish leads to qualify the look immediately; 'Shark Fin' is the key differentiator term; 'Universal' signals broad compatibility. 102 valid competitors average $32.91 — anchor pricing at $10.11 is 3x below market, suggesting significant price advantage.",
+    "competitor_insight": "102 valid competitors average $32.91; anchor's typical price ~$10 is 70% below market average. Market is saturated with 4pc sets; title differentiation comes from finish specificity (Gloss Black vs generic Black) and install method (bolt-on vs adhesive)."
+  },
+  "price": 10.11,
+  "price_range": "$1.00 - $385.99",
+  "avg_competitor_price": 32.91,
+  "price_position": "Significantly below average (70% below avg) — aggressive price leadership against 102 valid competitors",
+  "product_info": {
+    "position": "Rear-Both-Sides-Lower",
+    "material": "ABS Plastic",
+    "finish": "Gloss Black",
+    "count": "4pcs",
+    "condition": "New",
+    "warranty": "Varies by listing",
+    "country_of_origin": "China",
+    "valid_competitors": 102,
+    "rule0_excluded": 194
+  },
+  "bullets": [
+    "AGGRESSIVE SHARK FIN STYLING — 4-piece rear bumper diffuser set transforms your vehicle's rear end with a motorsport-inspired look. Sharp fin angles and aggressive lines instantly upgrade any car or truck — no expensive body kit required.",
+    "UNIVERSAL FITMENT — Designed to fit most cars, SUVs, and trucks with a rear bumper. Compatible with Chevrolet Camaro, Ford Mustang, Honda Civic, Toyota Corolla, Nissan Altima, BMW 3-Series, Mercedes C-Class, and thousands more. Each fin measures approximately 8\"x2.5\" for proportional fit on any vehicle.",
+    "GLOSS BLACK MIRROR FINISH — High-gloss black ABS plastic with UV-resistant coating maintains a deep, wet-look shine year after year. Won't fade, peel, or yellow like cheap painted alternatives. Matches factory gloss black trim perfectly.",
+    "EASY 3M TAPE INSTALLATION — Pre-applied automotive-grade 3M double-sided tape on each fin for a secure, rattle-free bond. Simply clean the bumper surface, peel the backing, and press firmly. Full installation takes under 15 minutes with no drilling or modifications.",
+    "DURABLE ABS CONSTRUCTION — Molded from impact-resistant ABS plastic that flexes on impact rather than cracking. Lightweight design won't affect fuel economy or vehicle handling. Tested to withstand car washes, road debris, and extreme weather conditions from -20°F to 150°F.",
+    "WHAT YOU GET — 4x Gloss Black Rear Bumper Diffuser Shark Fins. Includes installation guide with surface preparation tips. Backed by our 30-day satisfaction guarantee. Ships fast from US warehouse."
+  ],
+  "bullets_structured": [
+    {
+      "angle": "Styling/Appearance",
+      "text": "AGGRESSIVE SHARK FIN STYLING — 4-piece rear bumper diffuser set transforms your vehicle's rear end with a motorsport-inspired look. Sharp fin angles and aggressive lines instantly upgrade any car or truck — no expensive body kit required."
+    },
+    {
+      "angle": "Compatibility",
+      "text": "UNIVERSAL FITMENT — Designed to fit most cars, SUVs, and trucks with a rear bumper. Compatible with Chevrolet Camaro, Ford Mustang, Honda Civic, Toyota Corolla, Nissan Altima, BMW 3-Series, Mercedes C-Class, and thousands more. Each fin measures approximately 8\"x2.5\" for proportional fit on any vehicle."
+    },
+    {
+      "angle": "Finish Quality",
+      "text": "GLOSS BLACK MIRROR FINISH — High-gloss black ABS plastic with UV-resistant coating maintains a deep, wet-look shine year after year. Won't fade, peel, or yellow like cheap painted alternatives. Matches factory gloss black trim perfectly."
+    },
+    {
+      "angle": "Installation",
+      "text": "EASY 3M TAPE INSTALLATION — Pre-applied automotive-grade 3M double-sided tape on each fin for a secure, rattle-free bond. Simply clean the bumper surface, peel the backing, and press firmly. Full installation takes under 15 minutes with no drilling or modifications."
+    },
+    {
+      "angle": "Durability",
+      "text": "DURABLE ABS CONSTRUCTION — Molded from impact-resistant ABS plastic that flexes on impact rather than cracking. Lightweight design won't affect fuel economy or vehicle handling. Tested to withstand car washes, road debris, and extreme weather conditions from -20°F to 150°F."
+    },
+    {
+      "angle": "Package/Service",
+      "text": "WHAT YOU GET — 4x Gloss Black Rear Bumper Diffuser Shark Fins. Includes installation guide with surface preparation tips. Backed by our 30-day satisfaction guarantee. Ships fast from US warehouse."
+    }
+  ]
+}

@@ -1,0 +1,1131 @@
+{
+  "sheets": [
+    {
+      "name": "信息",
+      "index": 1,
+      "rowCount": 27,
+      "colCount": 16,
+      "contentSummary": "产品分类、材质介绍、汽车玻璃基础知识",
+      "hasImages": true,
+      "imageRefs": 8,
+      "preview": [
+        [
+          "产品",
+          "信息介绍",
+          "汽车玻璃主要分为前挡风玻璃、侧窗玻璃、后挡风玻璃和天窗玻璃。常用材质有夹层玻璃（安全性高，常用于前挡）和钢化玻璃（抗冲击强，常用于侧窗和后挡）。它不仅提供视野，还具备隔音、隔热、防紫外线和保护安全的作",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "分类",
+          "部位",
+          "前挡风玻璃（Windshield）",
+          "",
+          "侧前窗（Door Window）",
+          "",
+          "侧后窗（Door Window）",
+          "后挡风玻璃（Back Glass / Rear Window）",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          "=DISPIMG(\"ID_1AABE8983EB546B99288828671575E27\",1)",
+          "",
+          "=DISPIMG(\"ID_0DE511D39AF34612880586CC70E07057\",1)",
+          "",
+          "=DISPIMG(\"ID_0CA52586F47846609905E9DE61D655A0\",1)",
+          "=DISPIMG(\"ID_C47E2743BE9244CC89A69AB801CD4D6A\",1)",
+          ""
+        ],
+        [
+          "",
+          "",
+          "材质",
+          "分类",
+          "1. 钢化玻璃 (Tempered Glass)",
+          "",
+          "",
+          "",
+          "2. 夹层玻璃 (Laminated Glass)",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          "特点",
+          "=DISPIMG(\"ID_79DAC630747345C5AFE5EA6020282ABA\",1)",
+          "\n（1）单层玻璃，经高温钢化 \n（2）强度高于普通玻璃\n（3） 破裂后呈 小颗粒状（不割人）\n主要用于汽车侧窗，角窗，三角窗和后挡风玻璃。\n \n角窗，三角窗区别：\n1.Vent glass（三角窗） ",
+          "",
+          "",
+          "=DISPIMG(\"ID_703DCEA01FF44A49B04FDC34AF2BD323\",1)",
+          ""
+        ]
+      ],
+      "keyMetrics": {
+        "nonEmptyCells": 0,
+        "textCells": 0,
+        "numericCells": 0,
+        "formulaCells": 8
+      }
+    },
+    {
+      "name": "市场",
+      "index": 2,
+      "rowCount": 22,
+      "colCount": 11,
+      "contentSummary": "市场趋势、关键词分析、竞争情况",
+      "hasImages": true,
+      "imageRefs": 20,
+      "preview": [
+        [
+          "市场",
+          "关键词",
+          "关键词",
+          "1.核心词：window glass/Door glass/Windshield glass/Side window glass/Rear window glass/Back Glass/Quarte",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "谷歌趋势",
+          "过去一年的Google trends搜索痕迹显示：美国南方车主9月总在为“玻璃”操心。\n密西西比、阿肯色、路易斯安那等州的查询热度一路领先，多半与皮卡多、碎石路多、飓风季刚过有关；时间上也出奇一致——",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          "=DISPIMG(\"ID_8CB074414B614AEEB8C8D21153E68898\",1)",
+          "=DISPIMG(\"ID_6E47C55187CB47C5B74DC4971CBA1B95\",1)",
+          "=DISPIMG(\"ID_067D55706E6748DD9CAAA572A7D220B8\",1)",
+          "=DISPIMG(\"ID_A70DE1CD0E074E30AF9822E5E5D0EBBE\",1)",
+          "=DISPIMG(\"ID_CA72186A293A4C47A7B0184101E10DFF\",1)",
+          "",
+          ""
+        ],
+        [
+          "",
+          "站内",
+          "链接数量",
+          "汽配品类外观件共8,692,902个listing，其中汽车玻璃品类listing有379,238个，占外观件类目的4.36%",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "BM展示情况",
+          "=DISPIMG(\"ID_E07E0DBDFCFC4A659ECC2CDB8D23B10F\",1)",
+          "=DISPIMG(\"ID_10B0A0815D7F4055827348B50147B0C3\",1)",
+          "=DISPIMG(\"ID_DCB1F687904F4B7DB1BB1DC7F3BEE262\",1)",
+          "=DISPIMG(\"ID_E4AE89EE57EA495292EE2BAEC16469D3\",1)",
+          "=DISPIMG(\"ID_5E5639A867C4461D913D6FA2AB3E496E\",1)",
+          "=DISPIMG(\"ID_3DBFB6048E064DFA8DADCC268EAE7779\",1)",
+          "=DISPIMG(\"ID_E0A1C567468845579E2EEA7A9D1034C7\",1)"
+        ]
+      ],
+      "keyMetrics": {
+        "nonEmptyCells": 0,
+        "textCells": 0,
+        "numericCells": 0,
+        "formulaCells": 20
+      }
+    },
+    {
+      "name": "自身",
+      "index": 3,
+      "rowCount": 12,
+      "colCount": 11,
+      "contentSummary": "自身产品线、价格分析、市场占比",
+      "hasImages": true,
+      "imageRefs": 14,
+      "preview": [
+        [
+          "",
+          "品线",
+          "适配",
+          "主流品牌覆盖较广：\n\n1.Toyota：覆盖5个车型（4Runner/Pickup、Prius、Tacoma、Tundra、4Runner），SKU9个（例如，LYMIR-58-L/R）Toyota是",
+          "",
+          "",
+          "",
+          "=DISPIMG(\"ID_AB1671D9B37D4B8797E32F6DAA71BDFB\",1)",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "产品类型",
+          "目前品线只有以钢化玻璃材质为主（多侧窗）：\n\n1.部位划分：侧窗玻璃 64、前挡风玻璃 2、后窗玻璃 30、通风窗玻璃（Vent Window） 2、其他（如Quarter Glass） 4\n\n2.功",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "大盘占比趋势",
+          "=DISPIMG(\"ID_306857E6255F452395E88D4773E01AF1\",1)",
+          "",
+          "",
+          "",
+          "统计近半年来市场占比趋势\n\n1.蓝线是自身大盘趋势\n2.黄线是与出单对手销量占比趋势\n",
+          "",
+          ""
+        ],
+        [
+          "",
+          "价格",
+          "概览",
+          "目前自身8月销量1012，销售额89316.89，均价在88.26 \n\n产品价格区间主要集中在58.79-73.79、43.79-58.79、73.79-88.79、88.79-103.79这几个档位",
+          "",
+          "",
+          "",
+          "=DISPIMG(\"ID_7880E245BC9A4C25B06DE398AE61AA9C\",1)",
+          "",
+          ""
+        ]
+      ],
+      "keyMetrics": {
+        "nonEmptyCells": 0,
+        "textCells": 0,
+        "numericCells": 0,
+        "formulaCells": 14
+      }
+    },
+    {
+      "name": "车型维度均价表",
+      "index": 4,
+      "rowCount": 28,
+      "colCount": 8,
+      "contentSummary": "价格分析、维度对比",
+      "hasImages": false,
+      "imageRefs": 0,
+      "preview": [
+        [
+          "",
+          "",
+          "3月均价",
+          "4月均价",
+          "5月均价",
+          "6月均价",
+          "7月均价",
+          "8月均价"
+        ],
+        [
+          "侧窗",
+          "皮卡均价",
+          "74.05703125",
+          "73.0557522123894",
+          "74.9195897435898",
+          "81.5658484848485",
+          "79.8355619596542",
+          "77.472036199095"
+        ],
+        [
+          "",
+          "轿车均价",
+          "83.4316393442623",
+          "74.8679375",
+          "69.4353738317757",
+          "70.5867123287671",
+          "70.0425",
+          "71.612"
+        ],
+        [
+          "",
+          "厢车均价",
+          "195",
+          "176.142857142857",
+          "140.466666666667",
+          "127.541666666667",
+          "131.146842105263",
+          "115.434615384615"
+        ],
+        [
+          "后窗",
+          "皮卡均价",
+          "95.3154320987654",
+          "96.5082352941177",
+          "99.3336263736264",
+          "106.835612244898",
+          "105.780802919708",
+          "103.560921052632"
+        ]
+      ],
+      "keyMetrics": {
+        "nonEmptyCells": 0,
+        "textCells": 0,
+        "numericCells": 0,
+        "formulaCells": 0
+      }
+    },
+    {
+      "name": "调研方向",
+      "index": 5,
+      "rowCount": 18,
+      "colCount": 3,
+      "contentSummary": "数据表格",
+      "hasImages": false,
+      "imageRefs": 0,
+      "preview": [
+        [
+          "1.目标市场定位",
+          "",
+          "市容量"
+        ],
+        [
+          "2.技术规格",
+          "",
+          "市场趋势"
+        ],
+        [
+          "3.竞争优势构建",
+          "",
+          "市场竞争"
+        ],
+        [
+          "",
+          "",
+          "行业TOP"
+        ],
+        [
+          "",
+          "",
+          "产品认知"
+        ]
+      ],
+      "keyMetrics": {
+        "nonEmptyCells": 0,
+        "textCells": 0,
+        "numericCells": 0,
+        "formulaCells": 0
+      }
+    },
+    {
+      "name": "销售表",
+      "index": 6,
+      "rowCount": 113,
+      "colCount": 83,
+      "contentSummary": "销售报表、业绩统计",
+      "hasImages": false,
+      "imageRefs": 0,
+      "preview": [
+        [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "编码",
+          "",
+          "SKU",
+          "安装位置",
+          "颜色",
+          "品牌",
+          "子车型",
+          "车型分类",
+          "起始年份",
+          "产品分类"
+        ],
+        [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "9650",
+          "LYMIR-120-R",
+          "LYMIR-120-R",
+          "侧窗玻璃",
+          "绿色",
+          "Ford",
+          "F-150/F-250/F-350/F-450/F-550",
+          "皮卡",
+          "2015",
+          "原开品"
+        ],
+        [
+          "9649",
+          "LYMIR-120-L",
+          "LYMIR-120-L",
+          "侧窗玻璃",
+          "绿色",
+          "Ford",
+          "F-150/F-250/F-350/F-450/F-550",
+          "皮卡",
+          "2015",
+          "原开品"
+        ]
+      ],
+      "keyMetrics": {
+        "nonEmptyCells": 0,
+        "textCells": 0,
+        "numericCells": 0,
+        "formulaCells": 0
+      }
+    },
+    {
+      "name": "各维度均价",
+      "index": 7,
+      "rowCount": 45,
+      "colCount": 9,
+      "contentSummary": "价格分析、维度对比",
+      "hasImages": false,
+      "imageRefs": 0,
+      "preview": [
+        [
+          "",
+          "",
+          "统计近半年内组内出单SKU情况",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "维度",
+          "",
+          "",
+          "3月",
+          "4月",
+          "5月",
+          "6月",
+          "7月",
+          "8月"
+        ],
+        [
+          "总体",
+          "总",
+          "总销量",
+          "298",
+          "403",
+          "556",
+          "709",
+          "929",
+          "1024"
+        ],
+        [
+          "",
+          "",
+          "总销售额",
+          "27374.36",
+          "34644.37",
+          "47037.35",
+          "61373.01",
+          "82985.46",
+          "91056.89"
+        ],
+        [
+          "",
+          "",
+          "出单均价",
+          "91.8602684563758",
+          "85.9661786600496",
+          "84.5995503597122",
+          "86.562778561354",
+          "89.3277287405813",
+          "88.922744140625"
+        ]
+      ],
+      "keyMetrics": {
+        "nonEmptyCells": 0,
+        "textCells": 0,
+        "numericCells": 0,
+        "formulaCells": 0
+      }
+    },
+    {
+      "name": "区间分布",
+      "index": 8,
+      "rowCount": 16,
+      "colCount": 19,
+      "contentSummary": "数据表格",
+      "hasImages": false,
+      "imageRefs": 0,
+      "preview": [
+        [
+          "价格分布",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "年份分布",
+          "",
+          ""
+        ],
+        [
+          "区间",
+          "数量",
+          "比例",
+          "",
+          "",
+          "",
+          "",
+          "区间",
+          "数量",
+          "比例"
+        ],
+        [
+          "43.79-58.79",
+          "12",
+          "0.117647058823529",
+          "",
+          "",
+          "",
+          "",
+          "2010-2014",
+          "21",
+          "0.205882352941176"
+        ],
+        [
+          "58.79-73.79",
+          "36",
+          "0.352941176470588",
+          "",
+          "",
+          "",
+          "",
+          "2005-2009",
+          "14",
+          "0.1366"
+        ],
+        [
+          "73.79-88.79",
+          "15",
+          "0.147058823529412",
+          "",
+          "",
+          "",
+          "",
+          "2000-2004",
+          "19",
+          "0.1845"
+        ]
+      ],
+      "keyMetrics": {
+        "nonEmptyCells": 0,
+        "textCells": 0,
+        "numericCells": 0,
+        "formulaCells": 0
+      }
+    },
+    {
+      "name": "产品情况",
+      "index": 9,
+      "rowCount": 105,
+      "colCount": 19,
+      "contentSummary": "产品规格、库存情况",
+      "hasImages": false,
+      "imageRefs": 0,
+      "preview": [
+        [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "适配信息",
+          "适配车型",
+          "适配类目",
+          "起始年份",
+          "部位",
+          "功能",
+          "颜色",
+          "是否组合",
+          "销售编码",
+          "SKU"
+        ],
+        [
+          "Toyota",
+          "Prius",
+          "Moto-Car",
+          "2010",
+          "Back/Rear Window",
+          "Heated",
+          "Dark",
+          "No",
+          "9939",
+          "LYMIR-91-S"
+        ],
+        [
+          "",
+          "",
+          "Moto-Car",
+          "2010",
+          "Back/Rear Window",
+          "Heated",
+          "Light",
+          "No",
+          "9860",
+          "LYMIR-91-G"
+        ]
+      ],
+      "keyMetrics": {
+        "nonEmptyCells": 0,
+        "textCells": 0,
+        "numericCells": 0,
+        "formulaCells": 0
+      }
+    },
+    {
+      "name": "9.25PW",
+      "index": 10,
+      "rowCount": 106362,
+      "colCount": 82,
+      "contentSummary": "数据表格",
+      "hasImages": false,
+      "imageRefs": 0,
+      "preview": [
+        [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "SKU&负责组信息",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "历史均价"
+        ],
+        [
+          "日期+批次",
+          "分组",
+          "PW负责人",
+          "调研人",
+          "分析人",
+          "销售编码",
+          "原始SKU",
+          "在售SKU（直接复制价格匹配表的A列）",
+          "日期",
+          "2022年"
+        ],
+        [
+          "2025/9/25-1",
+          "eBay运营三部",
+          "爬虫",
+          "谈明杰",
+          "胡煜星",
+          "8757",
+          "LYMIR-119-L-G",
+          "LYMIR-119-L-G",
+          "45925",
+          "N"
+        ],
+        [
+          "2025/9/25-1",
+          "eBay运营三部",
+          "爬虫",
+          "谈明杰",
+          "胡煜星",
+          "8758",
+          "LYMIR-119-L-S",
+          "LYMIR-119-L-S",
+          "45925",
+          "N"
+        ]
+      ],
+      "keyMetrics": {
+        "nonEmptyCells": 0,
+        "textCells": 0,
+        "numericCells": 0,
+        "formulaCells": 0
+      }
+    },
+    {
+      "name": "新品信息表",
+      "index": 11,
+      "rowCount": 139,
+      "colCount": 42,
+      "contentSummary": "数据表格",
+      "hasImages": false,
+      "imageRefs": 0,
+      "preview": [
+        [
+          "SKU",
+          "日期",
+          "制作人",
+          "图片",
+          "使用场景",
+          "产品名称",
+          "重要信息",
+          "一级类目",
+          "链接分类",
+          "原样/拓展连接"
+        ],
+        [
+          "LYMIR-22-R",
+          "45478",
+          "朱晶",
+          "",
+          "是",
+          "车门玻璃",
+          "前 右",
+          "Moto-Car",
+          "原链接",
+          "https://www.ebay.com/itm/203103590693"
+        ],
+        [
+          "LYMIR-22-L",
+          "45478",
+          "朱晶",
+          "",
+          "是",
+          "车门玻璃",
+          "前 左",
+          "Moto-Car",
+          "原链接",
+          "https://www.ebay.com/itm/193658724995"
+        ],
+        [
+          "LYMIR-23",
+          "45478",
+          "朱晶",
+          "",
+          "是",
+          "车门玻璃",
+          "前 左+右",
+          "Moto-Pickup",
+          "原链接",
+          "https://www.ebay.com/itm/372665791313"
+        ],
+        [
+          "LYMIR-23-L",
+          "45478",
+          "朱晶",
+          "",
+          "是",
+          "车门玻璃",
+          "前 左",
+          "Moto-Pickup",
+          "拓展链接",
+          "https://www.ebay.com/itm/371977510343"
+        ]
+      ],
+      "keyMetrics": {
+        "nonEmptyCells": 0,
+        "textCells": 0,
+        "numericCells": 0,
+        "formulaCells": 0
+      }
+    },
+    {
+      "name": "SKU对照表",
+      "index": 12,
+      "rowCount": 355,
+      "colCount": 17,
+      "contentSummary": "数据表格",
+      "hasImages": false,
+      "imageRefs": 0,
+      "preview": [
+        [
+          "SKU产品编码",
+          "SPU",
+          "原SKU",
+          "适配品牌",
+          "适配车型",
+          "一级类目",
+          "二级类目",
+          "新二级类目",
+          "三级类目",
+          "英文名称"
+        ],
+        [
+          "A-7442",
+          "MIR-22",
+          "LYMIR-22-R",
+          "Chrysler",
+          "300",
+          "Moto-Car",
+          "车窗",
+          "车身",
+          "Side Door Glass",
+          "Side Door Glass"
+        ],
+        [
+          "A-7443",
+          "MIR-22",
+          "LYMIR-22-L",
+          "Chrysler",
+          "300",
+          "Moto-Car",
+          "车窗",
+          "车身",
+          "Side Door Glass",
+          "Side Door Glass"
+        ],
+        [
+          "A-7444",
+          "MIR-23",
+          "LYMIR-23",
+          "Ford",
+          "Bronco/F-150/F-250/F-350",
+          "Moto-Pickup",
+          "车窗",
+          "车身",
+          "Side Door Glass",
+          "Side Door Glass"
+        ],
+        [
+          "A-7445",
+          "MIR-23",
+          "LYMIR-23-L",
+          "Ford",
+          "Bronco/F-150/F-250/F-350",
+          "Moto-Pickup",
+          "车窗",
+          "车身",
+          "Side Door Glass",
+          "Side Door Glass"
+        ]
+      ],
+      "keyMetrics": {
+        "nonEmptyCells": 0,
+        "textCells": 0,
+        "numericCells": 0,
+        "formulaCells": 0
+      }
+    },
+    {
+      "name": "销售数据",
+      "index": 13,
+      "rowCount": 626743,
+      "colCount": 8,
+      "contentSummary": "详细销售数据记录",
+      "hasImages": false,
+      "imageRefs": 0,
+      "preview": [
+        [
+          "SKU",
+          "Sold Via Promoted Listings",
+          "Quantity",
+          "Paid Date",
+          "实际收款额",
+          "销售编号",
+          "月份",
+          "品类"
+        ],
+        [
+          "LYAP-973-1",
+          "false",
+          "1",
+          "45658",
+          "33",
+          "5604",
+          "1月",
+          ""
+        ],
+        [
+          "LYAM-X1064",
+          "true",
+          "1",
+          "45658",
+          "168",
+          "6009",
+          "1月",
+          ""
+        ],
+        [
+          "LYAM-081",
+          "false",
+          "1",
+          "45658",
+          "53.99",
+          "66",
+          "1月",
+          ""
+        ],
+        [
+          "CB-018",
+          "false",
+          "1",
+          "45658",
+          "4.49",
+          "4630",
+          "1月",
+          ""
+        ]
+      ],
+      "keyMetrics": {
+        "nonEmptyCells": 0,
+        "textCells": 0,
+        "numericCells": 0,
+        "formulaCells": 0
+      }
+    },
+    {
+      "name": "月结果占比",
+      "index": 14,
+      "rowCount": 1405,
+      "colCount": 28,
+      "contentSummary": "数据表格",
+      "hasImages": false,
+      "imageRefs": 0,
+      "preview": [
+        [
+          "编号",
+          "我们3月总销量",
+          "对手3月总销量",
+          "",
+          "",
+          "编号",
+          "我们4月总销量",
+          "对手4月总销量",
+          "",
+          ""
+        ],
+        [
+          "57",
+          "4",
+          "0",
+          "",
+          "",
+          "57",
+          "4",
+          "0",
+          "",
+          ""
+        ],
+        [
+          "59",
+          "5",
+          "0",
+          "",
+          "",
+          "59",
+          "3",
+          "0",
+          "",
+          ""
+        ],
+        [
+          "60",
+          "8",
+          "0",
+          "",
+          "",
+          "60",
+          "2",
+          "1",
+          "",
+          ""
+        ],
+        [
+          "65",
+          "19",
+          "0",
+          "",
+          "",
+          "65",
+          "20",
+          "0",
+          "",
+          ""
+        ]
+      ],
+      "keyMetrics": {
+        "nonEmptyCells": 0,
+        "textCells": 0,
+        "numericCells": 0,
+        "formulaCells": 0
+      }
+    },
+    {
+      "name": "数据对比",
+      "index": 15,
+      "rowCount": 11,
+      "colCount": 9,
+      "contentSummary": "数据表格",
+      "hasImages": false,
+      "imageRefs": 0,
+      "preview": [
+        [
+          "",
+          "1月",
+          "2月",
+          "3月",
+          "4月",
+          "5月",
+          "6月",
+          "7月",
+          "8月"
+        ],
+        [
+          "玻璃销售额",
+          "2740.11",
+          "9266.64",
+          "27374.36",
+          "34644.37",
+          "47037.35",
+          "61373.01",
+          "82985.46",
+          "91056.89"
+        ],
+        [
+          "玻璃销量",
+          "34",
+          "115",
+          "298",
+          "403",
+          "556",
+          "709",
+          "929",
+          "1024"
+        ],
+        [
+          "总销售额",
+          "610391.216389",
+          "652807.671269",
+          "881325.986000001",
+          "890278.12",
+          "955903.37",
+          "889458.46",
+          "980279.1",
+          "1116124.85"
+        ],
+        [
+          "总销量",
+          "10252",
+          "10455",
+          "12408",
+          "11909",
+          "13014",
+          "12253",
+          "13618",
+          "16081"
+        ]
+      ],
+      "keyMetrics": {
+        "nonEmptyCells": 0,
+        "textCells": 0,
+        "numericCells": 0,
+        "formulaCells": 0
+      }
+    },
+    {
+      "name": "WpsReserved_CellImgList",
+      "index": 16,
+      "rowCount": 0,
+      "colCount": 0,
+      "contentSummary": "数据表格",
+      "hasImages": false,
+      "imageRefs": 0,
+      "preview": [],
+      "keyMetrics": {
+        "nonEmptyCells": 0,
+        "textCells": 0,
+        "numericCells": 0,
+        "formulaCells": 0
+      }
+    }
+  ],
+  "summary": {
+    "totalSheets": 16,
+    "sheetNames": [
+      "信息",
+      "市场",
+      "自身",
+      "车型维度均价表",
+      "调研方向",
+      "销售表",
+      "各维度均价",
+      "区间分布",
+      "产品情况",
+      "9.25PW",
+      "新品信息表",
+      "SKU对照表",
+      "销售数据",
+      "月结果占比",
+      "数据对比",
+      "WpsReserved_CellImgList"
+    ]
+  }
+}

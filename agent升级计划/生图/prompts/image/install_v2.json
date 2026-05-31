@@ -1,0 +1,21 @@
+{
+  "prompt_id": "IMG_INSTALL_V2",
+  "version": "2.0",
+  "purpose": "eBay 产品安装效果图 — 产品装车展示 + 位置示意",
+  "last_updated": "2026-05-24",
+  "model": "gpt-image-2",
+  "size": "1:1",
+  "strength": 0.5,
+  "description": "产品安装在汽车上的整体效果，需明确示意安装位置（箭头/高亮区域）。车门/车身颜色为中性色。",
+  "template": "由 DeepSeek (prompt_builder.py) 动态生成，非固定模板",
+  "variables": ["product_type", "placement", "vehicle_desc"],
+  "constraints": [
+    "必须明确示意安装位置",
+    "车身颜色为中性色（深灰/银色/白色）",
+    "工厂安装品质感，贴合紧密",
+    "浅景深聚焦产品",
+    "禁止出现车标/品牌 Logo",
+    "Prompt 必须用英文"
+  ],
+  "generator": "prompt_builder.py"
+}

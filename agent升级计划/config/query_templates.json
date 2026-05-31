@@ -1,0 +1,37 @@
+{
+  "Door Handle": {
+    "primary": "{year} {make} {model} {cab} {position} Door Handle",
+    "fallback": "{year} {make} {model} Door Handle {finish}",
+    "variables": ["year", "make", "model", "cab", "position", "finish"]
+  },
+  "Interior Door Handle": {
+    "primary": "{year} {make} {model} Inside Interior Door Handle {position}",
+    "fallback": "{year} {make} {model} Interior Door Handle",
+    "variables": ["year", "make", "model", "position"]
+  },
+  "Door Window Glass": {
+    "primary": "{year} {make} {model} {position} Door Window Glass",
+    "fallback": "{year} {make} {model} Door Glass",
+    "variables": ["year", "make", "model", "position"]
+  },
+  "Door Handle Cover": {
+    "primary": "{year} {make} {model} Door Handle Cover Trim {finish}",
+    "fallback": "{year} {make} {model} Handle Cover",
+    "variables": ["year", "make", "model", "finish"]
+  },
+  "Running Board": {
+    "primary": "{year} {make} {model} {cab} Running Board Side Step",
+    "fallback": "{year} {make} {model} Running Board",
+    "variables": ["year", "make", "model", "cab"]
+  },
+  "Fender Flare": {
+    "primary": "{year} {make} {model} Fender Flare {position}",
+    "fallback": "{year} {make} {model} Fender Flare",
+    "variables": ["year", "make", "model", "position"]
+  },
+  "default": {
+    "primary": "{year} {make} {model} {product_type} {position}",
+    "fallback": "{year} {make} {model} {product_type}",
+    "variables": ["year", "make", "model", "product_type", "position"]
+  }
+}

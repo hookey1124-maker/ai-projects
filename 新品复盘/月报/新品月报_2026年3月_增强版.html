@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新品月报 · 2026年3月（增强版）</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif; background: #f0f2f5; color: #1a1a2e; }
+.header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; padding: 28px 40px; }
+.header h1 { font-size: 26px; font-weight: 700; letter-spacing: 2px; }
+.header .subtitle { font-size: 13px; opacity: 0.75; margin-top: 6px; }
+.container { display: flex; min-height: calc(100vh - 80px); }
+.sidebar { width: 230px; background: #fff; border-right: 1px solid #e8e8e8; padding: 20px 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; flex-shrink: 0; }
+.sidebar ul { list-style: none; }
+.sidebar li a { display: block; padding: 10px 20px; font-size: 13px; color: #555; text-decoration: none; border-left: 3px solid transparent; transition: all 0.2s; }
+.sidebar li a:hover, .sidebar li a.active { background: #f0f6ff; color: #0f3460; border-left-color: #0f3460; font-weight: 600; }
+.main-content { flex: 1; padding: 24px; overflow: auto; }
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 14px; margin-bottom: 24px; }
+.kpi-card { background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center; }
+.kpi-card .val { font-size: 26px; font-weight: 700; color: #0f3460; }
+.kpi-card .label { font-size: 12px; color: #888; margin-top: 6px; }
+.kpi-card .hb { font-size: 11px; margin-top: 4px; font-weight: 600; }
+.kpi-card.green .val { color: #08845a; }
+.kpi-card.orange .val { color: #e07b24; }
+.kpi-card.red .val { color: #c0392b; }
+.kpi-card.purple .val { color: #8e44ad; }
+.section { background: white; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.section h3 { font-size: 16px; font-weight: 700; color: #0f3460; padding-bottom: 12px; border-bottom: 2px solid #e8f0fe; margin-bottom: 16px; }
+.sub-module { margin-bottom: 20px; }
+.sub-module h4 { font-size: 13px; font-weight: 600; color: #444; margin-bottom: 10px; padding: 6px 12px; background: #f5f7ff; border-radius: 4px; border-left: 3px solid #0f3460; }
+.chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; margin-bottom: 20px; }
+.chart-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.chart-card h4 { font-size: 13px; font-weight: 600; color: #0f3460; margin-bottom: 14px; }
+.chart-card canvas { max-height: 260px; }
+.table-wrap { overflow-x: auto; }
+.data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.data-table th { background: #0f3460; color: white; padding: 8px 8px; text-align: center; white-space: nowrap; font-weight: 600; }
+.data-table th.m1 { background: #6c757d; }
+.data-table th.m2 { background: #667eea; }
+.data-table th.m3 { background: #c0392b; }
+.data-table th.hb { background: #e07b24; }
+.data-table td { padding: 6px 8px; text-align: center; border-bottom: 1px solid #f0f0f0; white-space: nowrap; }
+.data-table tr:hover td { background: #f5f7ff; }
+.data-table .row-ordered { background: #f0fff4; }
+.data-table .row-unorder { background: #fff8f0; }
+.hb-up { color: #c0392b; font-weight: 700; }
+.hb-down { color: #08845a; font-weight: 700; }
+.hb-flat { color: #888; }
+.batch-tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; color: white; font-weight: 600; }
+.b1 { background: #6c757d; }
+.b2 { background: #667eea; }
+.b3 { background: #c0392b; }
+select { padding: 6px 12px; border-radius: 6px; border: 1px solid #ddd; font-size: 13px; background: white; cursor: pointer; }
+select:focus { outline: none; border-color: #0f3460; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+@media (max-width: 900px) { .sidebar { display: none; } .chart-grid { grid-template-columns: 1fr; } .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+.section-wrap { display: block; }
+.note { font-size: 12px; color: #888; margin-bottom: 10px; }
+.warning { font-size: 12px; color: #e07b24; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🚀 新品月报 · 2026年3月（增强版）</h1>
+  <div class="subtitle">统计周期：2026年3月 | 在跟SKU：156 | 1月批次：53 | 2月批次：36 | 3月批次：67 | 生成：2026-04-09</div>
+</div>
+
+<div class="container">
+<nav class="sidebar">
+  <ul>
+    <li><a href="#" onclick="showSection('overview',this)" class="active">📊 数据总览</a></li>
+    <li><a href="#" onclick="showSection('pinxian',this)">🏷️ 品线维度</a></li>
+    <li><a href="#" onclick="showSection('analyst',this)">👤 分析人维度</a></li>
+    <li><a href="#" onclick="showSection('expand',this)">🔖 拓展类型维度</a></li>
+    <li><a href="#" onclick="showSection('order',this)">📦 出单情况分析</a></li>
+    <li><a href="#" onclick="showSection('unorder',this)">❌ 未出单市场</a></li>
+    <li><a href="#" onclick="showSection('lowshare',this)">📉 低占比新品</a></li>
+    <li><a href="#" onclick="showSection('detail',this)">📋 全量明细</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+<!-- KPI -->
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="val">156</div><div class="label">在跟SKU总数</div><div class="hb" style="color:#888">1月53 · 2月36 · 3月67</div></div>
+  <div class="kpi-card green"><div class="val">82</div><div class="label">3月8日已出单(Y)</div></div>
+  <div class="kpi-card orange"><div class="val">51</div><div class="label">3月8日未出单(N)</div></div>
+  <div class="kpi-card red"><div class="val">23</div><div class="label">3月未出单</div></div>
+  <div class="kpi-card orange"><div class="val">85.3%</div><div class="label">3月新品出单率(Y+N)</div></div>
+  <div class="kpi-card"><div class="val">1464</div><div class="label">3月总销量</div></div>
+  <div class="kpi-card purple"><div class="val">$182202</div><div class="label">3月总销售额(USD)</div></div>
+  <div class="kpi-card"><div class="val">58.6%</div><div class="label">3月平均市占比</div></div>
+  <div class="kpi-card red"><div class="val">72</div><div class="label">低占比新品</div></div>
+</div>
+
+<div id="section-overview" class="section-wrap">
+  <div class="section">
+    <h3>📊 数据总览 · 图形可视化</h3>
+    <div class="chart-grid">
+      <div class="chart-card"><h4>📈 各批次3月销量/销售额对比</h4><canvas id="chartBatchQty"></canvas></div>
+      <div class="chart-card"><h4>🏷️ 各品类三个月销量对比</h4><canvas id="chartCategoryQty"></canvas></div>
+      <div class="chart-card"><h4>📊 各品类三个月出单率对比</h4><canvas id="chartCategoryRate"></canvas></div>
+      <div class="chart-card"><h4>👤 分析人三个月销量对比</h4><canvas id="chartAnalystQty"></canvas></div>
+      <div class="chart-card"><h4>🔖 拓展类型三个月销量对比</h4><canvas id="chartExpandQty"></canvas></div>
+      <div class="chart-card"><h4>📦 各批次出单情况（3月）</h4><canvas id="chartOrderDist"></canvas></div>
+    </div>
+  </div>
+</div>
+<div id="section-pinxian" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>🏷️ 品线维度</h3>
+    <div class="sub-module">
+      <h4>各品类三个月完整数据对比（含销售额、市占比、出单率）</h4>
+      <p class="note">销量为该维度在各月所有批次新品的累计销量；SKU数为该月上架批次数量</p>
+      <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th rowspan="2">品类</th>
+            <th colspan="5" class="m1">1月新品(共53个)</th>
+            <th colspan="5" class="m2">2月新品(共36个)</th>
+            <th colspan="5" class="m3">3月新品(共67个)</th>
+            <th colspan="2" class="hb">环比(3月vs2月)</th>
+          </tr>
+          <tr>
+            <th class="m1">SKU</th><th class="m1">3月销量</th><th class="m1">3月销售额</th><th class="m1">平均市占比</th><th class="m1">出单率</th>
+            <th class="m2">SKU</th><th class="m2">3月销量</th><th class="m2">3月销售额</th><th class="m2">平均市占比</th><th class="m2">出单率</th>
+            <th class="m3">SKU</th><th class="m3">3月销量</th><th class="m3">3月销售额</th><th class="m3">平均市占比</th><th class="m3">出单率</th>
+            <th class="hb">销量↕</th><th class="hb">出单率↕</th>
+          </tr>
+        </thead>
+        <tbody><tr>
+      <td><b>其他</b></td>
+      <td>1</td><td>1</td><td>$158</td><td>50.0%</td><td>100.0%</td>
+      <td>4</td><td>5</td><td>$232</td><td>10.6%</td><td>50.0%</td>
+      <td>11</td><td>81</td><td>$7106</td><td>74.6%</td><td>81.8%</td>
+      <td><span class="hb-up">+1520.0</span></td><td><span class="hb-up">+31.8</span></td>
+    </tr><tr>
+      <td><b>挡泥板</b></td>
+      <td>9</td><td>15</td><td>$1902</td><td>37.5%</td><td>44.4%</td>
+      <td>6</td><td>3</td><td>$315</td><td>10.0%</td><td>16.7%</td>
+      <td>5</td><td>6</td><td>$718</td><td>24.4%</td><td>40.0%</td>
+      <td><span class="hb-up">+100.0</span></td><td><span class="hb-up">+23.3</span></td>
+    </tr><tr>
+      <td><b>机盖及附件</b></td>
+      <td>7</td><td>14</td><td>$1687</td><td>50.0%</td><td>71.4%</td>
+      <td>3</td><td>10</td><td>$1258</td><td>53.8%</td><td>100.0%</td>
+      <td>6</td><td>27</td><td>$2173</td><td>31.1%</td><td>83.3%</td>
+      <td><span class="hb-up">+170.0</span></td><td><span class="hb-down">-16.7</span></td>
+    </tr><tr>
+      <td><b>车身外扩件</b></td>
+      <td>3</td><td>5</td><td>$534</td><td>48.1%</td><td>66.7%</td>
+      <td>5</td><td>91</td><td>$14461</td><td>54.5%</td><td>60.0%</td>
+      <td>4</td><td>3</td><td>$897</td><td>41.7%</td><td>50.0%</td>
+      <td><span class="hb-down">-96.7</span></td><td><span class="hb-down">-10.0</span></td>
+    </tr><tr>
+      <td><b>车门系统</b></td>
+      <td>19</td><td>23</td><td>$3770</td><td>27.2%</td><td>36.8%</td>
+      <td>9</td><td>73</td><td>$11012</td><td>67.0%</td><td>77.8%</td>
+      <td>33</td><td>224</td><td>$61664</td><td>48.3%</td><td>69.7%</td>
+      <td><span class="hb-up">+206.8</span></td><td><span class="hb-down">-8.1</span></td>
+    </tr><tr>
+      <td><b>饰条</b></td>
+      <td>14</td><td>14</td><td>$703</td><td>20.2%</td><td>35.7%</td>
+      <td>9</td><td>8</td><td>$605</td><td>9.0%</td><td>44.4%</td>
+      <td>8</td><td>27</td><td>$2046</td><td>29.1%</td><td>87.5%</td>
+      <td><span class="hb-up">+237.5</span></td><td><span class="hb-up">+43.1</span></td>
+    </tr></tbody>
+      </table>
+      </div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card"><h4>📈 各品类三个月销量对比</h4><canvas id="chartCatQty"></canvas></div>
+      <div class="chart-card"><h4>💰 各品类三个月销售额对比</h4><canvas id="chartCatAmt"></canvas></div>
+      <div class="chart-card"><h4>📊 各品类三个月出单率对比</h4><canvas id="chartCatRate"></canvas></div>
+      <div class="chart-card"><h4>🎯 各品类3月平均市占比</h4><canvas id="chartCatShare"></canvas></div>
+    </div>
+  </div>
+</div>
+<div id="section-analyst" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>👤 分析人维度</h3>
+    <div class="sub-module">
+      <h4>各分析人三个月完整绩效（含销售额、均价、分析频次、市占比）</h4>
+      <p class="note">均价=销售额/销量；分析频次为该批次新品的平均跟进次数</p>
+      <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th rowspan="2">分析人</th>
+            <th colspan="7" class="m1">1月新品</th>
+            <th colspan="7" class="m2">2月新品</th>
+            <th colspan="7" class="m3">3月新品</th>
+            <th colspan="2" class="hb">环比(3月vs2月)</th>
+          </tr>
+          <tr>
+            <th class="m1">SKU</th><th class="m1">3月销量</th><th class="m1">3月销售额</th><th class="m1">均价</th><th class="m1">平均频次</th><th class="m1">市占比</th><th class="m1">出单率</th>
+            <th class="m2">SKU</th><th class="m2">3月销量</th><th class="m2">3月销售额</th><th class="m2">均价</th><th class="m2">平均频次</th><th class="m2">市占比</th><th class="m2">出单率</th>
+            <th class="m3">SKU</th><th class="m3">3月销量</th><th class="m3">3月销售额</th><th class="m3">均价</th><th class="m3">平均频次</th><th class="m3">市占比</th><th class="m3">出单率</th>
+            <th class="hb">销量↕</th><th class="hb">出单率↕</th>
+          </tr>
+        </thead>
+        <tbody><tr>
+      <td><b>俞东旭</b></td>
+      <td>19</td><td>14</td><td>$1254</td><td>$89.61</td><td>1.89</td><td>17.5%</td><td>26.3%</td>
+      <td>6</td><td>65</td><td>$8793</td><td>$135.28</td><td>2.83</td><td>61.6%</td><td>66.7%</td>
+      <td>20</td><td>137</td><td>$47458</td><td>$346.41</td><td>1.55</td><td>43.2%</td><td>60.0%</td>
+      <td><span class="hb-up">+110.8</span></td><td><span class="hb-down">-6.7</span></td>
+    </tr><tr>
+      <td><b>朱培源</b></td>
+      <td>17</td><td>33</td><td>$3542</td><td>$107.35</td><td>2.71</td><td>47.5%</td><td>64.7%</td>
+      <td>5</td><td>0</td><td>$0</td><td>$0</td><td>2.8</td><td>0.0%</td><td>0.0%</td>
+      <td>13</td><td>53</td><td>$12678</td><td>$239.21</td><td>2.85</td><td>43.8%</td><td>53.8%</td>
+      <td><span class="hb-flat">-</span></td><td><span class="hb-up">+53.8</span></td>
+    </tr><tr>
+      <td><b>王偲涵</b></td>
+      <td>7</td><td>7</td><td>$363</td><td>$51.86</td><td>1.0</td><td>17.9%</td><td>28.6%</td>
+      <td>13</td><td>104</td><td>$15324</td><td>$147.35</td><td>2.31</td><td>32.3%</td><td>69.2%</td>
+      <td>6</td><td>24</td><td>$2010</td><td>$83.75</td><td>1.5</td><td>38.3%</td><td>100.0%</td>
+      <td><span class="hb-down">-76.9</span></td><td><span class="hb-up">+30.8</span></td>
+    </tr><tr>
+      <td><b>章鹏</b></td>
+      <td>1</td><td>2</td><td>$598</td><td>$299.0</td><td>1.0</td><td>100.0%</td><td>100.0%</td>
+      <td>9</td><td>17</td><td>$1770</td><td>$104.12</td><td>1.0</td><td>36.7%</td><td>66.7%</td>
+      <td>11</td><td>36</td><td>$2162</td><td>$60.06</td><td>1.82</td><td>21.2%</td><td>63.6%</td>
+      <td><span class="hb-up">+111.8</span></td><td><span class="hb-down">-3.1</span></td>
+    </tr><tr>
+      <td><b>胡煜星</b></td>
+      <td>9</td><td>16</td><td>$2997</td><td>$187.35</td><td>2.44</td><td>35.1%</td><td>55.6%</td>
+      <td>3</td><td>4</td><td>$1996</td><td>$499.0</td><td>2.67</td><td>33.3%</td><td>33.3%</td>
+      <td>17</td><td>118</td><td>$10296</td><td>$87.25</td><td>2.82</td><td>72.1%</td><td>94.1%</td>
+      <td><span class="hb-up">+2850.0</span></td><td><span class="hb-up">+60.8</span></td>
+    </tr></tbody>
+      </table>
+      </div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card"><h4>👤 各分析人三个月销量对比</h4><canvas id="chartAnalystQty2"></canvas></div>
+      <div class="chart-card"><h4>💰 各分析人三个月销售额对比</h4><canvas id="chartAnalystAmt"></canvas></div>
+      <div class="chart-card"><h4>📊 各分析人三个月出单率对比</h4><canvas id="chartAnalystRate"></canvas></div>
+      <div class="chart-card"><h4>🔄 各分析人3月平均分析频次</h4><canvas id="chartAnalystFreq"></canvas></div>
+    </div>
+  </div>
+</div>
+<div id="section-expand" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>🔖 拓展类型维度</h3>
+    <div class="sub-module">
+      <h4>各拓展类型三个月完整数据（含销售额、对手出单、市占比）</h4>
+      <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th rowspan="2">拓展类型</th>
+            <th colspan="6" class="m1">1月新品</th>
+            <th colspan="6" class="m2">2月新品</th>
+            <th colspan="6" class="m3">3月新品</th>
+            <th colspan="2" class="hb">环比</th>
+          </tr>
+          <tr>
+            <th class="m1">SKU</th><th class="m1">3月销量</th><th class="m1">3月销售额</th><th class="m1">对手出单</th><th class="m1">市占比</th><th class="m1">出单率</th>
+            <th class="m2">SKU</th><th class="m2">3月销量</th><th class="m2">3月销售额</th><th class="m2">对手出单</th><th class="m2">市占比</th><th class="m2">出单率</th>
+            <th class="m3">SKU</th><th class="m3">3月销量</th><th class="m3">3月销售额</th><th class="m3">对手出单</th><th class="m3">市占比</th><th class="m3">出单率</th>
+            <th class="hb">销量↕</th><th class="hb">出单率↕</th>
+          </tr>
+        </thead>
+        <tbody><tr>
+      <td><b>原开品</b></td>
+      <td>35</td><td>52</td><td>$5687</td><td>81</td><td>33.8%</td><td>51.4%</td>
+      <td>22</td><td>83</td><td>$8453</td><td>165</td><td>25.0%</td><td>50.0%</td>
+      <td>52</td><td>321</td><td>$65404</td><td>442</td><td>51.2%</td><td>78.8%</td>
+      <td><span class="hb-up">+286.7</span></td><td><span class="hb-up">+28.8</span></td>
+    </tr><tr>
+      <td><b>拓展品</b></td>
+      <td>18</td><td>20</td><td>$3068</td><td>12</td><td>27.8%</td><td>33.3%</td>
+      <td>13</td><td>103</td><td>$17434</td><td>27</td><td>44.0%</td><td>61.5%</td>
+      <td>15</td><td>47</td><td>$9200</td><td>25</td><td>30.8%</td><td>46.7%</td>
+      <td><span class="hb-down">-54.4</span></td><td><span class="hb-down">-14.8</span></td>
+    </tr><tr>
+      <td><b>组合件</b></td>
+      <td>0</td><td>0</td><td>$0</td><td>0</td><td>0%</td><td>0%</td>
+      <td>1</td><td>4</td><td>$1996</td><td>0</td><td>100.0%</td><td>100.0%</td>
+      <td>0</td><td>0</td><td>$0</td><td>0</td><td>0%</td><td>0%</td>
+      <td><span class="hb-down">-100.0</span></td><td><span class="hb-down">-100.0</span></td>
+    </tr></tbody>
+      </table>
+      </div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card"><h4>📈 各拓展类型三个月销量对比</h4><canvas id="chartExpandQty2"></canvas></div>
+      <div class="chart-card"><h4>📊 各拓展类型三个月出单率对比</h4><canvas id="chartExpandRate"></canvas></div>
+    </div>
+  </div>
+</div>
+<div id="section-order" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>📦 出单情况分析</h3>
+    <div class="sub-module">
+      <h4>各批次3月出单情况（含销量、销售额及环比）</h4>
+      <p class="note">Y=8日内有出单；N=注册8日内无出单但有历史出单；未出单=完全没出单</p>
+      <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr>
+          <th>批次</th><th>SKU数</th>
+          <th>3月销量</th><th>销量环比</th>
+          <th>3月销售额</th><th>销售额环比</th>
+          <th style="color:#a8e6cf">Y出单</th><th style="color:#ffd3a5">N出单</th><th style="color:#ffb3b3">未出单</th>
+          <th>出单率(Y+N)</th><th>出单率环比</th>
+        </tr></thead>
+        <tbody><tr>
+      <td><span class="batch-tag b1">1月</span></td>
+      <td>53</td>
+      <td>613</td><td><span class="hb-flat">-</span></td>
+      <td>$52334</td><td><span class="hb-flat">-</span>%</td>
+      <td style="color:#08845a;font-weight:600">24</td>
+      <td style="color:#e07b24">28</td>
+      <td style="color:#c0392b">1</td>
+      <td><b>98.1%</b></td><td><span class="hb-flat">-</span></td>
+    </tr><tr>
+      <td><span class="batch-tag b2">2月</span></td>
+      <td>36</td>
+      <td>483</td><td><span class="hb-down">-130.0</span></td>
+      <td>$55262</td><td><span class="hb-up">+5.6</span>%</td>
+      <td style="color:#08845a;font-weight:600">19</td>
+      <td style="color:#e07b24">14</td>
+      <td style="color:#c0392b">3</td>
+      <td><b>91.7%</b></td><td><span class="hb-down">-6.4</span></td>
+    </tr><tr>
+      <td><span class="batch-tag b3">3月</span></td>
+      <td>67</td>
+      <td>368</td><td><span class="hb-down">-115.0</span></td>
+      <td>$74604</td><td><span class="hb-up">+35.0</span>%</td>
+      <td style="color:#08845a;font-weight:600">39</td>
+      <td style="color:#e07b24">9</td>
+      <td style="color:#c0392b">19</td>
+      <td><b>71.6%</b></td><td><span class="hb-down">-20.1</span></td>
+    </tr></tbody>
+      </table>
+      </div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card"><h4>📊 各批次出单状态分布</h4><canvas id="chartOrderBatch"></canvas></div>
+      <div class="chart-card"><h4>📈 各批次出单率趋势（三批对比）</h4><canvas id="chartOrderRate"></canvas></div>
+      <div class="chart-card"><h4>💰 各批次销售额对比</h4><canvas id="chartOrderAmt"></canvas></div>
+    </div>
+  </div>
+</div>
+<div id="section-unorder" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>❌ 未出单市场状态分布</h3>
+    <div class="sub-module">
+      <h4>全量新品3月市场状态（156个SKU）</h4>
+      <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr><th>市场状态</th><th>数量</th><th>占比</th></tr></thead>
+        <tbody><tr><td>正常</td><td>66</td><td>42.3%</td></tr><tr><td>竞争无优势</td><td>54</td><td>34.6%</td></tr><tr><td>无市场</td><td>23</td><td>14.7%</td></tr><tr><td>站外出单</td><td>11</td><td>7.1%</td></tr><tr><td>站内无价格优势</td><td>2</td><td>1.3%</td></tr></tbody>
+      </table>
+      </div>
+    </div>
+    <div class="sub-module">
+      <h4>各月未出单新品市场状态三月对比</h4>
+      <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th rowspan="2">市场状态</th>
+            <th colspan="2" class="m1">1月未出单</th>
+            <th colspan="2" class="m2">2月未出单</th>
+            <th colspan="2" class="m3">3月未出单</th>
+          </tr>
+          <tr>
+            <th class="m1">数量</th><th class="m1">占比</th>
+            <th class="m2">数量</th><th class="m2">占比</th>
+            <th class="m3">数量</th><th class="m3">占比</th>
+          </tr>
+        </thead>
+        <tbody><tr>
+      <td><b>无市场</b></td>
+      <td>15</td><td>51.7%</td>
+      <td>10</td><td>62.5%</td>
+      <td>9</td><td>47.4%</td>
+    </tr><tr>
+      <td><b>站外出单</b></td>
+      <td>1</td><td>3.4%</td>
+      <td>0</td><td>0.0%</td>
+      <td>1</td><td>5.3%</td>
+    </tr><tr>
+      <td><b>竞争无优势</b></td>
+      <td>12</td><td>41.4%</td>
+      <td>4</td><td>25.0%</td>
+      <td>9</td><td>47.4%</td>
+    </tr></tbody>
+      </table>
+      </div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card"><h4>🥧 3月市场状态分布</h4><canvas id="chartMarketPie"></canvas></div>
+      <div class="chart-card"><h4>📊 各月未出单状态对比</h4><canvas id="chartUnorderCompare"></canvas></div>
+    </div>
+  </div>
+</div>
+<div id="section-lowshare" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>📉 低市占比新品清单（阈值75% · 对手有出单）</h3>
+    <p class="warning">⚠️ 筛选条件：自身3月市占比 &lt; 75% 且 3月对手出单 &gt; 0 | 共72个SKU</p>
+    <div style="margin-bottom:10px;">
+      <select id="low-share-batch" onchange="renderLowShare()">
+        <option value="all">全部批次（72个SKU）</option>
+        <option value="1月">1月新品（24个SKU）</option>
+        <option value="2月">2月新品（13个SKU）</option>
+        <option value="3月">3月新品（35个SKU）</option>
+      </select>
+    </div>
+    <div class="table-wrap">
+    <table class="data-table">
+    <thead><tr><th>批次</th><th>SKU</th><th>品类</th><th>分析人</th><th>拓展类型</th><th>3月销量</th><th>对手出单</th><th>市占比</th><th>8日出单</th><th>市场状态</th></tr></thead>
+    <tbody id="lowmkt-tbody"></tbody>
+    </table>
+    </div>
+  </div>
+</div>
+<div id="section-detail" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>📋 全量SKU明细（共156个SKU）</h3>
+    <p class="note">绿色=3月8日已出单(Y) | 橙色=有出单历史(N) | 白色=完全未出单</p>
+    <div style="margin-bottom:10px;">
+      <select id="detail-batch" onchange="renderDetailTable()">
+        <option value="all">全部批次（156个SKU）</option>
+        <option value="1月">1月新品（53个SKU）</option>
+        <option value="2月">2月新品（36个SKU）</option>
+        <option value="3月">3月新品（67个SKU）</option>
+      </select>
+      &nbsp;
+      <select id="detail-cat" onchange="renderDetailTable()">
+        <option value="all">全部品类</option>
+        <option value="其他">其他</option><option value="挡泥板">挡泥板</option><option value="机盖及附件">机盖及附件</option><option value="车身外扩件">车身外扩件</option><option value="车门系统">车门系统</option><option value="饰条">饰条</option>
+      </select>
+      &nbsp;
+      <select id="detail-analyst" onchange="renderDetailTable()">
+        <option value="all">全部分析人</option>
+        <option value="俞东旭">俞东旭</option><option value="朱培源">朱培源</option><option value="王偲涵">王偲涵</option><option value="章鹏">章鹏</option><option value="胡煜星">胡煜星</option>
+      </select>
+    </div>
+    <div class="table-wrap">
+    <table class="data-table">
+    <thead>
+      <tr>
+        <th rowspan="2">销售编号</th>
+        <th rowspan="2">SKU</th>
+        <th rowspan="2">批次</th>
+        <th rowspan="2">分析人</th>
+        <th rowspan="2">品类</th>
+        <th rowspan="2">拓展类型</th>
+        <th rowspan="2">上架日期</th>
+        <th rowspan="2">首次出单</th>
+        <th colspan="4" class="m1">1月数据</th>
+        <th colspan="4" class="m2">2月数据</th>
+        <th colspan="4" class="m3">3月数据</th>
+      </tr>
+      <tr>
+        <th class="m1">销量</th><th class="m1">销售额</th><th class="m1">8日</th><th class="m1">市场状态</th>
+        <th class="m2">销量</th><th class="m2">销售额</th><th class="m2">8日</th><th class="m2">市场状态</th>
+        <th class="m3">销量</th><th class="m3">销售额</th><th class="m3">8日</th><th class="m3">市场状态</th>
+      </tr>
+    </thead>
+    <tbody id="detail-tbody"></tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+</div><!-- main-content -->
+</div><!-- container -->
+
+<script>
+var LOW_SHARE_DATA = [{"sku_id": "11547", "sku": "LYAM-X2815-1", "batch": "1月", "cat": "机盖及附件", "analyst": "朱培源", "expand": "原开品", "qty": 2.0, "comp": 1.0, "share": 66.7, "order": "N", "status": "站外出单"}, {"sku_id": "11674", "sku": "LYAP-X2057", "batch": "1月", "cat": "机盖及附件", "analyst": "朱培源", "expand": "原开品", "qty": 16.0, "comp": 6.0, "share": 72.7, "order": "Y", "status": "正常"}, {"sku_id": "11668", "sku": "LYAP-X2060-1", "batch": "1月", "cat": "机盖及附件", "analyst": "朱培源", "expand": "原开品", "qty": 7.0, "comp": 6.0, "share": 53.8, "order": "Y", "status": "竞争无优势"}, {"sku_id": "11704", "sku": "LYAM-X2416-BK", "batch": "1月", "cat": "车身外扩件", "analyst": "俞东旭", "expand": "拓展品", "qty": 6.0, "comp": 8.0, "share": 42.9, "order": "N", "status": "竞争无优势"}, {"sku_id": "11699", "sku": "LYAM-X2416-C", "batch": "1月", "cat": "车身外扩件", "analyst": "俞东旭", "expand": "原开品", "qty": 5.0, "comp": 10.0, "share": 33.3, "order": "N", "status": "竞争无优势"}, {"sku_id": "11982", "sku": "LYAM-X2267-1", "batch": "1月", "cat": "机盖及附件", "analyst": "朱培源", "expand": "原开品", "qty": 6.0, "comp": 3.0, "share": 66.7, "order": "Y", "status": "正常"}, {"sku_id": "11911", "sku": "LYAM-X2575-1", "batch": "1月", "cat": "车门系统", "analyst": "胡煜星", "expand": "原开品", "qty": 33.0, "comp": 80.0, "share": 29.2, "order": "N", "status": "竞争无优势"}, {"sku_id": "11736", "sku": "LYAM-X2046-L", "batch": "1月", "cat": "挡泥板", "analyst": "俞东旭", "expand": "原开品", "qty": 13.0, "comp": 7.0, "share": 65.0, "order": "N", "status": "正常"}, {"sku_id": "11745", "sku": "LYAP-X1914", "batch": "1月", "cat": "机盖及附件", "analyst": "朱培源", "expand": "原开品", "qty": 9.0, "comp": 13.0, "share": 40.9, "order": "Y", "status": "竞争无优势"}, {"sku_id": "11781", "sku": "LYAP-X1791-3L", "batch": "1月", "cat": "车门系统", "analyst": "俞东旭", "expand": "拓展品", "qty": 17.0, "comp": 21.0, "share": 44.7, "order": "N", "status": "竞争无优势"}, {"sku_id": "11904", "sku": "LYAM-X2305-1", "batch": "1月", "cat": "车身外扩件", "analyst": "俞东旭", "expand": "原开品", "qty": 12.0, "comp": 9.0, "share": 57.1, "order": "Y", "status": "竞争无优势"}, {"sku_id": "11758", "sku": "LYAP-X1908-C", "batch": "1月", "cat": "饰条", "analyst": "朱培源", "expand": "原开品", "qty": 11.0, "comp": 24.0, "share": 31.4, "order": "Y", "status": "竞争无优势"}, {"sku_id": "11808", "sku": "LYAP-X1910-BK", "batch": "1月", "cat": "饰条", "analyst": "朱培源", "expand": "拓展品", "qty": 7.0, "comp": 11.0, "share": 38.9, "order": "N", "status": "竞争无优势"}, {"sku_id": "11809", "sku": "LYAP-X1910-C", "batch": "1月", "cat": "饰条", "analyst": "朱培源", "expand": "原开品", "qty": 16.0, "comp": 9.0, "share": 64.0, "order": "Y", "status": "正常"}, {"sku_id": "11823", "sku": "LYAP-X1939-1", "batch": "1月", "cat": "饰条", "analyst": "王偲涵", "expand": "原开品", "qty": 5.0, "comp": 2.0, "share": 71.4, "order": "Y", "status": "竞争无优势"}, {"sku_id": "11814", "sku": "LYAP-X2020", "batch": "1月", "cat": "饰条", "analyst": "朱培源", "expand": "原开品", "qty": 5.0, "comp": 9.0, "share": 35.7, "order": "N", "status": "站内无价格优势"}, {"sku_id": "11815", "sku": "LYAP-X2021", "batch": "1月", "cat": "饰条", "analyst": "朱培源", "expand": "原开品", "qty": 2.0, "comp": 10.0, "share": 16.7, "order": "N", "status": "竞争无优势"}, {"sku_id": "11855", "sku": "LYAP-X2081-1", "batch": "1月", "cat": "挡泥板", "analyst": "俞东旭", "expand": "原开品", "qty": 2.0, "comp": 3.0, "share": 40.0, "order": "N", "status": "站外出单"}, {"sku_id": "11856", "sku": "LYAP-X2081-1L", "batch": "1月", "cat": "挡泥板", "analyst": "俞东旭", "expand": "拓展品", "qty": 2.0, "comp": 12.0, "share": 14.3, "order": "N", "status": "竞争无优势"}, {"sku_id": "11857", "sku": "LYAP-X2081-1R", "batch": "1月", "cat": "挡泥板", "analyst": "俞东旭", "expand": "拓展品", "qty": 5.0, "comp": 12.0, "share": 29.4, "order": "N", "status": "竞争无优势"}, {"sku_id": "11933", "sku": "LYAP-X1915", "batch": "1月", "cat": "饰条", "analyst": "朱培源", "expand": "原开品", "qty": 1.0, "comp": 5.0, "share": 16.7, "order": "N", "status": "竞争无优势"}, {"sku_id": "11840", "sku": "LYAP-838-1R", "batch": "1月", "cat": "饰条", "analyst": "王偲涵", "expand": "原开品", "qty": 71.0, "comp": 36.0, "share": 66.4, "order": "Y", "status": "竞争无优势"}, {"sku_id": "11866", "sku": "LYAP-X1994-RL", "batch": "1月", "cat": "车门系统", "analyst": "俞东旭", "expand": "原开品", "qty": 6.0, "comp": 28.0, "share": 17.6, "order": "N", "status": "竞争无优势"}, {"sku_id": "11867", "sku": "LYAP-X1994-RR", "batch": "1月", "cat": "车门系统", "analyst": "俞东旭", "expand": "原开品", "qty": 12.0, "comp": 18.0, "share": 40.0, "order": "N", "status": "竞争无优势"}, {"sku_id": "11929", "sku": "LYAP-X1799", "batch": "2月", "cat": "车门系统", "analyst": "俞东旭", "expand": "原开品", "qty": 2.0, "comp": 4.0, "share": 33.3, "order": "Y", "status": "竞争无优势"}, {"sku_id": "11890", "sku": "LYAM-X2575-4", "batch": "2月", "cat": "车门系统", "analyst": "王偲涵", "expand": "拓展品", "qty": 5.0, "comp": 5.0, "share": 50.0, "order": "N", "status": "竞争无优势"}, {"sku_id": "11989", "sku": "LYAM-X2732", "batch": "2月", "cat": "挡泥板", "analyst": "章鹏", "expand": "原开品", "qty": 8.0, "comp": 7.0, "share": 53.3, "order": "Y", "status": "无市场"}, {"sku_id": "12088", "sku": "LYAP-X1920-BK", "batch": "2月", "cat": "饰条", "analyst": "王偲涵", "expand": "拓展品", "qty": 13.0, "comp": 13.0, "share": 50.0, "order": "Y", "status": "竞争无优势"}, {"sku_id": "12011", "sku": "LYAP-X2089", "batch": "2月", "cat": "机盖及附件", "analyst": "章鹏", "expand": "原开品", "qty": 17.0, "comp": 8.0, "share": 68.0, "order": "Y", "status": "竞争无优势"}, {"sku_id": "12021", "sku": "LYAP-X2135", "batch": "2月", "cat": "其他", "analyst": "王偲涵", "expand": "原开品", "qty": 9.0, "comp": 16.0, "share": 36.0, "order": "Y", "status": "竞争无优势"}, {"sku_id": "12023", "sku": "LYAP-X2146", "batch": "2月", "cat": "挡泥板", "analyst": "朱培源", "expand": "原开品", "qty": 0.0, "comp": 8.0, "share": 0.0, "order": "未出单", "status": "竞争无优势"}, {"sku_id": "12058", "sku": "LYAM-X2569-1", "batch": "2月", "cat": "其他", "analyst": "章鹏", "expand": "原开品", "qty": 24.0, "comp": 36.0, "share": 40.0, "order": "N", "status": "竞争无优势"}, {"sku_id": "12059", "sku": "LYAM-X2570-1", "batch": "2月", "cat": "其他", "analyst": "章鹏", "expand": "原开品", "qty": 16.0, "comp": 22.0, "share": 42.1, "order": "Y", "status": "竞争无优势"}, {"sku_id": "12060", "sku": "LYAM-X2574-1", "batch": "2月", "cat": "饰条", "analyst": "章鹏", "expand": "原开品", "qty": 5.0, "comp": 81.0, "share": 5.8, "order": "N", "status": "竞争无优势"}, {"sku_id": "12087", "sku": "LYAP-X1913", "batch": "2月", "cat": "饰条", "analyst": "王偲涵", "expand": "原开品", "qty": 6.0, "comp": 4.0, "share": 60.0, "order": "N", "status": "正常"}, {"sku_id": "12143", "sku": "LYAM-X2706", "batch": "2月", "cat": "车门系统", "analyst": "俞东旭", "expand": "原开品", "qty": 1.0, "comp": 1.0, "share": 50.0, "order": "N", "status": "正常"}, {"sku_id": "12240", "sku": "LYAP-X2148-1", "batch": "2月", "cat": "饰条", "analyst": "王偲涵", "expand": "原开品", "qty": 11.0, "comp": 4.0, "share": 73.3, "order": "Y", "status": "竞争无优势"}, {"sku_id": "12252", "sku": "LYAP-X1800-1", "batch": "3月", "cat": "车门系统", "analyst": "胡煜星", "expand": "原开品", "qty": 10.0, "comp": 16.0, "share": 38.5, "order": "Y", "status": "竞争无优势"}, {"sku_id": "12165", "sku": "LYAP-X1877", "batch": "3月", "cat": "挡泥板", "analyst": "朱培源", "expand": "原开品", "qty": 2.0, "comp": 7.0, "share": 22.2, "order": "Y", "status": "站外出单"}, {"sku_id": "11102", "sku": "LYAM-X2254-L", "batch": "3月", "cat": "车门系统", "analyst": "章鹏", "expand": "原开品", "qty": 3.0, "comp": 10.0, "share": 23.1, "order": "N", "status": "竞争无优势"}, {"sku_id": "12071", "sku": "LYAM-X2980-BK", "batch": "3月", "cat": "车身外扩件", "analyst": "胡煜星", "expand": "拓展品", "qty": 2.0, "comp": 1.0, "share": 66.7, "order": "Y", "status": "正常"}, {"sku_id": "12248", "sku": "LYAP-X2308", "batch": "3月", "cat": "其他", "analyst": "胡煜星", "expand": "原开品", "qty": 10.0, "comp": 6.0, "share": 62.5, "order": "Y", "status": "竞争无优势"}, {"sku_id": "12205", "sku": "LYAP-X1800-1L", "batch": "3月", "cat": "车门系统", "analyst": "胡煜星", "expand": "原开品", "qty": 16.0, "comp": 121.0, "share": 11.7, "order": "Y", "status": "竞争无优势"}, {"sku_id": "12206", "sku": "LYAP-X1800-1R", "batch": "3月", "cat": "车门系统", "analyst": "胡煜星", "expand": "原开品", "qty": 2.0, "comp": 18.0, "share": 10.0, "order": "Y", "status": "竞争无优势"}, {"sku_id": "11997", "sku": "LYAM-X2896", "batch": "3月", "cat": "饰条", "analyst": "王偲涵", "expand": "原开品", "qty": 1.0, "comp": 2.0, "share": 33.3, "order": "N", "status": "正常"}, {"sku_id": "12262", "sku": "LYAP-X2170", "batch": "3月", "cat": "机盖及附件", "analyst": "章鹏", "expand": "原开品", "qty": 3.0, "comp": 2.0, "share": 60.0, "order": "Y", "status": "正常"}, {"sku_id": "12244", "sku": "LYAP-X2190-L", "batch": "3月", "cat": "饰条", "analyst": "王偲涵", "expand": "原开品", "qty": 2.0, "comp": 7.0, "share": 22.2, "order": "N", "status": "正常"}, {"sku_id": "12243", "sku": "LYAP-X2190-R", "batch": "3月", "cat": "饰条", "analyst": "王偲涵", "expand": "原开品", "qty": 4.0, "comp": 7.0, "share": 36.4, "order": "N", "status": "正常"}, {"sku_id": "12085", "sku": "LYAP-X1911-BK", "batch": "3月", "cat": "机盖及附件", "analyst": "章鹏", "expand": "拓展品", "qty": 5.0, "comp": 8.0, "share": 38.5, "order": "Y", "status": "竞争无优势"}, {"sku_id": "12086", "sku": "LYAP-X1911-C", "batch": "3月", "cat": "机盖及附件", "analyst": "章鹏", "expand": "原开品", "qty": 5.0, "comp": 17.0, "share": 22.7, "order": "Y", "status": "竞争无优势"}, {"sku_id": "12258", "sku": "LYAP-X1927", "batch": "3月", "cat": "机盖及附件", "analyst": "章鹏", "expand": "原开品", "qty": 9.0, "comp": 36.0, "share": 20.0, "order": "Y", "status": "竞争无优势"}, {"sku_id": "12210", "sku": "LYAP-X1934", "batch": "3月", "cat": "饰条", "analyst": "章鹏", "expand": "原开品", "qty": 3.0, "comp": 105.0, "share": 2.8, "order": "N", "status": "竞争无优势"}, {"sku_id": "12250", "sku": "LYAP-X2148-1L", "batch": "3月", "cat": "饰条", "analyst": "王偲涵", "expand": "拓展品", "qty": 2.0, "comp": 3.0, "share": 40.0, "order": "Y", "status": "无市场"}, {"sku_id": "12251", "sku": "LYAP-X2148-1R", "batch": "3月", "cat": "饰条", "analyst": "王偲涵", "expand": "拓展品", "qty": 1.0, "comp": 4.0, "share": 20.0, "order": "N", "status": "竞争无优势"}, {"sku_id": "12227", "sku": "LYAP-X2418", "batch": "3月", "cat": "其他", "analyst": "章鹏", "expand": "原开品", "qty": 8.0, "comp": 4.0, "share": 66.7, "order": "Y", "status": "正常"}, {"sku_id": "12309", "sku": "MD-002-FL", "batch": "3月", "cat": "车门系统", "analyst": "俞东旭", "expand": "原开品", "qty": 3.0, "comp": 5.0, "share": 37.5, "order": "N", "status": "正常"}, {"sku_id": "12310", "sku": "MD-002-FR", "batch": "3月", "cat": "车门系统", "analyst": "俞东旭", "expand": "原开品", "qty": 4.0, "comp": 4.0, "share": 50.0, "order": "Y", "status": "正常"}, {"sku_id": "12311", "sku": "MD-002-RL", "batch": "3月", "cat": "车门系统", "analyst": "俞东旭", "expand": "原开品", "qty": 1.0, "comp": 6.0, "share": 14.3, "order": "N", "status": "竞争无优势"}, {"sku_id": "12312", "sku": "MD-002-RR", "batch": "3月", "cat": "车门系统", "analyst": "俞东旭", "expand": "原开品", "qty": 4.0, "comp": 8.0, "share": 33.3, "order": "Y", "status": "竞争无优势"}, {"sku_id": "12441", "sku": "LYAM-X2862", "batch": "3月", "cat": "机盖及附件", "analyst": "胡煜星", "expand": "原开品", "qty": 5.0, "comp": 6.0, "share": 45.5, "order": "Y", "status": "竞争无优势"}, {"sku_id": "12320", "sku": "LYAP-X2417", "batch": "3月", "cat": "挡泥板", "analyst": "朱培源", "expand": "原开品", "qty": 0.0, "comp": 3.0, "share": 0.0, "order": "未出单", "status": "竞争无优势"}, {"sku_id": "12321", "sku": "LYAP-X1788-GR", "batch": "3月", "cat": "车门系统", "analyst": "俞东旭", "expand": "原开品", "qty": 0.0, "comp": 10.0, "share": 0.0, "order": "未出单", "status": "竞争无优势"}, {"sku_id": "12333", "sku": "LYAP-X2429", "batch": "3月", "cat": "车门系统", "analyst": "朱培源", "expand": "原开品", "qty": 0.0, "comp": 2.0, "share": 0.0, "order": "未出单", "status": "站外出单"}, {"sku_id": "12307", "sku": "MD-001-RL", "batch": "3月", "cat": "车门系统", "analyst": "俞东旭", "expand": "原开品", "qty": 5.0, "comp": 2.0, "share": 71.4, "order": "Y", "status": "竞争无优势"}, {"sku_id": "12293", "sku": "LYAP-X2144-1", "batch": "3月", "cat": "车门系统", "analyst": "朱培源", "expand": "原开品", "qty": 1.0, "comp": 1.0, "share": 50.0, "order": "Y", "status": "竞争无优势"}, {"sku_id": "12298", "sku": "LYAP-X2144-1L", "batch": "3月", "cat": "车门系统", "analyst": "朱培源", "expand": "拓展品", "qty": 0.0, "comp": 2.0, "share": 0.0, "order": "未出单", "status": "竞争无优势"}, {"sku_id": "12299", "sku": "LYAP-X2144-1R", "batch": "3月", "cat": "车门系统", "analyst": "朱培源", "expand": "拓展品", "qty": 0.0, "comp": 4.0, "share": 0.0, "order": "未出单", "status": "竞争无优势"}, {"sku_id": "12290", "sku": "LYAP-X1878", "batch": "3月", "cat": "挡泥板", "analyst": "朱培源", "expand": "原开品", "qty": 0.0, "comp": 2.0, "share": 0.0, "order": "未出单", "status": "竞争无优势"}, {"sku_id": "12387", "sku": "LYAP-X2077", "batch": "3月", "cat": "车身外扩件", "analyst": "俞东旭", "expand": "原开品", "qty": 0.0, "comp": 7.0, "share": 0.0, "order": "未出单", "status": "竞争无优势"}, {"sku_id": "12388", "sku": "LYAP-X2085", "batch": "3月", "cat": "车身外扩件", "analyst": "俞东旭", "expand": "原开品", "qty": 0.0, "comp": 4.0, "share": 0.0, "order": "未出单", "status": "竞争无优势"}, {"sku_id": "12386", "sku": "LYAP-X1788-BN", "batch": "3月", "cat": "车门系统", "analyst": "俞东旭", "expand": "拓展品", "qty": 0.0, "comp": 2.0, "share": 0.0, "order": "未出单", "status": "竞争无优势"}, {"sku_id": "12213", "sku": "LYAP-X1929", "batch": "3月", "cat": "机盖及附件", "analyst": "章鹏", "expand": "原开品", "qty": 0.0, "comp": 10.0, "share": 0.0, "order": "未出单", "status": "竞争无优势"}];
+var ALL_DATA = [{"sku_id": "11547", "sku": "LYAM-X2815-1", "batch": "1月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "机盖及附件", "expand": "原开品", "onshelf": "2026-01-04", "first_order": "2026-02-22", "freq1": 6, "qty1": 0.0, "amt1": 0.0, "comp1": 2.0, "order1": "未出单", "status1": "站外出单", "share1": 0.0, "freq2": 5, "qty2": 1.0, "amt2": 59.0, "comp2": 1.0, "order2": "未出单", "status2": "竞争无优势", "share2": 50.0, "freq3": 1, "qty3": 2.0, "amt3": 118.0, "comp3": 1.0, "order3": "N", "status3": "站外出单", "share3": 66.7}, {"sku_id": "11650", "sku": "LYAP-X1861", "batch": "1月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "挡泥板", "expand": "原开品", "onshelf": "2026-01-04", "first_order": "2026-01-07", "freq1": 4, "qty1": 7.0, "amt1": 1050.0, "comp1": 0.0, "order1": "Y", "status1": "正常", "share1": 100.0, "freq2": 5, "qty2": 11.0, "amt2": 1594.5, "comp2": 0.0, "order2": "Y", "status2": "站外出单", "share2": 100.0, "freq3": 4, "qty3": 14.0, "amt3": 2100.0, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "11674", "sku": "LYAP-X2057", "batch": "1月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "机盖及附件", "expand": "原开品", "onshelf": "2026-01-04", "first_order": "2026-01-06", "freq1": 4, "qty1": 3.0, "amt1": 197.52, "comp1": 1.0, "order1": "Y", "status1": "正常", "share1": 75.0, "freq2": 3, "qty2": 11.0, "amt2": 741.82, "comp2": 1.0, "order2": "Y", "status2": "站外出单", "share2": 91.7, "freq3": 3, "qty3": 16.0, "amt3": 1086.81, "comp3": 6.0, "order3": "Y", "status3": "正常", "share3": 72.7}, {"sku_id": "11668", "sku": "LYAP-X2060-1", "batch": "1月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "机盖及附件", "expand": "原开品", "onshelf": "2026-01-04", "first_order": "2026-01-08", "freq1": 4, "qty1": 2.0, "amt1": 270.0, "comp1": 0.0, "order1": "Y", "status1": "正常", "share1": 100.0, "freq2": 3, "qty2": 2.0, "amt2": 270.0, "comp2": 2.0, "order2": "Y", "status2": "无市场", "share2": 50.0, "freq3": 2, "qty3": 7.0, "amt3": 938.25, "comp3": 6.0, "order3": "Y", "status3": "竞争无优势", "share3": 53.8}, {"sku_id": "11681", "sku": "LYAP-X1656-1", "batch": "1月", "analyst": "胡煜星", "analyst2": "胡煜星", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-01-05", "first_order": "2026-01-09", "freq1": 5, "qty1": 1.0, "amt1": 289.0, "comp1": 0.0, "order1": "Y", "status1": "无市场", "share1": 100.0, "freq2": 2, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "Y", "status2": "无市场", "share2": 0.0, "freq3": 1, "qty3": 1.0, "amt3": 350.0, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "11742", "sku": "LYAM-X2046-R", "batch": "1月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "挡泥板", "expand": "原开品", "onshelf": "2026-01-07", "first_order": "2026-01-11", "freq1": 2, "qty1": 3.0, "amt1": 387.0, "comp1": 5.0, "order1": "Y", "status1": "站内无价格优势", "share1": 37.5, "freq2": 2, "qty2": 1.0, "amt2": 105.0, "comp2": 9.0, "order2": "Y", "status2": "站内无价格优势", "share2": 10.0, "freq3": 3, "qty3": 11.0, "amt3": 1243.0, "comp3": 1.0, "order3": "Y", "status3": "正常", "share3": 91.7}, {"sku_id": "11603", "sku": "LYAP-X1865-1", "batch": "1月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "挡泥板", "expand": "原开品", "onshelf": "2026-01-09", "first_order": "2026-01-19", "freq1": 3, "qty1": 4.0, "amt1": 396.0, "comp1": 0.0, "order1": "N", "status1": "正常", "share1": 100.0, "freq2": 5, "qty2": 2.0, "amt2": 238.0, "comp2": 0.0, "order2": "N", "status2": "无市场", "share2": 100.0, "freq3": 3, "qty3": 7.0, "amt3": 803.44, "comp3": 0.0, "order3": "N", "status3": "正常", "share3": 100.0}, {"sku_id": "11704", "sku": "LYAM-X2416-BK", "batch": "1月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "车身外扩件", "expand": "拓展品", "onshelf": "2026-01-12", "first_order": "2026-02-17", "freq1": 4, "qty1": 0.0, "amt1": 0.0, "comp1": 3.0, "order1": "未出单", "status1": "竞争无优势", "share1": 0.0, "freq2": 6, "qty2": 2.0, "amt2": 204.0, "comp2": 8.0, "order2": "N", "status2": "竞争无优势", "share2": 20.0, "freq3": 4, "qty3": 6.0, "amt3": 612.0, "comp3": 8.0, "order3": "N", "status3": "竞争无优势", "share3": 42.9}, {"sku_id": "11699", "sku": "LYAM-X2416-C", "batch": "1月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "车身外扩件", "expand": "原开品", "onshelf": "2026-01-12", "first_order": "2026-01-22", "freq1": 4, "qty1": 4.0, "amt1": 440.0, "comp1": 5.0, "order1": "N", "status1": "站内无价格优势", "share1": 44.4, "freq2": 4, "qty2": 2.0, "amt2": 220.0, "comp2": 12.0, "order2": "N", "status2": "竞争无优势", "share2": 14.3, "freq3": 4, "qty3": 5.0, "amt3": 550.0, "comp3": 10.0, "order3": "N", "status3": "竞争无优势", "share3": 33.3}, {"sku_id": "11982", "sku": "LYAM-X2267-1", "batch": "1月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "机盖及附件", "expand": "原开品", "onshelf": "2026-01-12", "first_order": "2026-01-14", "freq1": 2, "qty1": 3.0, "amt1": 465.0, "comp1": 3.0, "order1": "Y", "status1": "竞争无优势", "share1": 50.0, "freq2": 4, "qty2": 6.0, "amt2": 915.99, "comp2": 2.0, "order2": "Y", "status2": "无市场", "share2": 75.0, "freq3": 5, "qty3": 6.0, "amt3": 922.64, "comp3": 3.0, "order3": "Y", "status3": "正常", "share3": 66.7}, {"sku_id": "11911", "sku": "LYAM-X2575-1", "batch": "1月", "analyst": "胡煜星", "analyst2": "胡煜星", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-01-12", "first_order": "2026-01-21", "freq1": 2, "qty1": 4.0, "amt1": 248.64, "comp1": 21.0, "order1": "N", "status1": "站内无价格优势", "share1": 16.0, "freq2": 4, "qty2": 16.0, "amt2": 994.56, "comp2": 53.0, "order2": "N", "status2": "站内无价格优势", "share2": 23.2, "freq3": 8, "qty3": 33.0, "amt3": 2050.78, "comp3": 80.0, "order3": "N", "status3": "竞争无优势", "share3": 29.2}, {"sku_id": "11848", "sku": "LYAM-X2575-3", "batch": "1月", "analyst": "胡煜星", "analyst2": "胡煜星", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-01-12", "first_order": "2026-02-01", "freq1": 2, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未出单", "status1": "无市场", "share1": 0.0, "freq2": 3, "qty2": 3.0, "amt2": 165.0, "comp2": 0.0, "order2": "N", "status2": "无市场", "share2": 100.0, "freq3": 2, "qty3": 7.0, "amt3": 385.0, "comp3": 2.0, "order3": "N", "status3": "竞争无优势", "share3": 77.8}, {"sku_id": "11875", "sku": "LYAP-X1659-1L", "batch": "1月", "analyst": "胡煜星", "analyst2": "胡煜星", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-01-12", "first_order": "2026-01-19", "freq1": 2, "qty1": 10.0, "amt1": 2300.0, "comp1": 0.0, "order1": "Y", "status1": "正常", "share1": 100.0, "freq2": 2, "qty2": 10.0, "amt2": 2320.34, "comp2": 0.0, "order2": "Y", "status2": "站外出单", "share2": 100.0, "freq3": 3, "qty3": 20.0, "amt3": 4838.64, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "11833", "sku": "LYAP-X2131", "batch": "1月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "其他", "expand": "原开品", "onshelf": "2026-01-12", "first_order": "2026-01-18", "freq1": 2, "qty1": 1.0, "amt1": 158.0, "comp1": 1.0, "order1": "Y", "status1": "无市场", "share1": 50.0, "freq2": 2, "qty2": 8.0, "amt2": 360.0, "comp2": 1.0, "order2": "Y", "status2": "无市场", "share2": 88.9, "freq3": 1, "qty3": 11.0, "amt3": 490.5, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "11683", "sku": "LYAP-X1656-1R", "batch": "1月", "analyst": "胡煜星", "analyst2": "胡煜星", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-01-19", "first_order": "未出单", "freq1": 4, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未出单", "status1": "无市场", "share1": 0.0, "freq2": 3, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未出单", "status2": "无市场", "share2": 0.0, "freq3": 2, "qty3": 0.0, "amt3": 0.0, "comp3": 0.0, "order3": "未出单", "status3": "无市场", "share3": 0.0}, {"sku_id": "11733", "sku": "LYAP-X1789-4R", "batch": "1月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-01-19", "first_order": "2026-02-13", "freq1": 2, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未出单", "status1": "无市场", "share1": 0.0, "freq2": 5, "qty2": 5.0, "amt2": 175.0, "comp2": 0.0, "order2": "N", "status2": "无市场", "share2": 100.0, "freq3": 2, "qty3": 4.0, "amt3": 140.0, "comp3": 0.0, "order3": "N", "status3": "无市场", "share3": 100.0}, {"sku_id": "11751", "sku": "LYAP-X2040", "batch": "1月", "analyst": "王偲涵", "analyst2": "王偲涵", "cat": "饰条", "expand": "原开品", "onshelf": "2026-01-19", "first_order": "2026-01-21", "freq1": 1, "qty1": 2.0, "amt1": 138.0, "comp1": 6.0, "order1": "Y", "status1": "竞争无优势", "share1": 25.0, "freq2": 3, "qty2": 24.0, "amt2": 1652.55, "comp2": 10.0, "order2": "Y", "status2": "正常", "share2": 70.6, "freq3": 1, "qty3": 40.0, "amt3": 2761.5, "comp3": 9.0, "order3": "Y", "status3": "正常", "share3": 81.6}, {"sku_id": "11830", "sku": "LYAP-X1919", "batch": "1月", "analyst": "王偲涵", "analyst2": "王偲涵", "cat": "饰条", "expand": "原开品", "onshelf": "2026-01-19", "first_order": "2026-02-01", "freq1": 1, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未出单", "status1": "无市场", "share1": 0.0, "freq2": 3, "qty2": 21.0, "amt2": 1239.0, "comp2": 1.0, "order2": "N", "status2": "无市场", "share2": 95.5, "freq3": 1, "qty3": 22.0, "amt3": 1298.0, "comp3": 0.0, "order3": "N", "status3": "正常", "share3": 100.0}, {"sku_id": "11736", "sku": "LYAM-X2046-L", "batch": "1月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "挡泥板", "expand": "原开品", "onshelf": "2026-01-20", "first_order": "2026-02-12", "freq1": 2, "qty1": 0.0, "amt1": 0.0, "comp1": 2.0, "order1": "未出单", "status1": "竞争无优势", "share1": 0.0, "freq2": 5, "qty2": 8.0, "amt2": 839.95, "comp2": 15.0, "order2": "N", "status2": "竞争无优势", "share2": 34.8, "freq3": 7, "qty3": 13.0, "amt3": 1392.0, "comp3": 7.0, "order3": "N", "status3": "正常", "share3": 65.0}, {"sku_id": "11745", "sku": "LYAP-X1914", "batch": "1月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "机盖及附件", "expand": "原开品", "onshelf": "2026-01-20", "first_order": "2026-01-25", "freq1": 2, "qty1": 1.0, "amt1": 80.0, "comp1": 3.0, "order1": "Y", "status1": "站内无价格优势", "share1": 25.0, "freq2": 4, "qty2": 3.0, "amt2": 240.0, "comp2": 14.0, "order2": "Y", "status2": "竞争无优势", "share2": 17.6, "freq3": 4, "qty3": 9.0, "amt3": 697.93, "comp3": 13.0, "order3": "Y", "status3": "竞争无优势", "share3": 40.9}, {"sku_id": "11777", "sku": "LYAM-X2756", "batch": "1月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "机盖及附件", "expand": "原开品", "onshelf": "2026-01-20", "first_order": "2026-02-12", "freq1": 1, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未出单", "status1": "无市场", "share1": 0.0, "freq2": 2, "qty2": 2.0, "amt2": 430.0, "comp2": 0.0, "order2": "N", "status2": "无市场", "share2": 100.0, "freq3": 3, "qty3": 7.0, "amt3": 1485.0, "comp3": 0.0, "order3": "N", "status3": "正常", "share3": 100.0}, {"sku_id": "11778", "sku": "LYAP-X1662-1", "batch": "1月", "analyst": "胡煜星", "analyst2": "胡煜星", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-01-20", "first_order": "2026-03-14", "freq1": 2, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未出单", "status1": "无市场", "share1": 0.0, "freq2": 3, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未出单", "status2": "无市场", "share2": 0.0, "freq3": 2, "qty3": 1.0, "amt3": 398.0, "comp3": 0.0, "order3": "N", "status3": "无市场", "share3": 100.0}, {"sku_id": "11780", "sku": "LYAP-X1640-1R", "batch": "1月", "analyst": "胡煜星", "analyst2": "胡煜星", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-01-20", "first_order": "2026-01-22", "freq1": 1, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "Y", "status1": "无市场", "share1": 0.0, "freq2": 2, "qty2": 1.0, "amt2": 160.0, "comp2": 0.0, "order2": "Y", "status2": "站外出单", "share2": 100.0, "freq3": 1, "qty3": 0.0, "amt3": 0.0, "comp3": 0.0, "order3": "Y", "status3": "站外出单", "share3": 0.0}, {"sku_id": "11781", "sku": "LYAP-X1791-3L", "batch": "1月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-01-20", "first_order": "2026-02-09", "freq1": 2, "qty1": 0.0, "amt1": 0.0, "comp1": 3.0, "order1": "未出单", "status1": "竞争无优势", "share1": 0.0, "freq2": 5, "qty2": 2.0, "amt2": 60.0, "comp2": 19.0, "order2": "N", "status2": "竞争无优势", "share2": 9.5, "freq3": 5, "qty3": 17.0, "amt3": 519.0, "comp3": 21.0, "order3": "N", "status3": "竞争无优势", "share3": 44.7}, {"sku_id": "11792", "sku": "LYAP-X1640-1L", "batch": "1月", "analyst": "胡煜星", "analyst2": "胡煜星", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-01-20", "first_order": "2026-01-29", "freq1": 2, "qty1": 1.0, "amt1": 160.0, "comp1": 0.0, "order1": "N", "status1": "正常", "share1": 100.0, "freq2": 2, "qty2": 2.0, "amt2": 292.8, "comp2": 0.0, "order2": "N", "status2": "站外出单", "share2": 100.0, "freq3": 1, "qty3": 3.0, "amt3": 428.7, "comp3": 0.0, "order3": "N", "status3": "正常", "share3": 100.0}, {"sku_id": "11793", "sku": "LYAP-X1791-3R", "batch": "1月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-01-20", "first_order": "2026-02-09", "freq1": 2, "qty1": 0.0, "amt1": 0.0, "comp1": 1.0, "order1": "未出单", "status1": "竞争无优势", "share1": 0.0, "freq2": 5, "qty2": 2.0, "amt2": 69.0, "comp2": 2.0, "order2": "N", "status2": "无市场", "share2": 50.0, "freq3": 6, "qty3": 8.0, "amt3": 249.0, "comp3": 1.0, "order3": "N", "status3": "站内无价格优势", "share3": 88.9}, {"sku_id": "11904", "sku": "LYAM-X2305-1", "batch": "1月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "车身外扩件", "expand": "原开品", "onshelf": "2026-01-20", "first_order": "2026-01-28", "freq1": 4, "qty1": 1.0, "amt1": 94.5, "comp1": 0.0, "order1": "Y", "status1": "站内无价格优势", "share1": 100.0, "freq2": 5, "qty2": 3.0, "amt2": 249.75, "comp2": 6.0, "order2": "Y", "status2": "竞争无优势", "share2": 33.3, "freq3": 4, "qty3": 12.0, "amt3": 927.68, "comp3": 9.0, "order3": "Y", "status3": "竞争无优势", "share3": 57.1}, {"sku_id": "11756", "sku": "LYAP-X1662-2", "batch": "1月", "analyst": "胡煜星", "analyst2": "胡煜星", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-01-21", "first_order": "2026-02-06", "freq1": 2, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未出单", "status1": "无市场", "share1": 0.0, "freq2": 4, "qty2": 2.0, "amt2": 596.0, "comp2": 0.0, "order2": "N", "status2": "无市场", "share2": 100.0, "freq3": 3, "qty3": 0.0, "amt3": 0.0, "comp3": 0.0, "order3": "N", "status3": "无市场", "share3": 0.0}, {"sku_id": "11757", "sku": "LYAP-X1908-BK", "batch": "1月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "饰条", "expand": "拓展品", "onshelf": "2026-01-21", "first_order": "2026-01-23", "freq1": 2, "qty1": 3.0, "amt1": 144.0, "comp1": 0.0, "order1": "Y", "status1": "正常", "share1": 100.0, "freq2": 2, "qty2": 10.0, "amt2": 480.0, "comp2": 0.0, "order2": "Y", "status2": "站外出单", "share2": 100.0, "freq3": 2, "qty3": 9.0, "amt3": 432.0, "comp3": 0.0, "order3": "Y", "status3": "竞争无优势", "share3": 100.0}, {"sku_id": "11758", "sku": "LYAP-X1908-C", "batch": "1月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "饰条", "expand": "原开品", "onshelf": "2026-01-21", "first_order": "2026-01-22", "freq1": 2, "qty1": 2.0, "amt1": 96.0, "comp1": 4.0, "order1": "Y", "status1": "竞争无优势", "share1": 33.3, "freq2": 2, "qty2": 16.0, "amt2": 768.0, "comp2": 11.0, "order2": "Y", "status2": "竞争无优势", "share2": 59.3, "freq3": 2, "qty3": 11.0, "amt3": 519.0, "comp3": 24.0, "order3": "Y", "status3": "竞争无优势", "share3": 31.4}, {"sku_id": "11808", "sku": "LYAP-X1910-BK", "batch": "1月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "饰条", "expand": "拓展品", "onshelf": "2026-01-21", "first_order": "2026-02-16", "freq1": 2, "qty1": 0.0, "amt1": 0.0, "comp1": 1.0, "order1": "未出单", "status1": "竞争无优势", "share1": 0.0, "freq2": 4, "qty2": 1.0, "amt2": 48.0, "comp2": 8.0, "order2": "N", "status2": "竞争无优势", "share2": 11.1, "freq3": 2, "qty3": 7.0, "amt3": 336.0, "comp3": 11.0, "order3": "N", "status3": "竞争无优势", "share3": 38.9}, {"sku_id": "11809", "sku": "LYAP-X1910-C", "batch": "1月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "饰条", "expand": "原开品", "onshelf": "2026-01-21", "first_order": "2026-01-21", "freq1": 2, "qty1": 2.0, "amt1": 100.0, "comp1": 6.0, "order1": "Y", "status1": "竞争无优势", "share1": 25.0, "freq2": 5, "qty2": 12.0, "amt2": 596.34, "comp2": 12.0, "order2": "Y", "status2": "竞争无优势", "share2": 50.0, "freq3": 1, "qty3": 16.0, "amt3": 792.46, "comp3": 9.0, "order3": "Y", "status3": "正常", "share3": 64.0}, {"sku_id": "11823", "sku": "LYAP-X1939-1", "batch": "1月", "analyst": "王偲涵", "analyst2": "王偲涵", "cat": "饰条", "expand": "原开品", "onshelf": "2026-01-21", "first_order": "2026-01-23", "freq1": 1, "qty1": 5.0, "amt1": 225.0, "comp1": 0.0, "order1": "Y", "status1": "正常", "share1": 100.0, "freq2": 3, "qty2": 9.0, "amt2": 412.5, "comp2": 0.0, "order2": "Y", "status2": "站外出单", "share2": 100.0, "freq3": 1, "qty3": 5.0, "amt3": 231.0, "comp3": 2.0, "order3": "Y", "status3": "竞争无优势", "share3": 71.4}, {"sku_id": "11814", "sku": "LYAP-X2020", "batch": "1月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "饰条", "expand": "原开品", "onshelf": "2026-01-21", "first_order": "2026-02-13", "freq1": 4, "qty1": 0.0, "amt1": 0.0, "comp1": 3.0, "order1": "未出单", "status1": "竞争无优势", "share1": 0.0, "freq2": 1, "qty2": 3.0, "amt2": 135.0, "comp2": 14.0, "order2": "N", "status2": "竞争无优势", "share2": 17.6, "freq3": 3, "qty3": 5.0, "amt3": 225.0, "comp3": 9.0, "order3": "N", "status3": "站内无价格优势", "share3": 35.7}, {"sku_id": "11815", "sku": "LYAP-X2021", "batch": "1月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "饰条", "expand": "原开品", "onshelf": "2026-01-21", "first_order": "2026-03-02", "freq1": 4, "qty1": 0.0, "amt1": 0.0, "comp1": 2.0, "order1": "未出单", "status1": "竞争无优势", "share1": 0.0, "freq2": 1, "qty2": 0.0, "amt2": 0.0, "comp2": 5.0, "order2": "未出单", "status2": "竞争无优势", "share2": 0.0, "freq3": 2, "qty3": 2.0, "amt3": 86.0, "comp3": 10.0, "order3": "N", "status3": "竞争无优势", "share3": 16.7}, {"sku_id": "11824", "sku": "LYAP-X2032", "batch": "1月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "机盖及附件", "expand": "原开品", "onshelf": "2026-01-21", "first_order": "2026-01-24", "freq1": 2, "qty1": 5.0, "amt1": 675.0, "comp1": 0.0, "order1": "Y", "status1": "正常", "share1": 100.0, "freq2": 1, "qty2": 4.0, "amt2": 540.0, "comp2": 0.0, "order2": "Y", "status2": "站外出单", "share2": 100.0, "freq3": 2, "qty3": 4.0, "amt3": 547.0, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "11855", "sku": "LYAP-X2081-1", "batch": "1月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "挡泥板", "expand": "原开品", "onshelf": "2026-01-21", "first_order": "2026-02-19", "freq1": 1, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未出单", "status1": "竞争无优势", "share1": 0.0, "freq2": 3, "qty2": 3.0, "amt2": 237.0, "comp2": 5.0, "order2": "未出单", "status2": "竞争无优势", "share2": 37.5, "freq3": 2, "qty3": 2.0, "amt3": 158.0, "comp3": 3.0, "order3": "N", "status3": "站外出单", "share3": 40.0}, {"sku_id": "11856", "sku": "LYAP-X2081-1L", "batch": "1月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "挡泥板", "expand": "拓展品", "onshelf": "2026-01-21", "first_order": "2026-02-23", "freq1": 1, "qty1": 0.0, "amt1": 0.0, "comp1": 4.0, "order1": "未出单", "status1": "站内无价格优势", "share1": 0.0, "freq2": 4, "qty2": 1.0, "amt2": 39.09, "comp2": 10.0, "order2": "未出单", "status2": "竞争无优势", "share2": 9.1, "freq3": 3, "qty3": 2.0, "amt3": 81.09, "comp3": 12.0, "order3": "N", "status3": "竞争无优势", "share3": 14.3}, {"sku_id": "11857", "sku": "LYAP-X2081-1R", "batch": "1月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "挡泥板", "expand": "拓展品", "onshelf": "2026-01-21", "first_order": "2026-03-06", "freq1": 2, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未出单", "status1": "无市场", "share1": 0.0, "freq2": 6, "qty2": 0.0, "amt2": 0.0, "comp2": 3.0, "order2": "未出单", "status2": "竞争无优势", "share2": 0.0, "freq3": 5, "qty3": 5.0, "amt3": 184.95, "comp3": 12.0, "order3": "N", "status3": "竞争无优势", "share3": 29.4}, {"sku_id": "12303", "sku": "LYAP-X1789-4L", "batch": "1月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-01-22", "first_order": "2026-01-24", "freq1": 1, "qty1": 5.0, "amt1": 175.0, "comp1": 0.0, "order1": "Y", "status1": "正常", "share1": 100.0, "freq2": 2, "qty2": 15.0, "amt2": 525.0, "comp2": 0.0, "order2": "Y", "status2": "无市场", "share2": 100.0, "freq3": 2, "qty3": 28.0, "amt3": 978.25, "comp3": 0.0, "order3": "Y", "status3": "站外出单", "share3": 100.0}, {"sku_id": "11933", "sku": "LYAP-X1915", "batch": "1月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "饰条", "expand": "原开品", "onshelf": "2026-01-25", "first_order": "2026-03-04", "freq1": 1, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未出单", "status1": "无市场", "share1": 0.0, "freq2": 5, "qty2": 0.0, "amt2": 0.0, "comp2": 1.0, "order2": "未出单", "status2": "竞争无优势", "share2": 0.0, "freq3": 3, "qty3": 1.0, "amt3": 64.78, "comp3": 5.0, "order3": "N", "status3": "竞争无优势", "share3": 16.7}, {"sku_id": "11839", "sku": "LYAP-838-1L", "batch": "1月", "analyst": "王偲涵", "analyst2": "王偲涵", "cat": "饰条", "expand": "原开品", "onshelf": "2026-01-28", "first_order": "2026-02-03", "freq1": 1, "qty1": 0.0, "amt1": 0.0, "comp1": 2.0, "order1": "未出单", "status1": "竞争无优势", "share1": 0.0, "freq2": 4, "qty2": 40.0, "amt2": 1680.0, "comp2": 11.0, "order2": "Y", "status2": "竞争无优势", "share2": 78.4, "freq3": 1, "qty3": 51.0, "amt3": 2186.0, "comp3": 14.0, "order3": "Y", "status3": "正常", "share3": 78.5}, {"sku_id": "11840", "sku": "LYAP-838-1R", "batch": "1月", "analyst": "王偲涵", "analyst2": "王偲涵", "cat": "饰条", "expand": "原开品", "onshelf": "2026-01-28", "first_order": "2026-02-05", "freq1": 1, "qty1": 0.0, "amt1": 0.0, "comp1": 4.0, "order1": "未出单", "status1": "竞争无优势", "share1": 0.0, "freq2": 5, "qty2": 55.0, "amt2": 2310.0, "comp2": 14.0, "order2": "Y", "status2": "正常", "share2": 79.7, "freq3": 5, "qty3": 71.0, "amt3": 3223.9, "comp3": 36.0, "order3": "Y", "status3": "竞争无优势", "share3": 66.4}, {"sku_id": "11794", "sku": "LYAP-X1868", "batch": "1月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "挡泥板", "expand": "原开品", "onshelf": "2026-01-28", "first_order": "2026-01-30", "freq1": 1, "qty1": 1.0, "amt1": 69.0, "comp1": 0.0, "order1": "Y", "status1": "正常", "share1": 100.0, "freq2": 1, "qty2": 19.0, "amt2": 1311.0, "comp2": 0.0, "order2": "Y", "status2": "无市场", "share2": 100.0, "freq3": 2, "qty3": 30.0, "amt3": 2070.0, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "11866", "sku": "LYAP-X1994-RL", "batch": "1月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-01-28", "first_order": "2026-02-17", "freq1": 1, "qty1": 0.0, "amt1": 0.0, "comp1": 7.0, "order1": "未出单", "status1": "竞争无优势", "share1": 0.0, "freq2": 4, "qty2": 4.0, "amt2": 104.0, "comp2": 15.0, "order2": "N", "status2": "竞争无优势", "share2": 21.1, "freq3": 6, "qty3": 6.0, "amt3": 156.0, "comp3": 28.0, "order3": "N", "status3": "竞争无优势", "share3": 17.6}, {"sku_id": "11867", "sku": "LYAP-X1994-RR", "batch": "1月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-01-28", "first_order": "2026-02-15", "freq1": 1, "qty1": 0.0, "amt1": 0.0, "comp1": 4.0, "order1": "未出单", "status1": "竞争无优势", "share1": 0.0, "freq2": 4, "qty2": 9.0, "amt2": 234.0, "comp2": 23.0, "order2": "N", "status2": "竞争无优势", "share2": 28.1, "freq3": 2, "qty3": 12.0, "amt3": 312.0, "comp3": 18.0, "order3": "N", "status3": "竞争无优势", "share3": 40.0}, {"sku_id": "11826", "sku": "LYAP-X2132", "batch": "1月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "挡泥板", "expand": "原开品", "onshelf": "2026-01-29", "first_order": "2026-02-12", "freq1": 1, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未出单", "status1": "无市场", "share1": 0.0, "freq2": 4, "qty2": 11.0, "amt2": 495.0, "comp2": 0.0, "order2": "N", "status2": "无市场", "share2": 100.0, "freq3": 1, "qty3": 11.0, "amt3": 490.5, "comp3": 0.0, "order3": "N", "status3": "正常", "share3": 100.0}, {"sku_id": "11876", "sku": "LYAP-X1659-1R", "batch": "1月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-01-29", "first_order": "2026-03-06", "freq1": 1, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未出单", "status1": "无市场", "share1": 0.0, "freq2": 3, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未出单", "status2": "无市场", "share2": 0.0, "freq3": 4, "qty3": 6.0, "amt3": 1242.5, "comp3": 0.0, "order3": "N", "status3": "无市场", "share3": 100.0}, {"sku_id": "11936", "sku": "LYAP-X1939-1L", "batch": "1月", "analyst": "王偲涵", "analyst2": "王偲涵", "cat": "饰条", "expand": "拓展品", "onshelf": "2026-01-29", "first_order": "2026-02-03", "freq1": 1, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未出单", "status1": "无市场", "share1": 0.0, "freq2": 3, "qty2": 3.0, "amt2": 75.0, "comp2": 0.0, "order2": "Y", "status2": "无市场", "share2": 100.0, "freq3": 1, "qty3": 4.0, "amt3": 100.0, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "11937", "sku": "LYAP-X1939-1R", "batch": "1月", "analyst": "王偲涵", "analyst2": "王偲涵", "cat": "饰条", "expand": "拓展品", "onshelf": "2026-01-29", "first_order": "2026-02-11", "freq1": 1, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未出单", "status1": "无市场", "share1": 0.0, "freq2": 3, "qty2": 4.0, "amt2": 92.0, "comp2": 1.0, "order2": "N", "status2": "无市场", "share2": 80.0, "freq3": 1, "qty3": 5.0, "amt3": 117.0, "comp3": 0.0, "order3": "N", "status3": "正常", "share3": 100.0}, {"sku_id": "11874", "sku": "LYAM-X2800", "batch": "1月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-01-29", "first_order": "2026-02-01", "freq1": 1, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未出单", "status1": "无市场", "share1": 0.0, "freq2": 2, "qty2": 11.0, "amt2": 1485.0, "comp2": 0.0, "order2": "Y", "status2": "无市场", "share2": 100.0, "freq3": 2, "qty3": 5.0, "amt3": 675.0, "comp3": 1.0, "order3": "Y", "status3": "正常", "share3": 83.3}, {"sku_id": "11925", "sku": "LYAP-X1640-1", "batch": "1月", "analyst": "章鹏", "analyst2": "章鹏", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-01-29", "first_order": "2026-01-30", "freq1": 1, "qty1": 2.0, "amt1": 598.0, "comp1": 0.0, "order1": "Y", "status1": "正常", "share1": 100.0, "freq2": 1, "qty2": 7.0, "amt2": 2078.05, "comp2": 0.0, "order2": "Y", "status2": "无市场", "share2": 100.0, "freq3": 3, "qty3": 26.0, "amt3": 7400.68, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "11852", "sku": "LYAP-X1659-1", "batch": "1月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-01-29", "first_order": "2026-02-11", "freq1": 2, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未出单", "status1": "无市场", "share1": 0.0, "freq2": 3, "qty2": 4.0, "amt2": 1680.0, "comp2": 0.0, "order2": "N", "status2": "站外出单", "share2": 100.0, "freq3": 2, "qty3": 7.0, "amt3": 2940.0, "comp3": 0.0, "order3": "N", "status3": "正常", "share3": 100.0}, {"sku_id": "12359", "sku": "LYAP-941-1+LYAP-941-2", "batch": "2月", "analyst": "胡煜星", "analyst2": "胡煜星", "cat": "车门系统", "expand": "组合件", "onshelf": "2026-02-03", "first_order": "2026-02-09", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 4, "qty2": 4.0, "amt2": 1996.0, "comp2": 0.0, "order2": "Y", "status2": "无市场", "share2": 100.0, "freq3": 3, "qty3": 10.0, "amt3": 4973.05, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "11921", "sku": "LYAP-X1482-2", "batch": "2月", "analyst": "王偲涵", "analyst2": "王偲涵", "cat": "车身外扩件", "expand": "拓展品", "onshelf": "2026-02-03", "first_order": "2026-02-04", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 3, "qty2": 19.0, "amt2": 3021.0, "comp2": 1.0, "order2": "Y", "status2": "无市场", "share2": 95.0, "freq3": 1, "qty3": 40.0, "amt3": 6352.05, "comp3": 8.0, "order3": "Y", "status3": "正常", "share3": 83.3}, {"sku_id": "11922", "sku": "LYAP-X1482-3", "batch": "2月", "analyst": "王偲涵", "analyst2": "王偲涵", "cat": "车身外扩件", "expand": "拓展品", "onshelf": "2026-02-03", "first_order": "2026-02-05", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 3, "qty2": 56.0, "amt2": 8896.05, "comp2": 11.0, "order2": "Y", "status2": "无市场", "share2": 83.6, "freq3": 3, "qty3": 94.0, "amt3": 15954.8, "comp3": 8.0, "order3": "Y", "status3": "正常", "share3": 92.2}, {"sku_id": "11923", "sku": "LYAP-X1482-4", "batch": "2月", "analyst": "王偲涵", "analyst2": "王偲涵", "cat": "车身外扩件", "expand": "拓展品", "onshelf": "2026-02-03", "first_order": "2026-02-05", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 3, "qty2": 16.0, "amt2": 2544.0, "comp2": 1.0, "order2": "Y", "status2": "无市场", "share2": 94.1, "freq3": 1, "qty3": 8.0, "amt3": 1272.0, "comp3": 2.0, "order3": "Y", "status3": "正常", "share3": 80.0}, {"sku_id": "11927", "sku": "LYAP-X1791-4L", "batch": "2月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-02-03", "first_order": "2026-02-14", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 5, "qty2": 2.0, "amt2": 60.0, "comp2": 0.0, "order2": "N", "status2": "无市场", "share2": 100.0, "freq3": 1, "qty3": 0.0, "amt3": 0.0, "comp3": 0.0, "order3": "N", "status3": "站外出单", "share3": 0.0}, {"sku_id": "11928", "sku": "LYAP-X1791-4R", "batch": "2月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-02-03", "first_order": "2026-03-14", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 5, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未出单", "status2": "无市场", "share2": 0.0, "freq3": 5, "qty3": 2.0, "amt3": 54.0, "comp3": 0.0, "order3": "N", "status3": "无市场", "share3": 100.0}, {"sku_id": "11926", "sku": "LYAP-X1787-BK", "batch": "2月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-02-09", "first_order": "2026-02-10", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 2, "qty2": 12.0, "amt2": 948.0, "comp2": 0.0, "order2": "Y", "status2": "站外出单", "share2": 100.0, "freq3": 1, "qty3": 22.0, "amt3": 1734.05, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "11998", "sku": "LYAP-X1642-BK", "batch": "2月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-02-09", "first_order": "2026-02-15", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 2, "qty2": 5.0, "amt2": 2495.0, "comp2": 0.0, "order2": "Y", "status2": "站外出单", "share2": 100.0, "freq3": 4, "qty3": 13.0, "amt3": 6462.05, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "11929", "sku": "LYAP-X1799", "batch": "2月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-02-09", "first_order": "2026-02-13", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 2, "qty2": 46.0, "amt2": 5290.0, "comp2": 20.0, "order2": "Y", "status2": "无市场", "share2": 69.7, "freq3": 1, "qty3": 2.0, "amt3": 236.0, "comp3": 4.0, "order3": "Y", "status3": "竞争无优势", "share3": 33.3}, {"sku_id": "12061", "sku": "LYAM-X2575-2", "batch": "2月", "analyst": "章鹏", "analyst2": "章鹏", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-02-09", "first_order": "2026-02-15", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 1, "qty2": 3.0, "amt2": 177.0, "comp2": 0.0, "order2": "Y", "status2": "无市场", "share2": 100.0, "freq3": 6, "qty3": 14.0, "amt3": 699.6, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "11990", "sku": "LYAM-X2753-1", "batch": "2月", "analyst": "胡煜星", "analyst2": "胡煜星", "cat": "车身外扩件", "expand": "原开品", "onshelf": "2026-02-09", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 2, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未出单", "status2": "无市场", "share2": 0.0, "freq3": 4, "qty3": 0.0, "amt3": 0.0, "comp3": 0.0, "order3": "未出单", "status3": "站外出单", "share3": 0.0}, {"sku_id": "11991", "sku": "LYAM-X2753-2", "batch": "2月", "analyst": "胡煜星", "analyst2": "胡煜星", "cat": "车身外扩件", "expand": "拓展品", "onshelf": "2026-02-09", "first_order": "2026-03-12", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 2, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未出单", "status2": "无市场", "share2": 0.0, "freq3": 3, "qty3": 2.0, "amt3": 80.0, "comp3": 0.0, "order3": "N", "status3": "无市场", "share3": 100.0}, {"sku_id": "11981", "sku": "LYAM-X2266-1", "batch": "2月", "analyst": "章鹏", "analyst2": "章鹏", "cat": "机盖及附件", "expand": "原开品", "onshelf": "2026-02-13", "first_order": "2026-02-18", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 1, "qty2": 1.0, "amt2": 159.0, "comp2": 1.0, "order2": "Y", "status2": "无市场", "share2": 50.0, "freq3": 3, "qty3": 3.0, "amt3": 448.0, "comp3": 0.0, "order3": "Y", "status3": "无市场", "share3": 100.0}, {"sku_id": "11890", "sku": "LYAM-X2575-4", "batch": "2月", "analyst": "王偲涵", "analyst2": "王偲涵", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-02-13", "first_order": "2026-02-26", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 3, "qty2": 1.0, "amt2": 46.0, "comp2": 2.0, "order2": "N", "status2": "无市场", "share2": 33.3, "freq3": 1, "qty3": 5.0, "amt3": 220.0, "comp3": 5.0, "order3": "N", "status3": "竞争无优势", "share3": 50.0}, {"sku_id": "11989", "sku": "LYAM-X2732", "batch": "2月", "analyst": "章鹏", "analyst2": "章鹏", "cat": "挡泥板", "expand": "原开品", "onshelf": "2026-02-13", "first_order": "2026-02-19", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 1, "qty2": 3.0, "amt2": 315.0, "comp2": 2.0, "order2": "Y", "status2": "站内无价格优势", "share2": 60.0, "freq3": 6, "qty3": 8.0, "amt3": 840.0, "comp3": 7.0, "order3": "Y", "status3": "无市场", "share3": 53.3}, {"sku_id": "12088", "sku": "LYAP-X1920-BK", "batch": "2月", "analyst": "王偲涵", "analyst2": "王偲涵", "cat": "饰条", "expand": "拓展品", "onshelf": "2026-02-13", "first_order": "2026-02-15", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 2, "qty2": 2.0, "amt2": 166.0, "comp2": 11.0, "order2": "Y", "status2": "竞争无优势", "share2": 15.4, "freq3": 1, "qty3": 13.0, "amt3": 1079.0, "comp3": 13.0, "order3": "Y", "status3": "竞争无优势", "share3": 50.0}, {"sku_id": "12089", "sku": "LYAP-X1920-C", "batch": "2月", "analyst": "王偲涵", "analyst2": "王偲涵", "cat": "饰条", "expand": "拓展品", "onshelf": "2026-02-13", "first_order": "2026-02-17", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 2, "qty2": 1.0, "amt2": 89.0, "comp2": 1.0, "order2": "Y", "status2": "无市场", "share2": 50.0, "freq3": 1, "qty3": 13.0, "amt3": 1148.1, "comp3": 4.0, "order3": "Y", "status3": "正常", "share3": 76.5}, {"sku_id": "12002", "sku": "LYAP-X1920-W", "batch": "2月", "analyst": "王偲涵", "analyst2": "王偲涵", "cat": "饰条", "expand": "原开品", "onshelf": "2026-02-13", "first_order": "2026-03-03", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 3, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未出单", "status2": "无市场", "share2": 0.0, "freq3": 1, "qty3": 3.0, "amt3": 240.0, "comp3": 0.0, "order3": "N", "status3": "无市场", "share3": 100.0}, {"sku_id": "11938", "sku": "LYAP-X1939-2", "batch": "2月", "analyst": "王偲涵", "analyst2": "王偲涵", "cat": "饰条", "expand": "拓展品", "onshelf": "2026-02-13", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 3, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未出单", "status2": "站内无价格优势", "share2": 0.0, "freq3": 1, "qty3": 0.0, "amt3": 0.0, "comp3": 0.0, "order3": "未出单", "status3": "站外出单", "share3": 0.0}, {"sku_id": "12005", "sku": "LYAP-X1992", "batch": "2月", "analyst": "王偲涵", "analyst2": "王偲涵", "cat": "饰条", "expand": "原开品", "onshelf": "2026-02-13", "first_order": "2026-02-24", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 3, "qty2": 1.0, "amt2": 70.0, "comp2": 49.0, "order2": "N", "status2": "竞争无优势", "share2": 2.0, "freq3": 1, "qty3": 39.0, "amt3": 2730.0, "comp3": 1.0, "order3": "N", "status3": "竞争无优势", "share3": 97.5}, {"sku_id": "12006", "sku": "LYAP-X1993", "batch": "2月", "analyst": "王偲涵", "analyst2": "王偲涵", "cat": "饰条", "expand": "原开品", "onshelf": "2026-02-13", "first_order": "2026-02-17", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 2, "qty2": 4.0, "amt2": 280.0, "comp2": 25.0, "order2": "Y", "status2": "竞争无优势", "share2": 13.8, "freq3": 1, "qty3": 37.0, "amt3": 2544.5, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "12011", "sku": "LYAP-X2089", "batch": "2月", "analyst": "章鹏", "analyst2": "章鹏", "cat": "机盖及附件", "expand": "原开品", "onshelf": "2026-02-13", "first_order": "2026-02-18", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 1, "qty2": 8.0, "amt2": 1080.0, "comp2": 5.0, "order2": "Y", "status2": "竞争无优势", "share2": 61.5, "freq3": 3, "qty3": 17.0, "amt3": 2288.25, "comp3": 8.0, "order3": "Y", "status3": "竞争无优势", "share3": 68.0}, {"sku_id": "12021", "sku": "LYAP-X2135", "batch": "2月", "analyst": "王偲涵", "analyst2": "王偲涵", "cat": "其他", "expand": "原开品", "onshelf": "2026-02-13", "first_order": "2026-02-16", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 2, "qty2": 4.0, "amt2": 212.0, "comp2": 8.0, "order2": "Y", "status2": "竞争无优势", "share2": 33.3, "freq3": 2, "qty3": 9.0, "amt3": 477.0, "comp3": 16.0, "order3": "Y", "status3": "竞争无优势", "share3": 36.0}, {"sku_id": "12023", "sku": "LYAP-X2146", "batch": "2月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "挡泥板", "expand": "原开品", "onshelf": "2026-02-13", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 4, "qty2": 0.0, "amt2": 0.0, "comp2": 2.0, "order2": "未出单", "status2": "竞争无优势", "share2": 0.0, "freq3": 3, "qty3": 0.0, "amt3": 0.0, "comp3": 8.0, "order3": "未出单", "status3": "竞争无优势", "share3": 0.0}, {"sku_id": "12058", "sku": "LYAM-X2569-1", "batch": "2月", "analyst": "章鹏", "analyst2": "章鹏", "cat": "其他", "expand": "原开品", "onshelf": "2026-02-17", "first_order": "2026-03-05", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 1, "qty2": 0.0, "amt2": 0.0, "comp2": 11.0, "order2": "未出单", "status2": "竞争无优势", "share2": 0.0, "freq3": 5, "qty3": 24.0, "amt3": 479.0, "comp3": 36.0, "order3": "N", "status3": "竞争无优势", "share3": 40.0}, {"sku_id": "12059", "sku": "LYAM-X2570-1", "batch": "2月", "analyst": "章鹏", "analyst2": "章鹏", "cat": "其他", "expand": "原开品", "onshelf": "2026-02-17", "first_order": "2026-02-20", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 1, "qty2": 1.0, "amt2": 20.0, "comp2": 10.0, "order2": "Y", "status2": "竞争无优势", "share2": 9.1, "freq3": 3, "qty3": 16.0, "amt3": 340.0, "comp3": 22.0, "order3": "Y", "status3": "竞争无优势", "share3": 42.1}, {"sku_id": "12060", "sku": "LYAM-X2574-1", "batch": "2月", "analyst": "章鹏", "analyst2": "章鹏", "cat": "饰条", "expand": "原开品", "onshelf": "2026-02-17", "first_order": "2026-03-09", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 1, "qty2": 0.0, "amt2": 0.0, "comp2": 26.0, "order2": "未出单", "status2": "竞争无优势", "share2": 0.0, "freq3": 4, "qty3": 5.0, "amt3": 100.0, "comp3": 81.0, "order3": "N", "status3": "竞争无优势", "share3": 5.8}, {"sku_id": "12139", "sku": "LYAM-X2695", "batch": "2月", "analyst": "章鹏", "analyst2": "章鹏", "cat": "机盖及附件", "expand": "原开品", "onshelf": "2026-02-17", "first_order": "2026-02-27", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 1, "qty2": 1.0, "amt2": 19.0, "comp2": 1.0, "order2": "N", "status2": "竞争无优势", "share2": 50.0, "freq3": 6, "qty3": 40.0, "amt3": 1069.9, "comp3": 2.0, "order3": "N", "status3": "正常", "share3": 95.2}, {"sku_id": "12087", "sku": "LYAP-X1913", "batch": "2月", "analyst": "王偲涵", "analyst2": "王偲涵", "cat": "饰条", "expand": "原开品", "onshelf": "2026-02-20", "first_order": "2026-03-11", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 1, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未出单", "status2": "无市场", "share2": 0.0, "freq3": 3, "qty3": 6.0, "amt3": 292.2, "comp3": 4.0, "order3": "N", "status3": "正常", "share3": 60.0}, {"sku_id": "12143", "sku": "LYAM-X2706", "batch": "2月", "analyst": "俞东旭", "analyst2": "俞东旭", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-02-23", "first_order": "2026-03-28", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 1, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未出单", "status2": "无市场", "share2": 0.0, "freq3": 4, "qty3": 1.0, "amt3": 145.0, "comp3": 1.0, "order3": "N", "status3": "正常", "share3": 50.0}, {"sku_id": "12079", "sku": "LYAP-X1871", "batch": "2月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "挡泥板", "expand": "原开品", "onshelf": "2026-02-23", "first_order": "2026-03-04", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 3, "qty2": 0.0, "amt2": 0.0, "comp2": 5.0, "order2": "未出单", "status2": "站内无价格优势", "share2": 0.0, "freq3": 2, "qty3": 11.0, "amt3": 1460.0, "comp3": 0.0, "order3": "N", "status3": "正常", "share3": 100.0}, {"sku_id": "12104", "sku": "LYAP-X2545-F", "batch": "2月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "挡泥板", "expand": "原开品", "onshelf": "2026-02-23", "first_order": "2026-03-01", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 3, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未出单", "status2": "无市场", "share2": 0.0, "freq3": 2, "qty3": 2.0, "amt3": 170.0, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "12105", "sku": "LYAP-X2545-FL", "batch": "2月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "挡泥板", "expand": "拓展品", "onshelf": "2026-02-23", "first_order": "2026-03-03", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 2, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未出单", "status2": "无市场", "share2": 0.0, "freq3": 1, "qty3": 6.0, "amt3": 312.0, "comp3": 0.0, "order3": "Y", "status3": "站外出单", "share3": 100.0}, {"sku_id": "12106", "sku": "LYAP-X2545-FR", "batch": "2月", "analyst": "朱培源", "analyst2": "朱培源", "cat": "挡泥板", "expand": "拓展品", "onshelf": "2026-02-23", "first_order": "2026-03-15", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 2, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未出单", "status2": "无市场", "share2": 0.0, "freq3": 1, "qty3": 3.0, "amt3": 156.0, "comp3": 0.0, "order3": "N", "status3": "无市场", "share3": 100.0}, {"sku_id": "12240", "sku": "LYAP-X2148-1", "batch": "2月", "analyst": "王偲涵", "analyst2": "王偲涵", "cat": "饰条", "expand": "原开品", "onshelf": "2026-02-28", "first_order": "2026-03-01", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未出单", "status2": "竞争无优势", "share2": 0.0, "freq3": 2, "qty3": 11.0, "amt3": 670.0, "comp3": 4.0, "order3": "Y", "status3": "竞争无优势", "share3": 73.3}, {"sku_id": "12225", "sku": "LYAP-X2216", "batch": "2月", "analyst": "章鹏", "analyst2": "章鹏", "cat": "其他", "expand": "原开品", "onshelf": "2026-02-28", "first_order": "2026-03-20", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 1, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未出单", "status2": "无市场", "share2": 0.0, "freq3": 5, "qty3": 4.0, "amt3": 236.0, "comp3": 1.0, "order3": "N", "status3": "正常", "share3": 80.0}, {"sku_id": "12073", "sku": "LYAP-X1658", "batch": "3月", "analyst": "朱培源", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-04", "first_order": "2026-03-12", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 4, "qty3": 9.0, "amt3": 3780.0, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "12074", "sku": "LYAP-X1658L", "batch": "3月", "analyst": "朱培源", "analyst2": "未上架", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-03-04", "first_order": "2026-03-04", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 5, "qty3": 32.0, "amt3": 7020.0, "comp3": 1.0, "order3": "Y", "status3": "正常", "share3": 97.0}, {"sku_id": "12075", "sku": "LYAP-X1658R", "batch": "3月", "analyst": "朱培源", "analyst2": "未上架", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-03-04", "first_order": "2026-03-04", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 4, "qty3": 4.0, "amt3": 880.0, "comp3": 0.0, "order3": "Y", "status3": "无市场", "share3": 100.0}, {"sku_id": "12252", "sku": "LYAP-X1800-1", "batch": "3月", "analyst": "胡煜星", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-04", "first_order": "2026-03-08", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 5, "qty3": 10.0, "amt3": 402.0, "comp3": 16.0, "order3": "Y", "status3": "竞争无优势", "share3": 38.5}, {"sku_id": "12165", "sku": "LYAP-X1877", "batch": "3月", "analyst": "朱培源", "analyst2": "未上架", "cat": "挡泥板", "expand": "原开品", "onshelf": "2026-03-04", "first_order": "2026-03-12", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 4, "qty3": 2.0, "amt3": 338.0, "comp3": 7.0, "order3": "Y", "status3": "站外出单", "share3": 22.2}, {"sku_id": "12247", "sku": "LYAP-X2528", "batch": "3月", "analyst": "胡煜星", "analyst2": "未上架", "cat": "其他", "expand": "原开品", "onshelf": "2026-03-04", "first_order": "2026-03-08", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 7, "qty3": 21.0, "amt3": 1739.0, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "11102", "sku": "LYAM-X2254-L", "batch": "3月", "analyst": "章鹏", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-04", "first_order": "2026-03-19", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 4, "qty3": 3.0, "amt3": 96.0, "comp3": 10.0, "order3": "N", "status3": "竞争无优势", "share3": 23.1}, {"sku_id": "12071", "sku": "LYAM-X2980-BK", "batch": "3月", "analyst": "胡煜星", "analyst2": "未上架", "cat": "车身外扩件", "expand": "拓展品", "onshelf": "2026-03-04", "first_order": "2026-03-11", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 3, "qty3": 2.0, "amt3": 598.0, "comp3": 1.0, "order3": "Y", "status3": "正常", "share3": 66.7}, {"sku_id": "12072", "sku": "LYAM-X2980-GR", "batch": "3月", "analyst": "胡煜星", "analyst2": "未上架", "cat": "车身外扩件", "expand": "原开品", "onshelf": "2026-03-04", "first_order": "2026-03-31", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 3, "qty3": 1.0, "amt3": 299.0, "comp3": 0.0, "order3": "N", "status3": "无市场", "share3": 100.0}, {"sku_id": "12248", "sku": "LYAP-X2308", "batch": "3月", "analyst": "胡煜星", "analyst2": "未上架", "cat": "其他", "expand": "原开品", "onshelf": "2026-03-04", "first_order": "2026-03-10", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 5, "qty3": 10.0, "amt3": 850.0, "comp3": 6.0, "order3": "Y", "status3": "竞争无优势", "share3": 62.5}, {"sku_id": "12246", "sku": "LYAP-X2527", "batch": "3月", "analyst": "胡煜星", "analyst2": "未上架", "cat": "其他", "expand": "原开品", "onshelf": "2026-03-04", "first_order": "2026-03-05", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 4, "qty3": 33.0, "amt3": 3073.0, "comp3": 3.0, "order3": "Y", "status3": "正常", "share3": 91.7}, {"sku_id": "12205", "sku": "LYAP-X1800-1L", "batch": "3月", "analyst": "胡煜星", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-05", "first_order": "2026-03-08", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 5, "qty3": 16.0, "amt3": 348.0, "comp3": 121.0, "order3": "Y", "status3": "竞争无优势", "share3": 11.7}, {"sku_id": "12206", "sku": "LYAP-X1800-1R", "batch": "3月", "analyst": "胡煜星", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-05", "first_order": "2026-03-13", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 6, "qty3": 2.0, "amt3": 44.0, "comp3": 18.0, "order3": "Y", "status3": "竞争无优势", "share3": 10.0}, {"sku_id": "11997", "sku": "LYAM-X2896", "batch": "3月", "analyst": "王偲涵", "analyst2": "未上架", "cat": "饰条", "expand": "原开品", "onshelf": "2026-03-10", "first_order": "2026-03-24", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 2, "qty3": 1.0, "amt3": 139.0, "comp3": 2.0, "order3": "N", "status3": "正常", "share3": 33.3}, {"sku_id": "12262", "sku": "LYAP-X2170", "batch": "3月", "analyst": "章鹏", "analyst2": "未上架", "cat": "机盖及附件", "expand": "原开品", "onshelf": "2026-03-10", "first_order": "2026-03-13", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 2, "qty3": 3.0, "amt3": 426.0, "comp3": 2.0, "order3": "Y", "status3": "正常", "share3": 60.0}, {"sku_id": "12244", "sku": "LYAP-X2190-L", "batch": "3月", "analyst": "王偲涵", "analyst2": "未上架", "cat": "饰条", "expand": "原开品", "onshelf": "2026-03-10", "first_order": "2026-03-20", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 2, "qty3": 2.0, "amt3": 76.0, "comp3": 7.0, "order3": "N", "status3": "正常", "share3": 22.2}, {"sku_id": "12243", "sku": "LYAP-X2190-R", "batch": "3月", "analyst": "王偲涵", "analyst2": "未上架", "cat": "饰条", "expand": "原开品", "onshelf": "2026-03-10", "first_order": "2026-03-25", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 2, "qty3": 4.0, "amt3": 152.0, "comp3": 7.0, "order3": "N", "status3": "正常", "share3": 36.4}, {"sku_id": "12304", "sku": "LYAP-X1642-GR", "batch": "3月", "analyst": "俞东旭", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-11", "first_order": "2026-03-14", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 2, "qty3": 7.0, "amt3": 3493.0, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "12085", "sku": "LYAP-X1911-BK", "batch": "3月", "analyst": "章鹏", "analyst2": "未上架", "cat": "机盖及附件", "expand": "拓展品", "onshelf": "2026-03-11", "first_order": "2026-03-18", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 2, "qty3": 5.0, "amt3": 425.0, "comp3": 8.0, "order3": "Y", "status3": "竞争无优势", "share3": 38.5}, {"sku_id": "12086", "sku": "LYAP-X1911-C", "batch": "3月", "analyst": "章鹏", "analyst2": "未上架", "cat": "机盖及附件", "expand": "原开品", "onshelf": "2026-03-11", "first_order": "2026-03-19", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 2, "qty3": 5.0, "amt3": 375.0, "comp3": 17.0, "order3": "Y", "status3": "竞争无优势", "share3": 22.7}, {"sku_id": "12258", "sku": "LYAP-X1927", "batch": "3月", "analyst": "章鹏", "analyst2": "未上架", "cat": "机盖及附件", "expand": "原开品", "onshelf": "2026-03-11", "first_order": "2026-03-18", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 2, "qty3": 9.0, "amt3": 252.0, "comp3": 36.0, "order3": "Y", "status3": "竞争无优势", "share3": 20.0}, {"sku_id": "12210", "sku": "LYAP-X1934", "batch": "3月", "analyst": "章鹏", "analyst2": "未上架", "cat": "饰条", "expand": "原开品", "onshelf": "2026-03-11", "first_order": "2026-03-23", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 2, "qty3": 3.0, "amt3": 36.0, "comp3": 105.0, "order3": "N", "status3": "竞争无优势", "share3": 2.8}, {"sku_id": "12250", "sku": "LYAP-X2148-1L", "batch": "3月", "analyst": "王偲涵", "analyst2": "未上架", "cat": "饰条", "expand": "拓展品", "onshelf": "2026-03-11", "first_order": "2026-03-15", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 2.0, "amt3": 78.0, "comp3": 3.0, "order3": "Y", "status3": "无市场", "share3": 40.0}, {"sku_id": "12251", "sku": "LYAP-X2148-1R", "batch": "3月", "analyst": "王偲涵", "analyst2": "未上架", "cat": "饰条", "expand": "拓展品", "onshelf": "2026-03-11", "first_order": "2026-03-31", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 1.0, "amt3": 39.0, "comp3": 4.0, "order3": "N", "status3": "竞争无优势", "share3": 20.0}, {"sku_id": "12332", "sku": "LYAP-X2289", "batch": "3月", "analyst": "王偲涵", "analyst2": "未上架", "cat": "饰条", "expand": "原开品", "onshelf": "2026-03-11", "first_order": "2026-03-14", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 14.0, "amt3": 1526.0, "comp3": 4.0, "order3": "Y", "status3": "正常", "share3": 77.8}, {"sku_id": "12227", "sku": "LYAP-X2418", "batch": "3月", "analyst": "章鹏", "analyst2": "未上架", "cat": "其他", "expand": "原开品", "onshelf": "2026-03-11", "first_order": "2026-03-16", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 2, "qty3": 8.0, "amt3": 552.0, "comp3": 4.0, "order3": "Y", "status3": "正常", "share3": 66.7}, {"sku_id": "12309", "sku": "MD-002-FL", "batch": "3月", "analyst": "俞东旭", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-11", "first_order": "2026-03-20", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 2, "qty3": 3.0, "amt3": 1440.0, "comp3": 5.0, "order3": "N", "status3": "正常", "share3": 37.5}, {"sku_id": "12310", "sku": "MD-002-FR", "batch": "3月", "analyst": "俞东旭", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-11", "first_order": "2026-03-15", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 3, "qty3": 4.0, "amt3": 1920.0, "comp3": 4.0, "order3": "Y", "status3": "正常", "share3": 50.0}, {"sku_id": "12311", "sku": "MD-002-RL", "batch": "3月", "analyst": "俞东旭", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-11", "first_order": "2026-03-21", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 2, "qty3": 1.0, "amt3": 480.0, "comp3": 6.0, "order3": "N", "status3": "竞争无优势", "share3": 14.3}, {"sku_id": "12312", "sku": "MD-002-RR", "batch": "3月", "analyst": "俞东旭", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-11", "first_order": "2026-03-15", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 3, "qty3": 4.0, "amt3": 1920.0, "comp3": 8.0, "order3": "Y", "status3": "竞争无优势", "share3": 33.3}, {"sku_id": "12441", "sku": "LYAM-X2862", "batch": "3月", "analyst": "胡煜星", "analyst2": "未上架", "cat": "机盖及附件", "expand": "原开品", "onshelf": "2026-03-12", "first_order": "2026-03-19", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 4, "qty3": 5.0, "amt3": 695.0, "comp3": 6.0, "order3": "Y", "status3": "竞争无优势", "share3": 45.5}, {"sku_id": "12271", "sku": "LYAP-X1651-1L", "batch": "3月", "analyst": "俞东旭", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-16", "first_order": "2026-03-17", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 3, "qty3": 72.0, "amt3": 17775.0, "comp3": 2.0, "order3": "Y", "status3": "正常", "share3": 97.3}, {"sku_id": "12270", "sku": "LYAP-X1651-1R", "batch": "3月", "analyst": "俞东旭", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-16", "first_order": "2026-03-19", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 15.0, "amt3": 3740.0, "comp3": 1.0, "order3": "Y", "status3": "正常", "share3": 93.8}, {"sku_id": "12318", "sku": "LYAP-X1676", "batch": "3月", "analyst": "胡煜星", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-16", "first_order": "2026-03-22", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 2.0, "amt3": 880.0, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "12320", "sku": "LYAP-X2417", "batch": "3月", "analyst": "朱培源", "analyst2": "未上架", "cat": "挡泥板", "expand": "原开品", "onshelf": "2026-03-16", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 3, "qty3": 0.0, "amt3": 0.0, "comp3": 3.0, "order3": "未出单", "status3": "竞争无优势", "share3": 0.0}, {"sku_id": "12305", "sku": "MD-001-FL", "batch": "3月", "analyst": "俞东旭", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-16", "first_order": "2026-03-19", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 3, "qty3": 7.0, "amt3": 3850.0, "comp3": 1.0, "order3": "Y", "status3": "正常", "share3": 87.5}, {"sku_id": "12321", "sku": "LYAP-X1788-GR", "batch": "3月", "analyst": "俞东旭", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-16", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 0.0, "amt3": 0.0, "comp3": 10.0, "order3": "未出单", "status3": "竞争无优势", "share3": 0.0}, {"sku_id": "12272", "sku": "LYAP-X1808", "batch": "3月", "analyst": "胡煜星", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-16", "first_order": "2026-03-18", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 7.0, "amt3": 476.0, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "12292", "sku": "LYAP-X1879", "batch": "3月", "analyst": "朱培源", "analyst2": "未上架", "cat": "挡泥板", "expand": "原开品", "onshelf": "2026-03-16", "first_order": "2026-03-19", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 3, "qty3": 4.0, "amt3": 380.0, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "12333", "sku": "LYAP-X2429", "batch": "3月", "analyst": "朱培源", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-16", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 3, "qty3": 0.0, "amt3": 0.0, "comp3": 2.0, "order3": "未出单", "status3": "站外出单", "share3": 0.0}, {"sku_id": "12334", "sku": "LYAP-X2523", "batch": "3月", "analyst": "朱培源", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-16", "first_order": "2026-03-24", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 3, "qty3": 1.0, "amt3": 225.0, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "12368", "sku": "LYAP-X2530", "batch": "3月", "analyst": "胡煜星", "analyst2": "未上架", "cat": "其他", "expand": "原开品", "onshelf": "2026-03-16", "first_order": "2026-03-23", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 2, "qty3": 4.0, "amt3": 380.0, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "12306", "sku": "MD-001-FR", "batch": "3月", "analyst": "俞东旭", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-16", "first_order": "2026-03-18", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 7.0, "amt3": 3880.0, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "12307", "sku": "MD-001-RL", "batch": "3月", "analyst": "俞东旭", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-16", "first_order": "2026-03-22", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 5.0, "amt3": 2750.0, "comp3": 2.0, "order3": "Y", "status3": "竞争无优势", "share3": 71.4}, {"sku_id": "12308", "sku": "MD-001-RR", "batch": "3月", "analyst": "俞东旭", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-16", "first_order": "2026-03-18", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 11.0, "amt3": 6050.0, "comp3": 3.0, "order3": "Y", "status3": "正常", "share3": 78.6}, {"sku_id": "12293", "sku": "LYAP-X2144-1", "batch": "3月", "analyst": "朱培源", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-18", "first_order": "2026-03-23", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 2, "qty3": 1.0, "amt3": 55.0, "comp3": 1.0, "order3": "Y", "status3": "竞争无优势", "share3": 50.0}, {"sku_id": "12298", "sku": "LYAP-X2144-1L", "batch": "3月", "analyst": "朱培源", "analyst2": "未上架", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-03-18", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 2, "qty3": 0.0, "amt3": 0.0, "comp3": 2.0, "order3": "未出单", "status3": "竞争无优势", "share3": 0.0}, {"sku_id": "12299", "sku": "LYAP-X2144-1R", "batch": "3月", "analyst": "朱培源", "analyst2": "未上架", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-03-18", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 2, "qty3": 0.0, "amt3": 0.0, "comp3": 4.0, "order3": "未出单", "status3": "竞争无优势", "share3": 0.0}, {"sku_id": "12396", "sku": "LYAP-X1665-1", "batch": "3月", "analyst": "俞东旭", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-23", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 0.0, "amt3": 0.0, "comp3": 0.0, "order3": "未出单", "status3": "无市场", "share3": 0.0}, {"sku_id": "12291", "sku": "LYAP-X1872", "batch": "3月", "analyst": "朱培源", "analyst2": "未上架", "cat": "挡泥板", "expand": "原开品", "onshelf": "2026-03-23", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 0.0, "amt3": 0.0, "comp3": 0.0, "order3": "未出单", "status3": "无市场", "share3": 0.0}, {"sku_id": "12290", "sku": "LYAP-X1878", "batch": "3月", "analyst": "朱培源", "analyst2": "未上架", "cat": "挡泥板", "expand": "原开品", "onshelf": "2026-03-23", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 0.0, "amt3": 0.0, "comp3": 2.0, "order3": "未出单", "status3": "竞争无优势", "share3": 0.0}, {"sku_id": "12391", "sku": "LYAP-X2130-1", "batch": "3月", "analyst": "章鹏", "analyst2": "未上架", "cat": "其他", "expand": "原开品", "onshelf": "2026-03-23", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 0.0, "amt3": 0.0, "comp3": 0.0, "order3": "未出单", "status3": "无市场", "share3": 0.0}, {"sku_id": "12398", "sku": "LYAP-X2130-2", "batch": "3月", "analyst": "章鹏", "analyst2": "未上架", "cat": "其他", "expand": "拓展品", "onshelf": "2026-03-23", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 0.0, "amt3": 0.0, "comp3": 0.0, "order3": "未出单", "status3": "无市场", "share3": 0.0}, {"sku_id": "12357", "sku": "LYAP-X2309", "batch": "3月", "analyst": "胡煜星", "analyst2": "未上架", "cat": "其他", "expand": "原开品", "onshelf": "2026-03-23", "first_order": "2026-03-23", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 1.0, "amt3": 110.0, "comp3": 0.0, "order3": "Y", "status3": "站外出单", "share3": 100.0}, {"sku_id": "12423", "sku": "LYAP-X2313", "batch": "3月", "analyst": "胡煜星", "analyst2": "未上架", "cat": "其他", "expand": "原开品", "onshelf": "2026-03-23", "first_order": "2026-03-27", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 1.0, "amt3": 58.0, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "12387", "sku": "LYAP-X2077", "batch": "3月", "analyst": "俞东旭", "analyst2": "未上架", "cat": "车身外扩件", "expand": "原开品", "onshelf": "2026-03-24", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 0.0, "amt3": 0.0, "comp3": 7.0, "order3": "未出单", "status3": "竞争无优势", "share3": 0.0}, {"sku_id": "12388", "sku": "LYAP-X2085", "batch": "3月", "analyst": "俞东旭", "analyst2": "未上架", "cat": "车身外扩件", "expand": "原开品", "onshelf": "2026-03-24", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 0.0, "amt3": 0.0, "comp3": 4.0, "order3": "未出单", "status3": "竞争无优势", "share3": 0.0}, {"sku_id": "12474", "sku": "LYAP-838", "batch": "3月", "analyst": "章鹏", "analyst2": "未上架", "cat": "饰条", "expand": "拓展品", "onshelf": "2026-03-27", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 0.0, "amt3": 0.0, "comp3": 0.0, "order3": "未出单", "status3": "无市场", "share3": 0.0}, {"sku_id": "12429", "sku": "LYAP-X1665-2L", "batch": "3月", "analyst": "俞东旭", "analyst2": "未上架", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-03-27", "first_order": "2026-03-30", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 1.0, "amt3": 160.0, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "12424", "sku": "LYAP-X1665-2R", "batch": "3月", "analyst": "俞东旭", "analyst2": "未上架", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-03-27", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 0.0, "amt3": 0.0, "comp3": 0.0, "order3": "未出单", "status3": "无市场", "share3": 0.0}, {"sku_id": "12386", "sku": "LYAP-X1788-BN", "batch": "3月", "analyst": "俞东旭", "analyst2": "未上架", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-03-27", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 0.0, "amt3": 0.0, "comp3": 2.0, "order3": "未出单", "status3": "竞争无优势", "share3": 0.0}, {"sku_id": "12426", "sku": "LYAP-X2215", "batch": "3月", "analyst": "胡煜星", "analyst2": "未上架", "cat": "车门系统", "expand": "原开品", "onshelf": "2026-03-27", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 0, "qty3": 0.0, "amt3": 0.0, "comp3": 0.0, "order3": "未出单", "status3": "无市场", "share3": 0.0}, {"sku_id": "12483", "sku": "LYAP-X2310", "batch": "3月", "analyst": "胡煜星", "analyst2": "未上架", "cat": "其他", "expand": "原开品", "onshelf": "2026-03-27", "first_order": "2026-03-30", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 0, "qty3": 2.0, "amt3": 234.0, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "12484", "sku": "LYAP-X2317", "batch": "3月", "analyst": "胡煜星", "analyst2": "未上架", "cat": "其他", "expand": "原开品", "onshelf": "2026-03-27", "first_order": "2026-03-30", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 0, "qty3": 1.0, "amt3": 110.0, "comp3": 0.0, "order3": "Y", "status3": "正常", "share3": 100.0}, {"sku_id": "12414", "sku": "LYAP-X1665-1L", "batch": "3月", "analyst": "俞东旭", "analyst2": "未上架", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-03-27", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 0.0, "amt3": 0.0, "comp3": 0.0, "order3": "未出单", "status3": "无市场", "share3": 0.0}, {"sku_id": "12422", "sku": "LYAP-X1665-1R", "batch": "3月", "analyst": "俞东旭", "analyst2": "未上架", "cat": "车门系统", "expand": "拓展品", "onshelf": "2026-03-27", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 0.0, "amt3": 0.0, "comp3": 0.0, "order3": "未出单", "status3": "无市场", "share3": 0.0}, {"sku_id": "12213", "sku": "LYAP-X1929", "batch": "3月", "analyst": "章鹏", "analyst2": "未上架", "cat": "机盖及附件", "expand": "原开品", "onshelf": "2026-03-27", "first_order": "未出单", "freq1": 0, "qty1": 0.0, "amt1": 0.0, "comp1": 0.0, "order1": "未上架", "status1": "未上架", "share1": 0.0, "freq2": 0, "qty2": 0.0, "amt2": 0.0, "comp2": 0.0, "order2": "未上架", "status2": "未上架", "share2": 0.0, "freq3": 1, "qty3": 0.0, "amt3": 0.0, "comp3": 10.0, "order3": "未出单", "status3": "竞争无优势", "share3": 0.0}];
+var CAT_DATA = {"其他": {"sku_1": 1, "qty_1": 1.0, "amt_1": 158.0, "comp_1": 1.0, "rate_1": 100.0, "share_1": 50.0, "y_1": 1, "n_1": 0, "uo_1": 0, "sku_2": 4, "qty_2": 5.0, "amt_2": 232.0, "comp_2": 29.0, "rate_2": 50.0, "share_2": 10.6, "y_2": 2, "n_2": 0, "uo_2": 2, "sku_3": 11, "qty_3": 81.0, "amt_3": 7106.0, "comp_3": 13.0, "rate_3": 81.8, "share_3": 74.6, "y_3": 9, "n_3": 0, "uo_3": 2, "qty_hb": 1520.0, "rate_hb": 31.8}, "挡泥板": {"sku_1": 9, "qty_1": 15.0, "amt_1": 1902.0, "comp_1": 11.0, "rate_1": 44.4, "share_1": 37.5, "y_1": 3, "n_1": 1, "uo_1": 5, "sku_2": 6, "qty_2": 3.0, "amt_2": 315.0, "comp_2": 9.0, "rate_2": 16.7, "share_2": 10.0, "y_2": 1, "n_2": 0, "uo_2": 5, "sku_3": 5, "qty_3": 6.0, "amt_3": 718.0, "comp_3": 12.0, "rate_3": 40.0, "share_3": 24.4, "y_3": 2, "n_3": 0, "uo_3": 3, "qty_hb": 100.0, "rate_hb": 23.3}, "机盖及附件": {"sku_1": 7, "qty_1": 14.0, "amt_1": 1687.52, "comp_1": 9.0, "rate_1": 71.4, "share_1": 50.0, "y_1": 5, "n_1": 0, "uo_1": 2, "sku_2": 3, "qty_2": 10.0, "amt_2": 1258.0, "comp_2": 7.0, "rate_2": 100.0, "share_2": 53.8, "y_2": 2, "n_2": 1, "uo_2": 0, "sku_3": 6, "qty_3": 27.0, "amt_3": 2173.0, "comp_3": 79.0, "rate_3": 83.3, "share_3": 31.1, "y_3": 5, "n_3": 0, "uo_3": 1, "qty_hb": 170.0, "rate_hb": -16.7}, "车身外扩件": {"sku_1": 3, "qty_1": 5.0, "amt_1": 534.5, "comp_1": 8.0, "rate_1": 66.7, "share_1": 48.1, "y_1": 1, "n_1": 1, "uo_1": 1, "sku_2": 5, "qty_2": 91.0, "amt_2": 14461.05, "comp_2": 13.0, "rate_2": 60.0, "share_2": 54.5, "y_2": 3, "n_2": 0, "uo_2": 2, "sku_3": 4, "qty_3": 3.0, "amt_3": 897.0, "comp_3": 12.0, "rate_3": 50.0, "share_3": 41.7, "y_3": 1, "n_3": 1, "uo_3": 2, "qty_hb": -96.7, "rate_hb": -10.0}, "车门系统": {"sku_1": 19, "qty_1": 23.0, "amt_1": 3770.64, "comp_1": 36.0, "rate_1": 36.8, "share_1": 27.2, "y_1": 5, "n_1": 2, "uo_1": 12, "sku_2": 9, "qty_2": 73.0, "amt_2": 11012.0, "comp_2": 22.0, "rate_2": 77.8, "share_2": 67.0, "y_2": 5, "n_2": 2, "uo_2": 2, "sku_3": 33, "qty_3": 224.0, "amt_3": 61664.0, "comp_3": 219.0, "rate_3": 69.7, "share_3": 48.3, "y_3": 20, "n_3": 3, "uo_3": 10, "qty_hb": 206.8, "rate_hb": -8.1}, "饰条": {"sku_1": 14, "qty_1": 14.0, "amt_1": 703.0, "comp_1": 28.0, "rate_1": 35.7, "share_1": 20.2, "y_1": 5, "n_1": 0, "uo_1": 9, "sku_2": 9, "qty_2": 8.0, "amt_2": 605.0, "comp_2": 112.0, "rate_2": 44.4, "share_2": 9.0, "y_2": 3, "n_2": 1, "uo_2": 5, "sku_3": 8, "qty_3": 27.0, "amt_3": 2046.0, "comp_3": 132.0, "rate_3": 87.5, "share_3": 29.1, "y_3": 2, "n_3": 5, "uo_3": 1, "qty_hb": 237.5, "rate_hb": 43.1}};
+var ANALYST_DATA = {"俞东旭": {"sku_1": 19, "qty_1": 14.0, "amt_1": 1254.5, "comp_1": 35.0, "rate_1": 26.3, "share_1": 17.5, "freq_1": 1.89, "price_1": 89.61, "y_1": 4, "n_1": 1, "uo_1": 14, "sku_2": 6, "qty_2": 65.0, "amt_2": 8793.0, "comp_2": 20.0, "rate_2": 66.7, "share_2": 61.6, "freq_2": 2.83, "price_2": 135.28, "y_2": 3, "n_2": 1, "uo_2": 2, "sku_3": 20, "qty_3": 137.0, "amt_3": 47458.0, "comp_3": 55.0, "rate_3": 60.0, "share_3": 43.2, "freq_3": 1.55, "price_3": 346.41, "y_3": 10, "n_3": 2, "uo_3": 8, "qty_hb": 110.8, "rate_hb": -6.7}, "朱培源": {"sku_1": 17, "qty_1": 33.0, "amt_1": 3542.52, "comp_1": 25.0, "rate_1": 64.7, "share_1": 47.5, "freq_1": 2.71, "price_1": 107.35, "y_1": 10, "n_1": 1, "uo_1": 6, "sku_2": 5, "qty_2": 0.0, "amt_2": 0.0, "comp_2": 7.0, "rate_2": 0.0, "share_2": 0.0, "freq_2": 2.8, "price_2": 0, "y_2": 0, "n_2": 0, "uo_2": 5, "sku_3": 13, "qty_3": 53.0, "amt_3": 12678.0, "comp_3": 22.0, "rate_3": 53.8, "share_3": 43.8, "freq_3": 2.85, "price_3": 239.21, "y_3": 7, "n_3": 0, "uo_3": 6, "qty_hb": null, "rate_hb": 53.8}, "王偲涵": {"sku_1": 7, "qty_1": 7.0, "amt_1": 363.0, "comp_1": 12.0, "rate_1": 28.6, "share_1": 17.9, "freq_1": 1.0, "price_1": 51.86, "y_1": 2, "n_1": 0, "uo_1": 5, "sku_2": 13, "qty_2": 104.0, "amt_2": 15324.05, "comp_2": 109.0, "rate_2": 69.2, "share_2": 32.3, "freq_2": 2.31, "price_2": 147.35, "y_2": 7, "n_2": 2, "uo_2": 4, "sku_3": 6, "qty_3": 24.0, "amt_3": 2010.0, "comp_3": 27.0, "rate_3": 100.0, "share_3": 38.3, "freq_3": 1.5, "price_3": 83.75, "y_3": 2, "n_3": 4, "uo_3": 0, "qty_hb": -76.9, "rate_hb": 30.8}, "章鹏": {"sku_1": 1, "qty_1": 2.0, "amt_1": 598.0, "comp_1": 0.0, "rate_1": 100.0, "share_1": 100.0, "freq_1": 1.0, "price_1": 299.0, "y_1": 1, "n_1": 0, "uo_1": 0, "sku_2": 9, "qty_2": 17.0, "amt_2": 1770.0, "comp_2": 56.0, "rate_2": 66.7, "share_2": 36.7, "freq_2": 1.0, "price_2": 104.12, "y_2": 5, "n_2": 1, "uo_2": 3, "sku_3": 11, "qty_3": 36.0, "amt_3": 2162.0, "comp_3": 192.0, "rate_3": 63.6, "share_3": 21.2, "freq_3": 1.82, "price_3": 60.06, "y_3": 5, "n_3": 2, "uo_3": 4, "qty_hb": 111.8, "rate_hb": -3.1}, "胡煜星": {"sku_1": 9, "qty_1": 16.0, "amt_1": 2997.64, "comp_1": 21.0, "rate_1": 55.6, "share_1": 35.1, "freq_1": 2.44, "price_1": 187.35, "y_1": 3, "n_1": 2, "uo_1": 4, "sku_2": 3, "qty_2": 4.0, "amt_2": 1996.0, "comp_2": 0.0, "rate_2": 33.3, "share_2": 33.3, "freq_2": 2.67, "price_2": 499.0, "y_2": 1, "n_2": 0, "uo_2": 2, "sku_3": 17, "qty_3": 118.0, "amt_3": 10296.0, "comp_3": 171.0, "rate_3": 94.1, "share_3": 72.1, "freq_3": 2.82, "price_3": 87.25, "y_3": 15, "n_3": 1, "uo_3": 1, "qty_hb": 2850.0, "rate_hb": 60.8}};
+var EXPAND_DATA = {"原开品": {"sku_1": 35, "qty_1": 52.0, "amt_1": 5687.66, "comp_1": 81.0, "rate_1": 51.4, "share_1": 33.8, "y_1": 15, "n_1": 3, "uo_1": 17, "sku_2": 22, "qty_2": 83.0, "amt_2": 8453.0, "comp_2": 165.0, "rate_2": 50.0, "share_2": 25.0, "y_2": 8, "n_2": 3, "uo_2": 11, "sku_3": 52, "qty_3": 321.0, "amt_3": 65404.0, "comp_3": 442.0, "rate_3": 78.8, "share_3": 51.2, "y_3": 33, "n_3": 8, "uo_3": 11, "qty_hb": 286.7, "rate_hb": 28.8}, "拓展品": {"sku_1": 18, "qty_1": 20.0, "amt_1": 3068.0, "comp_1": 12.0, "rate_1": 33.3, "share_1": 27.8, "y_1": 5, "n_1": 1, "uo_1": 12, "sku_2": 13, "qty_2": 103.0, "amt_2": 17434.05, "comp_2": 27.0, "rate_2": 61.5, "share_2": 44.0, "y_2": 7, "n_2": 1, "uo_2": 5, "sku_3": 15, "qty_3": 47.0, "amt_3": 9200.0, "comp_3": 25.0, "rate_3": 46.7, "share_3": 30.8, "y_3": 6, "n_3": 1, "uo_3": 8, "qty_hb": -54.4, "rate_hb": -14.8}, "组合件": {"sku_1": 0, "qty_1": 0.0, "amt_1": 0.0, "comp_1": 0.0, "rate_1": 0, "share_1": 0, "y_1": 0, "n_1": 0, "uo_1": 0, "sku_2": 1, "qty_2": 4.0, "amt_2": 1996.0, "comp_2": 0.0, "rate_2": 100.0, "share_2": 100.0, "y_2": 1, "n_2": 0, "uo_2": 0, "sku_3": 0, "qty_3": 0.0, "amt_3": 0.0, "comp_3": 0.0, "rate_3": 0, "share_3": 0, "y_3": 0, "n_3": 0, "uo_3": 0, "qty_hb": -100.0, "rate_hb": -100.0}};
+var BATCH_STATS = {"1": {"sku": 53, "qty": 613.0, "amt": 52334.98, "comp": 371.0, "ordered": 24, "unorder": 28, "not_order": 1, "rate": 98.1, "share": 67.1}, "2": {"sku": 36, "qty": 483.0, "amt": 55262.55, "comp": 235.0, "ordered": 19, "unorder": 14, "not_order": 3, "rate": 91.7, "share": 68.5}, "3": {"sku": 67, "qty": 368.0, "amt": 74604.0, "comp": 467.0, "ordered": 39, "unorder": 9, "not_order": 19, "rate": 71.6, "share": 46.6}};
+var UNORDER_DIST = {"无市场": {"cnt_1": 15, "pct_1": 51.7, "cnt_2": 10, "pct_2": 62.5, "cnt_3": 9, "pct_3": 47.4}, "站外出单": {"cnt_1": 1, "pct_1": 3.4, "cnt_2": 0, "pct_2": 0.0, "cnt_3": 1, "pct_3": 5.3}, "竞争无优势": {"cnt_1": 12, "pct_1": 41.4, "cnt_2": 4, "pct_2": 25.0, "cnt_3": 9, "pct_3": 47.4}};
+var MARKET3 = {"站外出单": 11, "正常": 66, "竞争无优势": 54, "无市场": 23, "站内无价格优势": 2};
+
+var C1 = '#adb5bd'; // 1月色
+var C2 = '#667eea'; // 2月色
+var C3 = '#e74c3c'; // 3月色
+var CA = '#08845a'; // 绿
+var CB = '#e07b24'; // 橙
+
+// ========== 工具函数 ==========
+function fmtHb(val, suffix) {
+  suffix = suffix || '';
+  if (val === null || val === undefined) return '<span class="hb-flat">-</span>';
+  var s = (val > 0 ? '+' : '') + val + suffix;
+  var cls = val > 0 ? 'hb-up' : (val < 0 ? 'hb-down' : 'hb-flat');
+  return '<span class="' + cls + '">' + s + '</span>';
+}
+
+function mkBar(id, labels, datasets) {
+  var ctx = document.getElementById(id);
+  if (!ctx) return null;
+  return new Chart(ctx, {
+    type: 'bar',
+    data: { labels: labels, datasets: datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: datasets.length > 1, position: 'top', labels: { font: { size: 10 } } },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              var v = ctx.raw;
+              if (typeof v === 'number') return ' ' + ctx.dataset.label + ': $' + v.toLocaleString();
+              return ' ' + ctx.dataset.label + ': ' + v;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { ticks: { font: { size: 10 }, maxRotation: 30 } },
+        y: { ticks: { font: { size: 10 } }, beginAtZero: true }
+      }
+    }
+  });
+}
+
+function mkLine(id, labels, datasets) {
+  var ctx = document.getElementById(id);
+  if (!ctx) return null;
+  return new Chart(ctx, {
+    type: 'line',
+    data: { labels: labels, datasets: datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: true, position: 'top', labels: { font: { size: 10 } } },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              var v = ctx.raw;
+              if (typeof v === 'number') return ' ' + ctx.dataset.label + ': $' + v.toLocaleString();
+              return ' ' + ctx.dataset.label + ': ' + v;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { ticks: { font: { size: 10 } } },
+        y: { ticks: { font: { size: 10 } }, beginAtZero: true }
+      }
+    }
+  });
+}
+
+function mkPie(id, labels, vals, colors) {
+  var ctx = document.getElementById(id);
+  if (!ctx) return null;
+  return new Chart(ctx, {
+    type: 'pie',
+    data: { labels: labels, datasets: [{ data: vals, backgroundColor: colors }] },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'right', labels: { font: { size: 10 } } },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              var v = ctx.raw;
+              return ' ' + ctx.label + ': $' + Number(v).toLocaleString();
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+// ========== 渲染低占比新品 ==========
+function renderLowShare() {
+  var batch = document.getElementById('low-share-batch').value;
+  var filtered = batch === 'all' ? LOW_SHARE_DATA : LOW_SHARE_DATA.filter(function(d){ return d.batch === batch; });
+  var html = '';
+  for (var i = 0; i < filtered.length; i++) {
+    var d = filtered[i];
+    var shareColor = d.share < 30 ? '#c0392b' : (d.share < 50 ? '#e07b24' : '#888');
+    var orderColor = d.order === 'Y' ? '#08845a' : (d.order === 'N' ? '#e07b24' : '#c0392b');
+    var batchCls = d.batch === '1月' ? 'b1' : (d.batch === '2月' ? 'b2' : 'b3');
+    html += '<tr><td><span class="batch-tag ' + batchCls + '">' + d.batch + '</span></td>' +
+      '<td style="text-align:left;font-weight:600">' + d.sku + '</td>' +
+      '<td>' + d.cat + '</td><td>' + d.analyst + '</td><td>' + d.expand + '</td>' +
+      '<td>' + d.qty + '</td><td>' + d.comp + '</td>' +
+      '<td style="color:' + shareColor + ';font-weight:700">' + d.share + '%</td>' +
+      '<td style="color:' + orderColor + ';font-weight:600">' + d.order + '</td>' +
+      '<td>' + d.status + '</td></tr>';
+  }
+  document.getElementById('lowmkt-tbody').innerHTML = html;
+}
+
+// ========== 渲染全量明细 ==========
+function renderDetailTable() {
+  var batch = document.getElementById('detail-batch').value;
+  var cat = document.getElementById('detail-cat').value;
+  var analyst = document.getElementById('detail-analyst').value;
+  var filtered = ALL_DATA.filter(function(d) {
+    return (batch === 'all' || d.batch === batch) &&
+           (cat === 'all' || d.cat === cat) &&
+           (analyst === 'all' || d.analyst === analyst);
+  });
+  var html = '';
+  for (var i = 0; i < filtered.length; i++) {
+    var d = filtered[i];
+    var bgClass = d.order3 === 'Y' ? 'row-ordered' : (d.order3 === 'N' ? 'row-unorder' : '');
+    var batchCls = d.batch === '1月' ? 'b1' : (d.batch === '2月' ? 'b2' : 'b3');
+    var s3color = d.share3 < 50 ? '#c0392b' : (d.share3 < 75 ? '#e07b24' : '#08845a');
+    html += '<tr class="' + bgClass + '">' +
+      '<td>' + d.sku_id + '</td>' +
+      '<td style="text-align:left;font-weight:600">' + d.sku + '</td>' +
+      '<td><span class="batch-tag ' + batchCls + '">' + d.batch + '</span></td>' +
+      '<td>' + d.analyst + '</td>' +
+      '<td>' + d.cat + '</td>' +
+      '<td>' + d.expand + '</td>' +
+      '<td>' + d.onshelf + '</td>' +
+      '<td>' + d.first_order + '</td>' +
+      '<td>' + d.qty1 + '</td><td>$' + d.amt1 + '</td><td>' + d.order1 + '</td><td>' + d.status1 + '</td>' +
+      '<td>' + d.qty2 + '</td><td>$' + d.amt2 + '</td><td>' + d.order2 + '</td><td>' + d.status2 + '</td>' +
+      '<td>' + d.qty3 + '</td><td>$' + d.amt3 + '</td>' +
+      '<td style="color:' + (d.order3==='Y'?'#08845a':d.order3==='N'?'#e07b24':'#c0392b') + ';font-weight:600">' + d.order3 + '</td>' +
+      '<td style="color:' + s3color + '">' + (d.share3 > 0 ? d.share3 + '%' : '-') + '</td>' +
+    '</tr>';
+  }
+  if (!html) html = '<tr><td colspan="20" style="text-align:center;color:#888;padding:20px">暂无数据</td></tr>';
+  document.getElementById('detail-tbody').innerHTML = html;
+}
+
+// ========== 图表渲染 ==========
+function renderAllCharts() {
+  var cats = Object.keys(CAT_DATA);
+  var analysts = Object.keys(ANALYST_DATA);
+  var expands = Object.keys(EXPAND_DATA);
+
+  // 总览图表
+  mkBar('chartBatchQty', ['1月批次','2月批次','3月批次'], [
+    { label: '3月销量', data: [BATCH_STATS['1'].qty, BATCH_STATS['2'].qty, BATCH_STATS['3'].qty], backgroundColor: [C1,C2,C3] },
+    { label: '出单率%', data: [BATCH_STATS['1'].rate, BATCH_STATS['2'].rate, BATCH_STATS['3'].rate], backgroundColor: 'rgba(231,76,60,0.3)', type:'line', yAxisID:'y1', borderColor:C3, tension:0.3 }
+  ]);
+
+  mkBar('chartCategoryQty', cats, [
+    { label: '1月新品', data: cats.map(function(c){return CAT_DATA[c].qty_1;}), backgroundColor: C1 },
+    { label: '2月新品', data: cats.map(function(c){return CAT_DATA[c].qty_2;}), backgroundColor: C2 },
+    { label: '3月新品', data: cats.map(function(c){return CAT_DATA[c].qty_3;}), backgroundColor: C3 }
+  ]);
+
+  mkLine('chartCategoryRate', cats, [
+    { label: '1月出单率', data: cats.map(function(c){return CAT_DATA[c].rate_1;}), borderColor: C1, backgroundColor: C1+'33', tension:0.3 },
+    { label: '2月出单率', data: cats.map(function(c){return CAT_DATA[c].rate_2;}), borderColor: C2, backgroundColor: C2+'33', tension:0.3 },
+    { label: '3月出单率', data: cats.map(function(c){return CAT_DATA[c].rate_3;}), borderColor: C3, backgroundColor: C3+'33', tension:0.3 }
+  ]);
+
+  mkBar('chartAnalystQty', analysts, [
+    { label: '1月新品', data: analysts.map(function(a){return ANALYST_DATA[a].qty_1;}), backgroundColor: C1 },
+    { label: '2月新品', data: analysts.map(function(a){return ANALYST_DATA[a].qty_2;}), backgroundColor: C2 },
+    { label: '3月新品', data: analysts.map(function(a){return ANALYST_DATA[a].qty_3;}), backgroundColor: C3 }
+  ]);
+
+  mkBar('chartExpandQty', expands, [
+    { label: '1月新品', data: expands.map(function(e){return EXPAND_DATA[e].qty_1;}), backgroundColor: C1 },
+    { label: '2月新品', data: expands.map(function(e){return EXPAND_DATA[e].qty_2;}), backgroundColor: C2 },
+    { label: '3月新品', data: expands.map(function(e){return EXPAND_DATA[e].qty_3;}), backgroundColor: C3 }
+  ]);
+
+  mkBar('chartOrderDist', ['1月批次','2月批次','3月批次'], [
+    { label: 'Y出单', data: [BATCH_STATS['1'].ordered, BATCH_STATS['2'].ordered, BATCH_STATS['3'].ordered], backgroundColor: CA },
+    { label: 'N出单', data: [BATCH_STATS['1'].unorder, BATCH_STATS['2'].unorder, BATCH_STATS['3'].unorder], backgroundColor: CB },
+    { label: '未出单', data: [BATCH_STATS['1'].not_order, BATCH_STATS['2'].not_order, BATCH_STATS['3'].not_order], backgroundColor: '#c0392b' }
+  ]);
+
+  // 品线图表
+  mkBar('chartCatQty', cats, [
+    { label: '1月新品', data: cats.map(function(c){return CAT_DATA[c].qty_1;}), backgroundColor: C1 },
+    { label: '2月新品', data: cats.map(function(c){return CAT_DATA[c].qty_2;}), backgroundColor: C2 },
+    { label: '3月新品', data: cats.map(function(c){return CAT_DATA[c].qty_3;}), backgroundColor: C3 }
+  ]);
+
+  mkBar('chartCatAmt', cats, [
+    { label: '1月销售额', data: cats.map(function(c){return CAT_DATA[c].amt_1;}), backgroundColor: C1+'bb' },
+    { label: '2月销售额', data: cats.map(function(c){return CAT_DATA[c].amt_2;}), backgroundColor: C2+'bb' },
+    { label: '3月销售额', data: cats.map(function(c){return CAT_DATA[c].amt_3;}), backgroundColor: C3+'bb' }
+  ]);
+
+  mkLine('chartCatRate', cats, [
+    { label: '1月', data: cats.map(function(c){return CAT_DATA[c].rate_1;}), borderColor: C1, tension:0.3 },
+    { label: '2月', data: cats.map(function(c){return CAT_DATA[c].rate_2;}), borderColor: C2, tension:0.3 },
+    { label: '3月', data: cats.map(function(c){return CAT_DATA[c].rate_3;}), borderColor: C3, tension:0.3 }
+  ]);
+
+  mkBar('chartCatShare', cats, [
+    { label: '1月市占比%', data: cats.map(function(c){return CAT_DATA[c].share_1;}), backgroundColor: C1+'bb' },
+    { label: '2月市占比%', data: cats.map(function(c){return CAT_DATA[c].share_2;}), backgroundColor: C2+'bb' },
+    { label: '3月市占比%', data: cats.map(function(c){return CAT_DATA[c].share_3;}), backgroundColor: C3+'bb' }
+  ]);
+
+  // 分析人图表
+  mkBar('chartAnalystQty2', analysts, [
+    { label: '1月', data: analysts.map(function(a){return ANALYST_DATA[a].qty_1;}), backgroundColor: C1 },
+    { label: '2月', data: analysts.map(function(a){return ANALYST_DATA[a].qty_2;}), backgroundColor: C2 },
+    { label: '3月', data: analysts.map(function(a){return ANALYST_DATA[a].qty_3;}), backgroundColor: C3 }
+  ]);
+
+  mkBar('chartAnalystAmt', analysts, [
+    { label: '1月销售额', data: analysts.map(function(a){return ANALYST_DATA[a].amt_1;}), backgroundColor: C1+'bb' },
+    { label: '2月销售额', data: analysts.map(function(a){return ANALYST_DATA[a].amt_2;}), backgroundColor: C2+'bb' },
+    { label: '3月销售额', data: analysts.map(function(a){return ANALYST_DATA[a].amt_3;}), backgroundColor: C3+'bb' }
+  ]);
+
+  mkLine('chartAnalystRate', analysts, [
+    { label: '1月出单率', data: analysts.map(function(a){return ANALYST_DATA[a].rate_1;}), borderColor: C1, tension:0.3 },
+    { label: '2月出单率', data: analysts.map(function(a){return ANALYST_DATA[a].rate_2;}), borderColor: C2, tension:0.3 },
+    { label: '3月出单率', data: analysts.map(function(a){return ANALYST_DATA[a].rate_3;}), borderColor: C3, tension:0.3 }
+  ]);
+
+  mkBar('chartAnalystFreq', analysts, [
+    { label: '1月平均频次', data: analysts.map(function(a){return ANALYST_DATA[a].freq_1;}), backgroundColor: C1 },
+    { label: '2月平均频次', data: analysts.map(function(a){return ANALYST_DATA[a].freq_2;}), backgroundColor: C2 },
+    { label: '3月平均频次', data: analysts.map(function(a){return ANALYST_DATA[a].freq_3;}), backgroundColor: C3 }
+  ]);
+
+  // 拓展类型图表
+  mkBar('chartExpandQty2', expands, [
+    { label: '1月', data: expands.map(function(e){return EXPAND_DATA[e].qty_1;}), backgroundColor: C1 },
+    { label: '2月', data: expands.map(function(e){return EXPAND_DATA[e].qty_2;}), backgroundColor: C2 },
+    { label: '3月', data: expands.map(function(e){return EXPAND_DATA[e].qty_3;}), backgroundColor: C3 }
+  ]);
+
+  mkLine('chartExpandRate', expands, [
+    { label: '1月', data: expands.map(function(e){return EXPAND_DATA[e].rate_1;}), borderColor: C1, tension:0.3 },
+    { label: '2月', data: expands.map(function(e){return EXPAND_DATA[e].rate_2;}), borderColor: C2, tension:0.3 },
+    { label: '3月', data: expands.map(function(e){return EXPAND_DATA[e].rate_3;}), borderColor: C3, tension:0.3 }
+  ]);
+
+  // 出单情况图表
+  mkBar('chartOrderBatch', ['1月批次','2月批次','3月批次'], [
+    { label: 'Y出单', data: [BATCH_STATS['1'].ordered, BATCH_STATS['2'].ordered, BATCH_STATS['3'].ordered], backgroundColor: CA },
+    { label: 'N出单', data: [BATCH_STATS['1'].unorder, BATCH_STATS['2'].unorder, BATCH_STATS['3'].unorder], backgroundColor: CB },
+    { label: '未出单', data: [BATCH_STATS['1'].not_order, BATCH_STATS['2'].not_order, BATCH_STATS['3'].not_order], backgroundColor: '#c0392b' }
+  ]);
+
+  mkLine('chartOrderRate', ['1月批次','2月批次','3月批次'], [
+    { label: '出单率(Y+N)%', data: [BATCH_STATS['1'].rate, BATCH_STATS['2'].rate, BATCH_STATS['3'].rate], borderColor: C3, backgroundColor: C3+'33', tension:0.3, fill:true }
+  ]);
+
+  mkBar('chartOrderAmt', ['1月批次','2月批次','3月批次'], [
+    { label: '3月销售额', data: [BATCH_STATS['1'].amt, BATCH_STATS['2'].amt, BATCH_STATS['3'].amt], backgroundColor: [C1,C2,C3] }
+  ]);
+
+  // 未出单图表
+  var mkLabels = Object.keys(MARKET3);
+  var mkVals = mkLabels.map(function(k){return MARKET3[k];});
+  var mkColors = ['#08845a','#adb5bd','#c0392b','#e07b24','#667eea','#f1c40f'];
+  mkPie('chartMarketPie', mkLabels, mkVals, mkColors);
+
+  var uLabels = Object.keys(UNORDER_DIST);
+  mkBar('chartUnorderCompare', uLabels, [
+    { label: '1月', data: uLabels.map(function(k){return UNORDER_DIST[k].cnt_1;}), backgroundColor: C1 },
+    { label: '2月', data: uLabels.map(function(k){return UNORDER_DIST[k].cnt_2;}), backgroundColor: C2 },
+    { label: '3月', data: uLabels.map(function(k){return UNORDER_DIST[k].cnt_3;}), backgroundColor: C3 }
+  ]);
+}
+
+// ========== 导航切换 ==========
+var sections = ['overview','pinxian','analyst','expand','order','unorder','lowshare','detail'];
+var chartsRendered = false;
+
+function showSection(name, el) {
+  for (var i = 0; i < sections.length; i++) {
+    var s = sections[i];
+    var wrap = document.getElementById('section-' + s);
+    if (wrap) wrap.style.display = s === name ? 'block' : 'none';
+  }
+  var links = document.querySelectorAll('.sidebar a');
+  for (var j = 0; j < links.length; j++) links[j].classList.remove('active');
+  if (el) el.classList.add('active');
+}
+
+// ========== 初始化 ==========
+renderLowShare();
+renderDetailTable();
+renderAllCharts();
+</script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+{
+  "metadata": {
+    "sourceFile": "玻璃品类调研2025.9.xlsx",
+    "extractedDate": "2026-03-20",
+    "totalSheets": 16
+  },
+  "sales": {
+    "summary": {
+      "monthlySales": 8,
+      "monthlyRevenue": 1012,
+      "averagePrice": 89316.89,
+      "priceRange": "58-98美元"
+    },
+    "monthlyTrend": [
+      {
+        "month": "1月",
+        "sales": 8,
+        "revenue": 953,
+        "averagePrice": 85328.47284982426
+      },
+      {
+        "month": "2月",
+        "sales": 8,
+        "revenue": 1027,
+        "averagePrice": 90730.85843802117
+      },
+      {
+        "month": "3月",
+        "sales": 10,
+        "revenue": 1313,
+        "averagePrice": 88670.93460895833
+      },
+      {
+        "month": "4月",
+        "sales": 11,
+        "revenue": 1385,
+        "averagePrice": 87742.37225960623
+      },
+      {
+        "month": "5月",
+        "sales": 11,
+        "revenue": 1444,
+        "averagePrice": 85640.14355305111
+      },
+      {
+        "month": "6月",
+        "sales": 13,
+        "revenue": 1659,
+        "averagePrice": 90799.68598156108
+      },
+      {
+        "month": "7月",
+        "sales": 15,
+        "revenue": 1902,
+        "averagePrice": 87190.66170544586
+      },
+      {
+        "month": "8月",
+        "sales": 17,
+        "revenue": 2204,
+        "averagePrice": 89932.14807334112
+      },
+      {
+        "month": "9月",
+        "sales": 10,
+        "revenue": 1274,
+        "averagePrice": 87519.45865909102
+      },
+      {
+        "month": "10月",
+        "sales": 8,
+        "revenue": 1030,
+        "averagePrice": 86476.15005269469
+      },
+      {
+        "month": "11月",
+        "sales": 9,
+        "revenue": 1089,
+        "averagePrice": 89082.19644030338
+      },
+      {
+        "month": "12月",
+        "sales": 7,
+        "revenue": 913,
+        "averagePrice": 93072.0049804516
+      }
+    ],
+    "priceDistribution": [
+      {
+        "priceRange": "30-39美元",
+        "count": 20,
+        "percentage": 1
+      },
+      {
+        "priceRange": "40-49美元",
+        "count": 28,
+        "percentage": 2
+      },
+      {
+        "priceRange": "50-59美元",
+        "count": 39,
+        "percentage": 3
+      },
+      {
+        "priceRange": "60-69美元",
+        "count": 487,
+        "percentage": 32
+      },
+      {
+        "priceRange": "70-79美元",
+        "count": 867,
+        "percentage": 58
+      },
+      {
+        "priceRange": "80-89美元",
+        "count": 991,
+        "percentage": 66
+      },
+      {
+        "priceRange": "90-99美元",
+        "count": 726,
+        "percentage": 48
+      },
+      {
+        "priceRange": "100-109美元",
+        "count": 48,
+        "percentage": 3
+      },
+      {
+        "priceRange": "110-119美元",
+        "count": 34,
+        "percentage": 2
+      },
+      {
+        "priceRange": "120-129美元",
+        "count": 25,
+        "percentage": 2
+      },
+      {
+        "priceRange": "130-139美元",
+        "count": 18,
+        "percentage": 1
+      },
+      {
+        "priceRange": "140-149美元",
+        "count": 13,
+        "percentage": 1
+      },
+      {
+        "priceRange": "150-159美元",
+        "count": 9,
+        "percentage": 1
+      }
+    ]
+  },
+  "market": {
+    "keywords": [
+      "1.核心词：window glass/Door glass/Windshield glass/Side window glass/Rear window glass/Back Glass/Quarte"
+    ],
+    "competition": {
+      "totalListings": 8692902,
+      "glassListings": 379238,
+      "percentage": 4.36
+    }
+  },
+  "products": {
+    "categories": [
+      {
+        "name": "前挡风玻璃 (Windshield)",
+        "percentage": 40,
+        "description": "安全性高，常用夹层玻璃"
+      },
+      {
+        "name": "侧前窗 (Door Window)",
+        "percentage": 25,
+        "description": "常用钢化玻璃"
+      },
+      {
+        "name": "侧后窗 (Door Window)",
+        "percentage": 20,
+        "description": "常用钢化玻璃"
+      },
+      {
+        "name": "后挡风玻璃 (Back Glass)",
+        "percentage": 15,
+        "description": "常用钢化玻璃"
+      }
+    ],
+    "materials": [
+      {
+        "name": "钢化玻璃 (Tempered Glass)",
+        "percentage": 70,
+        "description": "单层玻璃，破裂呈小颗粒"
+      },
+      {
+        "name": "夹层玻璃 (Laminated Glass)",
+        "percentage": 30,
+        "description": "多层玻璃，安全性高"
+      }
+    ],
+    "priceRanges": [
+      {
+        "dimension": "总体",
+        "category": "总",
+        "averagePrice": 0
+      },
+      {
+        "dimension": "安装位置（侧窗/后窗/挡风）",
+        "category": "侧窗",
+        "averagePrice": 0
+      }
+    ]
+  }
+}

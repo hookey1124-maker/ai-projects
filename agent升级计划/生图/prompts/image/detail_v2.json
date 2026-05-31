@@ -1,0 +1,21 @@
+{
+  "prompt_id": "IMG_DETAIL_V2",
+  "version": "2.0",
+  "purpose": "eBay 产品细节特写图 — 表面纹理和颜色微距展示",
+  "last_updated": "2026-05-24",
+  "model": "gpt-image-2",
+  "size": "1:1",
+  "strength": 0.45,
+  "description": "表面纹理/颜色微距特写，浅景深。展示材质质感：镀铬反光、哑光颗粒、纹理凹凸。",
+  "template": "由 DeepSeek (prompt_builder.py) 动态生成，非固定模板",
+  "variables": ["color", "material", "finish", "product_type"],
+  "constraints": [
+    "极端微距特写",
+    "浅景深，背景模糊",
+    "准确展示材质质感（镀铬/哑光/纹理）",
+    "禁止出现任何汽车品牌 Logo 或商标",
+    "禁止眩光（反光表面需柔光处理）",
+    "Prompt 必须用英文"
+  ],
+  "generator": "prompt_builder.py"
+}

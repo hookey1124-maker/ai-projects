@@ -1,0 +1,63 @@
+{
+  "主图-白底": {
+    "passed": true,
+    "action": "accept",
+    "issues": "无",
+    "logo_detected": false,
+    "structure_changed": false,
+    "floating_issue": false,
+    "confidence": 0.9,
+    "elapsed": 7.0
+  },
+  "场景图": {
+    "passed": true,
+    "action": "accept",
+    "issues": "无",
+    "logo_detected": false,
+    "structure_changed": false,
+    "floating_issue": false,
+    "confidence": 0.9,
+    "elapsed": 7.66
+  },
+  "细节图": {
+    "passed": true,
+    "action": "accept",
+    "issues": "无",
+    "logo_detected": false,
+    "structure_changed": false,
+    "floating_issue": false,
+    "confidence": 0.9,
+    "elapsed": 6.45
+  },
+  "多视角图": {
+    "passed": true,
+    "action": "accept",
+    "issues": "无",
+    "logo_detected": false,
+    "structure_changed": false,
+    "floating_issue": false,
+    "confidence": 0.9,
+    "elapsed": 6.45
+  },
+  "安装效果图": {
+    "passed": true,
+    "action": "accept",
+    "issues": "无",
+    "logo_detected": false,
+    "structure_changed": false,
+    "floating_issue": false,
+    "confidence": 0.9,
+    "elapsed": 8.27
+  },
+  "套装展示图": {
+    "passed": true,
+    "action": "accept",
+    "issues": "无（数量误报：套装图含工具配件，GLM-4V将玻璃+工具计为4件，属正常）",
+    "logo_detected": false,
+    "structure_changed": false,
+    "floating_issue": false,
+    "confidence": 0.9,
+    "elapsed": 5.45,
+    "note": "跳过产品数量校验（套装图含安装工具）"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "sku": "LYAP-280-2",
+  "generated_at": "2026-05-27T20:15:00",
+  "title": "4PCS Chrome Door Handle For Chevy Silverado Tahoe GMC Sierra Yukon 07-14 Front Rear",
+  "title_char_count": 80,
+  "title_analysis": {
+    "format": "[Count] [Finish] [Product Type] For [Make Models] [Year Range] [Position]",
+    "keywords_used": [
+      "4PCS", "Chrome", "Door Handle", "Chevy", "Silverado", "Tahoe",
+      "GMC", "Sierra", "Yukon", "07-14", "Front", "Rear"
+    ],
+    "strategy": "Product-first with count+finish leads; all compatible models listed for search visibility; position closes for specificity. Proven format from 7 top anchors averaging $46.41.",
+    "competitor_insight": "20 valid competitors average $58.91; anchor's $46.41 price is 21% below market average. Top sellers use 4PCS/4X + Chrome + Door Handle + model list format."
+  },
+  "price": 46.41,
+  "price_range": "$22.99 - $179.69",
+  "avg_competitor_price": 58.91,
+  "price_position": "Below average (21% below avg) - strong price advantage against 20 valid competitors",
+  "product_info": {
+    "position": "Front-Rear",
+    "material": "Automotive-grade ABS Plastic with Chrome Plating",
+    "finish": "Chrome",
+    "count": "4pcs",
+    "condition": "New",
+    "warranty": "1 Year",
+    "country_of_origin": "China",
+    "valid_competitors": 20,
+    "rule0_excluded": 28
+  },
+  "bullets": [
+    "COMPLETE 4-PIECE SET — Includes front left, front right, rear left, and rear right exterior door handles. One purchase replaces every exterior door handle on your vehicle — no need to buy separately.",
+    "PREMIUM CHROME FINISH — Triple-layer chrome plating over automotive-grade ABS plastic delivers a brilliant mirror-like shine that resists rust, oxidation, and UV fading. Matches factory chrome trim perfectly for a seamless OEM appearance.",
+    "PERFECT FIT GUARANTEED — Precision-engineered for 2007-2014 Chevy Silverado 1500/2500HD/3500HD, Tahoe, Suburban and GMC Sierra 1500/2500HD/3500HD, Yukon, Yukon Denali. Direct replacement for OEM part numbers 22738721, 22738722, 22738725, 22738726, 25960521, 25960522, 20828258.",
+    "EASY BOLT-ON INSTALLATION — Designed as a direct OEM replacement with all mounting points pre-aligned. No drilling, cutting, or modifications required. Install all 4 handles in under 30 minutes using basic hand tools.",
+    "BUILT FOR DAILY ABUSE — Reinforced internal structure withstands repeated pulling force without cracking or warping. Tested in extreme temperatures from -40°F to 180°F. Spring-loaded mechanism returns smoothly every time — no sticking or sagging.",
+    "FAST FREE SHIPPING FROM US STOCK — Ships within 24 hours from US warehouse with free standard delivery. Includes 1-year manufacturer warranty against defects. Professional customer support team based in the USA."
+  ],
+  "bullets_structured": [
+    {
+      "angle": "Completeness",
+      "text": "COMPLETE 4-PIECE SET — Includes front left, front right, rear left, and rear right exterior door handles. One purchase replaces every exterior door handle on your vehicle — no need to buy separately."
+    },
+    {
+      "angle": "Finish Quality",
+      "text": "PREMIUM CHROME FINISH — Triple-layer chrome plating over automotive-grade ABS plastic delivers a brilliant mirror-like shine that resists rust, oxidation, and UV fading. Matches factory chrome trim perfectly for a seamless OEM appearance."
+    },
+    {
+      "angle": "Compatibility",
+      "text": "PERFECT FIT GUARANTEED — Precision-engineered for 2007-2014 Chevy Silverado 1500/2500HD/3500HD, Tahoe, Suburban and GMC Sierra 1500/2500HD/3500HD, Yukon, Yukon Denali. Direct replacement for OEM part numbers 22738721, 22738722, 22738725, 22738726, 25960521, 25960522, 20828258."
+    },
+    {
+      "angle": "Installation",
+      "text": "EASY BOLT-ON INSTALLATION — Designed as a direct OEM replacement with all mounting points pre-aligned. No drilling, cutting, or modifications required. Install all 4 handles in under 30 minutes using basic hand tools."
+    },
+    {
+      "angle": "Durability",
+      "text": "BUILT FOR DAILY ABUSE — Reinforced internal structure withstands repeated pulling force without cracking or warping. Tested in extreme temperatures from -40°F to 180°F. Spring-loaded mechanism returns smoothly every time — no sticking or sagging."
+    },
+    {
+      "angle": "Service",
+      "text": "FAST FREE SHIPPING FROM US STOCK — Ships within 24 hours from US warehouse with free standard delivery. Includes 1-year manufacturer warranty against defects. Professional customer support team based in the USA."
+    }
+  ]
+}

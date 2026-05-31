@@ -1,0 +1,32 @@
+{
+  "main": {
+    "label": "主图-白底",
+    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Chevy-Express_1996-2022_Door-Handle\\gen_main_fast_1779516855.png",
+    "status": "ok"
+  },
+  "scene": {
+    "label": "场景图",
+    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Chevy-Express_1996-2022_Door-Handle\\gen_main_fast_1779516881.png",
+    "status": "ok"
+  },
+  "detail": {
+    "label": "细节图",
+    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Chevy-Express_1996-2022_Door-Handle\\gen_main_fast_1779516905.png",
+    "status": "ok"
+  },
+  "angle": {
+    "label": "多视角图",
+    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Chevy-Express_1996-2022_Door-Handle\\gen_main_fast_1779516933.png",
+    "status": "ok"
+  },
+  "install": {
+    "label": "安装效果图",
+    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Chevy-Express_1996-2022_Door-Handle\\gen_main_fast_1779516955.png",
+    "status": "ok"
+  },
+  "kit": {
+    "label": "套装展示图",
+    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Chevy-Express_1996-2022_Door-Handle\\gen_main_fast_1779516981.png",
+    "status": "ok"
+  }
+}

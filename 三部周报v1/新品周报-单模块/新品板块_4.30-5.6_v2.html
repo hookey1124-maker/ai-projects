@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新品周报板块 · 4.30-5.6</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif; background: #f0f2f5; color: #1a1a2e; }
+.header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; padding: 28px 40px; }
+.header h1 { font-size: 26px; font-weight: 700; letter-spacing: 2px; }
+.header .subtitle { font-size: 13px; opacity: 0.75; margin-top: 6px; }
+.container { display: flex; min-height: calc(100vh - 80px); }
+.sidebar { width: 230px; background: #fff; border-right: 1px solid #e8e8e8; padding: 20px 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; flex-shrink: 0; }
+.sidebar ul { list-style: none; }
+.sidebar li a { display: block; padding: 10px 20px; font-size: 13px; color: #555; text-decoration: none; border-left: 3px solid transparent; transition: all 0.2s; }
+.sidebar li a:hover, .sidebar li a.active { background: #f0f6ff; color: #0f3460; border-left-color: #0f3460; font-weight: 600; }
+.main-content { flex: 1; padding: 24px; overflow: auto; }
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 14px; margin-bottom: 24px; }
+.kpi-card { background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center; }
+.kpi-card .val { font-size: 26px; font-weight: 700; color: #0f3460; }
+.kpi-card .label { font-size: 12px; color: #888; margin-top: 6px; }
+.kpi-card .hb { font-size: 11px; margin-top: 4px; font-weight: 600; }
+.kpi-card.green .val { color: #08845a; }
+.kpi-card.orange .val { color: #e07b24; }
+.kpi-card.red .val { color: #c0392b; }
+.kpi-card.purple .val { color: #8e44ad; }
+.section { background: white; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.section h3 { font-size: 16px; font-weight: 700; color: #0f3460; padding-bottom: 12px; border-bottom: 2px solid #e8f0fe; margin-bottom: 16px; }
+.sub-module { margin-bottom: 20px; }
+.sub-module h4 { font-size: 13px; font-weight: 600; color: #444; margin-bottom: 10px; padding: 6px 12px; background: #f5f7ff; border-radius: 4px; border-left: 3px solid #0f3460; }
+.chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; margin-bottom: 20px; }
+.chart-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.chart-card h4 { font-size: 13px; font-weight: 600; color: #0f3460; margin-bottom: 14px; }
+.chart-card canvas { max-height: 260px; }
+.chart-card-wide { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); grid-column: 1 / -1; }
+.chart-card-wide h4 { font-size: 13px; font-weight: 600; color: #0f3460; margin-bottom: 14px; }
+.chart-card-wide canvas { max-height: 300px; }
+.table-wrap { overflow-x: auto; }
+.data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.data-table th { background: #0f3460; color: white; padding: 8px 8px; text-align: center; white-space: nowrap; font-weight: 600; }
+.data-table th.p1 { background: #6c757d; }
+.data-table th.p2 { background: #667eea; }
+.data-table th.p3 { background: #2980b9; }
+.data-table th.p4 { background: #c0392b; }
+.data-table th.hb { background: #e07b24; }
+.data-table th.green { background: #08845a; }
+.data-table td { padding: 6px 8px; text-align: center; border-bottom: 1px solid #f0f0f0; white-space: nowrap; }
+.data-table tr:hover td { background: #f5f7ff; }
+.hb-up { color: #c0392b; font-weight: 700; }
+.hb-down { color: #08845a; font-weight: 700; }
+.hb-flat { color: #888; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; color: white; font-weight: 600; }
+.badge-y { background: #08845a; }
+.badge-n { background: #e07b24; }
+.badge-un { background: #c0392b; }
+.badge-normal { background: #2980b9; }
+select { padding: 6px 12px; border-radius: 6px; border: 1px solid #ddd; font-size: 13px; background: white; cursor: pointer; }
+select:focus { outline: none; border-color: #0f3460; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+@media (max-width: 900px) { .sidebar { display: none; } .chart-grid { grid-template-columns: 1fr; } .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+.section-wrap { display: block; }
+.note { font-size: 12px; color: #888; margin-bottom: 10px; }
+.pl1 { background: #6c757d; }
+.pl2 { background: #667eea; }
+.pl3 { background: #2980b9; }
+.pl4 { background: #c0392b; }
+.plp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 20px; }
+.plp-card { background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 3px solid #8e44ad; }
+.plp-card h4 { font-size: 13px; font-weight: 600; color: #0f3460; margin-bottom: 12px; }
+.plp-metric { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #f0f0f0; font-size: 12px; }
+.plp-metric:last-child { border-bottom: none; }
+.plp-metric .lbl { color: #666; }
+.plp-metric .val { font-weight: 600; color: #1a1a2e; }
+.plp-highlight { background: #f5f0ff; border-radius: 6px; padding: 10px; margin-top: 10px; }
+.plp-highlight .val { color: #8e44ad; font-weight: 700; }
+.highlight-red { background: #fdecea; }
+.highlight-orange { background: #fff3e6; }
+.highlight-green { background: #e8f5e9; }
+.tab-bar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.tab-btn { padding: 6px 16px; border-radius: 6px; border: 1px solid #ddd; background: white; cursor: pointer; font-size: 12px; font-weight: 600; transition: all 0.2s; }
+.tab-btn:hover { border-color: #0f3460; }
+.tab-btn.active { background: #0f3460; color: white; border-color: #0f3460; }
+.filter-bar { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; padding: 12px; background: #f5f7ff; border-radius: 8px; }
+.filter-item { display: flex; align-items: center; gap: 6px; }
+.filter-item label { font-size: 12px; color: #666; font-weight: 600; }
+.filter-item select { padding: 6px 12px; border-radius: 6px; border: 1px solid #ddd; background: white; font-size: 12px; cursor: pointer; min-width: 120px; }
+.filter-item select:focus { outline: none; border-color: #0f3460; }
+.reset-btn { padding: 6px 14px; border-radius: 6px; border: 1px solid #c0392b; background: white; color: #c0392b; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.reset-btn:hover { background: #c0392b; color: white; }
+.filter-result { font-size: 12px; color: #666; margin-top: 8px; text-align: right; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 新品周报板块 · 4.30-5.6</h1>
+  <div class="subtitle">统计周期：2026年4月30日 - 5月6日 &nbsp;|&nbsp; 在售SKU：109 &nbsp;|&nbsp; 生成：2026-05-14</div>
+</div>
+
+<div class="container">
+<nav class="sidebar">
+  <ul>
+    <li><a href="#" onclick="showSection('overview',this)" class="active">📊 数据总览</a></li>
+    <li><a href="#" onclick="showSection('pinxian',this)">🏷️ 品线维度</a></li>
+    <li><a href="#" onclick="showSection('analyst',this)">👤 分析人维度</a></li>
+    <li><a href="#" onclick="showSection('expand',this)">🔗 拓展类型</a></li>
+    <li><a href="#" onclick="showSection('timely',this)">⏱️ 分析及时率</a></li>
+    <li><a href="#" onclick="showSection('order',this)">📦 新品出单情况</a></li>
+    <li><a href="#" onclick="showSection('unorder',this)">❌ 新品未出单</a></li>
+    <li><a href="#" onclick="showSection('lowshare',this)">📉 低占比新品</a></li>
+    <li><a href="#" onclick="showSection('plp',this)">💰 PLP复盘</a></li>
+    <li><a href="#" onclick="showSection('cum43',this)">📊 四三累计</a></li>
+  </ul>
+</nav>
+
+<div class="main-content">
+
+<!-- KPI总览 -->
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="val">109</div><div class="label">在售SKU总数</div><div class="hb" style="color:#888">本周新上架 8</div></div>
+  <div class="kpi-card green"><div class="val">57</div><div class="label">8日内出单（Y）</div><div class="hb" style="color:#888">占 72.2%</div></div>
+  <div class="kpi-card orange"><div class="val">22</div><div class="label">8日外出单（N）</div><div class="hb" style="color:#888">占 27.8%</div></div>
+  <div class="kpi-card red"><div class="val">30</div><div class="label">未出单合计</div><div class="hb" style="color:#888">有对手3 + 无对手27</div></div>
+  <div class="kpi-card"><div class="val">79</div><div class="label">已出单合计(Y+N)</div><div class="hb" style="color:#888">有对手 43 / 无对手 36</div></div>
+  <div class="kpi-card"><div class="val">195</div><div class="label">4.30-5.6总销量</div><div class="hb" style="color:#888">及时分析率 70.3%</div></div>
+  <div class="kpi-card purple"><div class="val">$20,495</div><div class="label">4.30-5.6总销售额</div><div class="hb" style="color:#888">USD原值</div></div>
+  <div class="kpi-card red"><div class="val">39</div><div class="label">低占比新品(市占&lt;75%)</div><div class="hb" style="color:#888">Y=24 N=12 未=3</div></div>
+</div>
+
+<!-- 板块1: 数据总览 -->
+<div id="section-overview" class="section-wrap">
+  <div class="section">
+    <h3>📊 数据总览 · 图形可视化</h3>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h4>📦 5.6出单分布（有对手口径）</h4>
+        <canvas id="chartOrderPie"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>⏱️ 分析及时率分布</h4>
+        <canvas id="chartTimelyPie"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>📉 低占比新品品类分布</h4>
+        <canvas id="chartLowShareCat"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>🏷️ 品线销量分布</h4>
+        <canvas id="chartCatPie"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 板块2: 品线维度 -->
+<div id="section-pinxian" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>🏷️ 品线维度</h3>
+    <p class="note">各品线在售SKU数量及销量对比</p>
+    <div class="sub-module">
+      <h4>各品线销量对比</h4>
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h4>本周 销量对比</h4>
+          <canvas id="chartCatQty"></canvas>
+        </div>
+        <div class="chart-card">
+          <h4>本周各品线销量占比</h4>
+          <canvas id="chartCatPie2"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="sub-module">
+      <h4>品线数据明细</h4>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th rowspan="2">品类</th>
+              <th rowspan="2">本周SKU</th>
+              <th rowspan="2">本周新上架</th>
+              <th colspan="2" class="p3">本周</th>
+            </tr>
+            <tr>
+              <th class="p3">销量</th><th class="p3">销售额</th>
+            </tr>
+          </thead>
+          <tbody id="catTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 板块3: 分析人维度 -->
+<div id="section-analyst" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>👤 分析人维度</h3>
+    <p class="note">各分析人负责SKU的销量表现</p>
+    <div class="sub-module">
+      <h4>各分析人销量对比</h4>
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h4>本周销量对比</h4>
+          <canvas id="chartAnQty"></canvas>
+        </div>
+        <div class="chart-card">
+          <h4>本周各分析人销量占比</h4>
+          <canvas id="chartAnPie"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="sub-module">
+      <h4>分析人数据明细</h4>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th rowspan="2">分析人</th>
+              <th rowspan="2">本周SKU</th>
+              <th rowspan="2">本周新上架</th>
+              <th colspan="2" class="p4">本周</th>
+            </tr>
+            <tr>
+              <th class="p4">销量</th><th class="p4">销售额</th>
+            </tr>
+          </thead>
+          <tbody id="anTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 板块4: 拓展类型 -->
+<div id="section-expand" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>🔗 拓展类型维度</h3>
+    <p class="note">原开品 / 拓展品 的出单率及销量表现</p>
+    <div class="sub-module">
+      <h4>拓展类型出单率对比</h4>
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h4>出单率对比</h4>
+          <canvas id="chartTzRate"></canvas>
+        </div>
+        <div class="chart-card">
+          <h4>销量对比</h4>
+          <canvas id="chartTzQty"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="sub-module">
+      <h4>拓展类型数据明细</h4>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th rowspan="2">类型</th>
+              <th rowspan="2">本周SKU</th>
+              <th colspan="2" class="p4">出单情况</th>
+              <th colspan="2" class="p4">销量</th>
+            </tr>
+            <tr>
+              <th class="p4">已出单</th><th class="p4">出单率</th>
+              <th class="p4">本周</th>
+            </tr>
+          </thead>
+          <tbody id="tzTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 板块5: 分析及时率 -->
+<div id="section-timely" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>⏱️ 分析及时率</h3>
+    <p class="note">统计周期内分析人对在售SKU的跟进及时程度（基于5.6检查表）</p>
+    <div class="sub-module">
+      <h4>及时率概览</h4>
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h4>本周及时率分布（共109个SKU）</h4>
+          <canvas id="chartTimelyDist"></canvas>
+        </div>
+        <div class="chart-card">
+          <h4>各分析人及时率对比</h4>
+          <canvas id="chartTimelyAn"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="sub-module">
+      <h4>各分析人及时率明细（4.30-5.6）</h4>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>分析人</th><th>截止5.6 SKU</th>
+              <th>及时分析</th><th>及时率</th>
+              <th>8日内无分析</th><th>超7日未分析</th>
+            </tr>
+          </thead>
+          <tbody id="timelyTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 板块6: 新品出单情况 -->
+<div id="section-order" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>📦 新品出单情况</h3>
+    <p class="note"><b>规则说明：</b>Y=8日内出单（上架8天内出单）｜N=8日外出单（已出单但超8天）｜未出单=真正未出单</p>
+    
+    <div class="sub-module">
+      <h4>总体出单情况（有对手口径，共43个SKU）</h4>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>指标</th>
+              <th class="p4">5.6本周</th>
+            </tr>
+          </thead>
+          <tbody id="orderTotalBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="sub-module">
+      <h4>出单情况多维度分析</h4>
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="showOrderTab('an', this)">按分析人维度</button>
+        <button class="tab-btn" onclick="showOrderTab('cat', this)">按品线维度</button>
+      </div>
+      <div id="orderTab-an">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>分析人</th><th>有对手SKU</th><th>8日内(Y)</th><th>8日外(N)</th><th>真正未出单</th><th>已出单</th><th>出单率</th>
+              </tr>
+            </thead>
+            <tbody id="orderAnBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div id="orderTab-cat" style="display:none">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>品线</th><th>有对手SKU</th><th>8日内(Y)</th><th>8日外(N)</th><th>真正未出单</th><th>已出单</th><th>出单率</th>
+              </tr>
+            </thead>
+            <tbody id="orderCatBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 板块7: 新品未出单 -->
+<div id="section-unorder" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>❌ 新品未出单原因分析</h3>
+    <p class="note"><b>统计口径：</b>有对手未出单3个 + 无对手未出单27个 = 共30个未出单SKU</p>
+    
+    <div class="sub-module">
+      <h4>未出单原因分布（共30个SKU）</h4>
+      <div class="chart-grid">
+        <div class="chart-card" style="max-width: 400px; margin: 0 auto;">
+          <canvas id="chartUnorderAll" style="height: 260px;"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-module">
+      <h4>未出单多维度分析</h4>
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="showUnorderTab('an', this)">按分析人维度</button>
+        <button class="tab-btn" onclick="showUnorderTab('cat', this)">按品线维度</button>
+      </div>
+      <div id="unorderTab-an">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th rowspan="2">分析人</th>
+                <th colspan="3" class="p4">有对手未出单</th>
+                <th colspan="3" class="p2">无对手未出单</th>
+                <th rowspan="2" class="hb">未出单总计</th>
+              </tr>
+              <tr>
+                <th class="p4">竞争无优势</th><th class="p4">无市场</th><th class="p4">小计</th>
+                <th class="p2">无市场</th><th class="p2">竞争无优势</th><th class="p2">小计</th>
+              </tr>
+            </thead>
+            <tbody id="unorderAnBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div id="unorderTab-cat" style="display:none">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th rowspan="2">品线</th>
+                <th colspan="3" class="p4">有对手未出单</th>
+                <th colspan="3" class="p2">无对手未出单</th>
+                <th rowspan="2" class="hb">未出单总计</th>
+              </tr>
+              <tr>
+                <th class="p4">竞争无优势</th><th class="p4">无市场</th><th class="p4">小计</th>
+                <th class="p2">无市场</th><th class="p2">竞争无优势</th><th class="p2">小计</th>
+              </tr>
+            </thead>
+            <tbody id="unorderCatBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 板块8: 低占比新品 -->
+<div id="section-lowshare" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>📉 低占比新品</h3>
+    <p class="note">5.6市占比 &lt; 75% 且存在对手销量的产品，共 <strong>39</strong> 个</p>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h4>低占比产品按品类分布</h4>
+        <canvas id="chartLowCat"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>低占比产品按出单状态分布</h4>
+        <canvas id="chartLowOrder"></canvas>
+      </div>
+    </div>
+    <div class="sub-module">
+      <h4>低占比新品明细（5.6市占比 &lt; 75%，有对手销量）</h4>
+      <div class="filter-bar">
+        <div class="filter-item">
+          <label>市场状态</label>
+          <select id="filterStatus" onchange="filterLowShare()">
+            <option value="">全部</option>
+            <option value="竞争无优势">竞争无优势</option>
+            <option value="无市场">无市场</option>
+            <option value="正常">正常</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label>分析人</label>
+          <select id="filterAn" onchange="filterLowShare()">
+            <option value="">全部</option>
+            <option value="俞东旭">俞东旭</option>
+            <option value="张潇">张潇</option>
+            <option value="朱培源">朱培源</option>
+            <option value="王偲涵">王偲涵</option>
+            <option value="章鹏">章鹏</option>
+            <option value="胡煜星">胡煜星</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label>品类</label>
+          <select id="filterCat" onchange="filterLowShare()">
+            <option value="">全部</option>
+            <option value="车门系统">车门系统</option>
+            <option value="车身外扩件">车身外扩件</option>
+            <option value="挡泥板">挡泥板</option>
+            <option value="机盖及附件">机盖及附件</option>
+            <option value="牌照板支架">牌照板支架</option>
+            <option value="饰条">饰条</option>
+            <option value="其他">其他</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label>8日出单</label>
+          <select id="filterOrd8" onchange="filterLowShare()">
+            <option value="">全部</option>
+            <option value="Y">已出单(8日内)</option>
+            <option value="N">已出单(8日外)</option>
+            <option value="未出单">未出单</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <button class="reset-btn" onclick="resetLowShareFilter()">重置筛选</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>编号</th><th>SKU</th><th>品类</th><th>分析人</th>
+              <th>上架日期</th><th>销量</th><th>销售额</th>
+              <th>对手销量</th><th>市占比</th>
+              <th>8日出单</th><th>市场状态</th>
+            </tr>
+          </thead>
+          <tbody id="lowShareTableBody"></tbody>
+        </table>
+      </div>
+      <p class="filter-result" id="filterResult"></p>
+    </div>
+  </div>
+</div>
+
+<!-- 板块9: PLP复盘 -->
+<div id="section-plp" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>💰 PLP广告复盘 · 4.30-5.6</h3>
+    <p class="note">42个SKU参与PLP广告，总花费$272.56，ROAS 6.44，ACOS 15.54%，ACOAS 3.92%</p>
+    <div class="plp-grid">
+      <div class="plp-card">
+        <h4>总览指标</h4>
+        <div class="plp-metric"><span class="lbl">参与SKU</span><span class="val">42</span></div>
+        <div class="plp-metric"><span class="lbl">广告曝光量</span><span class="val">119,686</span></div>
+        <div class="plp-metric"><span class="lbl">广告点击量</span><span class="val">429</span></div>
+        <div class="plp-metric"><span class="lbl">广告售出数</span><span class="val">27</span></div>
+        <div class="plp-highlight">
+          <div class="plp-metric"><span class="lbl">ROAS</span><span class="val">6.44</span></div>
+          <div class="plp-metric"><span class="lbl">ACOS</span><span class="val">15.54%</span></div>
+          <div class="plp-metric"><span class="lbl">ACOAS</span><span class="val">3.92%</span></div>
+          <div class="plp-metric"><span class="lbl">CVR</span><span class="val">6.29%</span></div>
+          <div class="plp-metric"><span class="lbl">CTR</span><span class="val">0.36%</span></div>
+          <div class="plp-metric"><span class="lbl">花费</span><span class="val">$272.56</span></div>
+        </div>
+      </div>
+      <div class="plp-card" style="border-top-color:#c0392b;">
+        <h4>按分析人维度</h4>
+        <div class="plp-metric"><span class="lbl">俞东旭</span><span class="val">ROAS 0.0 / ACOS 0%</span></div>
+        <div class="plp-metric"><span class="lbl">张潇</span><span class="val" style="color:#08845a">ROAS 26.27 / ACOS 3.81%</span></div>
+        <div class="plp-metric"><span class="lbl">朱培源</span><span class="val" style="color:#08845a">ROAS 11.81 / ACOS 8.47%</span></div>
+        <div class="plp-metric"><span class="lbl">王偲涵</span><span class="val">ROAS 2.59 / ACOS 38.66%</span></div>
+        <div class="plp-metric"><span class="lbl">章鹏</span><span class="val" style="color:#08845a">ROAS 29.93 / ACOS 3.34%</span></div>
+        <div class="plp-metric"><span class="lbl">胡煜星</span><span class="val">ROAS 2.57 / ACOS 38.85%</span></div>
+      </div>
+      <div class="plp-card" style="border-top-color:#2980b9;">
+        <h4>按品线维度</h4>
+        <div class="plp-metric"><span class="lbl">车门系统</span><span class="val">ROAS 1.21 / ACOS 82.34%</span></div>
+        <div class="plp-metric"><span class="lbl">车身外扩件</span><span class="val">ROAS 1.17 / ACOS 85.27%</span></div>
+        <div class="plp-metric"><span class="lbl">挡泥板</span><span class="val" style="color:#08845a">ROAS 14.64 / ACOS 6.83%</span></div>
+        <div class="plp-metric"><span class="lbl">机盖及附件</span><span class="val" style="color:#08845a">ROAS 41.89 / ACOS 2.39%</span></div>
+        <div class="plp-metric"><span class="lbl">牌照板支架</span><span class="val" style="color:#08845a">ROAS 21.0 / ACOS 4.76%</span></div>
+        <div class="plp-metric"><span class="lbl">其他</span><span class="val">ROAS 7.03 / ACOS 14.22%</span></div>
+        <div class="plp-metric"><span class="lbl">饰条</span><span class="val" style="color:#08845a">ROAS 17.83 / ACOS 5.61%</span></div>
+      </div>
+    </div>
+    <div class="sub-module">
+      <h4>PLP广告明细 - 按分析人维度</h4>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>分析人</th><th>SKU</th><th>曝光量</th><th>点击量</th>
+              <th>ROAS</th><th>ACOS</th><th>CVR</th><th>CTR</th><th>CPA</th><th>ACOAS</th><th>花费</th>
+            </tr>
+          </thead>
+          <tbody id="plpAnTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="sub-module">
+      <h4>PLP广告明细 - 按品线维度</h4>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>品线</th><th>SKU</th><th>曝光量</th><th>点击量</th>
+              <th>ROAS</th><th>ACOS</th><th>CVR</th><th>CTR</th><th>CPA</th><th>ACOAS</th><th>花费</th>
+            </tr>
+          </thead>
+          <tbody id="plpCatTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 板块9: 四三数据累计 -->
+<div id="section-cum43" class="section-wrap" style="display:none">
+  <div class="section">
+    <h3>📊 四三数据累计新品明细</h3>
+    <p class="note">4.30-5.6周期累计新品追踪明细，共 <strong>109</strong> 个SKU（已排除周期外上架 9 个）</p>
+    
+    <div class="sub-module">
+      <h4>筛选条件</h4>
+      <div class="filter-bar">
+        <div class="filter-item">
+          <label>市场状态</label>
+          <select id="filterCumStatus" onchange="filterCum43()">
+            <option value="">全部</option>
+            <option value="正常">正常</option>
+            <option value="竞争无优势">竞争无优势</option>
+            <option value="无市场">无市场</option>
+            <option value="站外出单">站外出单</option>
+            <option value="未上架">未上架</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label>分析人</label>
+          <select id="filterCumAn" onchange="filterCum43()">
+            <option value="">全部</option>
+            <option value="俞东旭">俞东旭</option>
+            <option value="张潇">张潇</option>
+            <option value="朱培源">朱培源</option>
+            <option value="王偲涵">王偲涵</option>
+            <option value="章鹏">章鹏</option>
+            <option value="胡煜星">胡煜星</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label>品类</label>
+          <select id="filterCumCat" onchange="filterCum43()">
+            <option value="">全部</option>
+            <option value="车门系统">车门系统</option>
+            <option value="车身外扩件">车身外扩件</option>
+            <option value="挡泥板">挡泥板</option>
+            <option value="机盖及附件">机盖及附件</option>
+            <option value="牌照板支架">牌照板支架</option>
+            <option value="饰条">饰条</option>
+            <option value="其他">其他</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label>产品拓展</label>
+          <select id="filterCumExpand" onchange="filterCum43()">
+            <option value="">全部</option>
+            <option value="原开品">原开品</option>
+            <option value="拓展品">拓展品</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label>8日出单</label>
+          <select id="filterCumOrd8" onchange="filterCum43()">
+            <option value="">全部</option>
+            <option value="Y">Y（8日内出单）</option>
+            <option value="N">N（8日外出单）</option>
+            <option value="未出单">未出单</option>
+            <option value="未上架">未上架</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <button class="reset-btn" onclick="resetCum43Filter()">重置筛选</button>
+        </div>
+      </div>
+      <div id="cum43Result" style="margin-top:10px;color:#666;font-size:13px;"></div>
+    </div>
+
+    <div class="sub-module">
+      <h4>新品明细数据</h4>
+      <div class="table-wrap" style="max-height:500px;overflow-y:auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>SKU</th>
+              <th>实际上架日期</th>
+              <th>首次出单日期</th>
+              <th>分析人</th>
+              <th>品类</th>
+              <th>产品拓展</th>
+              <th>4.30-5.6销量</th>
+              <th>4.30-5.6销售额</th>
+              <th>对手销量</th>
+              <th>5.6市占比(%)</th>
+              <th>市场状态</th>
+              <th>8日出单</th>
+            </tr>
+          </thead>
+          <tbody id="cum43TableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end main-content -->
+</div><!-- end container -->
+
+<script>
+// ===== 导航 =====
+function showSection(id, el) {
+  document.querySelectorAll('.section-wrap').forEach(s => s.style.display = 'none');
+  document.querySelectorAll('.sidebar li a').forEach(a => a.classList.remove('active'));
+  document.getElementById('section-' + id).style.display = 'block';
+  if(el) el.classList.add('active');
+  if(id === 'unorder') { setTimeout(initUnorderCharts, 50); }
+  if(id === 'cum43') { setTimeout(filterCum43, 50); }
+}
+
+// ===== Tab切换 =====
+function showOrderTab(tab, btn) {
+  document.getElementById('orderTab-an').style.display = tab === 'an' ? 'block' : 'none';
+  document.getElementById('orderTab-cat').style.display = tab === 'cat' ? 'block' : 'none';
+  document.querySelectorAll('#section-order .tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function showUnorderTab(tab, btn) {
+  document.getElementById('unorderTab-an').style.display = tab === 'an' ? 'block' : 'none';
+  document.getElementById('unorderTab-cat').style.display = tab === 'cat' ? 'block' : 'none';
+  document.querySelectorAll('#section-unorder .tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ===== 数据定义 =====
+const P_COLORS = ['rgba(102,126,234,0.8)', 'rgba(41,128,185,0.8)', 'rgba(192,57,43,0.8)', 'rgba(142,68,173,0.8)'];
+const P_COLORS_BORDER = ['#667eea', '#2980b9', '#c0392b', '#8e44ad'];
+const CHART_COLORS = ['#667eea', '#2980b9', '#c0392b', '#8e44ad', '#e07b24', '#08845a', '#f39c12'];
+
+// 品线数据
+const catData = [
+  {name: '车门系统', sku: 36, newList: 3, qtyCur: 63, revCur: 10716.02},
+  {name: '其他', sku: 33, newList: 11, qtyCur: 48, revCur: 4906.90},
+  {name: '机盖及附件', sku: 9, newList: 0, qtyCur: 44, revCur: 2216.00},
+  {name: '饰条', sku: 9, newList: 1, qtyCur: 18, revCur: 875.93},
+  {name: '挡泥板', sku: 9, newList: 1, qtyCur: 14, revCur: 1148.00},
+  {name: '车身外扩件', sku: 12, newList: 3, qtyCur: 7, revCur: 587.00},
+  {name: '牌照板支架', sku: 1, newList: 0, qtyCur: 1, revCur: 45.00}
+];
+
+// 分析人数据
+const anData = [
+  {name: '张潇', sku: 29, newList: 4, qtyCur: 76, revCur: 4732.99},
+  {name: '胡煜星', sku: 25, newList: 4, qtyCur: 53, revCur: 4468.90},
+  {name: '俞东旭', sku: 25, newList: 3, qtyCur: 32, revCur: 6841.19},
+  {name: '朱培源', sku: 16, newList: 3, qtyCur: 19, revCur: 3525.88},
+  {name: '王偲涵', sku: 10, newList: 3, qtyCur: 6, revCur: 428.00},
+  {name: '章鹏', sku: 4, newList: 2, qtyCur: 9, revCur: 497.89}
+];
+
+// 拓展类型数据
+const tzData = [
+  {name: '原开品', sku: 79, orderCur: 64, rateCur: '81.0%', qtyCur: 165},
+  {name: '拓展品', sku: 22, orderCur: 15, rateCur: '68.2%', qtyCur: 30}
+];
+
+// 分析及时率数据
+const timelyData = [
+  {name: '俞东旭', sku: 25, timely: 17, rate: '68.0%', no8d: 3, over7: 5},
+  {name: '张潇', sku: 26, timely: 20, rate: '76.9%', no8d: 0, over7: 6},
+  {name: '朱培源', sku: 14, timely: 9, rate: '64.3%', no8d: 2, over7: 3},
+  {name: '王偲涵', sku: 10, timely: 2, rate: '20.0%', no8d: 8, over7: 0},
+  {name: '章鹏', sku: 3, timely: 2, rate: '66.7%', no8d: 1, over7: 0},
+  {name: '胡煜星', sku: 23, timely: 21, rate: '91.3%', no8d: 2, over7: 0}
+];
+
+// 出单情况-总体
+const orderTotal = [
+  {label: '有对手总SKU', cur: 43},
+  {label: '8日内出单（Y）', cur: 27},
+  {label: '8日外出单（N）', cur: 13},
+  {label: '真正未出单', cur: 3},
+  {label: '已出单合计(Y+N)', cur: 40},
+  {label: '出单率', cur: '93.0%'}
+];
+
+// 出单情况-按分析人
+const orderAn = [
+  {name: '张潇', total: 13, y: 8, n: 5, un: 0, ordered: 13, rate: '100.0%'},
+  {name: '胡煜星', total: 4, y: 4, n: 0, un: 0, ordered: 4, rate: '100.0%'},
+  {name: '俞东旭', total: 15, y: 9, n: 6, un: 0, ordered: 15, rate: '100.0%'},
+  {name: '朱培源', total: 5, y: 2, n: 2, un: 1, ordered: 4, rate: '80.0%'},
+  {name: '王偲涵', total: 5, y: 3, n: 0, un: 2, ordered: 3, rate: '60.0%'},
+  {name: '章鹏', total: 1, y: 1, n: 0, un: 0, ordered: 1, rate: '100.0%'}
+];
+
+// 出单情况-按品线
+const orderCat = [
+  {name: '车门系统', total: 17, y: 10, n: 6, un: 1, ordered: 16, rate: '94.1%'},
+  {name: '机盖及附件', total: 7, y: 7, n: 0, un: 0, ordered: 7, rate: '100.0%'},
+  {name: '饰条', total: 6, y: 3, n: 3, un: 0, ordered: 6, rate: '100.0%'},
+  {name: '车身外扩件', total: 6, y: 3, n: 2, un: 1, ordered: 5, rate: '83.3%'},
+  {name: '挡泥板', total: 4, y: 2, n: 2, un: 0, ordered: 4, rate: '100.0%'},
+  {name: '其他', total: 2, y: 1, n: 0, un: 1, ordered: 1, rate: '50.0%'},
+  {name: '牌照板支架', total: 1, y: 1, n: 0, un: 0, ordered: 1, rate: '100.0%'}
+];
+
+// 未出单-按分析人
+const unorderAn = [
+  {name: '俞东旭', a_jz: 0, a_ws: 0, a_total: 0, b_ws: 3, b_jz: 0, b_total: 3, total: 3},
+  {name: '张潇', a_jz: 0, a_ws: 0, a_total: 0, b_ws: 4, b_jz: 3, b_total: 7, total: 7},
+  {name: '朱培源', a_jz: 1, a_ws: 0, a_total: 1, b_ws: 2, b_jz: 2, b_total: 4, total: 5},
+  {name: '王偲涵', a_jz: 2, a_ws: 0, a_total: 2, b_ws: 3, b_jz: 0, b_total: 3, total: 5},
+  {name: '章鹏', a_jz: 0, a_ws: 0, a_total: 0, b_ws: 1, b_jz: 1, b_total: 2, total: 2},
+  {name: '胡煜星', a_jz: 0, a_ws: 0, a_total: 0, b_ws: 6, b_jz: 2, b_total: 8, total: 8}
+];
+
+// 未出单-按品线
+const unorderCat = [
+  {name: '其他', a_jz: 1, a_ws: 0, a_total: 1, b_ws: 8, b_jz: 2, b_total: 10, total: 11},
+  {name: '车门系统', a_jz: 1, a_ws: 0, a_total: 1, b_ws: 9, b_jz: 0, b_total: 9, total: 10},
+  {name: '挡泥板', a_jz: 0, a_ws: 0, a_total: 0, b_ws: 3, b_jz: 0, b_total: 3, total: 3},
+  {name: '机盖及附件', a_jz: 0, a_ws: 0, a_total: 0, b_ws: 3, b_jz: 0, b_total: 3, total: 3},
+  {name: '车身外扩件', a_jz: 0, a_ws: 0, a_total: 0, b_ws: 4, b_jz: 0, b_total: 4, total: 4},
+  {name: '饰条', a_jz: 0, a_ws: 0, a_total: 0, b_ws: 4, b_jz: 0, b_total: 4, total: 4},
+  {name: '牌照板支架', a_jz: 0, a_ws: 0, a_total: 0, b_ws: 0, b_jz: 0, b_total: 0, total: 0}
+];
+
+const lowShareData = [
+  {id: '12252', sku: 'LYAP-X1800-1', cat: '车门系统', an: '胡煜星', listDate: '2026-03-04', qty: 1, rev: 40.0, rivalQty: 7, share: '12.5%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12165', sku: 'LYAP-X1877', cat: '挡泥板', an: '朱培源', listDate: '2026-03-04', qty: 1, rev: 169.0, rivalQty: 1, share: '0.0%', ord8: 'Y', status: '竞争无优势'}
+  {id: '11102', sku: 'LYAM-X2254-L', cat: '车门系统', an: '张潇', listDate: '2026-03-04', qty: 5, rev: 140.95, rivalQty: 5, share: '58.3%', ord8: 'N', status: '竞争无优势'}
+  {id: '12205', sku: 'LYAP-X1800S-1L', cat: '车门系统', an: '胡煜星', listDate: '2026-03-05', qty: 10, rev: 220.0, rivalQty: 20, share: '35.5%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12206', sku: 'LYAP-X1800S-1R', cat: '车门系统', an: '胡煜星', listDate: '2026-03-05', qty: 2, rev: 44.0, rivalQty: 6, share: '25.0%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12244', sku: 'LYAP-X2190-L', cat: '饰条', an: '张潇', listDate: '2026-03-10', qty: 0, rev: 0.0, rivalQty: 1, share: '0.0%', ord8: 'N', status: '竞争无优势'}
+  {id: '12243', sku: 'LYAP-X2190-R', cat: '饰条', an: '张潇', listDate: '2026-03-10', qty: 1, rev: 38.0, rivalQty: 1, share: '50.0%', ord8: 'N', status: '竞争无优势'}
+  {id: '12304', sku: 'LYAP-X1642-GR', cat: '车门系统', an: '俞东旭', listDate: '2026-03-11', qty: 0, rev: 0.0, rivalQty: 1, share: '0.0%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12085', sku: 'LYAP-X1911-BK', cat: '机盖及附件', an: '张潇', listDate: '2026-03-11', qty: 2, rev: 170.0, rivalQty: 1, share: '66.7%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12258', sku: 'LYAP-X1927', cat: '机盖及附件', an: '张潇', listDate: '2026-03-11', qty: 13, rev: 364.0, rivalQty: 17, share: '34.6%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12210', sku: 'LYAP-X1934', cat: '饰条', an: '张潇', listDate: '2026-03-11', qty: 6, rev: 69.04, rivalQty: 20, share: '16.7%', ord8: 'N', status: '竞争无优势'}
+  {id: '12250', sku: 'LYAP-X2148-1L', cat: '饰条', an: '王偲涵', listDate: '2026-03-11', qty: 2, rev: 78.0, rivalQty: 2, share: '50.0%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12332', sku: 'LYAP-X2289', cat: '饰条', an: '张潇', listDate: '2026-03-11', qty: 2, rev: 228.0, rivalQty: 3, share: '50.0%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12309', sku: 'MD-002-FL', cat: '车门系统', an: '俞东旭', listDate: '2026-03-11', qty: 0, rev: 0.0, rivalQty: 1, share: '0.0%', ord8: 'N', status: '竞争无优势'}
+  {id: '12310', sku: 'MD-002-FR', cat: '车门系统', an: '俞东旭', listDate: '2026-03-11', qty: 1, rev: 483.0, rivalQty: 4, share: '33.3%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12311', sku: 'MD-002-RL', cat: '车门系统', an: '俞东旭', listDate: '2026-03-11', qty: 0, rev: 0.0, rivalQty: 2, share: '0.0%', ord8: 'N', status: '竞争无优势'}
+  {id: '12312', sku: 'MD-002-RR', cat: '车门系统', an: '俞东旭', listDate: '2026-03-11', qty: 1, rev: 478.0, rivalQty: 4, share: '33.3%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12441', sku: 'LYAM-X2862', cat: '机盖及附件', an: '张潇', listDate: '2026-03-12', qty: 2, rev: 278.0, rivalQty: 1, share: '50.0%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12320', sku: 'LYAP-X2417', cat: '挡泥板', an: '朱培源', listDate: '2026-03-16', qty: 1, rev: 75.0, rivalQty: 1, share: '50.0%', ord8: 'N', status: '竞争无优势'}
+  {id: '12305', sku: 'MD-001-FL', cat: '车门系统', an: '俞东旭', listDate: '2026-03-16', qty: 3, rev: 1770.0, rivalQty: 3, share: '40.0%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12321', sku: 'LYAP-X1788-GR', cat: '车门系统', an: '俞东旭', listDate: '2026-03-16', qty: 4, rev: 143.6, rivalQty: 3, share: '50.0%', ord8: 'N', status: '竞争无优势'}
+  {id: '12306', sku: 'MD-001-FR', cat: '车门系统', an: '俞东旭', listDate: '2026-03-16', qty: 3, rev: 1794.0, rivalQty: 1, share: '50.0%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12307', sku: 'MD-001-RL', cat: '车门系统', an: '俞东旭', listDate: '2026-03-16', qty: 0, rev: 0.0, rivalQty: 2, share: '0.0%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12308', sku: 'MD-001-RR', cat: '车门系统', an: '俞东旭', listDate: '2026-03-16', qty: 0, rev: 0.0, rivalQty: 1, share: '0.0%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12298', sku: 'LYAP-X2144-1L', cat: '车门系统', an: '朱培源', listDate: '2026-03-18', qty: 0, rev: 0.0, rivalQty: 3, share: '0.0%', ord8: '未出单', status: '竞争无优势'}
+  {id: '12299', sku: 'LYAP-X2144-1R', cat: '车门系统', an: '朱培源', listDate: '2026-03-18', qty: 0, rev: 0.0, rivalQty: 1, share: '0.0%', ord8: 'N', status: '竞争无优势'}
+  {id: '12387', sku: 'LYAP-X2077', cat: '车身外扩件', an: '俞东旭', listDate: '2026-03-24', qty: 2, rev: 70.0, rivalQty: 2, share: '50.0%', ord8: 'N', status: '竞争无优势'}
+  {id: '12388', sku: 'LYAP-X2085', cat: '车身外扩件', an: '俞东旭', listDate: '2026-03-24', qty: 0, rev: 0.0, rivalQty: 2, share: '0.0%', ord8: 'N', status: '竞争无优势'}
+  {id: '12386', sku: 'LYAP-X1788-BN', cat: '车门系统', an: '俞东旭', listDate: '2026-03-27', qty: 1, rev: 30.59, rivalQty: 2, share: '33.3%', ord8: 'N', status: '竞争无优势'}
+  {id: '12461', sku: 'LYAM-X2428-BK', cat: '车身外扩件', an: '俞东旭', listDate: '2026-04-07', qty: 3, rev: 357.0, rivalQty: 3, share: '62.5%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12489', sku: 'LYAP-X2504', cat: '挡泥板', an: '俞东旭', listDate: '2026-04-10', qty: 7, rev: 315.0, rivalQty: 6, share: '60.0%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12480', sku: 'LYAM-X2804', cat: '牌照板支架', an: '张潇', listDate: '2026-04-23', qty: 1, rev: 45.0, rivalQty: 2, share: '33.3%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12651', sku: 'LYAP-X2210-C', cat: '机盖及附件', an: '张潇', listDate: '2026-04-28', qty: 3, rev: 267.0, rivalQty: 6, share: '25.0%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12590', sku: 'LYAM-X2450-SL', cat: '车身外扩件', an: '王偲涵', listDate: '2026-04-29', qty: 1, rev: 125.0, rivalQty: 4, share: '20.0%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12586', sku: 'LYAP-X1909', cat: '机盖及附件', an: '朱培源', listDate: '2026-04-29', qty: 2, rev: 140.0, rivalQty: 2, share: '33.3%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12615', sku: 'LYAP-X2042-FL', cat: '其他', an: '王偲涵', listDate: '2026-04-29', qty: 0, rev: 0.0, rivalQty: 1, share: '0.0%', ord8: '未出单', status: '竞争无优势'}
+  {id: '12587', sku: 'LYAP-X1360-1L', cat: '饰条', an: '章鹏', listDate: '2026-04-30', qty: 4, rev: 152.89, rivalQty: 2, share: '60.0%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12629', sku: 'LYAP-X2412', cat: '车身外扩件', an: '王偲涵', listDate: '2026-04-30', qty: 1, rev: 35.0, rivalQty: 9, share: '10.0%', ord8: 'Y', status: '竞争无优势'}
+  {id: '12591', sku: 'LYAM-X2452-SL', cat: '车身外扩件', an: '王偲涵', listDate: '2026-04-30', qty: 0, rev: 0.0, rivalQty: 1, share: '0.0%', ord8: '未出单', status: '竞争无优势'}
+];;
+
+// PLP数据
+const plpAnData = [
+  {name: '俞东旭', sku: 4, roas: 0, acos: '0%', acoas: '20.91%', cvr: '0.0%', ctr: '0.19%', cpa: '$0', spend: 99.94, exposure: 64667, clicks: 121},
+  {name: '张潇', sku: 16, roas: 26.27, acos: '3.81%', acoas: '1.67%', cvr: '17.36%', ctr: '1.26%', cpa: '$2.29', spend: 48.15, exposure: 9629, clicks: 121},
+  {name: '朱培源', sku: 4, roas: 11.81, acos: '8.47%', acoas: '2.72%', cvr: '11.11%', ctr: '0.89%', cpa: '$6.40', spend: 6.4, exposure: 1015, clicks: 9},
+  {name: '王偲涵', sku: 8, roas: 2.59, acos: '38.66%', acoas: '21.98%', cvr: '1.35%', ctr: '1.44%', cpa: '$52.31', spend: 52.31, exposure: 5131, clicks: 74},
+  {name: '章鹏', sku: 2, roas: 29.93, acos: '3.34%', acoas: '2.61%', cvr: '25.0%', ctr: '0.54%', cpa: '$1.33', spend: 3.99, exposure: 2224, clicks: 12},
+  {name: '胡煜星', sku: 9, roas: 2.57, acos: '38.85%', acoas: '2.52%', cvr: '1.09%', ctr: '0.25%', cpa: '$61.77', spend: 61.77, exposure: 37020, clicks: 92}
+];
+
+const plpCatData = [
+  {name: '车门系统', sku: 6, roas: 1.21, acos: '82.34%', acoas: '6.05%', cvr: '2.13%', ctr: '0.15%', cpa: '$32.65', spend: 65.31, exposure: 64284, clicks: 94},
+  {name: '车身外扩件', sku: 7, roas: 1.17, acos: '85.27%', acoas: '72.11%', cvr: '0.72%', ctr: '0.38%', cpa: '$115.38', spend: 115.38, exposure: 36778, clicks: 138},
+  {name: '挡泥板', sku: 5, roas: 14.64, acos: '6.83%', acoas: '2.50%', cvr: '8.33%', ctr: '0.95%', cpa: '$8.81', spend: 8.81, exposure: 1259, clicks: 12},
+  {name: '机盖及附件', sku: 5, roas: 41.89, acos: '2.39%', acoas: '1.31%', cvr: '24.49%', ctr: '2.74%', cpa: '$1.43', spend: 17.21, exposure: 1788, clicks: 49},
+  {name: '牌照板支架', sku: 1, roas: 21, acos: '4.76%', acoas: '1.66%', cvr: '16.67%', ctr: '1.14%', cpa: '$2.32', spend: 2.32, exposure: 527, clicks: 6},
+  {name: '其他', sku: 10, roas: 7.03, acos: '14.22%', acoas: '2.44%', cvr: '2.5%', ctr: '1.2%', cpa: '$22.76', spend: 45.52, exposure: 6674, clicks: 80},
+  {name: '饰条', sku: 8, roas: 17.83, acos: '5.61%', acoas: '-', cvr: '16.0%', ctr: '0.6%', cpa: '$2.25', spend: 18.01, exposure: 8376, clicks: 50}
+];
+
+const cum43Data = [
+{"SKU": "LYAP-X1658", "实际上架日期": "2026-03-04", "首次出单日期": "2026-03-12", "4月分析人": "朱培源", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 1, "4.30-5.6销售额": 420.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X1658L", "实际上架日期": "2026-03-04", "首次出单日期": "2026-03-04", "4月分析人": "朱培源", "品类": "车门系统", "产品拓展": "拓展品", "4.30-5.6销量": 8, "4.30-5.6销售额": 2010.88, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X1658R", "实际上架日期": "2026-03-04", "首次出单日期": "2026-03-04", "4月分析人": "朱培源", "品类": "车门系统", "产品拓展": "拓展品", "4.30-5.6销量": 1, "4.30-5.6销售额": 220.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X1800-1", "实际上架日期": "2026-03-04", "首次出单日期": "2026-03-08", "4月分析人": "胡煜星", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 1, "4.30-5.6销售额": 40.0, "5.6对手销量": 7, "5.6市占比": 12.5, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X1877", "实际上架日期": "2026-03-04", "首次出单日期": "2026-03-12", "4月分析人": "朱培源", "品类": "挡泥板", "产品拓展": "原开品", "4.30-5.6销量": 1, "4.30-5.6销售额": 169.0, "5.6对手销量": 1, "5.6市占比": 0.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2528", "实际上架日期": "2026-03-04", "首次出单日期": "2026-03-08", "4月分析人": "胡煜星", "品类": "其他", "产品拓展": "原开品", "4.30-5.6销量": 5, "4.30-5.6销售额": 490.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAM-X2254-L", "实际上架日期": "2026-03-04", "首次出单日期": "2026-03-19", "4月分析人": "张潇", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 5, "4.30-5.6销售额": 140.95, "5.6对手销量": 5, "5.6市占比": 58.3, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "N"}
+{"SKU": "LYAM-X2980-BK", "实际上架日期": "2026-03-04", "首次出单日期": "2026-03-11", "4月分析人": "胡煜星", "品类": "车身外扩件", "产品拓展": "拓展品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAM-X2980-GR", "实际上架日期": "2026-03-04", "首次出单日期": "2026-03-31", "4月分析人": "胡煜星", "品类": "车身外扩件", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "N"}
+{"SKU": "LYAP-X2308", "实际上架日期": "2026-03-04", "首次出单日期": "2026-03-10", "4月分析人": "胡煜星", "品类": "其他", "产品拓展": "原开品", "4.30-5.6销量": 3, "4.30-5.6销售额": 257.0, "5.6对手销量": 1, "5.6市占比": 75.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2527", "实际上架日期": "2026-03-04", "首次出单日期": "2026-03-05", "4月分析人": "胡煜星", "品类": "其他", "产品拓展": "原开品", "4.30-5.6销量": 9, "4.30-5.6销售额": 833.5, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X1800S-1L", "实际上架日期": "2026-03-05", "首次出单日期": "2026-03-08", "4月分析人": "胡煜星", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 10, "4.30-5.6销售额": 220.0, "5.6对手销量": 20, "5.6市占比": 35.5, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X1800S-1R", "实际上架日期": "2026-03-05", "首次出单日期": "2026-03-13", "4月分析人": "胡煜星", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 2, "4.30-5.6销售额": 44.0, "5.6对手销量": 6, "5.6市占比": 25.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAM-X2896", "实际上架日期": "2026-03-10", "首次出单日期": "2026-03-24", "4月分析人": "张潇", "品类": "饰条", "产品拓展": "原开品", "4.30-5.6销量": 1, "4.30-5.6销售额": 139.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "N"}
+{"SKU": "LYAP-X2170", "实际上架日期": "2026-03-10", "首次出单日期": "2026-03-13", "4月分析人": "张潇", "品类": "机盖及附件", "产品拓展": "原开品", "4.30-5.6销量": 1, "4.30-5.6销售额": 142.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "站外出单", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2190-L", "实际上架日期": "2026-03-10", "首次出单日期": "2026-03-20", "4月分析人": "张潇", "品类": "饰条", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 1, "5.6市占比": 0.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "N"}
+{"SKU": "LYAP-X2190-R", "实际上架日期": "2026-03-10", "首次出单日期": "2026-03-25", "4月分析人": "张潇", "品类": "饰条", "产品拓展": "原开品", "4.30-5.6销量": 1, "4.30-5.6销售额": 38.0, "5.6对手销量": 1, "5.6市占比": 50.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "N"}
+{"SKU": "LYAP-X1642-GR", "实际上架日期": "2026-03-11", "首次出单日期": "2026-03-14", "4月分析人": "俞东旭", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 1, "5.6市占比": 0.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X1911-BK", "实际上架日期": "2026-03-11", "首次出单日期": "2026-03-18", "4月分析人": "张潇", "品类": "机盖及附件", "产品拓展": "拓展品", "4.30-5.6销量": 2, "4.30-5.6销售额": 170.0, "5.6对手销量": 1, "5.6市占比": 66.7, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X1911-C", "实际上架日期": "2026-03-11", "首次出单日期": "2026-03-19", "4月分析人": "张潇", "品类": "机盖及附件", "产品拓展": "原开品", "4.30-5.6销量": 3, "4.30-5.6销售额": 225.0, "5.6对手销量": 1, "5.6市占比": 75.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X1927", "实际上架日期": "2026-03-11", "首次出单日期": "2026-03-18", "4月分析人": "张潇", "品类": "机盖及附件", "产品拓展": "原开品", "4.30-5.6销量": 13, "4.30-5.6销售额": 364.0, "5.6对手销量": 17, "5.6市占比": 34.6, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X1934", "实际上架日期": "2026-03-11", "首次出单日期": "2026-03-23", "4月分析人": "张潇", "品类": "饰条", "产品拓展": "原开品", "4.30-5.6销量": 6, "4.30-5.6销售额": 69.04, "5.6对手销量": 20, "5.6市占比": 16.7, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "N"}
+{"SKU": "LYAP-X2148-1L", "实际上架日期": "2026-03-11", "首次出单日期": "2026-03-15", "4月分析人": "王偲涵", "品类": "饰条", "产品拓展": "拓展品", "4.30-5.6销量": 2, "4.30-5.6销售额": 78.0, "5.6对手销量": 2, "5.6市占比": 50.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2148-1R", "实际上架日期": "2026-03-11", "首次出单日期": "2026-03-31", "4月分析人": "王偲涵", "品类": "饰条", "产品拓展": "拓展品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "N"}
+{"SKU": "LYAP-X2289", "实际上架日期": "2026-03-11", "首次出单日期": "2026-03-14", "4月分析人": "张潇", "品类": "饰条", "产品拓展": "原开品", "4.30-5.6销量": 2, "4.30-5.6销售额": 228.0, "5.6对手销量": 3, "5.6市占比": 50.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2418", "实际上架日期": "2026-03-11", "首次出单日期": "2026-03-16", "4月分析人": "章鹏", "品类": "其他", "产品拓展": "原开品", "4.30-5.6销量": 5, "4.30-5.6销售额": 345.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "MD-002-FL", "实际上架日期": "2026-03-11", "首次出单日期": "2026-03-20", "4月分析人": "俞东旭", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 1, "5.6市占比": 0.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "N"}
+{"SKU": "MD-002-FR", "实际上架日期": "2026-03-11", "首次出单日期": "2026-03-15", "4月分析人": "俞东旭", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 1, "4.30-5.6销售额": 483.0, "5.6对手销量": 4, "5.6市占比": 33.3, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "MD-002-RL", "实际上架日期": "2026-03-11", "首次出单日期": "2026-03-21", "4月分析人": "俞东旭", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 2, "5.6市占比": 0.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "N"}
+{"SKU": "MD-002-RR", "实际上架日期": "2026-03-11", "首次出单日期": "2026-03-15", "4月分析人": "俞东旭", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 1, "4.30-5.6销售额": 478.0, "5.6对手销量": 4, "5.6市占比": 33.3, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAM-X2862", "实际上架日期": "2026-03-12", "首次出单日期": "2026-03-19", "4月分析人": "张潇", "品类": "机盖及附件", "产品拓展": "原开品", "4.30-5.6销量": 2, "4.30-5.6销售额": 278.0, "5.6对手销量": 1, "5.6市占比": 50.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X1651-1L", "实际上架日期": "2026-03-16", "首次出单日期": "2026-03-17", "4月分析人": "俞东旭", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X1651-1R", "实际上架日期": "2026-03-16", "首次出单日期": "2026-03-19", "4月分析人": "俞东旭", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 1, "4.30-5.6销售额": 270.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X1676", "实际上架日期": "2026-03-16", "首次出单日期": "2026-03-22", "4月分析人": "胡煜星", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 1, "4.30-5.6销售额": 460.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2417", "实际上架日期": "2026-03-16", "首次出单日期": "2026-04-19", "4月分析人": "朱培源", "品类": "挡泥板", "产品拓展": "原开品", "4.30-5.6销量": 1, "4.30-5.6销售额": 75.0, "5.6对手销量": 1, "5.6市占比": 50.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "N"}
+{"SKU": "MD-001-FL", "实际上架日期": "2026-03-16", "首次出单日期": "2026-03-19", "4月分析人": "俞东旭", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 3, "4.30-5.6销售额": 1770.0, "5.6对手销量": 3, "5.6市占比": 40.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X1788-GR", "实际上架日期": "2026-03-16", "首次出单日期": "2026-04-08", "4月分析人": "俞东旭", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 4, "4.30-5.6销售额": 143.6, "5.6对手销量": 3, "5.6市占比": 50.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "N"}
+{"SKU": "LYAP-X1808", "实际上架日期": "2026-03-16", "首次出单日期": "2026-03-18", "4月分析人": "胡煜星", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 5, "4.30-5.6销售额": 340.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X1879", "实际上架日期": "2026-03-16", "首次出单日期": "2026-03-19", "4月分析人": "朱培源", "品类": "挡泥板", "产品拓展": "原开品", "4.30-5.6销量": 1, "4.30-5.6销售额": 95.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2429", "实际上架日期": "2026-03-16", "首次出单日期": "2026-04-04", "4月分析人": "朱培源", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "N"}
+{"SKU": "LYAP-X2523", "实际上架日期": "2026-03-16", "首次出单日期": "2026-03-24", "4月分析人": "朱培源", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 4, "4.30-5.6销售额": 396.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2530", "实际上架日期": "2026-03-16", "首次出单日期": "2026-03-23", "4月分析人": "胡煜星", "品类": "其他", "产品拓展": "原开品", "4.30-5.6销量": 1, "4.30-5.6销售额": 95.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "MD-001-FR", "实际上架日期": "2026-03-16", "首次出单日期": "2026-03-18", "4月分析人": "俞东旭", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 3, "4.30-5.6销售额": 1794.0, "5.6对手销量": 1, "5.6市占比": 50.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "MD-001-RL", "实际上架日期": "2026-03-16", "首次出单日期": "2026-03-22", "4月分析人": "俞东旭", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 2, "5.6市占比": 0.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "MD-001-RR", "实际上架日期": "2026-03-16", "首次出单日期": "2026-03-18", "4月分析人": "俞东旭", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 1, "5.6市占比": 0.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2144-1", "实际上架日期": "2026-03-18", "首次出单日期": "2026-03-23", "4月分析人": "朱培源", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2144-1L", "实际上架日期": "2026-03-18", "首次出单日期": "未出单", "4月分析人": "朱培源", "品类": "车门系统", "产品拓展": "拓展品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 3, "5.6市占比": 0.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAP-X2144-1R", "实际上架日期": "2026-03-18", "首次出单日期": "2026-04-07", "4月分析人": "朱培源", "品类": "车门系统", "产品拓展": "拓展品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 1, "5.6市占比": 0.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "N"}
+{"SKU": "LYAP-X1665-1", "实际上架日期": "2026-03-23", "首次出单日期": "未出单", "4月分析人": "胡煜星", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAP-X1872", "实际上架日期": "2026-03-23", "首次出单日期": "2026-04-22", "4月分析人": "张潇", "品类": "挡泥板", "产品拓展": "原开品", "4.30-5.6销量": 2, "4.30-5.6销售额": 258.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "N"}
+{"SKU": "LYAP-X1878", "实际上架日期": "2026-03-23", "首次出单日期": "2026-04-07", "4月分析人": "张潇", "品类": "挡泥板", "产品拓展": "原开品", "4.30-5.6销量": 2, "4.30-5.6销售额": 236.0, "5.6对手销量": 1, "5.6市占比": 80.0, "5.6市场状态": "正常", "5.6 8日出单情况": "N"}
+{"SKU": "LYAP-X2130-1", "实际上架日期": "2026-03-23", "首次出单日期": "2026-04-06", "4月分析人": "张潇", "品类": "其他", "产品拓展": "原开品", "4.30-5.6销量": 2, "4.30-5.6销售额": 278.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "N"}
+{"SKU": "LYAP-X2130-2", "实际上架日期": "2026-03-23", "首次出单日期": "2026-04-02", "4月分析人": "张潇", "品类": "其他", "产品拓展": "拓展品", "4.30-5.6销量": 3, "4.30-5.6销售额": 147.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "N"}
+{"SKU": "LYAP-X2309", "实际上架日期": "2026-03-23", "首次出单日期": "2026-03-23", "4月分析人": "张潇", "品类": "其他", "产品拓展": "原开品", "4.30-5.6销量": 1, "4.30-5.6销售额": 99.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2313", "实际上架日期": "2026-03-23", "首次出单日期": "2026-03-27", "4月分析人": "张潇", "品类": "其他", "产品拓展": "原开品", "4.30-5.6销量": 1, "4.30-5.6销售额": 58.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2077", "实际上架日期": "2026-03-24", "首次出单日期": "2026-04-13", "4月分析人": "俞东旭", "品类": "车身外扩件", "产品拓展": "原开品", "4.30-5.6销量": 2, "4.30-5.6销售额": 70.0, "5.6对手销量": 2, "5.6市占比": 50.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "N"}
+{"SKU": "LYAP-X2085", "实际上架日期": "2026-03-24", "首次出单日期": "2026-04-13", "4月分析人": "俞东旭", "品类": "车身外扩件", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 2, "5.6市占比": 0.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "N"}
+{"SKU": "LYAP-838", "实际上架日期": "2026-03-27", "首次出单日期": "2026-04-04", "4月分析人": "张潇", "品类": "饰条", "产品拓展": "拓展品", "4.30-5.6销量": 2, "4.30-5.6销售额": 171.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X1665-2L", "实际上架日期": "2026-03-27", "首次出单日期": "2026-03-30", "4月分析人": "俞东旭", "品类": "车门系统", "产品拓展": "拓展品", "4.30-5.6销量": 2, "4.30-5.6销售额": 510.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X1665-2R", "实际上架日期": "2026-03-27", "首次出单日期": "未出单", "4月分析人": "俞东旭", "品类": "车门系统", "产品拓展": "拓展品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAP-X1788-BN", "实际上架日期": "2026-03-27", "首次出单日期": "2026-04-11", "4月分析人": "俞东旭", "品类": "车门系统", "产品拓展": "拓展品", "4.30-5.6销量": 1, "4.30-5.6销售额": 30.59, "5.6对手销量": 2, "5.6市占比": 33.3, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "N"}
+{"SKU": "LYAP-X2215", "实际上架日期": "2026-03-27", "首次出单日期": "2026-04-03", "4月分析人": "胡煜星", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 5, "4.30-5.6销售额": 325.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2310", "实际上架日期": "2026-03-27", "首次出单日期": "2026-03-30", "4月分析人": "胡煜星", "品类": "其他", "产品拓展": "原开品", "4.30-5.6销量": 2, "4.30-5.6销售额": 257.4, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2317", "实际上架日期": "2026-03-27", "首次出单日期": "2026-03-30", "4月分析人": "胡煜星", "品类": "其他", "产品拓展": "原开品", "4.30-5.6销量": 2, "4.30-5.6销售额": 232.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X1665-1L", "实际上架日期": "2026-03-27", "首次出单日期": "未出单", "4月分析人": "俞东旭", "品类": "车门系统", "产品拓展": "拓展品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAP-X1665-1R", "实际上架日期": "2026-03-27", "首次出单日期": "2026-04-29", "4月分析人": "俞东旭", "品类": "车门系统", "产品拓展": "拓展品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "N"}
+{"SKU": "LYAP-X1929", "实际上架日期": "2026-03-27", "首次出单日期": "2026-04-02", "4月分析人": "张潇", "品类": "机盖及附件", "产品拓展": "原开品", "4.30-5.6销量": 18, "4.30-5.6销售额": 630.0, "5.6对手销量": 4, "5.6市占比": 82.6, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAM-X2428-BK", "实际上架日期": "2026-04-07", "首次出单日期": "2026-04-12", "4月分析人": "俞东旭", "品类": "车身外扩件", "产品拓展": "拓展品", "4.30-5.6销量": 3, "4.30-5.6销售额": 357.0, "5.6对手销量": 3, "5.6市占比": 62.5, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2504", "实际上架日期": "2026-04-10", "首次出单日期": "2026-04-14", "4月分析人": "俞东旭", "品类": "挡泥板", "产品拓展": "原开品", "4.30-5.6销量": 7, "4.30-5.6销售额": 315.0, "5.6对手销量": 6, "5.6市占比": 60.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAM-X2804", "实际上架日期": "2026-04-23", "首次出单日期": "2026-04-27", "4月分析人": "张潇", "品类": "牌照板支架", "产品拓展": "原开品", "4.30-5.6销量": 1, "4.30-5.6销售额": 45.0, "5.6对手销量": 2, "5.6市占比": 33.3, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X1963", "实际上架日期": "2026-04-23", "首次出单日期": "未出单", "4月分析人": "朱培源", "品类": "挡泥板", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAM-X2818", "实际上架日期": "2026-04-23", "首次出单日期": "未出单", "4月分析人": "张潇", "品类": "机盖及附件", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAM-X2428-C", "实际上架日期": "2026-04-23", "首次出单日期": "2026-04-23", "4月分析人": "俞东旭", "品类": "车身外扩件", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2307", "实际上架日期": "2026-04-23", "首次出单日期": "未出单", "4月分析人": "胡煜星", "品类": "其他", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAP-X2314", "实际上架日期": "2026-04-23", "首次出单日期": "2026-04-28", "4月分析人": "胡煜星", "品类": "其他", "产品拓展": "原开品", "4.30-5.6销量": 3, "4.30-5.6销售额": 450.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2319", "实际上架日期": "2026-04-23", "首次出单日期": "未出单", "4月分析人": "胡煜星", "品类": "其他", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAP-X2320", "实际上架日期": "2026-04-23", "首次出单日期": "2026-05-02", "4月分析人": "胡煜星", "品类": "其他", "产品拓展": "原开品", "4.30-5.6销量": 2, "4.30-5.6销售额": 300.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "N"}
+{"SKU": "LYAP-X2324", "实际上架日期": "2026-04-23", "首次出单日期": "2026-04-30", "4月分析人": "张潇", "品类": "其他", "产品拓展": "原开品", "4.30-5.6销量": 5, "4.30-5.6销售额": 750.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAM-X2895", "实际上架日期": "2026-04-28", "首次出单日期": "未出单", "4月分析人": "章鹏", "品类": "挡泥板", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAP-X2210-C", "实际上架日期": "2026-04-28", "首次出单日期": "2026-04-30", "4月分析人": "张潇", "品类": "机盖及附件", "产品拓展": "原开品", "4.30-5.6销量": 3, "4.30-5.6销售额": 267.0, "5.6对手销量": 6, "5.6市占比": 25.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAM-X2439", "实际上架日期": "2026-04-29", "首次出单日期": "未出单", "4月分析人": "王偲涵", "品类": "车身外扩件", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAM-X2443", "实际上架日期": "2026-04-29", "首次出单日期": "未出单", "4月分析人": "王偲涵", "品类": "车身外扩件", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAM-X2450-SL", "实际上架日期": "2026-04-29", "首次出单日期": "2026-05-01", "4月分析人": "王偲涵", "品类": "车身外扩件", "产品拓展": "原开品", "4.30-5.6销量": 1, "4.30-5.6销售额": 125.0, "5.6对手销量": 4, "5.6市占比": 20.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X1909", "实际上架日期": "2026-04-29", "首次出单日期": "2026-04-30", "4月分析人": "朱培源", "品类": "机盖及附件", "产品拓展": "原开品", "4.30-5.6销量": 2, "4.30-5.6销售额": 140.0, "5.6对手销量": 2, "5.6市占比": 33.3, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2042-FL", "实际上架日期": "2026-04-29", "首次出单日期": "2026-05-08", "4月分析人": "王偲涵", "品类": "其他", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 1, "5.6市占比": 0.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAP-X2042-FR", "实际上架日期": "2026-04-29", "首次出单日期": "2026-05-03", "4月分析人": "王偲涵", "品类": "其他", "产品拓展": "原开品", "4.30-5.6销量": 2, "4.30-5.6销售额": 190.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2317-L", "实际上架日期": "2026-04-29", "首次出单日期": "2026-05-05", "4月分析人": "胡煜星", "品类": "其他", "产品拓展": "拓展品", "4.30-5.6销量": 1, "4.30-5.6销售额": 60.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAP-X2317-R", "实际上架日期": "2026-04-29", "首次出单日期": "未出单", "4月分析人": "胡煜星", "品类": "其他", "产品拓展": "拓展品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAP-X2318", "实际上架日期": "2026-04-29", "首次出单日期": "未出单", "4月分析人": "张潇", "品类": "其他", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAP-X2385", "实际上架日期": "2026-04-29", "首次出单日期": "未出单", "4月分析人": "张潇", "品类": "其他", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAP-X2428-3", "实际上架日期": "2026-04-30", "首次出单日期": "未出单", "4月分析人": "俞东旭", "品类": "车门系统", "产品拓展": "拓展品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAP-X2428-2", "实际上架日期": "2026-04-30", "首次出单日期": "2026-04-30", "4月分析人": "俞东旭", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 3, "4.30-5.6销售额": 375.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2428-1", "实际上架日期": "2026-04-30", "首次出单日期": "2026-05-02", "4月分析人": "俞东旭", "品类": "车门系统", "产品拓展": "原开品", "4.30-5.6销量": 1, "4.30-5.6销售额": 245.0, "5.6对手销量": 0, "5.6市占比": 100.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X1360-1L", "实际上架日期": "2026-04-30", "首次出单日期": "2026-05-02", "4月分析人": "章鹏", "品类": "饰条", "产品拓展": "拓展品", "4.30-5.6销量": 4, "4.30-5.6销售额": 152.89, "5.6对手销量": 2, "5.6市占比": 60.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2316", "实际上架日期": "2026-04-30", "首次出单日期": "未出单", "4月分析人": "张潇", "品类": "其他", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAP-X2310-R", "实际上架日期": "2026-04-30", "首次出单日期": "2026-05-05", "4月分析人": "胡煜星", "品类": "其他", "产品拓展": "拓展品", "4.30-5.6销量": 1, "4.30-5.6销售额": 65.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "正常", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAP-X2310-L", "实际上架日期": "2026-04-30", "首次出单日期": "未出单", "4月分析人": "胡煜星", "品类": "其他", "产品拓展": "拓展品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAP-X2412", "实际上架日期": "2026-04-30", "首次出单日期": "2026-05-04", "4月分析人": "王偲涵", "品类": "车身外扩件", "产品拓展": "原开品", "4.30-5.6销量": 1, "4.30-5.6销售额": 35.0, "5.6对手销量": 9, "5.6市占比": 10.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "Y"}
+{"SKU": "LYAM-X2452-SL", "实际上架日期": "2026-04-30", "首次出单日期": "未出单", "4月分析人": "王偲涵", "品类": "车身外扩件", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 1, "5.6市占比": 0.0, "5.6市场状态": "竞争无优势", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAM-X2460", "实际上架日期": "2026-04-30", "首次出单日期": "未出单", "4月分析人": "王偲涵", "品类": "车身外扩件", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAP-X1966", "实际上架日期": "2026-04-30", "首次出单日期": "未出单", "4月分析人": "朱培源", "品类": "挡泥板", "产品拓展": "原开品", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "无市场", "5.6 8日出单情况": "未出单"}
+{"SKU": "LYAM-X3058", "实际上架日期": "2026-05-09", "首次出单日期": "未出单", "4月分析人": "朱培源", "品类": "", "产品拓展": "", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "未上架", "5.6 8日出单情况": "未上架"}
+{"SKU": "LYAP-X1957", "实际上架日期": "2026-05-09", "首次出单日期": "未出单", "4月分析人": "朱培源", "品类": "", "产品拓展": "", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "未上架", "5.6 8日出单情况": "未上架"}
+{"SKU": "LYAP-X2025", "实际上架日期": "2026-05-09", "首次出单日期": "未出单", "4月分析人": "章鹏", "品类": "", "产品拓展": "", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "未上架", "5.6 8日出单情况": "未上架"}
+{"SKU": "LYAP-X2210-BK", "实际上架日期": "2026-05-09", "首次出单日期": "未出单", "4月分析人": "张潇", "品类": "", "产品拓展": "", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "未上架", "5.6 8日出单情况": "未上架"}
+{"SKU": "LYAP-X2470", "实际上架日期": "2026-05-09", "首次出单日期": "未出单", "4月分析人": "胡煜星", "品类": "", "产品拓展": "", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "未上架", "5.6 8日出单情况": "未上架"}
+{"SKU": "LYAP-X2471", "实际上架日期": "2026-05-09", "首次出单日期": "未出单", "4月分析人": "胡煜星", "品类": "", "产品拓展": "", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "未上架", "5.6 8日出单情况": "未上架"}
+{"SKU": "LYAP-X2472", "实际上架日期": "2026-05-09", "首次出单日期": "2026-05-09", "4月分析人": "张潇", "品类": "", "产品拓展": "", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "未上架", "5.6 8日出单情况": "未上架"}
+{"SKU": "LYAP-X2473", "实际上架日期": "2026-05-09", "首次出单日期": "未出单", "4月分析人": "张潇", "品类": "", "产品拓展": "", "4.30-5.6销量": 0, "4.30-5.6销售额": 0.0, "5.6对手销量": 0, "5.6市占比": 0.0, "5.6市场状态": "未上架", "5.6 8日出单情况": "未上架"}
+];
+
+// ===== 构建表格 =====
+
+function buildCatTable() {
+  const tbody = document.getElementById('catTableBody');
+  tbody.innerHTML = catData.map(r => `
+    <tr>
+      <td><b>${r.name}</b></td>
+      <td>${r.sku}</td>
+      <td>${r.newList}</td>
+      <td>${r.qtyCur}</td>
+      <td>$${r.revCur.toFixed(2)}</td>
+    </tr>
+  `).join('');
+}
+
+function buildAnTable() {
+  const tbody = document.getElementById('anTableBody');
+  tbody.innerHTML = anData.map(r => `
+    <tr>
+      <td><b>${r.name}</b></td>
+      <td>${r.sku}</td>
+      <td>${r.newList}</td>
+      <td>${r.qtyCur}</td>
+      <td>$${r.revCur.toFixed(2)}</td>
+    </tr>
+  `).join('');
+}
+
+function buildTzTable() {
+  const tbody = document.getElementById('tzTableBody');
+  tbody.innerHTML = tzData.map(r => `
+    <tr>
+      <td><b>${r.name}</b></td>
+      <td>${r.sku}</td>
+      <td>${r.orderCur}</td>
+      <td>${r.rateCur}</td>
+      <td>${r.qtyCur}</td>
+    </tr>
+  `).join('');
+}
+
+function buildTimelyTable() {
+  const tbody = document.getElementById('timelyTableBody');
+  tbody.innerHTML = timelyData.map(r => `
+    <tr>
+      <td>${r.name}</td>
+      <td>${r.sku}</td>
+      <td>${r.timely}</td>
+      <td class="${parseFloat(r.rate) >= 70 ? 'hb-up' : 'hb-down'}">${r.rate}</td>
+      <td>${r.no8d}</td>
+      <td>${r.over7}</td>
+    </tr>
+  `).join('');
+}
+
+function buildOrderTotal() {
+  const tbody = document.getElementById('orderTotalBody');
+  tbody.innerHTML = orderTotal.map((r, i) => `
+    <tr style="${i >= 1 && i <= 4 ? 'background:#f5f7ff' : ''}">
+      <td style="text-align:left"><b>${r.label}</b></td>
+      <td class="${i >= 1 && i <= 4 ? 'p4' : ''}">${r.cur}</td>
+    </tr>
+  `).join('');
+}
+
+function buildOrderAn() {
+  const tbody = document.getElementById('orderAnBody');
+  tbody.innerHTML = orderAn.map(r => `
+    <tr>
+      <td><b>${r.name}</b></td>
+      <td>${r.total}</td>
+      <td><span class="badge badge-y">${r.y}</span></td>
+      <td><span class="badge badge-n">${r.n}</span></td>
+      <td><span class="badge badge-un">${r.un}</span></td>
+      <td>${r.ordered}</td>
+      <td class="${parseFloat(r.rate) >= 90 ? 'hb-up' : parseFloat(r.rate) >= 70 ? '' : 'hb-down'}">${r.rate}</td>
+    </tr>
+  `).join('');
+}
+
+function buildOrderCat() {
+  const tbody = document.getElementById('orderCatBody');
+  tbody.innerHTML = orderCat.map(r => `
+    <tr>
+      <td><b>${r.name}</b></td>
+      <td>${r.total}</td>
+      <td><span class="badge badge-y">${r.y}</span></td>
+      <td><span class="badge badge-n">${r.n}</span></td>
+      <td><span class="badge badge-un">${r.un}</span></td>
+      <td>${r.ordered}</td>
+      <td class="${parseFloat(r.rate) >= 90 ? 'hb-up' : parseFloat(r.rate) >= 70 ? '' : 'hb-down'}">${r.rate}</td>
+    </tr>
+  `).join('');
+}
+
+function buildUnorderAn() {
+  const tbody = document.getElementById('unorderAnBody');
+  tbody.innerHTML = unorderAn.map(r => `
+    <tr>
+      <td><b>${r.name}</b></td>
+      <td>${r.a_jz}</td>
+      <td>${r.a_ws}</td>
+      <td class="p4">${r.a_total}</td>
+      <td>${r.b_ws}</td>
+      <td>${r.b_jz}</td>
+      <td class="p2">${r.b_total}</td>
+      <td class="hb"><b>${r.total}</b></td>
+    </tr>
+  `).join('');
+}
+
+function buildUnorderCat() {
+  const tbody = document.getElementById('unorderCatBody');
+  tbody.innerHTML = unorderCat.map(r => `
+    <tr>
+      <td><b>${r.name}</b></td>
+      <td>${r.a_jz}</td>
+      <td>${r.a_ws}</td>
+      <td class="p4">${r.a_total}</td>
+      <td>${r.b_ws}</td>
+      <td>${r.b_jz}</td>
+      <td class="p2">${r.b_total}</td>
+      <td class="hb"><b>${r.total}</b></td>
+    </tr>
+  `).join('');
+}
+
+function filterLowShare() {
+  const statusVal = document.getElementById('filterStatus').value;
+  const anVal = document.getElementById('filterAn').value;
+  const catVal = document.getElementById('filterCat').value;
+  const ord8Val = document.getElementById('filterOrd8').value;
+
+  const filtered = lowShareData.filter(r => {
+    if (statusVal && r.status !== statusVal) return false;
+    if (anVal && r.an !== anVal) return false;
+    if (catVal && r.cat !== catVal) return false;
+    if (ord8Val && r.ord8 !== ord8Val) return false;
+    return true;
+  });
+
+  const tbody = document.getElementById('lowShareTableBody');
+  tbody.innerHTML = filtered.map(r => `
+    <tr>
+      <td>${r.id}</td>
+      <td style="text-align:left">${r.sku}</td>
+      <td>${r.cat}</td>
+      <td>${r.an}</td>
+      <td>${r.listDate}</td>
+      <td>${r.qty}</td>
+      <td>$${r.rev.toFixed(2)}</td>
+      <td>${r.rivalQty}</td>
+      <td class="${parseFloat(r.share) < 50 ? 'hb-down' : ''}">${r.share}</td>
+      <td><span class="badge ${r.ord8 === 'Y' ? 'badge-y' : r.ord8 === 'N' ? 'badge-n' : 'badge-un'}">${r.ord8}</span></td>
+      <td><span class="badge ${r.status === '竞争无优势' ? 'badge-un' : r.status === '无市场' ? 'badge-n' : 'badge-normal'}">${r.status}</span></td>
+    </tr>
+  `).join('');
+
+  const resultEl = document.getElementById('filterResult');
+  if (statusVal || anVal || catVal || ord8Val) {
+    resultEl.textContent = `筛选结果：共 ${filtered.length} 条（总计 ${lowShareData.length} 条）`;
+  } else {
+    resultEl.textContent = '';
+  }
+}
+
+function resetLowShareFilter() {
+  document.getElementById('filterStatus').value = '';
+  document.getElementById('filterAn').value = '';
+  document.getElementById('filterCat').value = '';
+  document.getElementById('filterOrd8').value = '';
+  filterLowShare();
+}
+
+function buildLowShareTable() { filterLowShare(); }
+
+function buildPlpAnTable() {
+  const tbody = document.getElementById('plpAnTableBody');
+  tbody.innerHTML = plpAnData.map(r => `
+    <tr>
+      <td><b>${r.name}</b></td>
+      <td>${r.sku}</td>
+      <td>${r.exposure.toLocaleString()}</td>
+      <td>${r.clicks}</td>
+      <td style="${r.roas > 10 ? 'color:#08845a;font-weight:700' : r.roas > 0 ? '' : 'color:#888'}">${r.roas || '-'}</td>
+      <td style="${r.acos && parseFloat(r.acos) > 30 ? 'color:#c0392b;font-weight:700' : ''}">${r.acos}</td>
+      <td>${r.cvr}</td>
+      <td>${r.ctr}</td>
+      <td>${r.cpa}</td>
+      <td style="${r.acoas && parseFloat(r.acoas) > 10 ? 'color:#c0392b;font-weight:700' : 'color:#8e44ad'}">${r.acoas}</td>
+      <td>$${r.spend}</td>
+    </tr>
+  `).join('');
+}
+
+function buildPlpCatTable() {
+  const tbody = document.getElementById('plpCatTableBody');
+  tbody.innerHTML = plpCatData.map(r => `
+    <tr>
+      <td><b>${r.name}</b></td>
+      <td>${r.sku}</td>
+      <td>${r.exposure.toLocaleString()}</td>
+      <td>${r.clicks}</td>
+      <td style="${r.roas > 10 ? 'color:#08845a;font-weight:700' : r.roas > 0 ? '' : 'color:#888'}">${r.roas || '-'}</td>
+      <td style="${r.acos && parseFloat(r.acos) > 30 ? 'color:#c0392b;font-weight:700' : ''}">${r.acos}</td>
+      <td>${r.cvr}</td>
+      <td>${r.ctr}</td>
+      <td>${r.cpa}</td>
+      <td style="${r.acoas && parseFloat(r.acoas) > 10 ? 'color:#c0392b;font-weight:700' : r.acoas === '-' ? 'color:#888' : 'color:#8e44ad'}">${r.acoas}</td>
+      <td>$${r.spend}</td>
+    </tr>
+  `).join('');
+}
+
+function buildCum43Table() { filterCum43(); }
+
+function filterCum43() {
+  const statusVal = document.getElementById('filterCumStatus').value;
+  const anVal = document.getElementById('filterCumAn').value;
+  const catVal = document.getElementById('filterCumCat').value;
+  const expandVal = document.getElementById('filterCumExpand').value;
+  const ord8Val = document.getElementById('filterCumOrd8').value;
+
+  const filtered = cum43Data.filter(r => {
+    const listDate = r['实际上架日期'];
+    if (listDate && listDate > '2026-05-06') return false;
+    if (statusVal && r['5.6市场状态'] !== statusVal) return false;
+    if (anVal && r['4月分析人'] !== anVal) return false;
+    if (catVal && r['品类'] !== catVal) return false;
+    if (expandVal && r['产品拓展'] !== expandVal) return false;
+    if (ord8Val && r['5.6 8日出单情况'] !== ord8Val) return false;
+    return true;
+  });
+
+  const tbody = document.getElementById('cum43TableBody');
+  const resultDiv = document.getElementById('cum43Result');
+
+  tbody.innerHTML = filtered.map(r => {
+    const statusColor = {'正常': '#08845a', '竞争无优势': '#e07b24', '无市场': '#c0392b', '站外出单': '#8e44ad', '未上架': '#888'}[r['5.6市场状态']] || '#888';
+    const ord8Color = {'Y': '#08845a', 'N': '#e07b24', '未出单': '#c0392b', '未上架': '#888'}[r['5.6 8日出单情况']] || '#888';
+    const qty = r['4.30-5.6销量'];
+    const rev = r['4.30-5.6销售额'];
+
+    return `<tr>
+      <td><b>${r.SKU}</b></td>
+      <td>${r['实际上架日期']}</td>
+      <td>${r['首次出单日期']}</td>
+      <td>${r['4月分析人']}</td>
+      <td>${r['品类'] || '-'}</td>
+      <td>${r['产品拓展'] || '-'}</td>
+      <td>${typeof qty === 'number' ? qty : qty}</td>
+      <td>${typeof rev === 'number' ? '$' + rev.toFixed(2) : rev}</td>
+      <td>${r['5.6对手销量']}</td>
+      <td>${r['5.6市占比'].toFixed(1)}%</td>
+      <td><span style="background:${statusColor};color:white;padding:2px 8px;border-radius:10px;font-size:11px;">${r['5.6市场状态']}</span></td>
+      <td><span style="background:${ord8Color};color:white;padding:2px 8px;border-radius:10px;font-size:11px;">${r['5.6 8日出单情况']}</span></td>
+    </tr>`;
+  }).join('');
+
+  resultDiv.textContent = `共 ${filtered.length} 条结果（总计 109 条，已排除周期外上架 9 条）`;
+}
+
+function resetCum43Filter() {
+  document.getElementById('filterCumStatus').value = '';
+  document.getElementById('filterCumAn').value = '';
+  document.getElementById('filterCumCat').value = '';
+  document.getElementById('filterCumExpand').value = '';
+  document.getElementById('filterCumOrd8').value = '';
+  filterCum43();
+}
+
+// ===== 图表初始化 =====
+function initOverviewCharts() {
+  new Chart(document.getElementById('chartOrderPie'), {
+    type: 'doughnut',
+    data: { labels: ['8日内出单(Y): 27', '8日外出单(N): 13', '真正未出单: 3'], datasets: [{ data: [27, 13, 3], backgroundColor: ['#08845a', '#e07b24', '#c0392b'], borderWidth: 2 }] },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+  });
+
+  const timelyDist = [71, 16, 15];
+  new Chart(document.getElementById('chartTimelyPie'), {
+    type: 'doughnut',
+    data: { labels: ['及时分析(71)', '8日内无分析(16)', '超7日未分析(15)'], datasets: [{ data: timelyDist, backgroundColor: ['#08845a', '#e07b24', '#c0392b'], borderWidth: 2 }] },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+  });
+
+  const catCount = {};
+  lowShareData.forEach(r => { catCount[r.cat] = (catCount[r.cat] || 0) + 1; });
+  new Chart(document.getElementById('chartLowShareCat'), {
+    type: 'doughnut',
+    data: { labels: Object.keys(catCount), datasets: [{ data: Object.values(catCount), backgroundColor: CHART_COLORS, borderWidth: 2 }] },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+  });
+
+  new Chart(document.getElementById('chartCatPie'), {
+    type: 'doughnut',
+    data: { labels: catData.map(r => r.name), datasets: [{ data: catData.map(r => r.qtyCur), backgroundColor: CHART_COLORS, borderWidth: 2 }] },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+  });
+}
+
+function initCatCharts() {
+  new Chart(document.getElementById('chartCatQty'), {
+    type: 'bar',
+    data: { labels: catData.map(r => r.name), datasets: [{ label: '本周销量', data: catData.map(r => r.qtyCur), backgroundColor: 'rgba(192,57,43,0.8)', borderColor: '#c0392b', borderWidth: 2 }] },
+    options: { responsive: true, plugins: { legend: { display: true } }, scales: { y: { beginAtZero: true } } }
+  });
+
+  new Chart(document.getElementById('chartCatPie2'), {
+    type: 'doughnut',
+    data: { labels: catData.map(r => r.name), datasets: [{ data: catData.map(r => r.qtyCur), backgroundColor: CHART_COLORS, borderWidth: 2 }] },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+  });
+}
+
+function initAnCharts() {
+  new Chart(document.getElementById('chartAnQty'), {
+    type: 'bar',
+    data: { labels: anData.map(r => r.name), datasets: [{ label: '本周销量', data: anData.map(r => r.qtyCur), backgroundColor: 'rgba(192,57,43,0.8)', borderColor: '#c0392b', borderWidth: 2 }] },
+    options: { responsive: true, plugins: { legend: { display: true } }, scales: { y: { beginAtZero: true } } }
+  });
+
+  new Chart(document.getElementById('chartAnPie'), {
+    type: 'doughnut',
+    data: { labels: anData.map(r => r.name), datasets: [{ data: anData.map(r => r.qtyCur), backgroundColor: CHART_COLORS, borderWidth: 2 }] },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+  });
+}
+
+function initTzCharts() {
+  new Chart(document.getElementById('chartTzRate'), {
+    type: 'bar',
+    data: { labels: tzData.map(r => r.name), datasets: [{ label: '出单率', data: tzData.map(r => parseFloat(r.rateCur)), backgroundColor: 'rgba(192,57,43,0.8)', borderColor: '#c0392b', borderWidth: 2 }] },
+    options: { responsive: true, plugins: { legend: { display: true } }, scales: { y: { beginAtZero: true, max: 100 } } }
+  });
+
+  new Chart(document.getElementById('chartTzQty'), {
+    type: 'bar',
+    data: { labels: tzData.map(r => r.name), datasets: [{ label: '销量', data: tzData.map(r => r.qtyCur), backgroundColor: 'rgba(41,128,185,0.8)', borderColor: '#2980b9', borderWidth: 2 }] },
+    options: { responsive: true, plugins: { legend: { display: true } }, scales: { y: { beginAtZero: true } } }
+  });
+}
+
+function initTimelyCharts() {
+  const timelyDist = [timelyData.reduce((sum, r) => sum + r.timely, 0), timelyData.reduce((sum, r) => sum + r.no8d, 0), timelyData.reduce((sum, r) => sum + r.over7, 0)];
+  new Chart(document.getElementById('chartTimelyDist'), {
+    type: 'doughnut',
+    data: { labels: ['及时分析(' + timelyDist[0] + ')', '8日内无分析(' + timelyDist[1] + ')', '超7日未分析(' + timelyDist[2] + ')'], datasets: [{ data: timelyDist, backgroundColor: ['#08845a', '#e07b24', '#c0392b'], borderWidth: 2 }] },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+  });
+
+  new Chart(document.getElementById('chartTimelyAn'), {
+    type: 'bar',
+    data: { labels: timelyData.map(r => r.name), datasets: [{ label: '及时率', data: timelyData.map(r => parseFloat(r.rate)), backgroundColor: 'rgba(192,57,43,0.8)', borderColor: '#c0392b', borderWidth: 2 }] },
+    options: { responsive: true, plugins: { legend: { display: true } }, scales: { y: { beginAtZero: true, max: 100 } } }
+  });
+}
+
+function initLowShareCharts() {
+  const catCount = {};
+  lowShareData.forEach(r => { catCount[r.cat] = (catCount[r.cat] || 0) + 1; });
+  new Chart(document.getElementById('chartLowCat'), {
+    type: 'doughnut',
+    data: { labels: Object.keys(catCount), datasets: [{ data: Object.values(catCount), backgroundColor: CHART_COLORS, borderWidth: 2 }] },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+  });
+
+  const ord8Count = {Y: 0, N: 0, '未出单': 0};
+  lowShareData.forEach(r => { ord8Count[r.ord8] = (ord8Count[r.ord8] || 0) + 1; });
+  new Chart(document.getElementById('chartLowOrder'), {
+    type: 'doughnut',
+    data: { labels: ['8日内出单(Y): ' + ord8Count.Y, '8日外出单(N): ' + ord8Count.N, '未出单: ' + ord8Count['未出单']], datasets: [{ data: [ord8Count.Y, ord8Count.N, ord8Count['未出单']], backgroundColor: ['#08845a', '#e07b24', '#c0392b'], borderWidth: 2 }] },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+  });
+}
+
+function initUnorderCharts() {
+  new Chart(document.getElementById('chartUnorderAll'), {
+    type: 'doughnut',
+    data: { labels: ['竞争无优势: 3', '无市场: 27'], datasets: [{ data: [3, 27], backgroundColor: ['#c0392b', '#e07b24'], borderWidth: 2 }] },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' }, title: { display: true, text: '竞争无优势: 3 | 无市场: 27', font: { size: 14 } } }
+  });
+}
+
+// ===== 初始化 =====
+window.onload = function() {
+  buildCatTable();
+  buildAnTable();
+  buildTzTable();
+  buildTimelyTable();
+  buildOrderTotal();
+  buildOrderAn();
+  buildOrderCat();
+  buildUnorderAn();
+  buildUnorderCat();
+  buildLowShareTable();
+  buildPlpAnTable();
+  buildPlpCatTable();
+  buildCum43Table();
+  
+  initOverviewCharts();
+  initCatCharts();
+  initAnCharts();
+  initTzCharts();
+  initTimelyCharts();
+  initLowShareCharts();
+  initUnorderCharts();
+};
+</script>
+
+</body>
+</html>

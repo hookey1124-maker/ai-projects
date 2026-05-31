@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新品周报板块 · 4.30-5.6</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="./src/styles/global.css">
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 新品周报板块 · 4.30-5.6</h1>
+  <div class="subtitle">统计周期：2026年4月30日 - 5月6日 &nbsp;|&nbsp; 在售SKU：101 &nbsp;|&nbsp; 生成：2026-05-13</div>
+</div>
+
+<div class="container">
+  <nav class="sidebar">
+    <ul>
+      <li><a href="#" onclick="showSection('overview',this)" class="active">📊 数据总览</a></li>
+      <li><a href="#" onclick="showSection('pinxian',this)">🏷️ 品线维度</a></li>
+      <li><a href="#" onclick="showSection('analyst',this)">👤 分析人维度</a></li>
+      <li><a href="#" onclick="showSection('expand',this)">🔗 拓展类型</a></li>
+      <li><a href="#" onclick="showSection('timely',this)">⏱️ 分析及时率</a></li>
+      <li><a href="#" onclick="showSection('order',this)">📦 新品出单情况</a></li>
+      <li><a href="#" onclick="showSection('unorder',this)">❌ 新品未出单</a></li>
+      <li><a href="#" onclick="showSection('lowshare',this)">📉 低占比新品</a></li>
+      <li><a href="#" onclick="showSection('plp',this)">💰 PLP复盘</a></li>
+      <li><a href="#" onclick="showSection('cum43',this)">📊 四三累计</a></li>
+    </ul>
+  </nav>
+
+  <div class="main-content">
+    <!-- 内容区域将动态加载 -->
+    <div id="content-area"></div>
+  </div>
+</div>
+
+<script type="module" src="./src/index.js"></script>
+</body>
+</html>

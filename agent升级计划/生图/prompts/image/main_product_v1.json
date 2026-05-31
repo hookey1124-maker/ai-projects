@@ -1,0 +1,19 @@
+{
+  "prompt_id": "IMG_MAIN_V1",
+  "version": "1.0",
+  "purpose": "eBay 产品主图生成 — 白底/纯色背景产品展示图",
+  "last_updated": "2026-05-23",
+  "model": "gpt-image-2",
+  "size": "1:1",
+  "template": "专业产品摄影，{product_description}，放置在{background_description}。产品与背景自然融合，有真实的阴影和反射。产品结构完整准确不变形，无品牌Logo，无文字标签。柔和均匀的工作室灯光，正面略微45度角拍摄，透视自然。高分辨率，商业摄影级别，干净的构图。",
+  "variables": ["product_description", "background_description"],
+  "constraints": [
+    "禁止出现任何汽车品牌Logo或商标",
+    "产品必须与背景自然融合，禁止悬浮",
+    "产品结构不得修改或变形",
+    "必须有阴影/反射效果"
+  ],
+  "strength": 0.5,
+  "good_example": "4个金属门铰链放置在一张浅色橡木纹理桌面上，自然阴影投射在桌面",
+  "bad_example": "4个门铰链悬浮在白色空间中，没有阴影，没有背景上下文"
+}

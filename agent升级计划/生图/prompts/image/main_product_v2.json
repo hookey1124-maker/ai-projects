@@ -1,0 +1,22 @@
+{
+  "prompt_id": "IMG_MAIN_V2",
+  "version": "2.0",
+  "purpose": "eBay 产品主图 — 非白底、场景化产品展示",
+  "last_updated": "2026-05-24",
+  "model": "gpt-image-2",
+  "size": "1:1",
+  "strength": 0.5,
+  "description": "完整产品展示，不限于白底。可使用摄影棚布光或户外场景（野地/沙漠/车间），根据产品类型选择最佳展示场景。",
+  "template": "由 DeepSeek (prompt_builder.py) 动态生成，非固定模板",
+  "variables": ["product_type", "color", "material", "count", "ref_image"],
+  "constraints": [
+    "禁止白底限制 — 根据产品类型选择最佳场景",
+    "禁止出现任何汽车品牌 Logo 或商标",
+    "产品必须与背景自然融合，禁止悬浮",
+    "产品结构不得修改或变形",
+    "必须有阴影/反射效果",
+    "Prompt 必须用英文",
+    "150-300 words 详细描述"
+  ],
+  "generator": "prompt_builder.py"
+}

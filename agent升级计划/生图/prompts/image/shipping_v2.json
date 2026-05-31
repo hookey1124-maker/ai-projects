@@ -1,0 +1,22 @@
+{
+  "prompt_id": "IMG_SHIPPING_V2",
+  "version": "2.0",
+  "purpose": "eBay 发货售后优势图 — 物流和售后服务展示",
+  "last_updated": "2026-05-24",
+  "model": "gpt-image-2",
+  "size": "1:1",
+  "strength": 0.5,
+  "description": "展示物流和售后优势。默认元素：Free Shipping、Fast Delivery、30-Day Returns。仓库物流具体信息由 SHIPPING_INFO 常量注入。",
+  "template": "由 DeepSeek (prompt_builder.py) 动态生成，非固定模板",
+  "variables": ["shipping_info", "product_type"],
+  "constraints": [
+    "商业图形风格，干净专业",
+    "默认展示 Free Shipping / Fast Delivery / 30-Day Returns",
+    "仓库/物流信息通过 SHIPPING_INFO 变量注入（后续提供）",
+    "禁止出现任何汽车品牌 Logo 或商标",
+    "建立信任感：有序、专业、可靠",
+    "Prompt 必须用英文"
+  ],
+  "generator": "prompt_builder.py",
+  "pending": "SHIPPING_INFO 仓库物流信息等待用户提供"
+}

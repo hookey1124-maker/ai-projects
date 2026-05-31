@@ -1,0 +1,1259 @@
+{
+  "kpi": {
+    "total_sku": 101,
+    "new_listed": 11,
+    "has_rival": 43,
+    "no_rival": 58,
+    "total_sales": 195,
+    "total_rev": 20494.85,
+    "y_order": 27,
+    "n_order": 13,
+    "no_order_rival": 3,
+    "y_order_no_rival": 30,
+    "n_order_no_rival": 9,
+    "no_order_no_rival": 19,
+    "total_ordered": 79,
+    "total_no_order": 22,
+    "order_rate": "93.0%",
+    "timely": 71,
+    "no_8d": 16,
+    "no_7d": 14,
+    "timely_rate": "70.3%",
+    "low_share_count": 39
+  },
+  "cat_data": [
+    {
+      "name": "车门系统",
+      "sku": 36,
+      "new": 3,
+      "sales": 63,
+      "rev": 10716.02,
+      "has_rival": 17
+    },
+    {
+      "name": "其他",
+      "sku": 25,
+      "new": 3,
+      "sales": 48,
+      "rev": 4906.9,
+      "has_rival": 2
+    },
+    {
+      "name": "机盖及附件",
+      "sku": 9,
+      "new": 0,
+      "sales": 44,
+      "rev": 2216.0,
+      "has_rival": 7
+    },
+    {
+      "name": "饰条",
+      "sku": 9,
+      "new": 1,
+      "sales": 18,
+      "rev": 875.93,
+      "has_rival": 6
+    },
+    {
+      "name": "挡泥板",
+      "sku": 9,
+      "new": 1,
+      "sales": 14,
+      "rev": 1148.0,
+      "has_rival": 4
+    },
+    {
+      "name": "车身外扩件",
+      "sku": 12,
+      "new": 3,
+      "sales": 7,
+      "rev": 587.0,
+      "has_rival": 6
+    },
+    {
+      "name": "牌照板支架",
+      "sku": 1,
+      "new": 0,
+      "sales": 1,
+      "rev": 45.0,
+      "has_rival": 1
+    }
+  ],
+  "an_data": [
+    {
+      "name": "张潇",
+      "sku": 26,
+      "new": 1,
+      "sales": 76,
+      "rev": 4732.99,
+      "has_rival": 13,
+      "timely": 20,
+      "no_8d": 0,
+      "no_7d": 6,
+      "rate": "76.9%"
+    },
+    {
+      "name": "胡煜星",
+      "sku": 23,
+      "new": 2,
+      "sales": 53,
+      "rev": 4468.9,
+      "has_rival": 4,
+      "timely": 21,
+      "no_8d": 2,
+      "no_7d": 0,
+      "rate": "91.3%"
+    },
+    {
+      "name": "俞东旭",
+      "sku": 25,
+      "new": 3,
+      "sales": 32,
+      "rev": 6841.19,
+      "has_rival": 15,
+      "timely": 17,
+      "no_8d": 3,
+      "no_7d": 5,
+      "rate": "68.0%"
+    },
+    {
+      "name": "朱培源",
+      "sku": 14,
+      "new": 1,
+      "sales": 19,
+      "rev": 3525.88,
+      "has_rival": 5,
+      "timely": 9,
+      "no_8d": 2,
+      "no_7d": 3,
+      "rate": "64.3%"
+    },
+    {
+      "name": "王偲涵",
+      "sku": 10,
+      "new": 3,
+      "sales": 6,
+      "rev": 428.0,
+      "has_rival": 5,
+      "timely": 2,
+      "no_8d": 8,
+      "no_7d": 0,
+      "rate": "20.0%"
+    },
+    {
+      "name": "章鹏",
+      "sku": 3,
+      "new": 1,
+      "sales": 9,
+      "rev": 497.89,
+      "has_rival": 1,
+      "timely": 2,
+      "no_8d": 1,
+      "no_7d": 0,
+      "rate": "66.7%"
+    }
+  ],
+  "expand_data": [
+    {
+      "name": "原开品",
+      "sku": 79,
+      "sales": 165,
+      "rev": 16789.89,
+      "has_rival": 36,
+      "y": 47,
+      "n": 17,
+      "no": 15,
+      "rate": "177.8%"
+    },
+    {
+      "name": "拓展品",
+      "sku": 22,
+      "sales": 30,
+      "rev": 3704.96,
+      "has_rival": 7,
+      "y": 10,
+      "n": 5,
+      "no": 7,
+      "rate": "214.3%"
+    }
+  ],
+  "timely_data": [
+    {
+      "name": "俞东旭",
+      "sku": 25,
+      "timely": 17,
+      "rate": "68.0%",
+      "no_8d": 3,
+      "no_7d": 5
+    },
+    {
+      "name": "张潇",
+      "sku": 26,
+      "timely": 20,
+      "rate": "76.9%",
+      "no_8d": 0,
+      "no_7d": 6
+    },
+    {
+      "name": "朱培源",
+      "sku": 14,
+      "timely": 9,
+      "rate": "64.3%",
+      "no_8d": 2,
+      "no_7d": 3
+    },
+    {
+      "name": "王偲涵",
+      "sku": 10,
+      "timely": 2,
+      "rate": "20.0%",
+      "no_8d": 8,
+      "no_7d": 0
+    },
+    {
+      "name": "章鹏",
+      "sku": 3,
+      "timely": 2,
+      "rate": "66.7%",
+      "no_8d": 1,
+      "no_7d": 0
+    },
+    {
+      "name": "胡煜星",
+      "sku": 23,
+      "timely": 21,
+      "rate": "91.3%",
+      "no_8d": 2,
+      "no_7d": 0
+    }
+  ],
+  "order_total": [
+    {
+      "label": "有对手总SKU",
+      "value": 43
+    },
+    {
+      "label": "8日内出单（Y）",
+      "value": 27
+    },
+    {
+      "label": "8日外出单（N）",
+      "value": 13
+    },
+    {
+      "label": "真正未出单",
+      "value": 3
+    },
+    {
+      "label": "已出单合计(Y+N)",
+      "value": 40
+    },
+    {
+      "label": "出单率",
+      "value": "93.0%"
+    }
+  ],
+  "order_by_an": [
+    {
+      "name": "张潇",
+      "total": 13,
+      "y": 8,
+      "n": 5,
+      "no": 0,
+      "ordered": 13,
+      "rate": "100.0%"
+    },
+    {
+      "name": "胡煜星",
+      "total": 4,
+      "y": 4,
+      "n": 0,
+      "no": 0,
+      "ordered": 4,
+      "rate": "100.0%"
+    },
+    {
+      "name": "俞东旭",
+      "total": 15,
+      "y": 9,
+      "n": 6,
+      "no": 0,
+      "ordered": 15,
+      "rate": "100.0%"
+    },
+    {
+      "name": "朱培源",
+      "total": 5,
+      "y": 2,
+      "n": 2,
+      "no": 1,
+      "ordered": 4,
+      "rate": "80.0%"
+    },
+    {
+      "name": "王偲涵",
+      "total": 5,
+      "y": 3,
+      "n": 0,
+      "no": 2,
+      "ordered": 3,
+      "rate": "60.0%"
+    },
+    {
+      "name": "章鹏",
+      "total": 1,
+      "y": 1,
+      "n": 0,
+      "no": 0,
+      "ordered": 1,
+      "rate": "100.0%"
+    }
+  ],
+  "order_by_cat": [
+    {
+      "name": "车门系统",
+      "total": 17,
+      "y": 10,
+      "n": 6,
+      "no": 1,
+      "ordered": 16,
+      "rate": "94.1%"
+    },
+    {
+      "name": "机盖及附件",
+      "total": 7,
+      "y": 7,
+      "n": 0,
+      "no": 0,
+      "ordered": 7,
+      "rate": "100.0%"
+    },
+    {
+      "name": "饰条",
+      "total": 6,
+      "y": 3,
+      "n": 3,
+      "no": 0,
+      "ordered": 6,
+      "rate": "100.0%"
+    },
+    {
+      "name": "车身外扩件",
+      "total": 6,
+      "y": 3,
+      "n": 2,
+      "no": 1,
+      "ordered": 5,
+      "rate": "83.3%"
+    },
+    {
+      "name": "挡泥板",
+      "total": 4,
+      "y": 2,
+      "n": 2,
+      "no": 0,
+      "ordered": 4,
+      "rate": "100.0%"
+    },
+    {
+      "name": "其他",
+      "total": 2,
+      "y": 1,
+      "n": 0,
+      "no": 1,
+      "ordered": 1,
+      "rate": "50.0%"
+    },
+    {
+      "name": "牌照板支架",
+      "total": 1,
+      "y": 1,
+      "n": 0,
+      "no": 0,
+      "ordered": 1,
+      "rate": "100.0%"
+    }
+  ],
+  "unorder_total": {
+    "has_rival_no": 3,
+    "no_rival_no": 19,
+    "total_no": 22,
+    "has_rival_no_detail": [
+      {
+        "sku": "LYAP-X2144-1L",
+        "cat": "车门系统",
+        "an": "朱培源",
+        "market": "竞争无优势"
+      },
+      {
+        "sku": "LYAP-X2042-FL",
+        "cat": "其他",
+        "an": "王偲涵",
+        "market": "竞争无优势"
+      },
+      {
+        "sku": "LYAM-X2452-SL",
+        "cat": "车身外扩件",
+        "an": "王偲涵",
+        "market": "竞争无优势"
+      }
+    ]
+  },
+  "unorder_by_an": [
+    {
+      "name": "俞东旭",
+      "a_jz": 0,
+      "a_ws": 0,
+      "a_total": 0,
+      "b_ws": 3,
+      "b_jz": 0,
+      "b_total": 3,
+      "total": 3
+    },
+    {
+      "name": "张潇",
+      "a_jz": 0,
+      "a_ws": 0,
+      "a_total": 0,
+      "b_ws": 4,
+      "b_jz": 3,
+      "b_total": 7,
+      "total": 7
+    },
+    {
+      "name": "朱培源",
+      "a_jz": 1,
+      "a_ws": 0,
+      "a_total": 1,
+      "b_ws": 2,
+      "b_jz": 2,
+      "b_total": 4,
+      "total": 5
+    },
+    {
+      "name": "王偲涵",
+      "a_jz": 2,
+      "a_ws": 0,
+      "a_total": 2,
+      "b_ws": 3,
+      "b_jz": 0,
+      "b_total": 3,
+      "total": 5
+    },
+    {
+      "name": "章鹏",
+      "a_jz": 0,
+      "a_ws": 0,
+      "a_total": 0,
+      "b_ws": 1,
+      "b_jz": 1,
+      "b_total": 2,
+      "total": 2
+    },
+    {
+      "name": "胡煜星",
+      "a_jz": 0,
+      "a_ws": 0,
+      "a_total": 0,
+      "b_ws": 6,
+      "b_jz": 2,
+      "b_total": 8,
+      "total": 8
+    }
+  ],
+  "unorder_by_cat": [
+    {
+      "name": "其他",
+      "a_jz": 1,
+      "a_ws": 0,
+      "a_total": 1,
+      "b_ws": 8,
+      "b_jz": 2,
+      "b_total": 10,
+      "total": 11
+    },
+    {
+      "name": "车门系统",
+      "a_jz": 1,
+      "a_ws": 0,
+      "a_total": 1,
+      "b_ws": 9,
+      "b_jz": 0,
+      "b_total": 9,
+      "total": 10
+    },
+    {
+      "name": "挡泥板",
+      "a_jz": 0,
+      "a_ws": 0,
+      "a_total": 0,
+      "b_ws": 3,
+      "b_jz": 0,
+      "b_total": 3,
+      "total": 3
+    },
+    {
+      "name": "机盖及附件",
+      "a_jz": 0,
+      "a_ws": 0,
+      "a_total": 0,
+      "b_ws": 3,
+      "b_jz": 0,
+      "b_total": 3,
+      "total": 3
+    },
+    {
+      "name": "车身外扩件",
+      "a_jz": 0,
+      "a_ws": 0,
+      "a_total": 0,
+      "b_ws": 4,
+      "b_jz": 0,
+      "b_total": 4,
+      "total": 4
+    },
+    {
+      "name": "饰条",
+      "a_jz": 0,
+      "a_ws": 0,
+      "a_total": 0,
+      "b_ws": 4,
+      "b_jz": 0,
+      "b_total": 4,
+      "total": 4
+    },
+    {
+      "name": "牌照板支架",
+      "a_jz": 0,
+      "a_ws": 0,
+      "a_total": 0,
+      "b_ws": 0,
+      "b_jz": 0,
+      "b_total": 0,
+      "total": 0
+    }
+  ],
+  "low_share_data": [
+    {
+      "id": 1,
+      "sku": "LYAP-X1800-1",
+      "cat": "车门系统",
+      "an": "胡煜星",
+      "listDate": "2026-03-04",
+      "qty": 1,
+      "rev": 40.0,
+      "rivalQty": 7,
+      "share": "12.5%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 2,
+      "sku": "LYAP-X1877",
+      "cat": "挡泥板",
+      "an": "朱培源",
+      "listDate": "2026-03-04",
+      "qty": 1,
+      "rev": 169.0,
+      "rivalQty": 1,
+      "share": "0.0%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 3,
+      "sku": "LYAM-X2254-L",
+      "cat": "车门系统",
+      "an": "张潇",
+      "listDate": "2026-03-04",
+      "qty": 5,
+      "rev": 140.95,
+      "rivalQty": 5,
+      "share": "58.3%",
+      "ord8": "N",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 4,
+      "sku": "LYAP-X1800S-1L",
+      "cat": "车门系统",
+      "an": "胡煜星",
+      "listDate": "2026-03-05",
+      "qty": 10,
+      "rev": 220.0,
+      "rivalQty": 20,
+      "share": "35.5%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 5,
+      "sku": "LYAP-X1800S-1R",
+      "cat": "车门系统",
+      "an": "胡煜星",
+      "listDate": "2026-03-05",
+      "qty": 2,
+      "rev": 44.0,
+      "rivalQty": 6,
+      "share": "25.0%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 6,
+      "sku": "LYAP-X2190-L",
+      "cat": "饰条",
+      "an": "张潇",
+      "listDate": "2026-03-10",
+      "qty": 0,
+      "rev": 0.0,
+      "rivalQty": 1,
+      "share": "0.0%",
+      "ord8": "N",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 7,
+      "sku": "LYAP-X2190-R",
+      "cat": "饰条",
+      "an": "张潇",
+      "listDate": "2026-03-10",
+      "qty": 1,
+      "rev": 38.0,
+      "rivalQty": 1,
+      "share": "50.0%",
+      "ord8": "N",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 8,
+      "sku": "LYAP-X1642-GR",
+      "cat": "车门系统",
+      "an": "俞东旭",
+      "listDate": "2026-03-11",
+      "qty": 0,
+      "rev": 0.0,
+      "rivalQty": 1,
+      "share": "0.0%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 9,
+      "sku": "LYAP-X1911-BK",
+      "cat": "机盖及附件",
+      "an": "张潇",
+      "listDate": "2026-03-11",
+      "qty": 2,
+      "rev": 170.0,
+      "rivalQty": 1,
+      "share": "66.7%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 10,
+      "sku": "LYAP-X1927",
+      "cat": "机盖及附件",
+      "an": "张潇",
+      "listDate": "2026-03-11",
+      "qty": 13,
+      "rev": 364.0,
+      "rivalQty": 17,
+      "share": "34.6%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 11,
+      "sku": "LYAP-X1934",
+      "cat": "饰条",
+      "an": "张潇",
+      "listDate": "2026-03-11",
+      "qty": 6,
+      "rev": 69.04,
+      "rivalQty": 20,
+      "share": "16.7%",
+      "ord8": "N",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 12,
+      "sku": "LYAP-X2148-1L",
+      "cat": "饰条",
+      "an": "王偲涵",
+      "listDate": "2026-03-11",
+      "qty": 2,
+      "rev": 78.0,
+      "rivalQty": 2,
+      "share": "50.0%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 13,
+      "sku": "LYAP-X2289",
+      "cat": "饰条",
+      "an": "张潇",
+      "listDate": "2026-03-11",
+      "qty": 2,
+      "rev": 228.0,
+      "rivalQty": 3,
+      "share": "50.0%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 14,
+      "sku": "MD-002-FL",
+      "cat": "车门系统",
+      "an": "俞东旭",
+      "listDate": "2026-03-11",
+      "qty": 0,
+      "rev": 0.0,
+      "rivalQty": 1,
+      "share": "0.0%",
+      "ord8": "N",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 15,
+      "sku": "MD-002-FR",
+      "cat": "车门系统",
+      "an": "俞东旭",
+      "listDate": "2026-03-11",
+      "qty": 1,
+      "rev": 483.0,
+      "rivalQty": 4,
+      "share": "33.3%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 16,
+      "sku": "MD-002-RL",
+      "cat": "车门系统",
+      "an": "俞东旭",
+      "listDate": "2026-03-11",
+      "qty": 0,
+      "rev": 0.0,
+      "rivalQty": 2,
+      "share": "0.0%",
+      "ord8": "N",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 17,
+      "sku": "MD-002-RR",
+      "cat": "车门系统",
+      "an": "俞东旭",
+      "listDate": "2026-03-11",
+      "qty": 1,
+      "rev": 478.0,
+      "rivalQty": 4,
+      "share": "33.3%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 18,
+      "sku": "LYAM-X2862",
+      "cat": "机盖及附件",
+      "an": "张潇",
+      "listDate": "2026-03-12",
+      "qty": 2,
+      "rev": 278.0,
+      "rivalQty": 1,
+      "share": "50.0%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 19,
+      "sku": "LYAP-X2417",
+      "cat": "挡泥板",
+      "an": "朱培源",
+      "listDate": "2026-03-16",
+      "qty": 1,
+      "rev": 75.0,
+      "rivalQty": 1,
+      "share": "50.0%",
+      "ord8": "N",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 20,
+      "sku": "MD-001-FL",
+      "cat": "车门系统",
+      "an": "俞东旭",
+      "listDate": "2026-03-16",
+      "qty": 3,
+      "rev": 1770.0,
+      "rivalQty": 3,
+      "share": "40.0%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 21,
+      "sku": "LYAP-X1788-GR",
+      "cat": "车门系统",
+      "an": "俞东旭",
+      "listDate": "2026-03-16",
+      "qty": 4,
+      "rev": 143.6,
+      "rivalQty": 3,
+      "share": "50.0%",
+      "ord8": "N",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 22,
+      "sku": "MD-001-FR",
+      "cat": "车门系统",
+      "an": "俞东旭",
+      "listDate": "2026-03-16",
+      "qty": 3,
+      "rev": 1794.0,
+      "rivalQty": 1,
+      "share": "50.0%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 23,
+      "sku": "MD-001-RL",
+      "cat": "车门系统",
+      "an": "俞东旭",
+      "listDate": "2026-03-16",
+      "qty": 0,
+      "rev": 0.0,
+      "rivalQty": 2,
+      "share": "0.0%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 24,
+      "sku": "MD-001-RR",
+      "cat": "车门系统",
+      "an": "俞东旭",
+      "listDate": "2026-03-16",
+      "qty": 0,
+      "rev": 0.0,
+      "rivalQty": 1,
+      "share": "0.0%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 25,
+      "sku": "LYAP-X2144-1L",
+      "cat": "车门系统",
+      "an": "朱培源",
+      "listDate": "2026-03-18",
+      "qty": 0,
+      "rev": 0.0,
+      "rivalQty": 3,
+      "share": "0.0%",
+      "ord8": "未出单",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 26,
+      "sku": "LYAP-X2144-1R",
+      "cat": "车门系统",
+      "an": "朱培源",
+      "listDate": "2026-03-18",
+      "qty": 0,
+      "rev": 0.0,
+      "rivalQty": 1,
+      "share": "0.0%",
+      "ord8": "N",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 27,
+      "sku": "LYAP-X2077",
+      "cat": "车身外扩件",
+      "an": "俞东旭",
+      "listDate": "2026-03-24",
+      "qty": 2,
+      "rev": 70.0,
+      "rivalQty": 2,
+      "share": "50.0%",
+      "ord8": "N",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 28,
+      "sku": "LYAP-X2085",
+      "cat": "车身外扩件",
+      "an": "俞东旭",
+      "listDate": "2026-03-24",
+      "qty": 0,
+      "rev": 0.0,
+      "rivalQty": 2,
+      "share": "0.0%",
+      "ord8": "N",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 29,
+      "sku": "LYAP-X1788-BN",
+      "cat": "车门系统",
+      "an": "俞东旭",
+      "listDate": "2026-03-27",
+      "qty": 1,
+      "rev": 30.59,
+      "rivalQty": 2,
+      "share": "33.3%",
+      "ord8": "N",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 30,
+      "sku": "LYAM-X2428-BK",
+      "cat": "车身外扩件",
+      "an": "俞东旭",
+      "listDate": "2026-04-07",
+      "qty": 3,
+      "rev": 357.0,
+      "rivalQty": 3,
+      "share": "62.5%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 31,
+      "sku": "LYAP-X2504",
+      "cat": "挡泥板",
+      "an": "俞东旭",
+      "listDate": "2026-04-10",
+      "qty": 7,
+      "rev": 315.0,
+      "rivalQty": 6,
+      "share": "60.0%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 32,
+      "sku": "LYAM-X2804",
+      "cat": "牌照板支架",
+      "an": "张潇",
+      "listDate": "2026-04-23",
+      "qty": 1,
+      "rev": 45.0,
+      "rivalQty": 2,
+      "share": "33.3%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 33,
+      "sku": "LYAP-X2210-C",
+      "cat": "机盖及附件",
+      "an": "张潇",
+      "listDate": "2026-04-28",
+      "qty": 3,
+      "rev": 267.0,
+      "rivalQty": 6,
+      "share": "25.0%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 34,
+      "sku": "LYAM-X2450-SL",
+      "cat": "车身外扩件",
+      "an": "王偲涵",
+      "listDate": "2026-04-29",
+      "qty": 1,
+      "rev": 125.0,
+      "rivalQty": 4,
+      "share": "20.0%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 35,
+      "sku": "LYAP-X1909",
+      "cat": "机盖及附件",
+      "an": "朱培源",
+      "listDate": "2026-04-29",
+      "qty": 2,
+      "rev": 140.0,
+      "rivalQty": 2,
+      "share": "33.3%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 36,
+      "sku": "LYAP-X2042-FL",
+      "cat": "其他",
+      "an": "王偲涵",
+      "listDate": "2026-04-29",
+      "qty": 0,
+      "rev": 0.0,
+      "rivalQty": 1,
+      "share": "0.0%",
+      "ord8": "未出单",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 37,
+      "sku": "LYAP-X1360-1L",
+      "cat": "饰条",
+      "an": "章鹏",
+      "listDate": "2026-04-30",
+      "qty": 4,
+      "rev": 152.89,
+      "rivalQty": 2,
+      "share": "60.0%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 38,
+      "sku": "LYAP-X2412",
+      "cat": "车身外扩件",
+      "an": "王偲涵",
+      "listDate": "2026-04-30",
+      "qty": 1,
+      "rev": 35.0,
+      "rivalQty": 9,
+      "share": "10.0%",
+      "ord8": "Y",
+      "status": "竞争无优势"
+    },
+    {
+      "id": 39,
+      "sku": "LYAM-X2452-SL",
+      "cat": "车身外扩件",
+      "an": "王偲涵",
+      "listDate": "2026-04-30",
+      "qty": 0,
+      "rev": 0.0,
+      "rivalQty": 1,
+      "share": "0.0%",
+      "ord8": "未出单",
+      "status": "竞争无优势"
+    }
+  ],
+  "plp_overview": {
+    "activity_count": 54,
+    "valid_sku": 53,
+    "exposure": 119686,
+    "clicks": 429,
+    "sold": 27,
+    "spend": 272.56,
+    "plp_rev": 1754.44,
+    "roas": 6.44,
+    "acos": "15.54%",
+    "acoas": "3.92%",
+    "cvr": "6.29%",
+    "ctr": "0.3584%"
+  },
+  "plp_by_an": [
+    {
+      "name": "俞东旭",
+      "sku": 5,
+      "exposure": 64667,
+      "clicks": 121,
+      "sold": 0,
+      "spend": 99.94,
+      "roas": 0,
+      "acos": "0.00%",
+      "acoas": "20.91%",
+      "cvr": "0.00%",
+      "ctr": "0.1871%",
+      "cpc": 0.83,
+      "cpa": 0
+    },
+    {
+      "name": "张潇",
+      "sku": 19,
+      "exposure": 9629,
+      "clicks": 121,
+      "sold": 21,
+      "spend": 48.15,
+      "roas": 26.27,
+      "acos": "3.81%",
+      "acoas": "1.45%",
+      "cvr": "17.36%",
+      "ctr": "1.2566%",
+      "cpc": 0.4,
+      "cpa": 2.29
+    },
+    {
+      "name": "朱培源",
+      "sku": 4,
+      "exposure": 1015,
+      "clicks": 9,
+      "sold": 1,
+      "spend": 6.4,
+      "roas": 11.81,
+      "acos": "8.47%",
+      "acoas": "2.72%",
+      "cvr": "11.11%",
+      "ctr": "0.8867%",
+      "cpc": 0.71,
+      "cpa": 6.4
+    },
+    {
+      "name": "王偲涵",
+      "sku": 10,
+      "exposure": 5131,
+      "clicks": 74,
+      "sold": 1,
+      "spend": 52.31,
+      "roas": 2.59,
+      "acos": "38.66%",
+      "acoas": "16.55%",
+      "cvr": "1.35%",
+      "ctr": "1.4422%",
+      "cpc": 0.71,
+      "cpa": 52.31
+    },
+    {
+      "name": "章鹏",
+      "sku": 2,
+      "exposure": 2224,
+      "clicks": 12,
+      "sold": 3,
+      "spend": 3.99,
+      "roas": 29.93,
+      "acos": "3.34%",
+      "acoas": "2.61%",
+      "cvr": "25.00%",
+      "ctr": "0.5396%",
+      "cpc": 0.33,
+      "cpa": 1.33
+    },
+    {
+      "name": "胡煜星",
+      "sku": 13,
+      "exposure": 37020,
+      "clicks": 92,
+      "sold": 1,
+      "spend": 61.77,
+      "roas": 2.57,
+      "acos": "38.85%",
+      "acoas": "2.52%",
+      "cvr": "1.09%",
+      "ctr": "0.2485%",
+      "cpc": 0.67,
+      "cpa": 61.77
+    }
+  ],
+  "plp_by_cat": [
+    {
+      "name": "其他",
+      "sku": 15,
+      "exposure": 6674,
+      "clicks": 80,
+      "sold": 2,
+      "spend": 45.52,
+      "roas": 7.03,
+      "acos": "14.22%",
+      "acoas": "1.66%",
+      "cvr": "2.50%",
+      "ctr": "1.1987%",
+      "cpc": 0.57,
+      "cpa": 22.76
+    },
+    {
+      "name": "挡泥板",
+      "sku": 5,
+      "exposure": 1259,
+      "clicks": 12,
+      "sold": 1,
+      "spend": 8.81,
+      "roas": 14.64,
+      "acos": "6.83%",
+      "acoas": "2.50%",
+      "cvr": "8.33%",
+      "ctr": "0.9531%",
+      "cpc": 0.73,
+      "cpa": 8.81
+    },
+    {
+      "name": "机盖及附件",
+      "sku": 5,
+      "exposure": 1788,
+      "clicks": 49,
+      "sold": 12,
+      "spend": 17.21,
+      "roas": 41.89,
+      "acos": "2.39%",
+      "acoas": "1.09%",
+      "cvr": "24.49%",
+      "ctr": "2.7405%",
+      "cpc": 0.35,
+      "cpa": 1.43
+    },
+    {
+      "name": "牌照板支架",
+      "sku": 1,
+      "exposure": 527,
+      "clicks": 6,
+      "sold": 1,
+      "spend": 2.32,
+      "roas": 21.0,
+      "acos": "4.76%",
+      "acoas": "5.16%",
+      "cvr": "16.67%",
+      "ctr": "1.1385%",
+      "cpc": 0.39,
+      "cpa": 2.32
+    },
+    {
+      "name": "车身外扩件",
+      "sku": 7,
+      "exposure": 36778,
+      "clicks": 138,
+      "sold": 1,
+      "spend": 115.38,
+      "roas": 1.17,
+      "acos": "85.27%",
+      "acoas": "72.11%",
+      "cvr": "0.72%",
+      "ctr": "0.3752%",
+      "cpc": 0.84,
+      "cpa": 115.38
+    },
+    {
+      "name": "车门系统",
+      "sku": 8,
+      "exposure": 64284,
+      "clicks": 94,
+      "sold": 2,
+      "spend": 65.31,
+      "roas": 1.21,
+      "acos": "82.34%",
+      "acoas": "5.35%",
+      "cvr": "2.13%",
+      "ctr": "0.1462%",
+      "cpc": 0.69,
+      "cpa": 32.65
+    },
+    {
+      "name": "饰条",
+      "sku": 12,
+      "exposure": 8376,
+      "clicks": 50,
+      "sold": 8,
+      "spend": 18.01,
+      "roas": 17.83,
+      "acos": "5.61%",
+      "acoas": "2.11%",
+      "cvr": "16.00%",
+      "ctr": "0.5969%",
+      "cpc": 0.36,
+      "cpa": 2.25
+    }
+  ],
+  "cum43_count": 101
+}

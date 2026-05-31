@@ -1,0 +1,19 @@
+{
+  "prompt_id": "IMG_DETAIL_V1",
+  "version": "1.0",
+  "purpose": "eBay 产品细节图 — 特写/多角度展示产品关键部位",
+  "last_updated": "2026-05-23",
+  "model": "gpt-image-2",
+  "size": "1:1",
+  "template": "产品细节特写摄影，{product_description}的{detail_focus}。微距风格，{background_description}的浅景深背景。锐利的焦点在关键特征上（如材质纹理、接口、标识刻字），柔和的专业光线，无眩光。无品牌Logo，聚焦产品功能和工艺。商业摄影级别。",
+  "variables": ["product_description", "detail_focus", "background_description"],
+  "constraints": [
+    "禁止出现任何汽车品牌Logo或商标",
+    "聚焦产品细节，非整体展示",
+    "产品结构不得修改或变形",
+    "浅景深效果"
+  ],
+  "strength": 0.45,
+  "good_example": "门铰链轴承部分的极端特写，可见精密加工纹理和润滑痕迹",
+  "bad_example": "模糊的产品全景，缺少细节层次感"
+}

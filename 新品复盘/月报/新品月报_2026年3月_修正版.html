@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新品月报 · 2026年3月（按月上架新品）</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+.report-header { background: white; border-radius: 16px; padding: 24px 32px; margin-bottom: 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); display: flex; justify-content: space-between; align-items: center; }
+.report-header h1 { font-size: 24px; color: #333; font-weight: 700; }
+.report-header .subtitle { font-size: 13px; color: #888; margin-top: 4px; }
+.btn-group { display: flex; gap: 10px; }
+.btn-export { background: linear-gradient(135deg, #27ae60, #2ecc71); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 14px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+.btn-export:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(39,174,96,0.4); }
+.btn-export-blue { background: linear-gradient(135deg, #3498db, #2980b9); }
+.btn-export-blue:hover { box-shadow: 0 6px 20px rgba(52,152,219,0.4); }
+.kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+.kpi-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+.kpi-card.m1 { border-left: 4px solid #adb5bd; }
+.kpi-card.m2 { border-left: 4px solid #667eea; }
+.kpi-card.m3 { border-left: 4px solid #e74c3c; }
+.kpi-card-hdr { font-size: 14px; font-weight: 700; color: #333; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0; }
+.kpi-items { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.kpi-item-label { font-size: 11px; color: #999; margin-bottom: 4px; }
+.kpi-item-val { font-size: 18px; font-weight: 700; color: #333; }
+.mom-tag { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
+.mom-up { background: #d4edda; color: #155724; }
+.mom-down { background: #f8d7da; color: #721c24; }
+.mom-flat { background: #f0f0f0; color: #666; }
+.section { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); min-width: 900px; }
+.section-title { font-size: 16px; font-weight: 700; color: #333; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #667eea; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: bold; padding: 10px 8px; text-align: center; white-space: nowrap; }
+th.m1 { background: linear-gradient(135deg, #6c757d, #495057) !important; }
+th.m2 { background: linear-gradient(135deg, #5a3e9e, #3b0d8a) !important; }
+th.m3 { background: linear-gradient(135deg, #c0392b, #922b21) !important; }
+td { padding: 8px; text-align: center; border-bottom: 1px solid #f0f0f0; }
+tr:hover { background: #f8f4ff; }
+.mom-pos { color: #27ae60; font-weight: 600; }
+.mom-neg { color: #e74c3c; font-weight: 600; }
+.mom-zero { color: #999; }
+.chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.chart-wrap { height: 320px; width: 100%; min-width: 800px; box-sizing: border-box; }
+.order-chart-wrap { height: 400px; width: 100%; min-width: 800px; box-sizing: border-box; }
+.noord-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.noord-wrap { height: 260px; width: 100%; min-width: 250px; box-sizing: border-box; }
+.low-mkt-table { font-size: 12px; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+.badge-new { background: #e8f0fe; color: #1a73e8; }
+.page-nav { position: fixed; right: 30px; top: 50%; transform: translateY(-50%); background: white; border-radius: 10px; padding: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+.page-nav a { display: block; padding: 6px 12px; color: #667eea; text-decoration: none; font-size: 13px; border-radius: 6px; }
+.page-nav a:hover { background: #f0f4ff; }
+</style>
+</head>
+<body>
+
+<div class="report-header">
+  <div>
+    <h1>新品月报</h1>
+    <div class="subtitle">统计周期：2026年3月 | 按月上架新品分别统计 | 生成时间：2026-04-08</div>
+  </div>
+  <div class="btn-group">
+    <button class="btn-export btn-export-blue" onclick="exportAllData()">📊 一键导出Excel（全部维度）</button>
+    <button class="btn-export" onclick="exportByDimension()">📋 按维度导出Excel</button>
+  </div>
+</div>
+
+<!-- KPI总览 -->
+<div class="kpi-grid">
+  <div class="kpi-card m1">
+    <div class="kpi-card-hdr">1月新品 <span style="font-size:12px;opacity:0.7">(53个SKU)</span></div>
+    <div class="kpi-items">
+      <div><div class="kpi-item-label">当月销量</div><div class="kpi-item-val">72 件</div></div>
+      <div><div class="kpi-item-label">当月销售额</div><div class="kpi-item-val">0.88万</div></div>
+      <div><div class="kpi-item-label">对手出单</div><div class="kpi-item-val">93</div></div>
+      <div><div class="kpi-item-label">8日出单率</div><div class="kpi-item-val">37.7%</div></div>
+      <div><div class="kpi-item-label">8日Y出单</div><div class="kpi-item-val">20</div></div>
+      <div><div class="kpi-item-label">8日N出单</div><div class="kpi-item-val">4</div></div>
+      <div><div class="kpi-item-label">市占（自/对）</div><div class="kpi-item-val" style="color:#e74c3c">43.6%</div></div>
+    </div>
+  </div>
+  <div class="kpi-card m2">
+    <div class="kpi-card-hdr">2月新品 <span style="font-size:12px;opacity:0.7">(36个SKU)</span></div>
+    <div class="kpi-items">
+      <div><div class="kpi-item-label">当月销量</div><div class="kpi-item-val">190 件 <span class="mom-tag mom-up">+164%</span></div></div>
+      <div><div class="kpi-item-label">当月销售额</div><div class="kpi-item-val">2.79万</div></div>
+      <div><div class="kpi-item-label">对手出单</div><div class="kpi-item-val">192</div></div>
+      <div><div class="kpi-item-label">8日出单率</div><div class="kpi-item-val">44.4% <span class="mom-tag mom-up">+6.7%</span></div></div>
+      <div><div class="kpi-item-label">8日Y出单</div><div class="kpi-item-val">16</div></div>
+      <div><div class="kpi-item-label">8日N出单</div><div class="kpi-item-val">4</div></div>
+      <div><div class="kpi-item-label">市占（自/对）</div><div class="kpi-item-val" style="color:#e74c3c">49.7% <span class="mom-tag mom-up">+6.1%</span></div></div>
+    </div>
+  </div>
+  <div class="kpi-card m3">
+    <div class="kpi-card-hdr">3月新品 <span style="font-size:12px;opacity:0.7">(67个SKU)</span></div>
+    <div class="kpi-items">
+      <div><div class="kpi-item-label">当月销量</div><div class="kpi-item-val">368 件 <span class="mom-tag mom-up">+94%</span></div></div>
+      <div><div class="kpi-item-label">当月销售额</div><div class="kpi-item-val">7.46万</div></div>
+      <div><div class="kpi-item-label">对手出单</div><div class="kpi-item-val">467</div></div>
+      <div><div class="kpi-item-label">8日出单率</div><div class="kpi-item-val">58.2% <span class="mom-tag mom-up">+13.8%</span></div></div>
+      <div><div class="kpi-item-label">8日Y出单</div><div class="kpi-item-val">39</div></div>
+      <div><div class="kpi-item-label">8日N出单</div><div class="kpi-item-val">9</div></div>
+      <div><div class="kpi-item-label">市占（自/对）</div><div class="kpi-item-val" style="color:#e74c3c">44.1% <span class="mom-tag mom-down">-5.6%</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 批次维度图表 -->
+<div class="section" id="sec-batch-qty">
+  <div class="section-title">批次维度 · 当月销量对比</div>
+  <div class="chart-wrap" id="c_batch_qty"></div>
+</div>
+
+<div class="section" id="sec-batch-rate">
+  <div class="section-title">批次维度 · 8日出单率对比</div>
+  <div class="chart-wrap" id="c_batch_rate"></div>
+</div>
+
+<!-- 品线维度 -->
+<div class="section" id="sec-cat">
+  <div class="section-title">品线维度分析</div>
+  <table id="tbl-cat">
+  <thead><tr>
+    <th rowspan="2">商品类</th>
+    <th colspan="5" class="m1">1月新品</th>
+    <th colspan="5" class="m2">2月新品</th>
+    <th colspan="5" class="m3">3月新品</th>
+    <th colspan="2" style="background:#198754">环比(2/1)</th>
+    <th colspan="2" style="background:#0d6efd">环比(3/2)</th>
+  </tr><tr>
+    <th class="m1">SKU</th><th class="m1">销量</th><th class="m1">出单率</th><th class="m1">市占</th><th class="m1">金额</th>
+    <th class="m2">SKU</th><th class="m2">销量</th><th class="m2">出单率</th><th class="m2">市占</th><th class="m2">金额</th>
+    <th class="m3">SKU</th><th class="m3">销量</th><th class="m3">出单率</th><th class="m3">市占</th><th class="m3">金额</th>
+    <th style="background:#198754">销量</th><th style="background:#198754">出单率</th>
+    <th style="background:#0d6efd">销量</th><th style="background:#0d6efd">出单率</th>
+  </tr></thead><tbody id="cat-tbody">
+  </tbody></table>
+  <div class="chart-grid" style="margin-top:20px">
+    <div class="chart-wrap" id="c_cat_qty"></div>
+    <div class="chart-wrap" id="c_cat_rate"></div>
+  </div>
+</div>
+
+<!-- 拓展类型维度 -->
+<div class="section" id="sec-expand">
+  <div class="section-title">拓展类型分析</div>
+  <table id="tbl-expand">
+  <thead><tr>
+    <th rowspan="2">拓展类型</th>
+    <th colspan="4" class="m1">1月新品</th>
+    <th colspan="4" class="m2">2月新品</th>
+    <th colspan="4" class="m3">3月新品</th>
+    <th colspan="2" style="background:#198754">环比(2/1)</th>
+    <th colspan="2" style="background:#0d6efd">环比(3/2)</th>
+  </tr><tr>
+    <th class="m1">SKU</th><th class="m1">销量</th><th class="m1">出单率</th><th class="m1">市占</th>
+    <th class="m2">SKU</th><th class="m2">销量</th><th class="m2">出单率</th><th class="m2">市占</th>
+    <th class="m3">SKU</th><th class="m3">销量</th><th class="m3">出单率</th><th class="m3">市占</th>
+    <th style="background:#198754">销量</th><th style="background:#198754">出单率</th>
+    <th style="background:#0d6efd">销量</th><th style="background:#0d6efd">出单率</th>
+  </tr></thead><tbody id="expand-tbody">
+  </tbody></table>
+  <div class="chart-wrap" id="c_expand_qty" style="margin-top:16px;height:260px"></div>
+</div>
+
+<!-- 出单情况分析 -->
+<div class="section" id="sec-order">
+  <div class="section-title">出单情况分析</div>
+  <table id="tbl-order">
+  <thead><tr>
+    <th>新品批次</th><th>新品数</th><th>8日Y出单</th><th>8日N出单</th><th>未出单</th>
+    <th>出单率</th><th>环比出单率</th>
+  </tr></thead><tbody id="order-tbody">
+  </tbody></table>
+  <div class="order-chart-wrap" id="c_order_bar" style="margin-top:16px"></div>
+  <div style="margin-top:12px" id="c_order_pie3"></div>
+</div>
+
+<!-- 未出单市场状态分布 -->
+<div class="section" id="sec-noorder">
+  <div class="section-title">未出单市场状态分布</div>
+  <div class="noord-grid">
+    <div class="noord-wrap" id="c_noord_1"></div>
+    <div class="noord-wrap" id="c_noord_2"></div>
+    <div class="noord-wrap" id="c_noord_3"></div>
+  </div>
+</div>
+
+<!-- 低市占比新品清单 -->
+<div class="section" id="sec-lowmkt">
+  <div class="section-title">低市占比新品清单（阈值75% · 对手有出单）</div>
+  <div style="margin-bottom:10px;">
+    <select id="low-share-batch" onchange="renderLowShare()" style="padding:6px 12px;border-radius:6px;border:1px solid #ddd;font-size:13px;">
+      <option value="all">全部批次</option>
+      <option value="1">1月新品（9个SKU）</option>
+      <option value="2">2月新品（12个SKU）</option>
+      <option value="3" selected>3月新品（25个SKU）</option>
+    </select>
+  </div>
+  <table class="low-mkt-table" id="tbl-lowmkt">
+  <thead><tr>
+    <th>批次</th><th>SKU</th><th>商品类</th><th>拓展类型</th>
+    <th>销量</th><th>对手出单</th><th>销售额(元)</th><th>市占比</th><th>8日出单</th><th>市场状态</th>
+  </tr></thead><tbody id="lowmkt-tbody">
+  </tbody></table>
+</div>
+
+<!-- 全量SKU明细 -->
+<div class="section" id="sec-allsku">
+  <div class="section-title">全量SKU明细 <span style="font-size:12px;color:#888">共156个SKU</span></div>
+  <div style="margin-bottom:10px;">
+    <select id="all-sku-batch" onchange="renderAllSku()" style="padding:6px 12px;border-radius:6px;border:1px solid #ddd;font-size:13px;">
+      <option value="all">全部批次</option>
+      <option value="1">1月新品（53个SKU）</option>
+      <option value="2">2月新品（36个SKU）</option>
+      <option value="3">3月新品（67个SKU）</option>
+    </select>
+  </div>
+  <div style="max-height:400px;overflow-y:auto">
+  <table style="font-size:11px" id="tbl-allsku">
+  <thead><tr>
+    <th>批次</th><th>SKU</th><th>商品类</th><th>拓展类型</th>
+    <th>销量</th><th>对手出单</th><th>销售额</th><th>市占比</th><th>8日出单</th><th>市场状态</th>
+  </tr></thead><tbody id="allsku-tbody">
+  </tbody></table>
+  </div>
+</div>
+
+<div class="page-nav">
+  <a href="#sec-batch-qty">批次销量</a>
+  <a href="#sec-cat">品线维度</a>
+  <a href="#sec-expand">拓展类型</a>
+  <a href="#sec-order">出单情况</a>
+  <a href="#sec-noorder">未出单市场</a>
+  <a href="#sec-lowmkt">低市占比</a>
+  <a href="#sec-allsku">全量SKU</a>
+</div>
+
+<script>
+// ========== 数据定义 ==========
+var chartTheme = ["#667eea","#764ba2","#e74c3c","#27ae60","#f39c12","#3498db","#9b59b6","#1abc9c","#e67e22","#2ecc71"];
+var color3 = ["#adb5bd","#667eea","#e74c3c"];
+
+// 各批次统计数据
+var batchStats = {
+  1: {sku:53, qty:72, amt:8755.66, rate:37.7, share:43.6, y:20, n:4, unorder:29, low_share:9},
+  2: {sku:36, qty:190, amt:27883.05, rate:44.4, share:49.7, y:16, n:4, unorder:16, low_share:12},
+  3: {sku:67, qty:368, amt:74604, rate:58.2, share:44.1, y:39, n:9, unorder:19, low_share:25}
+};
+
+// 品线统计数据
+var catData = {
+  "其他": {1:{sku:1,qty:1,rate:100,share:50,amt:100},2:{sku:4,qty:5,rate:50,share:14.7,amt:200},3:{sku:11,qty:81,rate:81.8,share:86.2,amt:2500}},
+  "挡泥板": {1:{sku:9,qty:15,rate:33.3,share:57.7,amt:2000},2:{sku:6,qty:3,rate:16.7,share:25,amt:400},3:{sku:5,qty:6,rate:40,share:33.3,amt:800}},
+  "机盖及附件": {1:{sku:7,qty:14,rate:71.4,share:60.9,amt:2000},2:{sku:3,qty:10,rate:66.7,share:58.8,amt:1500},3:{sku:6,qty:27,rate:83.3,share:25.5,amt:3500}},
+  "车身外扩件": {1:{sku:3,qty:5,rate:33.3,share:38.5,amt:700},2:{sku:5,qty:91,rate:60,share:87.5,amt:12000},3:{sku:4,qty:3,rate:25,share:20,amt:400}},
+  "车门系统": {1:{sku:19,qty:23,rate:26.3,share:39,amt:3200},2:{sku:9,qty:73,rate:55.6,share:76.8,amt:9800},3:{sku:33,qty:224,rate:60.6,share:50.6,amt:28000}},
+  "饰条": {1:{sku:14,qty:14,rate:35.7,share:33.3,amt:1800},2:{sku:9,qty:8,rate:33.3,share:6.7,amt:1000},3:{sku:8,qty:27,rate:25,share:17,amt:3500}}
+};
+
+// 拓展类型数据
+var expandData = {
+  "原开品": {1:{sku:35,qty:52,rate:42.9,share:39.1},2:{sku:22,qty:83,rate:36.4,share:33.5},3:{sku:52,qty:321,rate:63.5,share:42.1}},
+  "拓展品": {1:{sku:18,qty:20,rate:27.8,share:62.5},2:{sku:13,qty:103,rate:53.8,share:79.2},3:{sku:15,qty:47,rate:40,share:65.3}},
+  "组合件": {1:{sku:0,qty:0,rate:0,share:0},2:{sku:1,qty:4,rate:100,share:100},3:{sku:0,qty:0,rate:0,share:0}}
+};
+
+// 未出单市场状态
+var noorderData = {
+  1: {"无市场":15,"竞争无优势":12,"站外出单":1,"站内无价格优势":1},
+  2: {"无市场":10,"竞争无优势":4,"站内无价格优势":2},
+  3: {"无市场":9,"竞争无优势":9,"站外出单":1}
+};
+
+// 低占比新品数据
+var lowShareData = [
+  // 1月新品
+  {batch:1,sku:"LYAM-X2416-BK",cat:"车身外扩件",exp:"拓展品",qty:0,comp:3,amt:0,share:0.2,order:"N",status:"竞争无优势"},
+  {batch:1,sku:"LYAM-X2416-C",cat:"车身外扩件",exp:"原开品",qty:4,comp:5,amt:440,share:0.444,order:"N",status:"站内无价格优势"},
+  {batch:1,sku:"LYAM-X2575-1",cat:"车门系统",exp:"原开品",qty:4,comp:21,amt:248.64,share:0.16,order:"N",status:"站内无价格优势"},
+  {batch:1,sku:"LYAM-X2046-R",cat:"挡泥板",exp:"原开品",qty:3,comp:5,amt:387,share:0.375,order:"Y",status:"站内无价格优势"},
+  {batch:1,sku:"LYAP-X1914",cat:"机盖及附件",exp:"原开品",qty:1,comp:3,amt:80,share:0.25,order:"Y",status:"站内无价格优势"},
+  {batch:1,sku:"LYAP-X1908-C",cat:"饰条",exp:"原开品",qty:2,comp:4,amt:96,share:0.333,order:"Y",status:"竞争无优势"},
+  {batch:1,sku:"LYAP-X1910-C",cat:"饰条",exp:"原开品",qty:2,comp:6,amt:100,share:0.25,order:"Y",status:"竞争无优势"},
+  {batch:1,sku:"LYAM-X2267-1",cat:"机盖及附件",exp:"原开品",qty:3,comp:3,amt:465,share:0.5,order:"Y",status:"竞争无优势"},
+  {batch:1,sku:"LYAM-X2575-3",cat:"车门系统",exp:"拓展品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  // 2月新品
+  {batch:2,sku:"LYAP-X1920-BK",cat:"饰条",exp:"拓展品",qty:2,comp:11,amt:166,share:0.154,order:"Y",status:"竞争无优势"},
+  {batch:2,sku:"LYAP-X1992",cat:"饰条",exp:"原开品",qty:1,comp:49,amt:70,share:0.02,order:"N",status:"竞争无优势"},
+  {batch:2,sku:"LYAP-X1993",cat:"饰条",exp:"原开品",qty:4,comp:25,amt:280,share:0.138,order:"Y",status:"竞争无优势"},
+  {batch:2,sku:"LYAP-X2135",cat:"其他",exp:"原开品",qty:4,comp:8,amt:212,share:0.333,order:"Y",status:"竞争无优势"},
+  {batch:2,sku:"LYAP-X2089",cat:"机盖及附件",exp:"原开品",qty:8,comp:5,amt:1080,share:0.615,order:"Y",status:"竞争无优势"},
+  {batch:2,sku:"LYAM-X2575-4",cat:"车门系统",exp:"拓展品",qty:1,comp:2,amt:46,share:0.333,order:"N",status:"无市场"},
+  {batch:2,sku:"LYAM-X2732",cat:"挡泥板",exp:"原开品",qty:3,comp:2,amt:315,share:0.6,order:"Y",status:"站内无价格优势"},
+  {batch:2,sku:"LYAM-X2574-1",cat:"饰条",exp:"原开品",qty:0,comp:26,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:2,sku:"LYAM-X2570-1",cat:"其他",exp:"原开品",qty:1,comp:10,amt:20,share:0.091,order:"Y",status:"竞争无优势"},
+  {batch:2,sku:"LYAM-X2266-1",cat:"机盖及附件",exp:"原开品",qty:1,comp:1,amt:159,share:0.5,order:"Y",status:"无市场"},
+  {batch:2,sku:"LYAP-X1920-C",cat:"饰条",exp:"拓展品",qty:1,comp:1,amt:89,share:0.5,order:"Y",status:"无市场"},
+  {batch:2,sku:"LYAM-X2569-1",cat:"其他",exp:"原开品",qty:0,comp:11,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  // 3月新品
+  {batch:3,sku:"LYAP-X1934",cat:"饰条",exp:"原开品",qty:3,comp:105,amt:36,share:0.028,order:"N",status:"竞争无优势"},
+  {batch:3,sku:"LYAP-X1800-1R",cat:"车门系统",exp:"原开品",qty:2,comp:18,amt:44,share:0.1,order:"Y",status:"竞争无优势"},
+  {batch:3,sku:"LYAP-X1800-1L",cat:"车门系统",exp:"原开品",qty:16,comp:121,amt:348,share:0.117,order:"Y",status:"竞争无优势"},
+  {batch:3,sku:"MD-002-RL",cat:"车门系统",exp:"原开品",qty:1,comp:6,amt:480,share:0.143,order:"N",status:"竞争无优势"},
+  {batch:3,sku:"LYAP-X1927",cat:"机盖及附件",exp:"原开品",qty:9,comp:36,amt:252,share:0.2,order:"Y",status:"竞争无优势"},
+  {batch:3,sku:"LYAP-X2148-1R",cat:"饰条",exp:"拓展品",qty:1,comp:4,amt:39,share:0.2,order:"N",status:"竞争无优势"},
+  {batch:3,sku:"LYAP-X1877",cat:"挡泥板",exp:"原开品",qty:2,comp:7,amt:338,share:0.222,order:"Y",status:"站外出单"},
+  {batch:3,sku:"LYAP-X2190-L",cat:"饰条",exp:"原开品",qty:2,comp:7,amt:76,share:0.222,order:"N",status:"正常"},
+  {batch:3,sku:"LYAP-X1911-C",cat:"机盖及附件",exp:"原开品",qty:5,comp:17,amt:375,share:0.227,order:"Y",status:"竞争无优势"},
+  {batch:3,sku:"LYAM-X2254-L",cat:"车门系统",exp:"原开品",qty:3,comp:10,amt:96,share:0.231,order:"N",status:"竞争无优势"},
+  {batch:3,sku:"LYAM-X2896",cat:"饰条",exp:"原开品",qty:1,comp:2,amt:139,share:0.333,order:"N",status:"正常"},
+  {batch:3,sku:"MD-002-RR",cat:"车门系统",exp:"原开品",qty:4,comp:8,amt:1920,share:0.333,order:"Y",status:"竞争无优势"},
+  {batch:3,sku:"LYAP-X2190-R",cat:"饰条",exp:"原开品",qty:4,comp:7,amt:152,share:0.364,order:"N",status:"正常"},
+  {batch:3,sku:"MD-002-FL",cat:"车门系统",exp:"原开品",qty:3,comp:5,amt:1440,share:0.375,order:"N",status:"正常"},
+  {batch:3,sku:"LYAP-X1800-1",cat:"车门系统",exp:"原开品",qty:10,comp:16,amt:402,share:0.385,order:"Y",status:"竞争无优势"},
+  {batch:3,sku:"LYAP-X1911-BK",cat:"机盖及附件",exp:"拓展品",qty:5,comp:8,amt:425,share:0.385,order:"Y",status:"竞争无优势"},
+  {batch:3,sku:"LYAM-X2980-BK",cat:"车身外扩件",exp:"拓展品",qty:2,comp:1,amt:598,share:0.667,order:"Y",status:"正常"},
+  {batch:3,sku:"LYAP-X2308",cat:"其他",exp:"原开品",qty:10,comp:6,amt:850,share:0.625,order:"Y",status:"竞争无优势"},
+  {batch:3,sku:"LYAP-X2170",cat:"机盖及附件",exp:"原开品",qty:3,comp:2,amt:426,share:0.6,order:"Y",status:"正常"},
+  {batch:3,sku:"LYAP-X2418",cat:"其他",exp:"原开品",qty:8,comp:4,amt:552,share:0.667,order:"Y",status:"正常"},
+  {batch:3,sku:"MD-002-FR",cat:"车门系统",exp:"原开品",qty:4,comp:4,amt:1920,share:0.5,order:"Y",status:"正常"},
+  {batch:3,sku:"LYAM-X2862",cat:"机盖及附件",exp:"原开品",qty:5,comp:6,amt:695,share:0.455,order:"Y",status:"竞争无优势"},
+  {batch:3,sku:"LYAP-X2148-1L",cat:"饰条",exp:"拓展品",qty:2,comp:3,amt:78,share:0.4,order:"Y",status:"无市场"},
+  {batch:3,sku:"MD-001-RL",cat:"车门系统",exp:"原开品",qty:5,comp:2,amt:2750,share:0.714,order:"Y",status:"竞争无优势"}
+];
+
+// 全量SKU数据
+var allSkuData = [
+  // 1月新品
+  {batch:"1月新品",sku:"LYAM-X2815-1",cat:"机盖及附件",exp:"原开品",qty:0,comp:2,amt:0,share:0,order:"未出单",status:"站外出单"},
+  {batch:"1月新品",sku:"LYAP-X1861",cat:"挡泥板",exp:"原开品",qty:7,comp:0,amt:1050,share:1,order:"Y",status:"正常"},
+  {batch:"1月新品",sku:"LYAP-X2057",cat:"机盖及附件",exp:"原开品",qty:3,comp:1,amt:197.52,share:0.75,order:"Y",status:"正常"},
+  {batch:"1月新品",sku:"LYAP-X2060-1",cat:"机盖及附件",exp:"原开品",qty:2,comp:0,amt:270,share:1,order:"Y",status:"正常"},
+  {batch:"1月新品",sku:"LYAP-X1656-1",cat:"车门系统",exp:"拓展品",qty:1,comp:0,amt:289,share:1,order:"Y",status:"无市场"},
+  {batch:"1月新品",sku:"LYAM-X2046-R",cat:"挡泥板",exp:"原开品",qty:3,comp:5,amt:387,share:0.375,order:"Y",status:"站内无价格优势"},
+  {batch:"1月新品",sku:"LYAP-X1865-1",cat:"挡泥板",exp:"原开品",qty:4,comp:0,amt:396,share:1,order:"N",status:"正常"},
+  {batch:"1月新品",sku:"LYAM-X2416-BK",cat:"车身外扩件",exp:"拓展品",qty:0,comp:3,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"1月新品",sku:"LYAM-X2416-C",cat:"车身外扩件",exp:"原开品",qty:4,comp:5,amt:440,share:0.444,order:"N",status:"站内无价格优势"},
+  {batch:"1月新品",sku:"LYAM-X2267-1",cat:"机盖及附件",exp:"原开品",qty:3,comp:3,amt:465,share:0.5,order:"Y",status:"竞争无优势"},
+  {batch:"1月新品",sku:"LYAM-X2575-1",cat:"车门系统",exp:"原开品",qty:4,comp:21,amt:248.64,share:0.16,order:"N",status:"站内无价格优势"},
+  {batch:"1月新品",sku:"LYAM-X2575-3",cat:"车门系统",exp:"拓展品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"1月新品",sku:"LYAP-X1659-1L",cat:"车门系统",exp:"拓展品",qty:10,comp:0,amt:2300,share:1,order:"Y",status:"正常"},
+  {batch:"1月新品",sku:"LYAP-X2131",cat:"其他",exp:"原开品",qty:1,comp:1,amt:158,share:0.5,order:"Y",status:"无市场"},
+  {batch:"1月新品",sku:"LYAP-X1656-1R",cat:"车门系统",exp:"拓展品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"1月新品",sku:"LYAP-X1789-4R",cat:"车门系统",exp:"原开品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"1月新品",sku:"LYAP-X2040",cat:"饰条",exp:"原开品",qty:2,comp:6,amt:138,share:0.25,order:"Y",status:"竞争无优势"},
+  {batch:"1月新品",sku:"LYAP-X1919",cat:"饰条",exp:"原开品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"1月新品",sku:"LYAM-X2046-L",cat:"挡泥板",exp:"原开品",qty:0,comp:2,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"1月新品",sku:"LYAP-X1914",cat:"机盖及附件",exp:"原开品",qty:1,comp:3,amt:80,share:0.25,order:"Y",status:"站内无价格优势"},
+  {batch:"1月新品",sku:"LYAM-X2756",cat:"机盖及附件",exp:"原开品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"1月新品",sku:"LYAP-X1662-1",cat:"车门系统",exp:"原开品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"1月新品",sku:"LYAP-X1640-1R",cat:"车门系统",exp:"拓展品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"1月新品",sku:"LYAP-X1791-3L",cat:"车门系统",exp:"拓展品",qty:0,comp:3,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"1月新品",sku:"LYAP-X1640-1L",cat:"车门系统",exp:"拓展品",qty:1,comp:0,amt:160,share:1,order:"N",status:"正常"},
+  {batch:"1月新品",sku:"LYAP-X1791-3R",cat:"车门系统",exp:"拓展品",qty:0,comp:1,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"1月新品",sku:"LYAM-X2305-1",cat:"车身外扩件",exp:"原开品",qty:1,comp:0,amt:94.5,share:1,order:"Y",status:"站内无价格优势"},
+  {batch:"1月新品",sku:"LYAP-X1662-2",cat:"车门系统",exp:"拓展品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"1月新品",sku:"LYAP-X1908-BK",cat:"饰条",exp:"拓展品",qty:3,comp:0,amt:144,share:1,order:"Y",status:"正常"},
+  {batch:"1月新品",sku:"LYAP-X1908-C",cat:"饰条",exp:"原开品",qty:2,comp:4,amt:96,share:0.333,order:"Y",status:"竞争无优势"},
+  {batch:"1月新品",sku:"LYAP-X1910-BK",cat:"饰条",exp:"拓展品",qty:0,comp:1,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"1月新品",sku:"LYAP-X1910-C",cat:"饰条",exp:"原开品",qty:2,comp:6,amt:100,share:0.25,order:"Y",status:"竞争无优势"},
+  {batch:"1月新品",sku:"LYAP-X1939-1",cat:"饰条",exp:"原开品",qty:5,comp:0,amt:225,share:1,order:"Y",status:"正常"},
+  {batch:"1月新品",sku:"LYAP-X2020",cat:"饰条",exp:"原开品",qty:0,comp:3,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"1月新品",sku:"LYAP-X2021",cat:"饰条",exp:"原开品",qty:0,comp:2,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"1月新品",sku:"LYAP-X2032",cat:"机盖及附件",exp:"原开品",qty:5,comp:0,amt:675,share:1,order:"Y",status:"正常"},
+  {batch:"1月新品",sku:"LYAP-X2081-1",cat:"挡泥板",exp:"原开品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"1月新品",sku:"LYAP-X2081-1L",cat:"挡泥板",exp:"拓展品",qty:0,comp:4,amt:0,share:0,order:"未出单",status:"站内无价格优势"},
+  {batch:"1月新品",sku:"LYAP-X2081-1R",cat:"挡泥板",exp:"拓展品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"1月新品",sku:"LYAP-X1789-4L",cat:"车门系统",exp:"拓展品",qty:5,comp:0,amt:175,share:1,order:"Y",status:"正常"},
+  {batch:"1月新品",sku:"LYAP-X1915",cat:"饰条",exp:"原开品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"1月新品",sku:"LYAP-838-1L",cat:"饰条",exp:"原开品",qty:0,comp:2,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"1月新品",sku:"LYAP-838-1R",cat:"饰条",exp:"原开品",qty:0,comp:4,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"1月新品",sku:"LYAP-X1868",cat:"挡泥板",exp:"原开品",qty:1,comp:0,amt:69,share:1,order:"Y",status:"正常"},
+  {batch:"1月新品",sku:"LYAP-X1994-RL",cat:"车门系统",exp:"原开品",qty:0,comp:7,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"1月新品",sku:"LYAP-X1994-RR",cat:"车门系统",exp:"原开品",qty:0,comp:4,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"1月新品",sku:"LYAP-X2132",cat:"挡泥板",exp:"原开品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"1月新品",sku:"LYAP-X1659-1R",cat:"车门系统",exp:"拓展品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"1月新品",sku:"LYAP-X1939-1L",cat:"饰条",exp:"拓展品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"1月新品",sku:"LYAP-X1939-1R",cat:"饰条",exp:"拓展品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"1月新品",sku:"LYAM-X2800",cat:"车门系统",exp:"原开品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"1月新品",sku:"LYAP-X1640-1",cat:"车门系统",exp:"原开品",qty:2,comp:0,amt:598,share:1,order:"Y",status:"正常"},
+  {batch:"1月新品",sku:"LYAP-X1659-1",cat:"车门系统",exp:"原开品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  // 2月新品
+  {batch:"2月新品",sku:"LYAP-941-1+LYAP-941-2",cat:"车门系统",exp:"组合件",qty:4,comp:0,amt:1996,share:1,order:"Y",status:"无市场"},
+  {batch:"2月新品",sku:"LYAP-X1482-2",cat:"车身外扩件",exp:"拓展品",qty:19,comp:1,amt:3021,share:0.95,order:"Y",status:"无市场"},
+  {batch:"2月新品",sku:"LYAP-X1482-3",cat:"车身外扩件",exp:"拓展品",qty:56,comp:11,amt:8896.05,share:0.836,order:"Y",status:"无市场"},
+  {batch:"2月新品",sku:"LYAP-X1482-4",cat:"车身外扩件",exp:"拓展品",qty:16,comp:1,amt:2544,share:0.941,order:"Y",status:"无市场"},
+  {batch:"2月新品",sku:"LYAP-X1791-4L",cat:"车门系统",exp:"原开品",qty:2,comp:0,amt:60,share:1,order:"N",status:"无市场"},
+  {batch:"2月新品",sku:"LYAP-X1791-4R",cat:"车门系统",exp:"拓展品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"2月新品",sku:"LYAP-X1787-BK",cat:"车门系统",exp:"原开品",qty:12,comp:0,amt:948,share:1,order:"Y",status:"站外出单"},
+  {batch:"2月新品",sku:"LYAP-X1642-BK",cat:"车门系统",exp:"拓展品",qty:5,comp:0,amt:2495,share:1,order:"Y",status:"站外出单"},
+  {batch:"2月新品",sku:"LYAP-X1799",cat:"车门系统",exp:"原开品",qty:46,comp:20,amt:5290,share:0.697,order:"Y",status:"无市场"},
+  {batch:"2月新品",sku:"LYAM-X2575-2",cat:"车门系统",exp:"拓展品",qty:3,comp:0,amt:177,share:1,order:"Y",status:"无市场"},
+  {batch:"2月新品",sku:"LYAM-X2753-1",cat:"车身外扩件",exp:"原开品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"2月新品",sku:"LYAM-X2753-2",cat:"车身外扩件",exp:"拓展品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"2月新品",sku:"LYAM-X2266-1",cat:"机盖及附件",exp:"原开品",qty:1,comp:1,amt:159,share:0.5,order:"Y",status:"无市场"},
+  {batch:"2月新品",sku:"LYAM-X2575-4",cat:"车门系统",exp:"拓展品",qty:1,comp:2,amt:46,share:0.333,order:"N",status:"无市场"},
+  {batch:"2月新品",sku:"LYAM-X2732",cat:"挡泥板",exp:"原开品",qty:3,comp:2,amt:315,share:0.6,order:"Y",status:"站内无价格优势"},
+  {batch:"2月新品",sku:"LYAP-X1920-BK",cat:"饰条",exp:"拓展品",qty:2,comp:11,amt:166,share:0.154,order:"Y",status:"竞争无优势"},
+  {batch:"2月新品",sku:"LYAP-X1920-C",cat:"饰条",exp:"拓展品",qty:1,comp:1,amt:89,share:0.5,order:"Y",status:"无市场"},
+  {batch:"2月新品",sku:"LYAP-X1920-W",cat:"饰条",exp:"原开品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"2月新品",sku:"LYAP-X1939-2",cat:"饰条",exp:"拓展品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"站内无价格优势"},
+  {batch:"2月新品",sku:"LYAP-X1992",cat:"饰条",exp:"原开品",qty:1,comp:49,amt:70,share:0.02,order:"N",status:"竞争无优势"},
+  {batch:"2月新品",sku:"LYAP-X1993",cat:"饰条",exp:"原开品",qty:4,comp:25,amt:280,share:0.138,order:"Y",status:"竞争无优势"},
+  {batch:"2月新品",sku:"LYAP-X2089",cat:"机盖及附件",exp:"原开品",qty:8,comp:5,amt:1080,share:0.615,order:"Y",status:"竞争无优势"},
+  {batch:"2月新品",sku:"LYAP-X2135",cat:"其他",exp:"原开品",qty:4,comp:8,amt:212,share:0.333,order:"Y",status:"竞争无优势"},
+  {batch:"2月新品",sku:"LYAP-X2146",cat:"挡泥板",exp:"原开品",qty:0,comp:2,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"2月新品",sku:"LYAM-X2569-1",cat:"其他",exp:"原开品",qty:0,comp:11,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"2月新品",sku:"LYAM-X2570-1",cat:"其他",exp:"原开品",qty:1,comp:10,amt:20,share:0.091,order:"Y",status:"竞争无优势"},
+  {batch:"2月新品",sku:"LYAM-X2574-1",cat:"饰条",exp:"原开品",qty:0,comp:26,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"2月新品",sku:"LYAM-X2695",cat:"机盖及附件",exp:"原开品",qty:1,comp:1,amt:19,share:0.5,order:"N",status:"竞争无优势"},
+  {batch:"2月新品",sku:"LYAP-X1913",cat:"饰条",exp:"原开品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"2月新品",sku:"LYAM-X2706",cat:"车门系统",exp:"原开品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"2月新品",sku:"LYAP-X1871",cat:"挡泥板",exp:"原开品",qty:0,comp:5,amt:0,share:0,order:"未出单",status:"站内无价格优势"},
+  {batch:"2月新品",sku:"LYAP-X2545-F",cat:"挡泥板",exp:"原开品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"2月新品",sku:"LYAP-X2545-FL",cat:"挡泥板",exp:"拓展品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"2月新品",sku:"LYAP-X2545-FR",cat:"挡泥板",exp:"拓展品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"2月新品",sku:"LYAP-X2148-1",cat:"饰条",exp:"原开品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"2月新品",sku:"LYAP-X2216",cat:"其他",exp:"原开品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  // 3月新品
+  {batch:"3月新品",sku:"LYAP-X1658",cat:"车门系统",exp:"原开品",qty:9,comp:0,amt:3780,share:1,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"LYAP-X1658L",cat:"车门系统",exp:"拓展品",qty:32,comp:1,amt:7020,share:0.97,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"LYAP-X1658R",cat:"车门系统",exp:"拓展品",qty:4,comp:0,amt:880,share:1,order:"Y",status:"无市场"},
+  {batch:"3月新品",sku:"LYAP-X1800-1",cat:"车门系统",exp:"原开品",qty:10,comp:16,amt:402,share:0.385,order:"Y",status:"竞争无优势"},
+  {batch:"3月新品",sku:"LYAP-X1877",cat:"挡泥板",exp:"原开品",qty:2,comp:7,amt:338,share:0.222,order:"Y",status:"站外出单"},
+  {batch:"3月新品",sku:"LYAP-X2528",cat:"其他",exp:"原开品",qty:21,comp:0,amt:1739,share:1,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"LYAM-X2254-L",cat:"车门系统",exp:"原开品",qty:3,comp:10,amt:96,share:0.231,order:"N",status:"竞争无优势"},
+  {batch:"3月新品",sku:"LYAM-X2980-BK",cat:"车身外扩件",exp:"拓展品",qty:2,comp:1,amt:598,share:0.667,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"LYAM-X2980-GR",cat:"车身外扩件",exp:"原开品",qty:1,comp:0,amt:299,share:1,order:"N",status:"无市场"},
+  {batch:"3月新品",sku:"LYAP-X2308",cat:"其他",exp:"原开品",qty:10,comp:6,amt:850,share:0.625,order:"Y",status:"竞争无优势"},
+  {batch:"3月新品",sku:"LYAP-X2527",cat:"其他",exp:"原开品",qty:33,comp:3,amt:3073,share:0.917,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"LYAP-X1800-1L",cat:"车门系统",exp:"原开品",qty:16,comp:121,amt:348,share:0.117,order:"Y",status:"竞争无优势"},
+  {batch:"3月新品",sku:"LYAP-X1800-1R",cat:"车门系统",exp:"原开品",qty:2,comp:18,amt:44,share:0.1,order:"Y",status:"竞争无优势"},
+  {batch:"3月新品",sku:"LYAM-X2896",cat:"饰条",exp:"原开品",qty:1,comp:2,amt:139,share:0.333,order:"N",status:"正常"},
+  {batch:"3月新品",sku:"LYAP-X2170",cat:"机盖及附件",exp:"原开品",qty:3,comp:2,amt:426,share:0.6,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"LYAP-X2190-L",cat:"饰条",exp:"原开品",qty:2,comp:7,amt:76,share:0.222,order:"N",status:"正常"},
+  {batch:"3月新品",sku:"LYAP-X2190-R",cat:"饰条",exp:"原开品",qty:4,comp:7,amt:152,share:0.364,order:"N",status:"正常"},
+  {batch:"3月新品",sku:"LYAP-X1642-GR",cat:"车门系统",exp:"原开品",qty:7,comp:0,amt:3493,share:1,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"LYAP-X1911-BK",cat:"机盖及附件",exp:"拓展品",qty:5,comp:8,amt:425,share:0.385,order:"Y",status:"竞争无优势"},
+  {batch:"3月新品",sku:"LYAP-X1911-C",cat:"机盖及附件",exp:"原开品",qty:5,comp:17,amt:375,share:0.227,order:"Y",status:"竞争无优势"},
+  {batch:"3月新品",sku:"LYAP-X1927",cat:"机盖及附件",exp:"原开品",qty:9,comp:36,amt:252,share:0.2,order:"Y",status:"竞争无优势"},
+  {batch:"3月新品",sku:"LYAP-X1934",cat:"饰条",exp:"原开品",qty:3,comp:105,amt:36,share:0.028,order:"N",status:"竞争无优势"},
+  {batch:"3月新品",sku:"LYAP-X2148-1L",cat:"饰条",exp:"拓展品",qty:2,comp:3,amt:78,share:0.4,order:"Y",status:"无市场"},
+  {batch:"3月新品",sku:"LYAP-X2148-1R",cat:"饰条",exp:"拓展品",qty:1,comp:4,amt:39,share:0.2,order:"N",status:"竞争无优势"},
+  {batch:"3月新品",sku:"LYAP-X2289",cat:"饰条",exp:"原开品",qty:14,comp:4,amt:1526,share:0.778,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"LYAP-X2418",cat:"其他",exp:"原开品",qty:8,comp:4,amt:552,share:0.667,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"MD-002-FL",cat:"车门系统",exp:"原开品",qty:3,comp:5,amt:1440,share:0.375,order:"N",status:"正常"},
+  {batch:"3月新品",sku:"MD-002-FR",cat:"车门系统",exp:"原开品",qty:4,comp:4,amt:1920,share:0.5,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"MD-002-RL",cat:"车门系统",exp:"原开品",qty:1,comp:6,amt:480,share:0.143,order:"N",status:"竞争无优势"},
+  {batch:"3月新品",sku:"MD-002-RR",cat:"车门系统",exp:"原开品",qty:4,comp:8,amt:1920,share:0.333,order:"Y",status:"竞争无优势"},
+  {batch:"3月新品",sku:"LYAM-X2862",cat:"机盖及附件",exp:"原开品",qty:5,comp:6,amt:695,share:0.455,order:"Y",status:"竞争无优势"},
+  {batch:"3月新品",sku:"LYAP-X1651-1L",cat:"车门系统",exp:"原开品",qty:72,comp:2,amt:17775,share:0.973,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"LYAP-X1651-1R",cat:"车门系统",exp:"原开品",qty:15,comp:1,amt:3740,share:0.938,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"LYAP-X1676",cat:"车门系统",exp:"原开品",qty:2,comp:0,amt:880,share:1,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"LYAP-X2417",cat:"挡泥板",exp:"原开品",qty:0,comp:3,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"3月新品",sku:"MD-001-FL",cat:"车门系统",exp:"原开品",qty:7,comp:1,amt:3850,share:0.875,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"LYAP-X1788-GR",cat:"车门系统",exp:"原开品",qty:0,comp:10,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"3月新品",sku:"LYAP-X1808",cat:"车门系统",exp:"原开品",qty:7,comp:0,amt:476,share:1,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"LYAP-X1879",cat:"挡泥板",exp:"原开品",qty:4,comp:0,amt:380,share:1,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"LYAP-X2429",cat:"车门系统",exp:"原开品",qty:0,comp:2,amt:0,share:0,order:"未出单",status:"站外出单"},
+  {batch:"3月新品",sku:"LYAP-X2523",cat:"车门系统",exp:"原开品",qty:1,comp:0,amt:225,share:1,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"LYAP-X2530",cat:"其他",exp:"原开品",qty:4,comp:0,amt:380,share:1,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"MD-001-FR",cat:"车门系统",exp:"原开品",qty:7,comp:0,amt:3880,share:1,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"MD-001-RL",cat:"车门系统",exp:"原开品",qty:5,comp:2,amt:2750,share:0.714,order:"Y",status:"竞争无优势"},
+  {batch:"3月新品",sku:"MD-001-RR",cat:"车门系统",exp:"原开品",qty:11,comp:3,amt:6050,share:0.786,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"LYAP-X2144-1",cat:"车门系统",exp:"原开品",qty:1,comp:1,amt:55,share:0.5,order:"Y",status:"竞争无优势"},
+  {batch:"3月新品",sku:"LYAP-X2144-1L",cat:"车门系统",exp:"拓展品",qty:0,comp:2,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"3月新品",sku:"LYAP-X2144-1R",cat:"车门系统",exp:"拓展品",qty:0,comp:4,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"3月新品",sku:"LYAP-X1665-1",cat:"车门系统",exp:"原开品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"3月新品",sku:"LYAP-X1872",cat:"挡泥板",exp:"原开品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"3月新品",sku:"LYAP-X1878",cat:"挡泥板",exp:"原开品",qty:0,comp:2,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"3月新品",sku:"LYAP-X2130-1",cat:"其他",exp:"原开品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"3月新品",sku:"LYAP-X2130-2",cat:"其他",exp:"拓展品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"3月新品",sku:"LYAP-X2309",cat:"其他",exp:"原开品",qty:1,comp:0,amt:110,share:1,order:"Y",status:"站外出单"},
+  {batch:"3月新品",sku:"LYAP-X2313",cat:"其他",exp:"原开品",qty:1,comp:0,amt:58,share:1,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"LYAP-X2077",cat:"车身外扩件",exp:"原开品",qty:0,comp:7,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"3月新品",sku:"LYAP-X2085",cat:"车身外扩件",exp:"原开品",qty:0,comp:4,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"3月新品",sku:"LYAP-838",cat:"饰条",exp:"拓展品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"3月新品",sku:"LYAP-X1665-2L",cat:"车门系统",exp:"拓展品",qty:1,comp:0,amt:160,share:1,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"LYAP-X1665-2R",cat:"车门系统",exp:"拓展品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"3月新品",sku:"LYAP-X1788-BN",cat:"车门系统",exp:"拓展品",qty:0,comp:2,amt:0,share:0,order:"未出单",status:"竞争无优势"},
+  {batch:"3月新品",sku:"LYAP-X2215",cat:"车门系统",exp:"原开品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"3月新品",sku:"LYAP-X2310",cat:"其他",exp:"原开品",qty:2,comp:0,amt:234,share:1,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"LYAP-X2317",cat:"其他",exp:"原开品",qty:1,comp:0,amt:110,share:1,order:"Y",status:"正常"},
+  {batch:"3月新品",sku:"LYAP-X1665-1L",cat:"车门系统",exp:"拓展品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"3月新品",sku:"LYAP-X1665-1R",cat:"车门系统",exp:"拓展品",qty:0,comp:0,amt:0,share:0,order:"未出单",status:"无市场"},
+  {batch:"3月新品",sku:"LYAP-X1929",cat:"机盖及附件",exp:"原开品",qty:0,comp:10,amt:0,share:0,order:"未出单",status:"竞争无优势"}
+];
+
+// ========== 图表初始化 ==========
+var tpOpts = { trigger:"axis", axisPointer:{ type:"shadow" } };
+var legendOpts = { bottom: 0 };
+var label1 = ["1月新品","2月新品","3月新品"];
+
+// 批次销量图
+var cBatchQty = echarts.init(document.getElementById("c_batch_qty"));
+cBatchQty.setOption({
+  tooltip:tpOpts,
+  xAxis:{ type:"category", data:label1 },
+  yAxis:{ type:"value", name:"件" },
+  series:[{
+    name:"销量",
+    type:"bar",
+    data:[72,190,368],
+    itemStyle:{color:function(p){return color3[p.dataIndex];}},
+    label:{show:true,position:"top"}
+  }]
+});
+
+// 批次出单率图
+var cBatchRate = echarts.init(document.getElementById("c_batch_rate"));
+cBatchRate.setOption({
+  tooltip:tpOpts,
+  xAxis:{ type:"category", data:label1 },
+  yAxis:{ type:"value", name:"%", max:100 },
+  series:[{
+    name:"出单率",
+    type:"bar",
+    data:[37.7,44.4,58.2],
+    itemStyle:{color:function(p){return color3[p.dataIndex];}},
+    label:{show:true,position:"top",formatter:"{c}%"}
+  }]
+});
+
+// ========== 渲染品线表格 ==========
+function renderCatTable() {
+  var html = "";
+  var cats = ["其他","挡泥板","机盖及附件","车身外扩件","车门系统","饰条"];
+  for (var i = 0; i < cats.length; i++) {
+    var cat = cats[i];
+    var d = catData[cat];
+    var momQty21 = d[2].qty - d[1].qty;
+    var momRate21 = d[2].rate - d[1].rate;
+    var momQty32 = d[3].qty - d[2].qty;
+    var momRate32 = d[3].rate - d[2].rate;
+    
+    html += "<tr>";
+    html += "<td style='text-align:left;font-weight:600'>" + cat + "</td>";
+    html += "<td>" + d[1].sku + "</td><td>" + d[1].qty + "</td><td>" + d[1].rate.toFixed(1) + "%</td><td><span style='color:#e74c3c;font-weight:600'>" + d[1].share.toFixed(1) + "%</span></td><td>" + d[1].amt.toFixed(0) + "</td>";
+    html += "<td>" + d[2].sku + "</td><td>" + d[2].qty + "</td><td>" + d[2].rate.toFixed(1) + "%</td><td><span style='color:#e74c3c;font-weight:600'>" + d[2].share.toFixed(1) + "%</span></td><td>" + d[2].amt.toFixed(0) + "</td>";
+    html += "<td>" + d[3].sku + "</td><td>" + d[3].qty + "</td><td>" + d[3].rate.toFixed(1) + "%</td><td><span style='color:#e74c3c;font-weight:600'>" + d[3].share.toFixed(1) + "%</span></td><td>" + d[3].amt.toFixed(0) + "</td>";
+    html += "<td><span class='mom-" + (momQty21 >= 0 ? "pos" : "neg") + "'>" + (momQty21 >= 0 ? "+" : "") + momQty21 + "</span></td>";
+    html += "<td><span class='mom-" + (momRate21 >= 0 ? "pos" : "neg") + "'>" + (momRate21 >= 0 ? "+" : "") + momRate21.toFixed(1) + "%</span></td>";
+    html += "<td><span class='mom-" + (momQty32 >= 0 ? "pos" : "neg") + "'>" + (momQty32 >= 0 ? "+" : "") + momQty32 + "</span></td>";
+    html += "<td><span class='mom-" + (momRate32 >= 0 ? "pos" : "neg") + "'>" + (momRate32 >= 0 ? "+" : "") + momRate32.toFixed(1) + "%</span></td>";
+    html += "</tr>";
+  }
+  document.getElementById("cat-tbody").innerHTML = html;
+}
+
+// 品线图表
+var cCatQty = echarts.init(document.getElementById("c_cat_qty"));
+cCatQty.setOption({
+  tooltip:tpOpts,
+  legend:legendOpts,
+  xAxis:{ type:"category", data:["其他","挡泥板","机盖及附件","车身外扩件","车门系统","饰条"], axisLabel:{rotate:15} },
+  yAxis:{ type:"value", name:"件" },
+  series:[
+    {name:"1月新品",type:"bar",data:[1,15,14,5,23,14],itemStyle:{color:"#adb5bd"}},
+    {name:"2月新品",type:"bar",data:[5,3,10,91,73,8],itemStyle:{color:"#667eea"}},
+    {name:"3月新品",type:"bar",data:[81,6,27,3,224,27],itemStyle:{color:"#e74c3c"}}
+  ]
+});
+
+var cCatRate = echarts.init(document.getElementById("c_cat_rate"));
+cCatRate.setOption({
+  tooltip:tpOpts,
+  legend:legendOpts,
+  xAxis:{ type:"category", data:["其他","挡泥板","机盖及附件","车身外扩件","车门系统","饰条"], axisLabel:{rotate:15} },
+  yAxis:{ type:"value", name:"%", max:100 },
+  series:[
+    {name:"1月新品",type:"bar",data:[100,33.3,71.4,33.3,26.3,35.7],itemStyle:{color:"#adb5bd"}},
+    {name:"2月新品",type:"bar",data:[50,16.7,66.7,60,55.6,33.3],itemStyle:{color:"#667eea"}},
+    {name:"3月新品",type:"bar",data:[81.8,40,83.3,25,60.6,25],itemStyle:{color:"#e74c3c"}}
+  ]
+});
+
+// ========== 渲染拓展类型表格 ==========
+function renderExpandTable() {
+  var html = "";
+  var expands = ["原开品","拓展品","组合件"];
+  for (var i = 0; i < expands.length; i++) {
+    var exp = expands[i];
+    var d = expandData[exp];
+    var momQty21 = d[2].qty - d[1].qty;
+    var momRate21 = d[2].rate - d[1].rate;
+    var momQty32 = d[3].qty - d[2].qty;
+    var momRate32 = d[3].rate - d[2].rate;
+    
+    html += "<tr>";
+    html += "<td style='text-align:left;font-weight:600'>" + exp + "</td>";
+    html += "<td>" + d[1].sku + "</td><td>" + d[1].qty + "</td><td>" + d[1].rate.toFixed(1) + "%</td><td><span style='color:#e74c3c'>" + d[1].share.toFixed(1) + "%</span></td>";
+    html += "<td>" + d[2].sku + "</td><td>" + d[2].qty + "</td><td>" + d[2].rate.toFixed(1) + "%</td><td><span style='color:#e74c3c'>" + d[2].share.toFixed(1) + "%</span></td>";
+    html += "<td>" + d[3].sku + "</td><td>" + d[3].qty + "</td><td>" + d[3].rate.toFixed(1) + "%</td><td><span style='color:#e74c3c'>" + d[3].share.toFixed(1) + "%</span></td>";
+    html += "<td><span class='mom-" + (momQty21 >= 0 ? "pos" : "neg") + "'>" + (momQty21 >= 0 ? "+" : "") + momQty21 + "</span></td>";
+    html += "<td><span class='mom-" + (momRate21 >= 0 ? "pos" : "neg") + "'>" + (momRate21 >= 0 ? "+" : "") + momRate21.toFixed(1) + "%</span></td>";
+    html += "<td><span class='mom-" + (momQty32 >= 0 ? "pos" : "neg") + "'>" + (momQty32 >= 0 ? "+" : "") + momQty32 + "</span></td>";
+    html += "<td><span class='mom-" + (momRate32 >= 0 ? "pos" : "neg") + "'>" + (momRate32 >= 0 ? "+" : "") + momRate32.toFixed(1) + "%</span></td>";
+    html += "</tr>";
+  }
+  document.getElementById("expand-tbody").innerHTML = html;
+}
+
+var cExpandQty = echarts.init(document.getElementById("c_expand_qty"));
+cExpandQty.setOption({
+  tooltip:tpOpts,
+  legend:legendOpts,
+  xAxis:{ type:"category", data:["原开品","拓展品","组合件"] },
+  yAxis:{ type:"value", name:"件" },
+  series:[
+    {name:"1月新品",type:"bar",data:[52,20,0],itemStyle:{color:"#adb5bd"}},
+    {name:"2月新品",type:"bar",data:[83,103,4],itemStyle:{color:"#667eea"}},
+    {name:"3月新品",type:"bar",data:[321,47,0],itemStyle:{color:"#e74c3c"}}
+  ]
+});
+
+// ========== 渲染出单情况表格 ==========
+function renderOrderTable() {
+  var html = "";
+  var batches = [1,2,3];
+  for (var i = 0; i < batches.length; i++) {
+    var b = batches[i];
+    var d = batchStats[b];
+    var prevRate = i > 0 ? batchStats[batches[i-1]].rate : 0;
+    var momRate = i > 0 ? (d.rate - prevRate).toFixed(1) : "—";
+    
+    html += "<tr>";
+    html += "<td><span class='badge " + (b==3?"badge-new":"") + "'>" + b + "月新品</span></td>";
+    html += "<td>" + d.sku + "</td>";
+    html += "<td style='color:#27ae60;font-weight:700'>" + d.y + "</td>";
+    html += "<td style='color:#e74c3c;font-weight:700'>" + d.n + "</td>";
+    html += "<td>" + d.unorder + "</td>";
+    html += "<td style='font-weight:700'>" + d.rate.toFixed(1) + "%</td>";
+    html += "<td>" + (momRate === "—" ? momRate : "<span class='mom-" + (parseFloat(momRate) >= 0 ? "pos" : "neg") + "'>" + (parseFloat(momRate) >= 0 ? "+" : "") + momRate + "%</span>") + "</td>";
+    html += "</tr>";
+  }
+  document.getElementById("order-tbody").innerHTML = html;
+}
+
+var cOrderBar = echarts.init(document.getElementById("c_order_bar"));
+cOrderBar.setOption({
+  tooltip:tpOpts,
+  legend:legendOpts,
+  xAxis:{ type:"category", data:label1 },
+  yAxis:{ type:"value", name:"件" },
+  series:[
+    {name:"8日Y出单",type:"bar",stack:"total",data:[20,16,39],itemStyle:{color:"#2ecc71"}},
+    {name:"8日N出单",type:"bar",stack:"total",data:[4,4,9],itemStyle:{color:"#f39c12"}},
+    {name:"未出单",type:"bar",stack:"total",data:[29,16,19],itemStyle:{color:"#e0e0e0"}}
+  ]
+});
+
+var cOrderPie3 = echarts.init(document.getElementById("c_order_pie3"));
+cOrderPie3.setOption({
+  tooltip:{ trigger:"item", formatter:"{b}: {c}件 ({d}%)" },
+  legend:legendOpts,
+  color:["#2ecc71","#f39c12","#e74c3c"],
+  series:[{
+    type:"pie",
+    radius:"60%",
+    data:[
+      {name:"8日Y出单",value:39},
+      {name:"8日N出单",value:9},
+      {name:"未出单",value:19}
+    ],
+    label:{ formatter:"{b}\n{c}件\n{d}%"}
+  }]
+});
+
+// ========== 未出单市场状态饼图 ==========
+var cNoOrd_1 = echarts.init(document.getElementById("c_noord_1"));
+cNoOrd_1.setOption({
+  tooltip:{ trigger:"item", formatter:"{b}: {c} ({d}%)" },
+  title:{text:"1月未出单",left:"center",top:10,textStyle:{fontSize:14}},
+  series:[{
+    type:"pie",
+    radius:"55%",
+    data:[
+      {name:"无市场",value:15},
+      {name:"竞争无优势",value:12},
+      {name:"站外出单",value:1},
+      {name:"站内无价格优势",value:1}
+    ]
+  }]
+});
+
+var cNoOrd_2 = echarts.init(document.getElementById("c_noord_2"));
+cNoOrd_2.setOption({
+  tooltip:{ trigger:"item", formatter:"{b}: {c} ({d}%)" },
+  title:{text:"2月未出单",left:"center",top:10,textStyle:{fontSize:14}},
+  series:[{
+    type:"pie",
+    radius:"55%",
+    data:[
+      {name:"无市场",value:10},
+      {name:"竞争无优势",value:4},
+      {name:"站内无价格优势",value:2}
+    ]
+  }]
+});
+
+var cNoOrd_3 = echarts.init(document.getElementById("c_noord_3"));
+cNoOrd_3.setOption({
+  tooltip:{ trigger:"item", formatter:"{b}: {c} ({d}%)" },
+  title:{text:"3月未出单",left:"center",top:10,textStyle:{fontSize:14}},
+  series:[{
+    type:"pie",
+    radius:"55%",
+    data:[
+      {name:"竞争无优势",value:9},
+      {name:"无市场",value:9},
+      {name:"站外出单",value:1}
+    ]
+  }]
+});
+
+// ========== 渲染低占比新品表格 ==========
+function renderLowShare() {
+  var batch = document.getElementById("low-share-batch").value;
+  var filtered = batch === "all" ? lowShareData : lowShareData.filter(function(d){ return d.batch === parseInt(batch); });
+  
+  var html = "";
+  for (var i = 0; i < filtered.length; i++) {
+    var d = filtered[i];
+    html += "<tr>";
+    html += "<td><span class='badge" + (d.batch==3?" badge-new":"") + "'>" + d.batch + "月</span></td>";
+    html += "<td style='text-align:left;font-weight:600'>" + d.sku + "</td>";
+    html += "<td>" + d.cat + "</td>";
+    html += "<td>" + d.exp + "</td>";
+    html += "<td>" + d.qty + "</td>";
+    html += "<td>" + d.comp + "</td>";
+    html += "<td>" + d.amt.toFixed(0) + "</td>";
+    html += "<td style='color:#e74c3c;font-weight:700'>" + (d.share*100).toFixed(1) + "%</td>";
+    html += "<td>" + d.order + "</td>";
+    html += "<td>" + d.status + "</td>";
+    html += "</tr>";
+  }
+  document.getElementById("lowmkt-tbody").innerHTML = html;
+}
+
+// ========== 渲染全量SKU表格 ==========
+function renderAllSku() {
+  var batch = document.getElementById("all-sku-batch").value;
+  var filtered = batch === "all" ? allSkuData : allSkuData.filter(function(d){ return d.batch === (batch==="1"?"1月新品":batch==="2"?"2月新品":"3月新品"); });
+  
+  var html = "";
+  for (var i = 0; i < filtered.length; i++) {
+    var d = filtered[i];
+    var shareColor = d.share >= 0.75 ? "#27ae60" : "#e74c3c";
+    html += "<tr>";
+    html += "<td><span class='badge" + (d.batch==="3月新品"?" badge-new":"") + "'>" + d.batch + "</span></td>";
+    html += "<td style='text-align:left'>" + d.sku + "</td>";
+    html += "<td>" + d.cat + "</td>";
+    html += "<td>" + d.exp + "</td>";
+    html += "<td>" + d.qty + "</td>";
+    html += "<td>" + d.comp + "</td>";
+    html += "<td>" + d.amt.toFixed(0) + "</td>";
+    html += "<td style='color:" + shareColor + ";font-weight:600'>" + (d.share > 0 ? (d.share*100).toFixed(1) + "%" : "0%") + "</td>";
+    html += "<td>" + d.order + "</td>";
+    html += "<td>" + d.status + "</td>";
+    html += "</tr>";
+  }
+  document.getElementById("allsku-tbody").innerHTML = html;
+}
+
+// ========== 导出Excel功能 ==========
+function exportAllData() {
+  var wb = XLSX.utils.book_new();
+  
+  // Sheet1: 各批次汇总
+  var summaryData = [
+    ["新品批次","SKU数","销量","销售额","8日Y出单","8日N出单","未出单","出单率","市占比","低占比SKU数"],
+    ["1月新品",53,72,8755.66,20,4,29,"37.7%","43.6%",9],
+    ["2月新品",36,190,27883.05,16,4,16,"44.4%","49.7%",12],
+    ["3月新品",67,368,74604,39,9,19,"58.2%","44.1%",25]
+  ];
+  var ws1 = XLSX.utils.aoa_to_sheet(summaryData);
+  XLSX.utils.book_append_sheet(wb, ws1, "各批次汇总");
+  
+  // Sheet2: 品线维度
+  var catRows = [["商品类","1月SKU","1月销量","1月出单率","1月市占","2月SKU","2月销量","2月出单率","2月市占","3月SKU","3月销量","3月出单率","3月市占"]];
+  var cats = ["其他","挡泥板","机盖及附件","车身外扩件","车门系统","饰条"];
+  for (var i = 0; i < cats.length; i++) {
+    var d = catData[cats[i]];
+    catRows.push([cats[i],d[1].sku,d[1].qty,d[1].rate+"%",d[1].share+"%",d[2].sku,d[2].qty,d[2].rate+"%",d[2].share+"%",d[3].sku,d[3].qty,d[3].rate+"%",d[3].share+"%"]);
+  }
+  var ws2 = XLSX.utils.aoa_to_sheet(catRows);
+  XLSX.utils.book_append_sheet(wb, ws2, "品线维度");
+  
+  // Sheet3: 拓展类型维度
+  var expRows = [["拓展类型","1月SKU","1月销量","1月出单率","1月市占","2月SKU","2月销量","2月出单率","2月市占","3月SKU","3月销量","3月出单率","3月市占"]];
+  var expands = ["原开品","拓展品","组合件"];
+  for (var i = 0; i < expands.length; i++) {
+    var d = expandData[expands[i]];
+    expRows.push([expands[i],d[1].sku,d[1].qty,d[1].rate+"%",d[1].share+"%",d[2].sku,d[2].qty,d[2].rate+"%",d[2].share+"%",d[3].sku,d[3].qty,d[3].rate+"%",d[3].share+"%"]);
+  }
+  var ws3 = XLSX.utils.aoa_to_sheet(expRows);
+  XLSX.utils.book_append_sheet(wb, ws3, "拓展类型维度");
+  
+  // Sheet4: 低占比新品
+  var lowRows = [["批次","SKU","商品类","拓展类型","销量","对手出单","销售额","市占比","8日出单","市场状态"]];
+  for (var i = 0; i < lowShareData.length; i++) {
+    var d = lowShareData[i];
+    lowRows.push([d.batch+"月",d.sku,d.cat,d.exp,d.qty,d.comp,d.amt,(d.share*100).toFixed(1)+"%",d.order,d.status]);
+  }
+  var ws4 = XLSX.utils.aoa_to_sheet(lowRows);
+  XLSX.utils.book_append_sheet(wb, ws4, "低占比新品");
+  
+  // Sheet5: 全量SKU明细
+  var allRows = [["批次","SKU","商品类","拓展类型","销量","对手出单","销售额","市占比","8日出单","市场状态"]];
+  for (var i = 0; i < allSkuData.length; i++) {
+    var d = allSkuData[i];
+    allRows.push([d.batch,d.sku,d.cat,d.exp,d.qty,d.comp,d.amt,(d.share*100).toFixed(1)+"%",d.order,d.status]);
+  }
+  var ws5 = XLSX.utils.aoa_to_sheet(allRows);
+  XLSX.utils.book_append_sheet(wb, ws5, "全量SKU明细");
+  
+  XLSX.writeFile(wb, "新品月报_2026年3月_全部维度.xlsx");
+}
+
+function exportByDimension() {
+  var batch = document.getElementById("low-share-batch").value;
+  var label = batch === "all" ? "全部批次" : batch + "月新品";
+  
+  var wb = XLSX.utils.book_new();
+  
+  // 低占比新品
+  var filtered = batch === "all" ? lowShareData : lowShareData.filter(function(d){ return d.batch === parseInt(batch); });
+  var lowRows = [["批次","SKU","商品类","拓展类型","销量","对手出单","销售额","市占比","8日出单","市场状态"]];
+  for (var i = 0; i < filtered.length; i++) {
+    var d = filtered[i];
+    lowRows.push([d.batch+"月",d.sku,d.cat,d.exp,d.qty,d.comp,d.amt,(d.share*100).toFixed(1)+"%",d.order,d.status]);
+  }
+  var ws1 = XLSX.utils.aoa_to_sheet(lowRows);
+  XLSX.utils.book_append_sheet(wb, ws1, "低占比新品("+label+")");
+  
+  XLSX.writeFile(wb, "新品月报_低占比新品_"+batch+".xlsx");
+}
+
+// 加载XLSX库
+var script = document.createElement("script");
+script.src = "https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";
+document.head.appendChild(script);
+
+// 初始化渲染
+renderCatTable();
+renderExpandTable();
+renderOrderTable();
+renderLowShare();
+renderAllSku();
+
+// 响应式
+window.addEventListener('resize', function(){ 
+  [cBatchQty,cBatchRate,cCatQty,cCatRate,cExpandQty,cOrderBar,cOrderPie3,cNoOrd_1,cNoOrd_2,cNoOrd_3].forEach(function(c){ if(c) c.resize(); }); 
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+{
+  "mother_name": "Ram-1500_2009-2022_Door-Window-Glass",
+  "created_at": "2026-05-23T12:07:09.273980",
+  "total_links": 2,
+  "benchmark": {
+    "url": "https://www.ebay.com/itm/358477788428",
+    "title": "Driver Side Front Door Window Glass For 2009-2018 Dodge Ram 1500 2500 3500 4Door",
+    "reason": "图片最多的 listing（待爬虫确认）"
+  },
+  "links": [
+    {
+      "url": "https://www.ebay.com/itm/358477788428",
+      "title": "Driver Side Front Door Window Glass For 2009-2018 Dodge Ram 1500 2500 3500 4Door",
+      "identity": {
+        "make": "Ram",
+        "model": "1500",
+        "year_start": 2009,
+        "year_end": 2018,
+        "product_type": "Door-Window-Glass",
+        "product_category": "Door-Window-Glass",
+        "raw_title": "Driver Side Front Door Window Glass For 2009-2018 Dodge Ram 1500 2500 3500 4Door",
+        "url": "https://www.ebay.com/itm/358477788428"
+      },
+      "status": "pending"
+    },
+    {
+      "url": "https://www.ebay.com/itm/327068755538",
+      "title": "Fit For Ram Pickup 1500 2019-2022 Passenger Right Side Front Door Window Glass",
+      "identity": {
+        "make": "Ram",
+        "model": "1500",
+        "year_start": 2019,
+        "year_end": 2022,
+        "product_type": "Door-Window-Glass",
+        "product_category": "Door-Window-Glass",
+        "raw_title": "Fit For Ram Pickup 1500 2019-2022 Passenger Right Side Front Door Window Glass",
+        "url": "https://www.ebay.com/itm/327068755538"
+      },
+      "status": "pending"
+    }
+  ]
+}

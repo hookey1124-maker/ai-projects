@@ -1,0 +1,244 @@
+{
+  "mother_name": "Ford-F-Super-Duty_1999-2016_Door-Handle",
+  "generated_at": "2026-05-23T14:06:51.497747",
+  "total_links_analyzed": 4,
+  "valid_listings": 4,
+  "price_range": "$14.99 - $28.95",
+  "avg_price": 21.81,
+  "product_count_mentions": [],
+  "image_counts": {
+    "min": 8,
+    "max": 18,
+    "avg": 13.5
+  },
+  "best_image_listing": {
+    "title": "Outside Door Handle For Ford Super Duty Truck F250 F350 1999-2016 Left Front",
+    "images": [
+      "https://i.ebayimg.com/images/g/UnIAAOSwfNRhUfmq/s-l500.webp",
+      "https://i.ebayimg.com/images/g/UnUAAOSwfNRhUfmu/s-l500.webp",
+      "https://i.ebayimg.com/images/g/CvQAAOSwFixi7Ckt/s-l500.webp",
+      "https://i.ebayimg.com/images/g/NywAAOSwPNti7Cka/s-l500.webp",
+      "https://i.ebayimg.com/images/g/dDUAAOSwklBi7Ckb/s-l500.webp"
+    ],
+    "item_id": "255987735319"
+  },
+  "reference_images": [
+    "https://i.ebayimg.com/images/g/UnIAAOSwfNRhUfmq/s-l500.webp",
+    "https://i.ebayimg.com/images/g/UnUAAOSwfNRhUfmu/s-l500.webp",
+    "https://i.ebayimg.com/images/g/CvQAAOSwFixi7Ckt/s-l500.webp",
+    "https://i.ebayimg.com/images/g/NywAAOSwPNti7Cka/s-l500.webp",
+    "https://i.ebayimg.com/images/g/dDUAAOSwklBi7Ckb/s-l500.webp",
+    "https://i.ebayimg.com/images/g/MO4AAOSwwvNi7Ckc/s-l500.webp"
+  ],
+  "key_specs": {
+    "Compatibility": {
+      "value": "See compatible vehicles",
+      "consensus": 1.0
+    },
+    "Delivery": {
+      "value": "Estimated between Tue, May 26 and Fri, May 29 to ?",
+      "consensus": 0.5
+    },
+    "Returns": {
+      "value": "Accepted within 30 days",
+      "consensus": 0.5
+    },
+    "Payments": {
+      "value": ". See details",
+      "consensus": 1.0
+    },
+    "Condition": {
+      "value": "New: A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is ... Read more\nabout the condition",
+      "consensus": 1.0
+    },
+    "OE/OEM Part Number": {
+      "value": "4C3Z2522405AAA",
+      "consensus": 0.5
+    },
+    "Interchange Part Number": {
+      "value": "FO1310123",
+      "consensus": 0.5
+    },
+    "Material": {
+      "value": "Plastic",
+      "consensus": 0.5
+    },
+    "Number of Pieces": {
+      "value": "1",
+      "consensus": 1.0
+    },
+    "Type": {
+      "value": "Door Handle",
+      "consensus": 0.5
+    },
+    "Color": {
+      "value": "Black",
+      "consensus": 1.0
+    },
+    "Finish": {
+      "value": "Textured",
+      "consensus": 0.5
+    },
+    "Mounting Hardware Included": {
+      "value": "No",
+      "consensus": 0.5
+    },
+    "Partslink Number": {
+      "value": "FO1310123",
+      "consensus": 0.5
+    },
+    "Manufacturer Warranty": {
+      "value": "1 Year",
+      "consensus": 0.5
+    },
+    "Ships to": {
+      "value": "Albania, Algeria, Andorra, Angola, Anguilla, Antigua and Barbuda, Argentina, Armenia, Aruba, ... Show moreAlbania, Algeria, Andorra, Angola, Anguilla, Antigua and Barbuda, Argentina, Armenia, Aruba, Australia, Austria, Azerbaijan Republic, Bahamas, Bangladesh, Belgium, Belize, Benin, Bermuda, Bolivia, Bosnia and Herzegovina, Botswana, Brazil, Bulgaria, Burkina Faso, Burundi, Cambodia, Cameroon, Canada, Cape Verde Islands, Cayman Islands, Central African Republic, Chile, China, Colombia, Costa Rica, Cyprus, Czech Republic, Côte d'Ivoire (Ivory Coast), Democratic Republic of the Congo, Denmark, Djibouti, Dominican Republic, Ecuador, Egypt, El Salvador, Equatorial Guinea, Eritrea, Estonia, Ethiopia, Fiji, Finland, France, Gabon Republic, Gambia, Georgia, Germany, Ghana, Gibraltar, Greece, Greenland, Grenada, Guatemala, Guinea, Guinea-Bissau, Guyana, Honduras, Hong Kong, Hungary, Iceland, India, Indonesia, Ireland, Italy, Jamaica, Japan, Kazakhstan, Kenya, Kiribati, Kyrgyzstan, Latvia, Lesotho, Liberia, Liechtenstein, Lithuania, Luxembourg, Macau, Macedonia, Madagascar, Malawi, Malaysia, Maldives, Mali, Malta, Mauritania, Mauritius, Mexico, Moldova, Monaco, Montenegro, Montserrat, Morocco, Mozambique, Namibia, Nauru, Nepal, Netherlands, New Zealand, Nicaragua, Niger, Nigeria, Norway, Pakistan, Panama, Papua New Guinea, Paraguay, Peru, Philippines, Poland, Portugal, Puerto Rico, Republic of Croatia, Republic of the Congo, Romania, Rwanda, Saint Kitts-Nevis, Saint Lucia, Saint Vincent and the Grenadines, San Marino, Senegal, Serbia, Seychelles, Sierra Leone, Singapore, Slovakia, Slovenia, Solomon Islands, South Korea, Spain, Sri Lanka, Suriname, Swaziland, Sweden, Switzerland, Taiwan, Tajikistan, Tanzania, Thailand, Togo, Tonga, Trinidad and Tobago, Tunisia, Turkey, Turks and Caicos Islands, Uganda, United States, Uruguay, Uzbekistan, Vanuatu, Vatican City State, Vietnam, Wallis and Futuna, Western Samoa, Zambia, ZimbabweShow less",
+      "consensus": 0.5
+    },
+    "Handling time": {
+      "value": "Will usually ship within 1 business day of receiving cleared payment. Learn moreLearn more - handling time",
+      "consensus": 1.0
+    },
+    "Taxes": {
+      "value": "Taxes may be applicable at checkout. Learn moreLearn more about paying tax on eBay purchases.",
+      "consensus": 1.0
+    },
+    "Returns shipping": {
+      "value": "Seller pays return shipping",
+      "consensus": 1.0
+    },
+    "Return policy": {
+      "value": "Refer to eBay Return policyopens in a new tab or window for more details. You are covered by the eBay Money Back Guaranteeopens in a new tab or window if you receive an item that is not as described in the listing.",
+      "consensus": 1.0
+    },
+    "Fitment Type": {
+      "value": "Direct Replacement",
+      "consensus": 0.75
+    },
+    "Performance Part": {
+      "value": "No",
+      "consensus": 0.5
+    }
+  },
+  "title_samples": [
+    "New Front Driver Side Exterior Door Handle For 99-16 Ford Super Duty FO1310123",
+    "Outside Door Handle For Ford Super Duty Truck F250 F350 1999-2016 Left Front",
+    "99 thru 16 Super Duty OEM Ford LH Driver Outer Door Handle 7C3Z-2522405-AA",
+    "For Ford F-250/F-350 Super Duty 1999-2007 Door Handle Driver Side | Front"
+  ],
+  "title_strategies": [
+    {
+      "title": "New Front Driver Side Exterior Door Handle For 99-16 Ford Super Duty FO1310123",
+      "keywords": [
+        "New Front Driver Side Exterior Door Handle For",
+        "Ford Super Duty"
+      ],
+      "has_count": false,
+      "has_chrome": false,
+      "has_exterior": true
+    },
+    {
+      "title": "Outside Door Handle For Ford Super Duty Truck F250 F350 1999-2016 Left Front",
+      "keywords": [
+        "Outside Door Handle For Ford Super Duty Truck",
+        "Left Front"
+      ],
+      "has_count": false,
+      "has_chrome": false,
+      "has_exterior": false
+    },
+    {
+      "title": "99 thru 16 Super Duty OEM Ford LH Driver Outer Door Handle 7C3Z-2522405-AA",
+      "keywords": [
+        "Super Duty",
+        "Ford",
+        "Driver Outer Door Handle"
+      ],
+      "has_count": false,
+      "has_chrome": false,
+      "has_exterior": true
+    }
+  ],
+  "common_keywords": [
+    [
+      "door",
+      4
+    ],
+    [
+      "handle",
+      4
+    ],
+    [
+      "ford",
+      4
+    ],
+    [
+      "super",
+      4
+    ],
+    [
+      "duty",
+      4
+    ],
+    [
+      "front",
+      3
+    ],
+    [
+      "driver",
+      3
+    ],
+    [
+      "for",
+      3
+    ],
+    [
+      "side",
+      2
+    ],
+    [
+      "99",
+      2
+    ],
+    [
+      "16",
+      2
+    ],
+    [
+      "250",
+      2
+    ],
+    [
+      "350",
+      2
+    ],
+    [
+      "1999",
+      2
+    ],
+    [
+      "new",
+      1
+    ],
+    [
+      "exterior",
+      1
+    ],
+    [
+      "1310123",
+      1
+    ],
+    [
+      "outside",
+      1
+    ],
+    [
+      "truck",
+      1
+    ],
+    [
+      "2016",
+      1
+    ]
+  ]
+}

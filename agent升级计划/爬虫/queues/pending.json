@@ -1,0 +1,65 @@
+[
+  {
+    "mother_name": "Chevy-Colorado_2004-2012_Door-Handle",
+    "link_count": 8,
+    "status": "pending",
+    "created_at": "2026-05-23T12:07:09.275661",
+    "benchmark_url": "https://www.ebay.com/itm/125765928671"
+  },
+  {
+    "mother_name": "Ford-F-150_2015-2022_Door-Window-Glass",
+    "link_count": 5,
+    "status": "pending",
+    "created_at": "2026-05-23T12:07:09.275664",
+    "benchmark_url": "https://www.ebay.com/itm/168193472587"
+  },
+  {
+    "mother_name": "Ford-F-Super-Duty_1999-2016_Door-Handle",
+    "link_count": 4,
+    "status": "pending",
+    "created_at": "2026-05-23T12:07:09.275665",
+    "benchmark_url": "https://www.ebay.com/itm/182872816318"
+  },
+  {
+    "mother_name": "Chevy-Express_1996-2022_Door-Handle",
+    "link_count": 5,
+    "status": "pending",
+    "created_at": "2026-05-23T12:07:09.275667",
+    "benchmark_url": "https://www.ebay.com/itm/127848473496"
+  },
+  {
+    "mother_name": "Jeep-Grand Cherokee_2011_Door-Handle",
+    "link_count": 3,
+    "status": "pending",
+    "created_at": "2026-05-23T12:07:09.275668",
+    "benchmark_url": "https://www.ebay.com/itm/313609582145"
+  },
+  {
+    "mother_name": "Dodge-Durango_2011-2020_Door-Handle",
+    "link_count": 1,
+    "status": "pending",
+    "created_at": "2026-05-23T12:07:09.275670",
+    "benchmark_url": "https://www.ebay.com/itm/295112166601"
+  },
+  {
+    "mother_name": "Chevy-Tahoe_2007-2013_Door-Handle",
+    "link_count": 5,
+    "status": "pending",
+    "created_at": "2026-05-23T12:07:09.275671",
+    "benchmark_url": "https://www.ebay.com/itm/226284578150"
+  },
+  {
+    "mother_name": "Ram-1500_2009-2022_Door-Window-Glass",
+    "link_count": 2,
+    "status": "pending",
+    "created_at": "2026-05-23T12:07:09.275672",
+    "benchmark_url": "https://www.ebay.com/itm/358477788428"
+  },
+  {
+    "mother_name": "Cadillac-Escalade_2007-2014_Door-Handle",
+    "link_count": 1,
+    "status": "pending",
+    "created_at": "2026-05-23T12:07:09.275674",
+    "benchmark_url": "https://www.ebay.com/itm/226643967736"
+  }
+]

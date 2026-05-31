@@ -1,0 +1,565 @@
+{
+  "mother_name": "Ford-F-150_2015-2022_Rear-Driver-Side_Dark_Door-Window-Glass",
+  "generated_at": "2026-05-23T16:02:51.112405",
+  "total_links_analyzed": 17,
+  "valid_listings": 17,
+  "anchor_count": 7,
+  "price_range": "$62.53 - $102.42",
+  "avg_price": 70.02,
+  "product_count_mentions": [
+    "46X"
+  ],
+  "image_counts": {
+    "min": 4,
+    "max": 38,
+    "avg": 27.1
+  },
+  "best_image_listing": {
+    "title": "Dark Rear Driver Left Door Window Glass For Ford F-Series 15-22 F150 17-22 F250",
+    "images": [
+      "https://i.ebayimg.com/images/g/hlEAAOSwGjVnrp8W/s-l500.webp",
+      "https://i.ebayimg.com/images/g/fSsAAOSw-a5nqZIS/s-l500.webp",
+      "https://i.ebayimg.com/images/g/~tUAAOSwXMtnqZIR/s-l500.webp",
+      "https://i.ebayimg.com/images/g/LEEAAOSwGclnqZIS/s-l500.webp",
+      "https://i.ebayimg.com/images/g/eAkAAOSwhidnqZIR/s-l500.webp"
+    ],
+    "item_id": "116478794743"
+  },
+  "reference_images": [
+    "https://i.ebayimg.com/images/g/hlEAAOSwGjVnrp8W/s-l500.webp",
+    "https://i.ebayimg.com/images/g/fSsAAOSw-a5nqZIS/s-l500.webp",
+    "https://i.ebayimg.com/images/g/~tUAAOSwXMtnqZIR/s-l500.webp",
+    "https://i.ebayimg.com/images/g/LEEAAOSwGclnqZIS/s-l500.webp",
+    "https://i.ebayimg.com/images/g/eAkAAOSwhidnqZIR/s-l500.webp",
+    "https://i.ebayimg.com/images/g/DwEAAOSw2a5nqZIR/s-l500.webp"
+  ],
+  "key_specs": {
+    "Compatibility": {
+      "value": "See compatible vehicles",
+      "consensus": 1.0
+    },
+    "Returns": {
+      "value": "Accepted within 30 days",
+      "consensus": 0.76
+    },
+    "Payments": {
+      "value": ". See details",
+      "consensus": 1.0
+    },
+    "Condition": {
+      "value": "New: A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is ... Read more\nabout the condition",
+      "consensus": 1.0
+    },
+    "Country of Origin": {
+      "value": "China",
+      "consensus": 0.76
+    },
+    "Color": {
+      "value": "Dark",
+      "consensus": 0.65
+    },
+    "UPC": {
+      "value": "Does not apply",
+      "consensus": 0.53
+    },
+    "Material": {
+      "value": "Tempered Glass",
+      "consensus": 0.76
+    },
+    "Type": {
+      "value": "Side Door Glass",
+      "consensus": 0.76
+    },
+    "Placement on Vehicle": {
+      "value": "Rear, Left",
+      "consensus": 0.76
+    },
+    "Manufacturer Warranty": {
+      "value": "1 Year",
+      "consensus": 0.65
+    },
+    "Ships to": {
+      "value": "United StatesUnited States",
+      "consensus": 1.0
+    },
+    "Handling time": {
+      "value": "Will usually ship within 1 business day of receiving cleared payment. Learn moreLearn more - handling time",
+      "consensus": 0.76
+    },
+    "Taxes": {
+      "value": "Taxes may be applicable at checkout. Learn moreLearn more about paying tax on eBay purchases.",
+      "consensus": 1.0
+    },
+    "Returns shipping": {
+      "value": "Seller pays return shipping",
+      "consensus": 1.0
+    },
+    "Return policy": {
+      "value": "Refer to eBay Return policyopens in a new tab or window for more details. You are covered by the eBay Money Back Guaranteeopens in a new tab or window if you receive an item that is not as described in the listing.",
+      "consensus": 1.0
+    }
+  },
+  "title_samples": [
+    "Dark Rear Driver Left Door Window Glass For Ford F-Series 15-22 F150 17-22 F250",
+    "Left Rear Door Window Tempered Glass For 2015-22 Ford F-150 F-250 Crew Cab Dark",
+    "LH Driver Side Rear Door Glass Tempered Window For Ford F150 Crew Cab 2015-2022",
+    "Driver Side Rear Door Window Glass For 2015-2022 Ford F-150 F150 4 Door Crew Cab",
+    "Rear Left Door Window Tempered Glass Fits Ford F150/F250/F350 Crew Cab Dark"
+  ],
+  "title_strategies": [
+    {
+      "title": "Dark Rear Driver Left Door Window Glass For Ford F-Series 15-22 F150 17-22 F250",
+      "keywords": [
+        "Dark Rear Driver Left Door Window Glass For Ford",
+        "Series"
+      ],
+      "has_count": false,
+      "has_chrome": false,
+      "has_exterior": false
+    },
+    {
+      "title": "Left Rear Door Window Tempered Glass For 2015-22 Ford F-150 F-250 Crew Cab Dark",
+      "keywords": [
+        "Left Rear Door Window Tempered Glass For",
+        "Ford",
+        "Crew Cab Dark"
+      ],
+      "has_count": false,
+      "has_chrome": false,
+      "has_exterior": false
+    },
+    {
+      "title": "LH Driver Side Rear Door Glass Tempered Window For Ford F150 Crew Cab 2015-2022",
+      "keywords": [
+        "Driver Side Rear Door Glass Tempered Window For Ford",
+        "Crew Cab"
+      ],
+      "has_count": false,
+      "has_chrome": false,
+      "has_exterior": false
+    }
+  ],
+  "common_keywords": [
+    [
+      "door",
+      18
+    ],
+    [
+      "glass",
+      17
+    ],
+    [
+      "ford",
+      17
+    ],
+    [
+      "150",
+      17
+    ],
+    [
+      "rear",
+      16
+    ],
+    [
+      "window",
+      16
+    ],
+    [
+      "left",
+      14
+    ],
+    [
+      "crew",
+      14
+    ],
+    [
+      "for",
+      13
+    ],
+    [
+      "cab",
+      12
+    ],
+    [
+      "driver",
+      11
+    ],
+    [
+      "2015",
+      11
+    ],
+    [
+      "22",
+      9
+    ],
+    [
+      "2022",
+      9
+    ],
+    [
+      "250",
+      8
+    ],
+    [
+      "tempered",
+      6
+    ],
+    [
+      "dark",
+      5
+    ],
+    [
+      "15",
+      4
+    ],
+    [
+      "17",
+      4
+    ],
+    [
+      "side",
+      4
+    ]
+  ],
+  "product_classifications": [
+    {
+      "item_id": "116478794743",
+      "title": "Dark Rear Driver Left Door Window Glass For Ford F-Series 15-22 F150 17-22 F250",
+      "classification": {
+        "position": "Rear-Driver-Side",
+        "count": "Unknown",
+        "finish": "Dark",
+        "sub_type": "Replacement",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": []
+      }
+    },
+    {
+      "item_id": "116942690842",
+      "title": "Left Rear Door Window Tempered Glass For 2015-22 Ford F-150 F-250 Crew Cab Dark",
+      "classification": {
+        "position": "Rear",
+        "count": "Unknown",
+        "finish": "Dark",
+        "sub_type": "Replacement",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": []
+      }
+    },
+    {
+      "item_id": "127594418425",
+      "title": "LH Driver Side Rear Door Glass Tempered Window For Ford F150 Crew Cab 2015-2022",
+      "classification": {
+        "position": "Rear-Driver-Side",
+        "count": "1x",
+        "finish": "Dark",
+        "sub_type": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": []
+      }
+    },
+    {
+      "item_id": "168193472587",
+      "title": "Driver Side Rear Door Window Glass For 2015-2022 Ford F-150 F150 4 Door Crew Cab",
+      "classification": {
+        "position": "Rear-Driver-Side",
+        "count": "1x",
+        "finish": "Dark",
+        "sub_type": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": []
+      }
+    },
+    {
+      "item_id": "177705070583",
+      "title": "Rear Left Door Window Tempered Glass Fits Ford F150/F250/F350 Crew Cab Dark",
+      "classification": {
+        "position": "Rear-Driver-Side",
+        "count": "Unknown",
+        "finish": "Dark",
+        "sub_type": "Replacement",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": []
+      }
+    },
+    {
+      "item_id": "197973261264",
+      "title": "Door Window Tempered Glass For 15-22 Ford F150 17-22 F250 Crew Cab Left Rear",
+      "classification": {
+        "position": "Rear",
+        "count": "Unknown",
+        "finish": "Dark",
+        "sub_type": "Replacement",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": []
+      }
+    },
+    {
+      "item_id": "226590933063",
+      "title": "Left Rear Door Window Glass Fits Ford 15-22 F150 17-22 F250 F350 4Dr Crew Driver",
+      "classification": {
+        "position": "Rear",
+        "count": "Unknown",
+        "finish": "Dark",
+        "sub_type": "Replacement",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": []
+      }
+    },
+    {
+      "item_id": "306694311204",
+      "title": "Rear Driver Left Door Window Glass For Ford F150 2015-2022/F250-F550 2017-2022",
+      "classification": {
+        "position": "Rear-Driver-Side",
+        "count": "Unknown",
+        "finish": "Black",
+        "sub_type": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": []
+      }
+    },
+    {
+      "item_id": "366100887993",
+      "title": "Driver Left Side Rear Back Door Window Glass For 2015-2022 Ford F150 Crew Cab",
+      "classification": {
+        "position": "Rear",
+        "count": "1x",
+        "finish": "Dark",
+        "sub_type": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": []
+      }
+    },
+    {
+      "item_id": "377074229343",
+      "title": "Replacement AP Door Glass fits Ford F150 2015-2023 Crew Cab Pickup 4dr 46XWSY",
+      "classification": {
+        "position": "Rear",
+        "count": "Unknown",
+        "finish": "Unknown",
+        "sub_type": "Replacement",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": []
+      }
+    },
+    {
+      "item_id": "389428542261",
+      "title": "Left Rear Back Door Window Glass For Ford F150 2015-2022 Crew Cab",
+      "classification": {
+        "position": "Rear",
+        "count": "Unknown",
+        "finish": "Black",
+        "sub_type": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": []
+      }
+    },
+    {
+      "item_id": "389455625889",
+      "title": "Suit For Ford F-Series 2017-2022 Dark Rear Driver Left Door Window Glass Durable",
+      "classification": {
+        "position": "Rear-Driver-Side",
+        "count": "Unknown",
+        "finish": "Black",
+        "sub_type": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": []
+      }
+    },
+    {
+      "item_id": "397090541432",
+      "title": "Door Window Glass For 2015-2022 Ford F150/F250/F350 Crew Cab Dark Rear Left",
+      "classification": {
+        "position": "Rear-Driver-Side",
+        "count": "Unknown",
+        "finish": "Dark",
+        "sub_type": "Replacement",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": []
+      }
+    },
+    {
+      "item_id": "397526498532",
+      "title": "Left Rear Door Window Glass Fits Ford 15-22 F150 17-22 F250 F350 4Dr Crew Driver",
+      "classification": {
+        "position": "Rear",
+        "count": "Unknown",
+        "finish": "Dark",
+        "sub_type": "Replacement",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": []
+      }
+    },
+    {
+      "item_id": "406785229096",
+      "title": "Driver Left Rear Door Window Glass Tempered For 2015-2024 Ford F-150 Crew Cab",
+      "classification": {
+        "position": "Rear",
+        "count": "1x",
+        "finish": "Green",
+        "sub_type": "Replacement",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": []
+      }
+    },
+    {
+      "item_id": "406785229204",
+      "title": "Driver Left Rear Door Window Glass Tempered For 2015-2024 Ford F-150 Crew Cab",
+      "classification": {
+        "position": "Rear",
+        "count": "1x",
+        "finish": "Green",
+        "sub_type": "Replacement",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": []
+      }
+    },
+    {
+      "item_id": "406798820531",
+      "title": "Left Driver Side Rear Door Window Glass For 2015-2022 Ford F150 Crew Cab",
+      "classification": {
+        "position": "Rear-Driver-Side",
+        "count": "1x",
+        "finish": "Dark",
+        "sub_type": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": []
+      }
+    }
+  ],
+  "anchor_analysis": {
+    "anchor_classification": {
+      "position": "Rear",
+      "count": "Unknown",
+      "finish": "Dark",
+      "sub_type": "Replacement",
+      "structure": "Unknown",
+      "structure_source": "unknown",
+      "accessories": []
+    },
+    "anchor_structure": {
+      "structure": "Unknown",
+      "structure_source": "unknown"
+    },
+    "anchor_accessories": [],
+    "anchor_years": "2015-2022",
+    "anchor_vehicles": [
+      "Ford F-150 F-250",
+      "Ford F-Series",
+      "Ford F150",
+      "Ford UNKNOWN"
+    ],
+    "rule0_excluded": [
+      {
+        "competitor_url": "https://www.ebay.com/itm/406785229096",
+        "competitor_title": "Driver Left Rear Door Window Glass Tempered For 2015-2024 Ford F-150 Crew Cab",
+        "field": "finish",
+        "reason": "表面处理/颜色不同",
+        "anchor_value": "Dark",
+        "competitor_value": "Green"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/406785229204",
+        "competitor_title": "Driver Left Rear Door Window Glass Tempered For 2015-2024 Ford F-150 Crew Cab",
+        "field": "finish",
+        "reason": "表面处理/颜色不同",
+        "anchor_value": "Dark",
+        "competitor_value": "Green"
+      }
+    ],
+    "rule0_excluded_count": 2,
+    "valid_competitors_count": 8,
+    "year_expanded_alerts": [
+      {
+        "competitor_url": "https://www.ebay.com/itm/377074229343",
+        "competitor_title": "Replacement AP Door Glass fits Ford F150 2015-2023 Crew Cab Pickup 4dr 46XWSY",
+        "competitor_year": "2015-2023",
+        "anchor_year": "2015-2022",
+        "flag": "highlight",
+        "note": "竞品适配年份超出锚点范围，可能是扩展适配机会"
+      }
+    ],
+    "vehicle_compatibility_alerts": [
+      {
+        "competitor_url": "https://www.ebay.com/itm/127594418425",
+        "competitor_title": "LH Driver Side Rear Door Glass Tempered Window For Ford F150 Crew Cab 2015-2022",
+        "anchor_vehicles": [
+          "Ford F-150 F-250",
+          "Ford F-Series",
+          "Ford F150",
+          "Ford UNKNOWN"
+        ],
+        "extra_vehicles": [
+          "Ford F150 Crew"
+        ],
+        "flag": "red",
+        "note": "竞品额外适配车型，需人工确认（同平台车可能共享零件）"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/168193472587",
+        "competitor_title": "Driver Side Rear Door Window Glass For 2015-2022 Ford F-150 F150 4 Door Crew Cab",
+        "anchor_vehicles": [
+          "Ford F-150 F-250",
+          "Ford F-Series",
+          "Ford F150",
+          "Ford UNKNOWN"
+        ],
+        "extra_vehicles": [
+          "Ford F-150 F150"
+        ],
+        "flag": "red",
+        "note": "竞品额外适配车型，需人工确认（同平台车可能共享零件）"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/366100887993",
+        "competitor_title": "Driver Left Side Rear Back Door Window Glass For 2015-2022 Ford F150 Crew Cab",
+        "anchor_vehicles": [
+          "Ford F-150 F-250",
+          "Ford F-Series",
+          "Ford F150",
+          "Ford UNKNOWN"
+        ],
+        "extra_vehicles": [
+          "Ford F150 Crew"
+        ],
+        "flag": "red",
+        "note": "竞品额外适配车型，需人工确认（同平台车可能共享零件）"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/406798820531",
+        "competitor_title": "Left Driver Side Rear Door Window Glass For 2015-2022 Ford F150 Crew Cab",
+        "anchor_vehicles": [
+          "Ford F-150 F-250",
+          "Ford F-Series",
+          "Ford F150",
+          "Ford UNKNOWN"
+        ],
+        "extra_vehicles": [
+          "Ford F150 Crew"
+        ],
+        "flag": "red",
+        "note": "竞品额外适配车型，需人工确认（同平台车可能共享零件）"
+      }
+    ],
+    "structure_warnings": [],
+    "structure_alerts": [],
+    "accessory_alerts": []
+  }
+}

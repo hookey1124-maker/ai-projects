@@ -1,0 +1,13 @@
+{
+  "cab":       ["compatibility_api", "item_specifics", "title", "image"],
+  "position":  ["title", "item_specifics", "image"],
+  "finish":    ["title", "image", "item_specifics"],
+  "count":     ["item_specifics", "title", "image"],
+  "vehicle":   ["compatibility_api", "title", "item_specifics"],
+  "bed_length":["title", "item_specifics"],
+  "structure": ["title", "item_specifics", "image"],
+  "material":  ["item_specifics", "title"],
+  "color":     ["item_specifics", "title", "image"],
+  "product_type": ["item_specifics", "title"],
+  "fitment_type": ["item_specifics", "title"]
+}

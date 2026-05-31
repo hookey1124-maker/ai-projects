@@ -1,0 +1,35 @@
+{
+  "_description": "来源特异性配置：当多来源值冲突时，信息粒度更高的值可覆盖静态优先级。粒度=语义信息量，值越大越精细。",
+
+  "position": {
+    "method": "position_components",
+    "override_threshold": 1,
+    "low_granularity_values": ["Both-Sides", "Front", "Rear"],
+    "_note": "低粒度值(Both-Sides/Front/Rear)允许低优先级来源的高粒度值覆盖。Driver-Side/Front-Driver-Side 等高粒度值不参与 override（避免信息推测）。阈值1=多1个方位组件即可覆盖。"
+  },
+
+  "finish": {
+    "method": "delimiter_components",
+    "delimiter": "-",
+    "override_threshold": 1,
+    "_note": "Black-Chrome(2) > Chrome(1)。复合表面处理比单一处理更精细。"
+  },
+
+  "cab": {
+    "method": "word_count",
+    "override_threshold": 1,
+    "_note": "Crew Cab Pickup(3) > Crew Cab(2)。更多修饰词意味着更精确的车型描述。"
+  },
+
+  "material": {
+    "method": "word_count",
+    "override_threshold": 1,
+    "_note": "Zinc Alloy(2) > Zinc(1)，Carbon Fiber(2) > Fiber(1)。合金/复合材料比单一材料更精细。"
+  },
+
+  "structure": {
+    "method": "word_count",
+    "override_threshold": 1,
+    "_note": "Multi-Piece(2，含连字符) > One-Piece(2)。但结构类型本身不适用粒度比较，仅当值确实不同时生效。"
+  }
+}

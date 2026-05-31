@@ -1,0 +1,20 @@
+{
+  "prompt_id": "IMG_SCENE_V1",
+  "version": "1.0",
+  "purpose": "eBay 产品场景图 — 产品在实际使用环境中的展示",
+  "last_updated": "2026-05-23",
+  "model": "gpt-image-2",
+  "size": "1:1",
+  "template": "产品摄影，{product_description}，安装在{scene_description}。产品与安装位置紧密结合，光影与场景环境一致（{lighting_description}），透视角度匹配。无品牌标识，聚焦产品细节和安装效果。商业摄影级别。",
+  "variables": ["product_description", "scene_description", "lighting_description"],
+  "constraints": [
+    "禁止出现任何汽车品牌Logo或商标",
+    "产品必须与安装位置自然结合，禁止悬浮",
+    "产品结构不得修改或变形",
+    "光影必须与场景环境一致",
+    "透视角度必须匹配场景"
+  ],
+  "strength": 0.55,
+  "good_example": "金属门铰链安装在一辆深蓝色二手车的车门边缘，自然光从侧面照入车间",
+  "bad_example": "门铰链漂浮在模糊的汽车背景前方，光影不匹配，无安装痕迹"
+}

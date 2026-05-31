@@ -1,0 +1,21 @@
+{
+  "prompt_id": "IMG_SELLING_POINTS_V2",
+  "version": "2.0",
+  "purpose": "eBay 产品卖点可视化图 — 基于文案 bullets 的场景化卖点展示",
+  "last_updated": "2026-05-24",
+  "model": "gpt-image-2",
+  "size": "1:1",
+  "strength": 0.5,
+  "description": "基于 listing_output.json 的 bullets 生成可视化卖点展示。选择最视觉化的 1-2 个卖点，用场景讲述产品质量故事。",
+  "template": "由 DeepSeek (prompt_builder.py) 动态生成，非固定模板",
+  "variables": ["bullets", "product_type", "color", "material"],
+  "constraints": [
+    "必须基于 listing bullets，选取 1-2 个最视觉化的卖点",
+    "场景化展示：防晒→阳光照射、防锈→水珠/耐候、纹理→表面特写",
+    "禁止任何汽车品牌 Logo 或商标",
+    "产品必须与场景自然融合",
+    "Prompt 必须用英文",
+    "卖点视觉化要直观，一看就懂"
+  ],
+  "generator": "prompt_builder.py"
+}

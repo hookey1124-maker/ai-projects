@@ -1,0 +1,16 @@
+{
+  "prompt_id": "COPY_DESC_V1",
+  "version": "1.0",
+  "purpose": "eBay 产品卖点文案生成 — ≥5条，突出产品优势",
+  "last_updated": "2026-05-23",
+  "model": "DeepSeek",
+  "template": "为以下汽车配件产品生成eBay详情页卖点文案，要求：\n1. 必须 ≥ 5 条卖点\n2. 每条卖点突出一个核心优势（材质/工艺/适配性/耐用性/安装便捷性等）\n3. 禁止使用「100%」「perfect」「guaranteed fit」「no issues」「never used」等绝对化描述\n4. 英文文案，专业的汽车配件措辞\n5. 每个卖点以 '•' 开头，单独一行\n\n产品信息：\n{product_info}\n竞品参考：\n{competitor_insights}\n\n只输出卖点列表，每行一个 '•' 开头，不要标题和解释。",
+  "variables": ["product_info", "competitor_insights"],
+  "constraints": [
+    "≥ 5 条卖点",
+    "禁止绝对化描述",
+    "仅英文",
+    "专业汽车配件措辞"
+  ],
+  "output_format": "bullet_list"
+}

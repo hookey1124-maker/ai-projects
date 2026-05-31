@@ -1,0 +1,3087 @@
+{
+  "mother_name": "Chevy-Silverado_2007-2013_Driver-Side_Black_1pc_Interior-Door-Handle",
+  "generated_at": "2026-05-27T15:35:33.814002",
+  "total_links_analyzed": 58,
+  "valid_listings": 58,
+  "anchor_count": 9,
+  "price_range": "$8.54 - $109.85",
+  "avg_price": 27.83,
+  "product_count_mentions": [
+    "2Set",
+    "2Pc",
+    "Set of 4",
+    "2pc"
+  ],
+  "image_counts": {
+    "min": 9,
+    "max": 36,
+    "avg": 15.9
+  },
+  "best_image_listing": {
+    "title": "Interior Door Handle Repair LH For 2007-13 Chevy Sierra Silverado 1500 2500 HD",
+    "images": [
+      "https://i.ebayimg.com/images/g/vl4AAOSwU4xniLhe/s-l500.webp",
+      "https://i.ebayimg.com/images/g/QVwAAOSwqBpkkRMu/s-l500.webp",
+      "https://i.ebayimg.com/images/g/sqoAAOSwzvdniLhc/s-l500.webp",
+      "https://i.ebayimg.com/images/g/RmcAAOSwZbBkYfF2/s-l500.webp",
+      "https://i.ebayimg.com/images/g/YxEAAOSwT8pniLhb/s-l500.webp"
+    ],
+    "item_id": "403824915227"
+  },
+  "reference_images": [
+    "https://i.ebayimg.com/images/g/vl4AAOSwU4xniLhe/s-l500.webp",
+    "https://i.ebayimg.com/images/g/QVwAAOSwqBpkkRMu/s-l500.webp",
+    "https://i.ebayimg.com/images/g/sqoAAOSwzvdniLhc/s-l500.webp",
+    "https://i.ebayimg.com/images/g/RmcAAOSwZbBkYfF2/s-l500.webp",
+    "https://i.ebayimg.com/images/g/YxEAAOSwT8pniLhb/s-l500.webp",
+    "https://i.ebayimg.com/images/g/n~4AAOSwgrtkYfF1/s-l500.webp"
+  ],
+  "key_specs": {
+    "Condition": {
+      "value": "New: A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is ...",
+      "consensus": 0.84
+    }
+  },
+  "title_samples": [
+    "Door Handle Set For 2007-2013 Silverado 1500 Rear Left & Right Inner Black 2Pc",
+    "2pcs For 2007-2013 Chevy Avalanche Interior Door Handle Front Left Right Side C",
+    "Dark Gray Inside Door Pull Handle Left Driver LH for Chevy Silverado GMC Sierra\nOrder by Noon EST and this part ships today!",
+    "Door Handle Repair Inside Interior Front Rear Kit Set of 4 for Sierra Silverado\nOrder by Noon EST and this part ships today!",
+    "Door Handle Repair Kit Interior Inside LH Driver for 07-13 Sierra Silverado\nFast & Free Shipping"
+  ],
+  "title_strategies": [
+    {
+      "title": "Door Handle Set For 2007-2013 Silverado 1500 Rear Left & Right Inner Black 2Pc",
+      "keywords": [
+        "Door Handle Set For",
+        "Silverado",
+        "Rear Left",
+        "Right Inner Black",
+        "Pc"
+      ],
+      "has_count": true,
+      "has_chrome": false,
+      "has_exterior": false
+    },
+    {
+      "title": "2pcs For 2007-2013 Chevy Avalanche Interior Door Handle Front Left Right Side C",
+      "keywords": [
+        "For",
+        "Chevy Avalanche Interior Door Handle Front Left Right Side"
+      ],
+      "has_count": true,
+      "has_chrome": false,
+      "has_exterior": false
+    },
+    {
+      "title": "Dark Gray Inside Door Pull Handle Left Driver LH for Chevy Silverado GMC Sierra\nOrder by Noon EST and this part ships today!",
+      "keywords": [
+        "Dark Gray Inside Door Pull Handle Left Driver",
+        "Chevy Silverado",
+        "Sierra\nOrder",
+        "Noon"
+      ],
+      "has_count": false,
+      "has_chrome": false,
+      "has_exterior": false
+    }
+  ],
+  "common_keywords": [
+    [
+      "door",
+      58
+    ],
+    [
+      "handle",
+      55
+    ],
+    [
+      "interior",
+      47
+    ],
+    [
+      "for",
+      42
+    ],
+    [
+      "chevy",
+      40
+    ],
+    [
+      "silverado",
+      39
+    ],
+    [
+      "inside",
+      34
+    ],
+    [
+      "left",
+      31
+    ],
+    [
+      "front",
+      26
+    ],
+    [
+      "2007",
+      25
+    ],
+    [
+      "1500",
+      23
+    ],
+    [
+      "13",
+      22
+    ],
+    [
+      "sierra",
+      20
+    ],
+    [
+      "repair",
+      20
+    ],
+    [
+      "2013",
+      19
+    ],
+    [
+      "driver",
+      19
+    ],
+    [
+      "kit",
+      19
+    ],
+    [
+      "07",
+      18
+    ],
+    [
+      "2",
+      14
+    ],
+    [
+      "side",
+      14
+    ]
+  ],
+  "product_classifications": [
+    {
+      "item_id": "127401470129",
+      "title": "Door Handle Set For 2007-2013 Silverado 1500 Rear Left & Right Inner Black 2Pc",
+      "classification": {
+        "position": "Rear-Driver-Side-Inner",
+        "position_source": "title",
+        "count": 2,
+        "count_source": "item_specifics",
+        "finish": "Black",
+        "finish_source": "title",
+        "color": "Black bezel with chrome lever",
+        "material": "Unknown",
+        "sub_type": "Unknown",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": null,
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "127797298081",
+      "title": "2pcs For 2007-2013 Chevy Avalanche Interior Door Handle Front Left Right Side C",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": 2,
+        "count_source": "item_specifics",
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Interior Door Handle",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevy"
+          ],
+          "models": [
+            "Avalanche Interior"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "130903964625",
+      "title": "Dark Gray Inside Door Pull Handle Left Driver LH for Chevy Silverado GMC Sierra\nOrder by Noon EST and this part ships today!",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Gray",
+        "finish_source": "title",
+        "color": "Gray",
+        "material": "Unknown",
+        "sub_type": "Unknown",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": null,
+          "year_end": null,
+          "year_range": null,
+          "makes": [
+            "Chevy",
+            "GMC"
+          ],
+          "models": [
+            "Sierra\nOrder",
+            "Silverado GMC"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "131028050449",
+      "title": "Door Handle Repair Inside Interior Front Rear Kit Set of 4 for Sierra Silverado\nOrder by Noon EST and this part ships today!",
+      "classification": {
+        "position": "Front-Inner",
+        "position_source": "title",
+        "count": 4,
+        "count_source": "item_specifics",
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Replacement",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": null,
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "134367695035",
+      "title": "Door Handle Repair Kit Interior Inside LH Driver for 07-13 Sierra Silverado\nFast & Free Shipping",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Textured",
+        "finish_source": "item_specifics",
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Unknown",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": null,
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "134378697102",
+      "title": "Door Handle Inside Interior Front Left Right Black Ebony & Chrome for Chevy GMC\nFast & Free Shipping",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Chrome",
+        "finish_source": "title",
+        "color": "Chrome & Black",
+        "material": "Unknown",
+        "sub_type": "Replacement",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": null,
+          "year_end": null,
+          "year_range": null,
+          "makes": [
+            "Chevy",
+            "GMC"
+          ],
+          "models": [
+            "Fast",
+            "GMC\nFast"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "135168671700",
+      "title": "2pcs For 2007-2013 Chevy Interior Avalanche Door Handle Front Left Right Side",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": 2,
+        "count_source": "item_specifics",
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Interior Door Handle",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevy"
+          ],
+          "models": [
+            "Interior Avalanche"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "147305519270",
+      "title": "2pcs For Chevy 2007-2013 Avalanche Door Interior Handle Left Front Side Right",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": 2,
+        "count_source": "item_specifics",
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Interior Door Handle",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevy"
+          ],
+          "models": [],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "157615547960",
+      "title": "Door Handle Repair Kit Interior Inside LH For 07-13 Chevy Silverado GMC Sierra",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Replacement",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevy",
+            "GMC"
+          ],
+          "models": [
+            "Sierra",
+            "Silverado GMC"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "157630698670",
+      "title": "Door Handle Repair Kit Interior Inside Left For 07-14 Chevrolet Sierra Silverado",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Black",
+        "finish_source": "item_specifics",
+        "color": "Black",
+        "material": "Plastic",
+        "sub_type": "Replacement",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2014,
+          "year_range": "2007-2014",
+          "makes": [
+            "Chevrolet"
+          ],
+          "models": [
+            "Sierra Silverado"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "157780110403",
+      "title": "Driver Interior Inside Door Handle Repair For 2007-13 Chevy Sierra Silverado",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Black",
+        "finish_source": "item_specifics",
+        "color": "Black",
+        "material": "Unknown",
+        "sub_type": "Unknown",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevy"
+          ],
+          "models": [
+            "Sierra Silverado"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "157938371812",
+      "title": "2pcs For 2007-2013 Avalanche Chevy Interior Door Handle Front Left Right EAH",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": 2,
+        "count_source": "item_specifics",
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Interior Door Handle",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevy"
+          ],
+          "models": [
+            "Interior Door"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "173889015921",
+      "title": "Door Handle Repair Kit Inside Interior LH For 07-13 Chevy Silverado 1500 2500 HD",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Black",
+        "finish_source": "item_specifics",
+        "color": "Black",
+        "material": "Plastic & Metal",
+        "sub_type": "Replacement",
+        "door_config": "4-door-full",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2012,
+          "year_end": 2014,
+          "year_range": "2012-2014",
+          "makes": [
+            "Chevrolet",
+            "GMC"
+          ],
+          "models": [
+            "Avalanche",
+            "Sierra 1500",
+            "Sierra 2500 HD",
+            "Sierra 3500 HD",
+            "Silverado 1500",
+            "Silverado 2500 HD",
+            "Silverado 3500 HD",
+            "Suburban 1500",
+            "Suburban 2500",
+            "Tahoe",
+            "Yukon",
+            "Yukon XL 1500",
+            "Yukon XL 2500"
+          ],
+          "trims": [
+            "Base Crew Cab Pickup 4-Door",
+            "Base Sport Utility 4-Door",
+            "Base Standard Cab Pickup 2-Door",
+            "Black Diamond LS Crew Cab Pickup 4-Door",
+            "Black Diamond LT Crew Cab Pickup 4-Door",
+            "Black Diamond LTZ Crew Cab Pickup 4-Door",
+            "Denali Crew Cab Pickup 4-Door",
+            "Denali Hybrid Sport Utility 4-Door",
+            "Denali Sport Utility 4-Door",
+            "Hybrid Crew Cab Pickup 4-Door",
+            "Hybrid Sport Utility 4-Door",
+            "LS Crew Cab Pickup 4-Door",
+            "LS Extended Cab Pickup 4-Door",
+            "LS Sport Utility 4-Door",
+            "LT Cab & Chassis 2-Door",
+            "LT Cab & Chassis 4-Door",
+            "LT Crew Cab Pickup 4-Door",
+            "LT Extended Cab Pickup 4-Door",
+            "LT Sport Utility 4-Door",
+            "LT Standard Cab Pickup 2-Door",
+            "LTZ Crew Cab Pickup 4-Door",
+            "LTZ Extended Cab Pickup 4-Door",
+            "LTZ Sport Utility 4-Door",
+            "PPV Sport Utility 4-Door",
+            "SL Crew Cab Pickup 4-Door",
+            "SL Extended Cab Pickup 4-Door",
+            "SLE Cab & Chassis 2-Door",
+            "SLE Cab & Chassis 4-Door",
+            "SLE Crew Cab Pickup 4-Door",
+            "SLE Extended Cab Pickup 4-Door",
+            "SLE Sport Utility 4-Door",
+            "SLE Standard Cab Pickup 2-Door",
+            "SLT Crew Cab Pickup 4-Door",
+            "SLT Extended Cab Pickup 4-Door",
+            "SLT Sport Utility 4-Door",
+            "SSV Sport Utility 4-Door",
+            "WT Cab & Chassis 2-Door",
+            "WT Cab & Chassis 4-Door",
+            "WT Crew Cab Pickup 4-Door",
+            "WT Extended Cab Pickup 4-Door",
+            "WT Standard Cab Pickup 2-Door",
+            "XFE Crew Cab Pickup 4-Door"
+          ],
+          "engines": [
+            "4.3L 262Cu. In. V6 GAS OHV Naturally Aspirated",
+            "4.8L 294Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "5.3L 5328CC 325Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "5.3L 5328CC 325Cu. In. V8 GAS OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 CNG OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 FULL HYBRID EV-FLEX (FHEV) OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 GAS OHV Naturally Aspirated",
+            "6.2L 6162CC 376Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "6.6L 6599CC 403Cu. In. V8 DIESEL OHV Turbocharged"
+          ]
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "176770390185",
+      "title": "Left Interior Door Handle Kit For 07-13 Chevy Silverado GMC Sierra 1500/2500 HD",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Primed",
+        "finish_source": "item_specifics",
+        "color": "Black",
+        "material": "Plastic & Metal",
+        "sub_type": "Replacement",
+        "door_config": "4-door-full",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2012,
+          "year_end": 2014,
+          "year_range": "2012-2014",
+          "makes": [
+            "Chevrolet",
+            "GMC"
+          ],
+          "models": [
+            "Avalanche",
+            "Sierra 1500",
+            "Sierra 2500 HD",
+            "Sierra 3500 HD",
+            "Silverado 1500",
+            "Silverado 2500 HD",
+            "Silverado 3500 HD",
+            "Suburban 1500",
+            "Suburban 2500",
+            "Tahoe",
+            "Yukon",
+            "Yukon XL 1500",
+            "Yukon XL 2500"
+          ],
+          "trims": [
+            "Base Crew Cab Pickup 4-Door",
+            "Base Sport Utility 4-Door",
+            "Base Standard Cab Pickup 2-Door",
+            "Black Diamond LS Crew Cab Pickup 4-Door",
+            "Black Diamond LT Crew Cab Pickup 4-Door",
+            "Black Diamond LTZ Crew Cab Pickup 4-Door",
+            "Denali Crew Cab Pickup 4-Door",
+            "Denali Hybrid Sport Utility 4-Door",
+            "Denali Sport Utility 4-Door",
+            "Hybrid Crew Cab Pickup 4-Door",
+            "Hybrid Sport Utility 4-Door",
+            "LS Crew Cab Pickup 4-Door",
+            "LS Extended Cab Pickup 4-Door",
+            "LS Sport Utility 4-Door",
+            "LT Cab & Chassis 2-Door",
+            "LT Cab & Chassis 4-Door",
+            "LT Crew Cab Pickup 4-Door",
+            "LT Extended Cab Pickup 4-Door",
+            "LT Sport Utility 4-Door",
+            "LT Standard Cab Pickup 2-Door",
+            "LTZ Crew Cab Pickup 4-Door",
+            "LTZ Extended Cab Pickup 4-Door",
+            "LTZ Sport Utility 4-Door",
+            "PPV Sport Utility 4-Door",
+            "SL Crew Cab Pickup 4-Door",
+            "SL Extended Cab Pickup 4-Door",
+            "SLE Cab & Chassis 2-Door",
+            "SLE Cab & Chassis 4-Door",
+            "SLE Crew Cab Pickup 4-Door",
+            "SLE Extended Cab Pickup 4-Door",
+            "SLE Sport Utility 4-Door",
+            "SLE Standard Cab Pickup 2-Door",
+            "SLT Crew Cab Pickup 4-Door",
+            "SLT Extended Cab Pickup 4-Door",
+            "SLT Sport Utility 4-Door",
+            "SSV Sport Utility 4-Door",
+            "WT Cab & Chassis 2-Door",
+            "WT Cab & Chassis 4-Door",
+            "WT Crew Cab Pickup 4-Door",
+            "WT Extended Cab Pickup 4-Door",
+            "WT Standard Cab Pickup 2-Door",
+            "XFE Crew Cab Pickup 4-Door"
+          ],
+          "engines": [
+            "4.3L 262Cu. In. V6 GAS OHV Naturally Aspirated",
+            "4.8L 294Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "5.3L 5328CC 325Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "5.3L 5328CC 325Cu. In. V8 GAS OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 CNG OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 FULL HYBRID EV-FLEX (FHEV) OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 GAS OHV Naturally Aspirated",
+            "6.2L 6162CC 376Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "6.6L 6599CC 403Cu. In. V8 DIESEL OHV Turbocharged"
+          ]
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "177265012891",
+      "title": "For 2007-2013 Silverado 1500 Front Left Interior Door Handle Gray 15920697\nUSA-Based – Free Shipping & Returns! 14+ Years!",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Gray",
+        "finish_source": "title",
+        "color": "Gray",
+        "material": "Unknown",
+        "sub_type": "Unknown",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": null,
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "196083030312",
+      "title": "20833606 Repair Kit Interior Inside LH Driver Door Handle For Sierra Silverado",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Unknown",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": null,
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "198290140889",
+      "title": "Door Handle Repair Kit Interior Inside LH For 07-13 Chevy Silverado GMC Sierra",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Plastic & Metal",
+        "sub_type": "Replacement",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevy",
+            "GMC"
+          ],
+          "models": [
+            "Sierra",
+            "Silverado GMC"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "206210439838",
+      "title": "For 2007-2013 Silverado 1500 Front Left Interior Door Handle Gray\nUSA-Based – Trusted 14+ Years! Over 99k Reviews!",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Gray",
+        "finish_source": "title",
+        "color": "Gray",
+        "material": "Unknown",
+        "sub_type": "Unknown",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": null,
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "206235768771",
+      "title": "For 2007-2013 Silverado 1500 Front Rear Left Door Handles Black Plastic Q\nUSA-Based – Free 2-4 Day Shipping & Returns!",
+      "classification": {
+        "position": "Front-Driver-Side",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Black",
+        "finish_source": "title",
+        "color": "Black",
+        "material": "Plastic",
+        "sub_type": "Unknown",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": null,
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "226998712780",
+      "title": "Dark Gray & Chrome Rear Inside Interior Door Handle Left Driver LH for Chevy GMC",
+      "classification": {
+        "position": "Rear-Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Chrome",
+        "finish_source": "title",
+        "color": "Gray bezel with chrome lever",
+        "material": "Unknown",
+        "sub_type": "Replacement",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": null,
+          "year_end": null,
+          "year_range": null,
+          "makes": [
+            "Chevy",
+            "GMC"
+          ],
+          "models": [
+            "GMC"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "230977140120",
+      "title": "Dark Gray Inside Door Pull Handle Left Driver LH for Chevy Silverado GMC Sierra\nLifetime Warranty. Free Shipping. Highest Quality.",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Gray",
+        "finish_source": "title",
+        "color": "Gray",
+        "material": "Unknown",
+        "sub_type": "Unknown",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": null,
+          "year_end": null,
+          "year_range": null,
+          "makes": [
+            "Chevy",
+            "GMC"
+          ],
+          "models": [
+            "Sierra\nLifetime",
+            "Silverado GMC"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "233726363511",
+      "title": "Door Handle Trims Front or Rear Driver Left Side Inner Interior Inside for Chevy\nHassle Free Returns. Free Fast Shipping.",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Replacement",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": null,
+          "year_end": null,
+          "year_range": null,
+          "makes": [
+            "Chevy"
+          ],
+          "models": [
+            "Hassle Free"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "267312923825",
+      "title": "Door Handle Repair Kit Interior Inside LH For 07-13 Chevy Silverado GMC Sierra",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Plastic & Metal",
+        "sub_type": "Replacement",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevy",
+            "GMC"
+          ],
+          "models": [
+            "Sierra",
+            "Silverado GMC"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "277269848454",
+      "title": "For 2007-2013 Silverado 1500 Front Left Interior Door Handle Gray 15920697",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Gray",
+        "finish_source": "title",
+        "color": "Gray",
+        "material": "Unknown",
+        "sub_type": "Unknown",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": null,
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "283817858701",
+      "title": "Door Handle Repair Kit Interior Inside LH For 07-13 Chevy Silverado 1500/2500 HD",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Black",
+        "finish_source": "item_specifics",
+        "color": "Black",
+        "material": "Plastic & Metal",
+        "sub_type": "Replacement",
+        "door_config": "4-door-full",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2012,
+          "year_end": 2014,
+          "year_range": "2012-2014",
+          "makes": [
+            "Chevrolet",
+            "GMC"
+          ],
+          "models": [
+            "Avalanche",
+            "Sierra 1500",
+            "Sierra 2500 HD",
+            "Sierra 3500 HD",
+            "Silverado 1500",
+            "Silverado 2500 HD",
+            "Silverado 3500 HD",
+            "Suburban 1500",
+            "Suburban 2500",
+            "Tahoe",
+            "Yukon",
+            "Yukon XL 1500",
+            "Yukon XL 2500"
+          ],
+          "trims": [
+            "Base Crew Cab Pickup 4-Door",
+            "Base Sport Utility 4-Door",
+            "Base Standard Cab Pickup 2-Door",
+            "Black Diamond LS Crew Cab Pickup 4-Door",
+            "Black Diamond LT Crew Cab Pickup 4-Door",
+            "Black Diamond LTZ Crew Cab Pickup 4-Door",
+            "Denali Crew Cab Pickup 4-Door",
+            "Denali Hybrid Sport Utility 4-Door",
+            "Denali Sport Utility 4-Door",
+            "Hybrid Crew Cab Pickup 4-Door",
+            "Hybrid Sport Utility 4-Door",
+            "LS Crew Cab Pickup 4-Door",
+            "LS Extended Cab Pickup 4-Door",
+            "LS Sport Utility 4-Door",
+            "LT Cab & Chassis 2-Door",
+            "LT Cab & Chassis 4-Door",
+            "LT Crew Cab Pickup 4-Door",
+            "LT Extended Cab Pickup 4-Door",
+            "LT Sport Utility 4-Door",
+            "LT Standard Cab Pickup 2-Door",
+            "LTZ Crew Cab Pickup 4-Door",
+            "LTZ Extended Cab Pickup 4-Door",
+            "LTZ Sport Utility 4-Door",
+            "PPV Sport Utility 4-Door",
+            "SL Crew Cab Pickup 4-Door",
+            "SL Extended Cab Pickup 4-Door",
+            "SLE Cab & Chassis 2-Door",
+            "SLE Cab & Chassis 4-Door",
+            "SLE Crew Cab Pickup 4-Door",
+            "SLE Extended Cab Pickup 4-Door",
+            "SLE Sport Utility 4-Door",
+            "SLE Standard Cab Pickup 2-Door",
+            "SLT Crew Cab Pickup 4-Door",
+            "SLT Extended Cab Pickup 4-Door",
+            "SLT Sport Utility 4-Door",
+            "SSV Sport Utility 4-Door",
+            "WT Cab & Chassis 2-Door",
+            "WT Cab & Chassis 4-Door",
+            "WT Crew Cab Pickup 4-Door",
+            "WT Extended Cab Pickup 4-Door",
+            "WT Standard Cab Pickup 2-Door",
+            "XFE Crew Cab Pickup 4-Door"
+          ],
+          "engines": [
+            "4.3L 262Cu. In. V6 GAS OHV Naturally Aspirated",
+            "4.8L 294Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "5.3L 5328CC 325Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "5.3L 5328CC 325Cu. In. V8 GAS OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 CNG OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 FULL HYBRID EV-FLEX (FHEV) OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 GAS OHV Naturally Aspirated",
+            "6.2L 6162CC 376Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "6.6L 6599CC 403Cu. In. V8 DIESEL OHV Turbocharged"
+          ]
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "287327657935",
+      "title": "Driver Interior Inside Door Handle Repair Kit For 2007-13 Chevy Sierra Silverado",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Replacement",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevy"
+          ],
+          "models": [
+            "Sierra Silverado"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "305472905458",
+      "title": "Door Handles Kit Interior Inside LH RH For Toyota Sienna 1998-2003 Gray 2Pcs",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": 2,
+        "count_source": "title",
+        "finish": "Gray",
+        "finish_source": "title",
+        "color": "Gray",
+        "material": "Does not apply",
+        "sub_type": "Unknown",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 1998,
+          "year_end": 2003,
+          "year_range": "1998-2003",
+          "makes": [
+            "Toyota"
+          ],
+          "models": [
+            "Sienna"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "310709218802",
+      "title": "Black/Chrome Rear Inside Interior Door Handle Left Driver Side LH for Chevy GMC\nOrder by Noon EST and this part ships today!",
+      "classification": {
+        "position": "Rear-Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Chrome",
+        "finish_source": "title",
+        "color": "Black",
+        "material": "Plastic",
+        "sub_type": "Unknown",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": null,
+          "year_end": null,
+          "year_range": null,
+          "makes": [
+            "Chevy",
+            "GMC"
+          ],
+          "models": [
+            "GMC\nOrder",
+            "Order by"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "310709223608",
+      "title": "Black/Chrome Rear Inside Interior Door Handle Left Driver Side LH for Chevy GMC\nLifetime Warranty. Free Shipping. Highest Quality.",
+      "classification": {
+        "position": "Rear-Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Chrome",
+        "finish_source": "title",
+        "color": "Black",
+        "material": "Plastic",
+        "sub_type": "Unknown",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": null,
+          "year_end": null,
+          "year_range": null,
+          "makes": [
+            "Chevy",
+            "GMC"
+          ],
+          "models": [
+            "GMC\nLifetime",
+            "Lifetime Warranty."
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "310760867825",
+      "title": "Dark Gray & Chrome Rear Inside Interior Door Handle Left Driver LH for Chevy GMC\nOrder by Noon EST and this part ships today!",
+      "classification": {
+        "position": "Rear-Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Chrome",
+        "finish_source": "title",
+        "color": "Gray",
+        "material": "Plastic",
+        "sub_type": "Unknown",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": null,
+          "year_end": null,
+          "year_range": null,
+          "makes": [
+            "Chevy",
+            "GMC"
+          ],
+          "models": [
+            "GMC\nOrder",
+            "Order by"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "310766394595",
+      "title": "Door Handle Repair Kit Interior Inside LH Driver for 07-14 Sierra Silverado\nOrder by Noon EST and this part ships today!",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Replacement",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": null,
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "313703014583",
+      "title": "Driver Interior Inside Door Handle Repair Kit For 07-13 Chevy Sierra Silverado",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Primed",
+        "finish_source": "item_specifics",
+        "color": "Black",
+        "material": "Plastic & Metal",
+        "sub_type": "Replacement",
+        "door_config": "4-door-full",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2012,
+          "year_end": 2014,
+          "year_range": "2012-2014",
+          "makes": [
+            "Chevrolet",
+            "GMC"
+          ],
+          "models": [
+            "Avalanche",
+            "Sierra 1500",
+            "Sierra 2500 HD",
+            "Sierra 3500 HD",
+            "Silverado 1500",
+            "Silverado 2500 HD",
+            "Silverado 3500 HD",
+            "Suburban 1500",
+            "Suburban 2500",
+            "Tahoe",
+            "Yukon",
+            "Yukon XL 1500",
+            "Yukon XL 2500"
+          ],
+          "trims": [
+            "Base Crew Cab Pickup 4-Door",
+            "Base Sport Utility 4-Door",
+            "Base Standard Cab Pickup 2-Door",
+            "Black Diamond LS Crew Cab Pickup 4-Door",
+            "Black Diamond LT Crew Cab Pickup 4-Door",
+            "Black Diamond LTZ Crew Cab Pickup 4-Door",
+            "Denali Crew Cab Pickup 4-Door",
+            "Denali Hybrid Sport Utility 4-Door",
+            "Denali Sport Utility 4-Door",
+            "Hybrid Crew Cab Pickup 4-Door",
+            "Hybrid Sport Utility 4-Door",
+            "LS Crew Cab Pickup 4-Door",
+            "LS Extended Cab Pickup 4-Door",
+            "LS Sport Utility 4-Door",
+            "LT Cab & Chassis 2-Door",
+            "LT Cab & Chassis 4-Door",
+            "LT Crew Cab Pickup 4-Door",
+            "LT Extended Cab Pickup 4-Door",
+            "LT Sport Utility 4-Door",
+            "LT Standard Cab Pickup 2-Door",
+            "LTZ Crew Cab Pickup 4-Door",
+            "LTZ Extended Cab Pickup 4-Door",
+            "LTZ Sport Utility 4-Door",
+            "PPV Sport Utility 4-Door",
+            "SL Crew Cab Pickup 4-Door",
+            "SL Extended Cab Pickup 4-Door",
+            "SLE Cab & Chassis 2-Door",
+            "SLE Cab & Chassis 4-Door",
+            "SLE Crew Cab Pickup 4-Door",
+            "SLE Extended Cab Pickup 4-Door",
+            "SLE Sport Utility 4-Door",
+            "SLE Standard Cab Pickup 2-Door",
+            "SLT Crew Cab Pickup 4-Door",
+            "SLT Extended Cab Pickup 4-Door",
+            "SLT Sport Utility 4-Door",
+            "SSV Sport Utility 4-Door",
+            "WT Cab & Chassis 2-Door",
+            "WT Cab & Chassis 4-Door",
+            "WT Crew Cab Pickup 4-Door",
+            "WT Extended Cab Pickup 4-Door",
+            "WT Standard Cab Pickup 2-Door",
+            "XFE Crew Cab Pickup 4-Door"
+          ],
+          "engines": [
+            "4.3L 262Cu. In. V6 GAS OHV Naturally Aspirated",
+            "4.8L 294Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "5.3L 5328CC 325Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "5.3L 5328CC 325Cu. In. V8 GAS OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 CNG OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 FULL HYBRID EV-FLEX (FHEV) OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 GAS OHV Naturally Aspirated",
+            "6.2L 6162CC 376Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "6.6L 6599CC 403Cu. In. V8 DIESEL OHV Turbocharged"
+          ]
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "323799881866",
+      "title": "For 07-13 2012 Chevy Silverado 2500 HD LH Door Handle Repair Kit Interior Inside",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Black",
+        "finish_source": "item_specifics",
+        "color": "Black",
+        "material": "Plastic & Metal",
+        "sub_type": "Replacement",
+        "door_config": "4-door-full",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2012,
+          "year_end": 2014,
+          "year_range": "2012-2014",
+          "makes": [
+            "Chevrolet",
+            "GMC"
+          ],
+          "models": [
+            "Avalanche",
+            "Sierra 1500",
+            "Sierra 2500 HD",
+            "Sierra 3500 HD",
+            "Silverado 1500",
+            "Silverado 2500 HD",
+            "Silverado 3500 HD",
+            "Suburban 1500",
+            "Suburban 2500",
+            "Tahoe",
+            "Yukon",
+            "Yukon XL 1500",
+            "Yukon XL 2500"
+          ],
+          "trims": [
+            "Base Crew Cab Pickup 4-Door",
+            "Base Sport Utility 4-Door",
+            "Base Standard Cab Pickup 2-Door",
+            "Black Diamond LS Crew Cab Pickup 4-Door",
+            "Black Diamond LT Crew Cab Pickup 4-Door",
+            "Black Diamond LTZ Crew Cab Pickup 4-Door",
+            "Denali Crew Cab Pickup 4-Door",
+            "Denali Hybrid Sport Utility 4-Door",
+            "Denali Sport Utility 4-Door",
+            "Hybrid Crew Cab Pickup 4-Door",
+            "Hybrid Sport Utility 4-Door",
+            "LS Crew Cab Pickup 4-Door",
+            "LS Extended Cab Pickup 4-Door",
+            "LS Sport Utility 4-Door",
+            "LT Cab & Chassis 2-Door",
+            "LT Cab & Chassis 4-Door",
+            "LT Crew Cab Pickup 4-Door",
+            "LT Extended Cab Pickup 4-Door",
+            "LT Sport Utility 4-Door",
+            "LT Standard Cab Pickup 2-Door",
+            "LTZ Crew Cab Pickup 4-Door",
+            "LTZ Extended Cab Pickup 4-Door",
+            "LTZ Sport Utility 4-Door",
+            "PPV Sport Utility 4-Door",
+            "SL Crew Cab Pickup 4-Door",
+            "SL Extended Cab Pickup 4-Door",
+            "SLE Cab & Chassis 2-Door",
+            "SLE Cab & Chassis 4-Door",
+            "SLE Crew Cab Pickup 4-Door",
+            "SLE Extended Cab Pickup 4-Door",
+            "SLE Sport Utility 4-Door",
+            "SLE Standard Cab Pickup 2-Door",
+            "SLT Crew Cab Pickup 4-Door",
+            "SLT Extended Cab Pickup 4-Door",
+            "SLT Sport Utility 4-Door",
+            "SSV Sport Utility 4-Door",
+            "WT Cab & Chassis 2-Door",
+            "WT Cab & Chassis 4-Door",
+            "WT Crew Cab Pickup 4-Door",
+            "WT Extended Cab Pickup 4-Door",
+            "WT Standard Cab Pickup 2-Door",
+            "XFE Crew Cab Pickup 4-Door"
+          ],
+          "engines": [
+            "4.3L 262Cu. In. V6 GAS OHV Naturally Aspirated",
+            "4.8L 294Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "5.3L 5328CC 325Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "5.3L 5328CC 325Cu. In. V8 GAS OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 CNG OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 FULL HYBRID EV-FLEX (FHEV) OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 GAS OHV Naturally Aspirated",
+            "6.2L 6162CC 376Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "6.6L 6599CC 403Cu. In. V8 DIESEL OHV Turbocharged"
+          ]
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "335892849075",
+      "title": "Door Handle For 2007-2013 Silverado 1500 Black Housing Front LH RH Inner 1/2Set",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": 2,
+        "count_source": "item_specifics",
+        "finish": "Black",
+        "finish_source": "title",
+        "color": "Black",
+        "material": "Unknown",
+        "sub_type": "Interior Door Handle",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": null,
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "336252157105",
+      "title": "Door Handle For 07-13 Chevy Silverado 1500 Suburban 1500 Front LH RH Inner",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": 2,
+        "count_source": "item_specifics",
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Interior Door Handle",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevy"
+          ],
+          "models": [
+            "Silverado"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "355448970865",
+      "title": "Interior Door Handle Inside Left Driver Side For Chevy Silverado Sierra 2007-13",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Black",
+        "finish_source": "item_specifics",
+        "color": "Black",
+        "material": "Unknown",
+        "sub_type": "Unknown",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevy"
+          ],
+          "models": [
+            "Silverado Sierra"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "355886014566",
+      "title": "Door Handle Repair Kit Interior Inside LH For 07-13 Chevy Silverado GMC Sierra",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Replacement",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevy",
+            "GMC"
+          ],
+          "models": [
+            "Sierra",
+            "Silverado GMC"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "370782645442",
+      "title": "Cashmere & Chrome Rear Inside Interior Door Handle Left Side LH for Chevy GMC\nOrder by Noon EST and this part ships today!",
+      "classification": {
+        "position": "Rear-Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Chrome",
+        "finish_source": "title",
+        "color": "Unknown",
+        "material": "Plastic",
+        "sub_type": "Unknown",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": null,
+          "year_end": null,
+          "year_range": null,
+          "makes": [
+            "Chevy",
+            "GMC"
+          ],
+          "models": [
+            "GMC\nOrder",
+            "Order by"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "372318944018",
+      "title": "Dark Gray & Chrome Rear Inside Interior Door Handle Left Driver LH for Chevy GMC\nHassle Free Returns. Free Fast Shipping.",
+      "classification": {
+        "position": "Rear-Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Chrome",
+        "finish_source": "title",
+        "color": "Gray bezel with chrome lever",
+        "material": "Unknown",
+        "sub_type": "Interior Door Handle",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": null,
+          "year_end": null,
+          "year_range": null,
+          "makes": [
+            "Chevy",
+            "GMC"
+          ],
+          "models": [
+            "GMC\nHassle",
+            "Hassle Free"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "373053243362",
+      "title": "Door Handle Repair Kit Interior Inside LH For 07-13 Chevy Silverado GMC Sierra",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Replacement",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevy",
+            "GMC"
+          ],
+          "models": [
+            "Sierra",
+            "Silverado GMC"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "376688138160",
+      "title": "Door Handle Trims Front or Rear Driver Left Side Inner Interior Inside for Chevy",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Replacement",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": null,
+          "year_end": null,
+          "year_range": null,
+          "makes": [
+            "Chevy"
+          ],
+          "models": [],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "387319161340",
+      "title": "LH Driver Interior Inside Door Handle Repair For Chevy Silverado Sierra 2007-13",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Painted",
+        "finish_source": "item_specifics",
+        "color": "Black",
+        "material": "Nylon",
+        "sub_type": "Unknown",
+        "door_config": "4-door-full",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2012,
+          "year_end": 2014,
+          "year_range": "2012-2014",
+          "makes": [
+            "Chevrolet",
+            "GMC"
+          ],
+          "models": [
+            "Avalanche",
+            "Sierra 1500",
+            "Sierra 2500 HD",
+            "Sierra 3500 HD",
+            "Silverado 1500",
+            "Silverado 2500 HD",
+            "Silverado 3500 HD",
+            "Suburban 1500",
+            "Suburban 2500",
+            "Tahoe",
+            "Yukon",
+            "Yukon XL 1500",
+            "Yukon XL 2500"
+          ],
+          "trims": [
+            "Base Crew Cab Pickup 4-Door",
+            "Base Sport Utility 4-Door",
+            "Base Standard Cab Pickup 2-Door",
+            "Black Diamond LS Crew Cab Pickup 4-Door",
+            "Black Diamond LT Crew Cab Pickup 4-Door",
+            "Black Diamond LTZ Crew Cab Pickup 4-Door",
+            "Denali Crew Cab Pickup 4-Door",
+            "Denali Hybrid Sport Utility 4-Door",
+            "Denali Sport Utility 4-Door",
+            "Hybrid Crew Cab Pickup 4-Door",
+            "Hybrid Sport Utility 4-Door",
+            "LS Crew Cab Pickup 4-Door",
+            "LS Extended Cab Pickup 4-Door",
+            "LS Sport Utility 4-Door",
+            "LT Cab & Chassis 2-Door",
+            "LT Cab & Chassis 4-Door",
+            "LT Crew Cab Pickup 4-Door",
+            "LT Extended Cab Pickup 4-Door",
+            "LT Sport Utility 4-Door",
+            "LT Standard Cab Pickup 2-Door",
+            "LTZ Crew Cab Pickup 4-Door",
+            "LTZ Extended Cab Pickup 4-Door",
+            "LTZ Sport Utility 4-Door",
+            "PPV Sport Utility 4-Door",
+            "SL Crew Cab Pickup 4-Door",
+            "SL Extended Cab Pickup 4-Door",
+            "SLE Cab & Chassis 2-Door",
+            "SLE Cab & Chassis 4-Door",
+            "SLE Crew Cab Pickup 4-Door",
+            "SLE Extended Cab Pickup 4-Door",
+            "SLE Sport Utility 4-Door",
+            "SLE Standard Cab Pickup 2-Door",
+            "SLT Crew Cab Pickup 4-Door",
+            "SLT Extended Cab Pickup 4-Door",
+            "SLT Sport Utility 4-Door",
+            "SSV Sport Utility 4-Door",
+            "WT Cab & Chassis 2-Door",
+            "WT Cab & Chassis 4-Door",
+            "WT Crew Cab Pickup 4-Door",
+            "WT Extended Cab Pickup 4-Door",
+            "WT Standard Cab Pickup 2-Door",
+            "XFE Crew Cab Pickup 4-Door"
+          ],
+          "engines": [
+            "4.3L 262Cu. In. V6 GAS OHV Naturally Aspirated",
+            "4.8L 294Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "5.3L 5328CC 325Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "5.3L 5328CC 325Cu. In. V8 GAS OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 CNG OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 FULL HYBRID EV-FLEX (FHEV) OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 GAS OHV Naturally Aspirated",
+            "6.2L 6162CC 376Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "6.6L 6599CC 403Cu. In. V8 DIESEL OHV Turbocharged"
+          ]
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "395873454053",
+      "title": "For 07-13 Chevy Silverado 1500 2500 HD Door Handle Repair Kit Interior Inside LH",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Does not apply",
+        "finish_source": "item_specifics",
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Replacement",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevy"
+          ],
+          "models": [
+            "Silverado"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "396297944550",
+      "title": "Door Handle Trims Front or Rear Driver Left Side Inner Interior Inside for Chevy",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Trim",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": null,
+          "year_end": null,
+          "year_range": null,
+          "makes": [
+            "Chevy"
+          ],
+          "models": [],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "396333537220",
+      "title": "Door Handle For 2007-2013 Silverado 1500 Black Housing Front LH RH Inner 1/2Set",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": 2,
+        "count_source": "item_specifics",
+        "finish": "Black",
+        "finish_source": "title",
+        "color": "Black",
+        "material": "Unknown",
+        "sub_type": "Interior Door Handle",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": null,
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "397213845124",
+      "title": "Door Handle For 2007-2013 Silverado 1500 Black Housing Front LH RH Inner 1/2Set",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": 2,
+        "count_source": "item_specifics",
+        "finish": "Black",
+        "finish_source": "title",
+        "color": "Black",
+        "material": "Unknown",
+        "sub_type": "Interior Door Handle",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": null,
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "397222595380",
+      "title": "Door Handle For 07-13 Chevy Silverado 1500 Suburban 1500 Front LH RH Inner",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": 2,
+        "count_source": "item_specifics",
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Interior Door Handle",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevy"
+          ],
+          "models": [
+            "Silverado"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "397963213832",
+      "title": "2pcs For Chevy Avalanche 2007-2013 Interior Door Handle Front Left Right Side",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": 2,
+        "count_source": "item_specifics",
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Interior Door Handle",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevy"
+          ],
+          "models": [
+            "Avalanche"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "403824915227",
+      "title": "Interior Door Handle Repair LH For 2007-13 Chevy Sierra Silverado 1500 2500 HD",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Black",
+        "finish_source": "item_specifics",
+        "color": "Black",
+        "material": "Plastic & Metal",
+        "sub_type": "Replacement",
+        "door_config": "4-door-full",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2011,
+          "year_end": 2013,
+          "year_range": "2011-2013",
+          "makes": [
+            "Chevrolet",
+            "GMC"
+          ],
+          "models": [
+            "Sierra 1500",
+            "Sierra 2500 HD",
+            "Sierra 3500 HD",
+            "Silverado 1500",
+            "Silverado 2500 HD",
+            "Silverado 3500 HD"
+          ],
+          "trims": [
+            "Denali Crew Cab Pickup 4-Door",
+            "Hybrid Crew Cab Pickup 4-Door",
+            "LS Crew Cab Pickup 4-Door",
+            "LS Extended Cab Pickup 4-Door",
+            "LT Cab & Chassis 2-Door",
+            "LT Cab & Chassis 4-Door",
+            "LT Crew Cab Pickup 4-Door",
+            "LT Extended Cab Pickup 4-Door",
+            "LT Standard Cab Pickup 2-Door",
+            "LTZ Crew Cab Pickup 4-Door",
+            "SL Crew Cab Pickup 4-Door",
+            "SL Extended Cab Pickup 4-Door",
+            "SLE Cab & Chassis 2-Door",
+            "SLE Cab & Chassis 4-Door",
+            "SLE Crew Cab Pickup 4-Door",
+            "SLE Extended Cab Pickup 4-Door",
+            "SLE Standard Cab Pickup 2-Door",
+            "SLT Crew Cab Pickup 4-Door",
+            "SLT Extended Cab Pickup 4-Door",
+            "WT Cab & Chassis 2-Door",
+            "WT Cab & Chassis 4-Door",
+            "WT Crew Cab Pickup 4-Door",
+            "WT Extended Cab Pickup 4-Door",
+            "WT Standard Cab Pickup 2-Door",
+            "XFE Crew Cab Pickup 4-Door"
+          ],
+          "engines": [
+            "4.3L 262Cu. In. V6 GAS OHV Naturally Aspirated",
+            "4.8L 294Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "5.3L 5328CC 325Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 CNG OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 FULL HYBRID EV-FLEX (FHEV) OHV Naturally Aspirated",
+            "6.0L 5967CC 364Cu. In. V8 GAS OHV Naturally Aspirated",
+            "6.2L 6162CC 376Cu. In. V8 FLEX OHV Naturally Aspirated",
+            "6.6L 6599CC 403Cu. In. V8 DIESEL OHV Turbocharged"
+          ]
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "405208195812",
+      "title": "Door Handle Repair Kit Interior Inside LH For 07-13 Chevy Silverado 1500 2500 HD",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Does not apply",
+        "sub_type": "Replacement",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevy"
+          ],
+          "models": [
+            "Silverado"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "405664985839",
+      "title": "Door Handle For 07-13 Chevy Silverado 1500 Suburban 1500 Front LH RH Inner",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": 2,
+        "count_source": "item_specifics",
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Interior Door Handle",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevy"
+          ],
+          "models": [
+            "Silverado"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "406242982973",
+      "title": "2pcs For 2007-2013 Chevy Avalanche Interior Door Handle Front Left Right Side",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": 2,
+        "count_source": "item_specifics",
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Interior Door Handle",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevy"
+          ],
+          "models": [
+            "Avalanche Interior"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "406559469848",
+      "title": "For 2007-2013 Silverado 1500 Front Left Interior Door Handle Gray 22855628",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Gray",
+        "finish_source": "title",
+        "color": "Gray",
+        "material": "Unknown",
+        "sub_type": "Unknown",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": null,
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "406856797989",
+      "title": "For 2007-2013 Silverado 1500 Front Left Interior Door Handle Gray",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Gray",
+        "finish_source": "title",
+        "color": "Gray",
+        "material": "Unknown",
+        "sub_type": "Unknown",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": null,
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "406883129255",
+      "title": "2Set Interior Door Handle For 2007-2013 Chevrolet Avalanche Front Black With Chr",
+      "classification": {
+        "position": "Front-Inner",
+        "position_source": "title",
+        "count": 2,
+        "count_source": "item_specifics",
+        "finish": "Black",
+        "finish_source": "title",
+        "color": "Black",
+        "material": "Unknown",
+        "sub_type": "Interior Door Handle",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevrolet"
+          ],
+          "models": [
+            "Avalanche Front"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "406888264295",
+      "title": "For 2007-2013 Silverado 1500 Front Rear Left Door Handles Black Plastic Q",
+      "classification": {
+        "position": "Front-Driver-Side",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Black",
+        "finish_source": "title",
+        "color": "Black",
+        "material": "Plastic",
+        "sub_type": "Unknown",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": null,
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "406906994486",
+      "title": "2007-13 Chevy Silverado Sierra Interior Door Handle Inside Left Driver Side OEM",
+      "classification": {
+        "position": "Driver-Side-Inner",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Black",
+        "finish_source": "item_specifics",
+        "color": "Black",
+        "material": "Unknown",
+        "sub_type": "Unknown",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevy"
+          ],
+          "models": [
+            "Silverado Sierra"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "800019806091",
+      "title": "2pcs For Chevy 2007-2013 Avalanche Interior Door Handle Front Left Right Side",
+      "classification": {
+        "position": "Front-Driver-Side-Inner",
+        "position_source": "title",
+        "count": 2,
+        "count_source": "item_specifics",
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Unknown",
+        "sub_type": "Interior Door Handle",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2007,
+          "year_end": 2013,
+          "year_range": "2007-2013",
+          "makes": [
+            "Chevy"
+          ],
+          "models": [],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    }
+  ],
+  "anchor_analysis": {
+    "anchor_classification": {
+      "position": "Driver-Side-Inner",
+      "position_source": "title",
+      "count": 1,
+      "count_source": "item_specifics",
+      "finish": "Black",
+      "finish_source": "item_specifics",
+      "color": "Black",
+      "material": "Plastic & Metal",
+      "sub_type": "Replacement",
+      "door_config": "4-door-full",
+      "structure": "Unknown",
+      "structure_source": "unknown",
+      "accessories": [],
+      "vehicle": {
+        "year_start": 2012,
+        "year_end": 2014,
+        "year_range": "2012-2014",
+        "makes": [
+          "Chevrolet",
+          "GMC"
+        ],
+        "models": [
+          "Avalanche",
+          "Sierra 1500",
+          "Sierra 2500 HD",
+          "Sierra 3500 HD",
+          "Silverado 1500",
+          "Silverado 2500 HD",
+          "Silverado 3500 HD",
+          "Suburban 1500",
+          "Suburban 2500",
+          "Tahoe",
+          "Yukon",
+          "Yukon XL 1500",
+          "Yukon XL 2500"
+        ],
+        "trims": [
+          "Base Crew Cab Pickup 4-Door",
+          "Base Sport Utility 4-Door",
+          "Base Standard Cab Pickup 2-Door",
+          "Black Diamond LS Crew Cab Pickup 4-Door",
+          "Black Diamond LT Crew Cab Pickup 4-Door",
+          "Black Diamond LTZ Crew Cab Pickup 4-Door",
+          "Denali Crew Cab Pickup 4-Door",
+          "Denali Hybrid Sport Utility 4-Door",
+          "Denali Sport Utility 4-Door",
+          "Hybrid Crew Cab Pickup 4-Door",
+          "Hybrid Sport Utility 4-Door",
+          "LS Crew Cab Pickup 4-Door",
+          "LS Extended Cab Pickup 4-Door",
+          "LS Sport Utility 4-Door",
+          "LT Cab & Chassis 2-Door",
+          "LT Cab & Chassis 4-Door",
+          "LT Crew Cab Pickup 4-Door",
+          "LT Extended Cab Pickup 4-Door",
+          "LT Sport Utility 4-Door",
+          "LT Standard Cab Pickup 2-Door",
+          "LTZ Crew Cab Pickup 4-Door",
+          "LTZ Extended Cab Pickup 4-Door",
+          "LTZ Sport Utility 4-Door",
+          "PPV Sport Utility 4-Door",
+          "SL Crew Cab Pickup 4-Door",
+          "SL Extended Cab Pickup 4-Door",
+          "SLE Cab & Chassis 2-Door",
+          "SLE Cab & Chassis 4-Door",
+          "SLE Crew Cab Pickup 4-Door",
+          "SLE Extended Cab Pickup 4-Door",
+          "SLE Sport Utility 4-Door",
+          "SLE Standard Cab Pickup 2-Door",
+          "SLT Crew Cab Pickup 4-Door",
+          "SLT Extended Cab Pickup 4-Door",
+          "SLT Sport Utility 4-Door",
+          "SSV Sport Utility 4-Door",
+          "WT Cab & Chassis 2-Door",
+          "WT Cab & Chassis 4-Door",
+          "WT Crew Cab Pickup 4-Door",
+          "WT Extended Cab Pickup 4-Door",
+          "WT Standard Cab Pickup 2-Door",
+          "XFE Crew Cab Pickup 4-Door"
+        ],
+        "engines": [
+          "4.3L 262Cu. In. V6 GAS OHV Naturally Aspirated",
+          "4.8L 294Cu. In. V8 FLEX OHV Naturally Aspirated",
+          "5.3L 5328CC 325Cu. In. V8 FLEX OHV Naturally Aspirated",
+          "5.3L 5328CC 325Cu. In. V8 GAS OHV Naturally Aspirated",
+          "6.0L 5967CC 364Cu. In. V8 CNG OHV Naturally Aspirated",
+          "6.0L 5967CC 364Cu. In. V8 FLEX OHV Naturally Aspirated",
+          "6.0L 5967CC 364Cu. In. V8 FULL HYBRID EV-FLEX (FHEV) OHV Naturally Aspirated",
+          "6.0L 5967CC 364Cu. In. V8 GAS OHV Naturally Aspirated",
+          "6.2L 6162CC 376Cu. In. V8 FLEX OHV Naturally Aspirated",
+          "6.6L 6599CC 403Cu. In. V8 DIESEL OHV Turbocharged"
+        ]
+      },
+      "bed_length": null,
+      "needs_vision": [
+        "structure"
+      ],
+      "vision_result": null
+    },
+    "anchor_structure": {
+      "structure": "Unknown",
+      "structure_source": "unknown"
+    },
+    "anchor_accessories": [],
+    "anchor_years": "2007-2013",
+    "anchor_vehicles": [
+      "Chevy Sierra Silverado",
+      "Chevy Silverado",
+      "Chevy Silverado GMC",
+      "Chevy Silverado Sierra",
+      "GMC Sierra"
+    ],
+    "rule0_excluded": [
+      {
+        "competitor_url": "https://www.ebay.com/itm/127401470129",
+        "competitor_title": "Door Handle Set For 2007-2013 Silverado 1500 Rear Left & Right Inner Black 2Pc",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Rear-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/127797298081",
+        "competitor_title": "2pcs For 2007-2013 Chevy Avalanche Interior Door Handle Front Left Right Side C",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/130903964625",
+        "competitor_title": "Dark Gray Inside Door Pull Handle Left Driver LH for Chevy Silverado GMC Sierra\nOrder by Noon EST and this part ships today!",
+        "field": "finish",
+        "reason": "表面处理/颜色不同",
+        "anchor_value": "Black",
+        "competitor_value": "Gray"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/131028050449",
+        "competitor_title": "Door Handle Repair Inside Interior Front Rear Kit Set of 4 for Sierra Silverado\nOrder by Noon EST and this part ships today!",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/134367695035",
+        "competitor_title": "Door Handle Repair Kit Interior Inside LH Driver for 07-13 Sierra Silverado\nFast & Free Shipping",
+        "field": "finish",
+        "reason": "表面处理/颜色不同",
+        "anchor_value": "Black",
+        "competitor_value": "Textured"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/134378697102",
+        "competitor_title": "Door Handle Inside Interior Front Left Right Black Ebony & Chrome for Chevy GMC\nFast & Free Shipping",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/135168671700",
+        "competitor_title": "2pcs For 2007-2013 Chevy Interior Avalanche Door Handle Front Left Right Side",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/147305519270",
+        "competitor_title": "2pcs For Chevy 2007-2013 Avalanche Door Interior Handle Left Front Side Right",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/157938371812",
+        "competitor_title": "2pcs For 2007-2013 Avalanche Chevy Interior Door Handle Front Left Right EAH",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/177265012891",
+        "competitor_title": "For 2007-2013 Silverado 1500 Front Left Interior Door Handle Gray 15920697\nUSA-Based – Free Shipping & Returns! 14+ Years!",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/206210439838",
+        "competitor_title": "For 2007-2013 Silverado 1500 Front Left Interior Door Handle Gray\nUSA-Based – Trusted 14+ Years! Over 99k Reviews!",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/206235768771",
+        "competitor_title": "For 2007-2013 Silverado 1500 Front Rear Left Door Handles Black Plastic Q\nUSA-Based – Free 2-4 Day Shipping & Returns!",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/226998712780",
+        "competitor_title": "Dark Gray & Chrome Rear Inside Interior Door Handle Left Driver LH for Chevy GMC",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Rear-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/230977140120",
+        "competitor_title": "Dark Gray Inside Door Pull Handle Left Driver LH for Chevy Silverado GMC Sierra\nLifetime Warranty. Free Shipping. Highest Quality.",
+        "field": "finish",
+        "reason": "表面处理/颜色不同",
+        "anchor_value": "Black",
+        "competitor_value": "Gray"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/233726363511",
+        "competitor_title": "Door Handle Trims Front or Rear Driver Left Side Inner Interior Inside for Chevy\nHassle Free Returns. Free Fast Shipping.",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/277269848454",
+        "competitor_title": "For 2007-2013 Silverado 1500 Front Left Interior Door Handle Gray 15920697",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/305472905458",
+        "competitor_title": "Door Handles Kit Interior Inside LH RH For Toyota Sienna 1998-2003 Gray 2Pcs",
+        "field": "count",
+        "reason": "件数不同",
+        "anchor_value": 1,
+        "competitor_value": 2
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/310709218802",
+        "competitor_title": "Black/Chrome Rear Inside Interior Door Handle Left Driver Side LH for Chevy GMC\nOrder by Noon EST and this part ships today!",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Rear-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/310709223608",
+        "competitor_title": "Black/Chrome Rear Inside Interior Door Handle Left Driver Side LH for Chevy GMC\nLifetime Warranty. Free Shipping. Highest Quality.",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Rear-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/310760867825",
+        "competitor_title": "Dark Gray & Chrome Rear Inside Interior Door Handle Left Driver LH for Chevy GMC\nOrder by Noon EST and this part ships today!",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Rear-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/335892849075",
+        "competitor_title": "Door Handle For 2007-2013 Silverado 1500 Black Housing Front LH RH Inner 1/2Set",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/336252157105",
+        "competitor_title": "Door Handle For 07-13 Chevy Silverado 1500 Suburban 1500 Front LH RH Inner",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/370782645442",
+        "competitor_title": "Cashmere & Chrome Rear Inside Interior Door Handle Left Side LH for Chevy GMC\nOrder by Noon EST and this part ships today!",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Rear-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/372318944018",
+        "competitor_title": "Dark Gray & Chrome Rear Inside Interior Door Handle Left Driver LH for Chevy GMC\nHassle Free Returns. Free Fast Shipping.",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Rear-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/376688138160",
+        "competitor_title": "Door Handle Trims Front or Rear Driver Left Side Inner Interior Inside for Chevy",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/395873454053",
+        "competitor_title": "For 07-13 Chevy Silverado 1500 2500 HD Door Handle Repair Kit Interior Inside LH",
+        "field": "finish",
+        "reason": "表面处理/颜色不同",
+        "anchor_value": "Black",
+        "competitor_value": "Does not apply"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/396297944550",
+        "competitor_title": "Door Handle Trims Front or Rear Driver Left Side Inner Interior Inside for Chevy",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/396333537220",
+        "competitor_title": "Door Handle For 2007-2013 Silverado 1500 Black Housing Front LH RH Inner 1/2Set",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/397213845124",
+        "competitor_title": "Door Handle For 2007-2013 Silverado 1500 Black Housing Front LH RH Inner 1/2Set",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/397222595380",
+        "competitor_title": "Door Handle For 07-13 Chevy Silverado 1500 Suburban 1500 Front LH RH Inner",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/397963213832",
+        "competitor_title": "2pcs For Chevy Avalanche 2007-2013 Interior Door Handle Front Left Right Side",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/405664985839",
+        "competitor_title": "Door Handle For 07-13 Chevy Silverado 1500 Suburban 1500 Front LH RH Inner",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/406242982973",
+        "competitor_title": "2pcs For 2007-2013 Chevy Avalanche Interior Door Handle Front Left Right Side",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/406559469848",
+        "competitor_title": "For 2007-2013 Silverado 1500 Front Left Interior Door Handle Gray 22855628",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/406856797989",
+        "competitor_title": "For 2007-2013 Silverado 1500 Front Left Interior Door Handle Gray",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/406883129255",
+        "competitor_title": "2Set Interior Door Handle For 2007-2013 Chevrolet Avalanche Front Black With Chr",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Inner"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/406888264295",
+        "competitor_title": "For 2007-2013 Silverado 1500 Front Rear Left Door Handles Black Plastic Q",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/800019806091",
+        "competitor_title": "2pcs For Chevy 2007-2013 Avalanche Interior Door Handle Front Left Right Side",
+        "field": "position",
+        "reason": "方位不同",
+        "anchor_value": "Driver-Side-Inner",
+        "competitor_value": "Front-Driver-Side-Inner"
+      }
+    ],
+    "rule0_excluded_count": 38,
+    "valid_competitors_count": 11,
+    "year_expanded_alerts": [
+      {
+        "competitor_url": "https://www.ebay.com/itm/157630698670",
+        "competitor_title": "Door Handle Repair Kit Interior Inside Left For 07-14 Chevrolet Sierra Silverado",
+        "competitor_year": "2007-2014",
+        "anchor_year": "2007-2013",
+        "flag": "highlight",
+        "note": "竞品适配年份超出锚点范围，可能是扩展适配机会"
+      },
+      {
+        "competitor_url": "https://www.ebay.com/itm/310766394595",
+        "competitor_title": "Door Handle Repair Kit Interior Inside LH Driver for 07-14 Sierra Silverado\nOrder by Noon EST and this part ships today!",
+        "competitor_year": "2007-2014",
+        "anchor_year": "2007-2013",
+        "flag": "highlight",
+        "note": "竞品适配年份超出锚点范围，可能是扩展适配机会"
+      }
+    ],
+    "vehicle_compatibility_alerts": [
+      {
+        "competitor_url": "https://www.ebay.com/itm/157630698670",
+        "competitor_title": "Door Handle Repair Kit Interior Inside Left For 07-14 Chevrolet Sierra Silverado",
+        "anchor_vehicles": [
+          "Chevy Sierra Silverado",
+          "Chevy Silverado",
+          "Chevy Silverado GMC",
+          "Chevy Silverado Sierra",
+          "GMC Sierra"
+        ],
+        "extra_vehicles": [
+          "Chevrolet Sierra Silverado"
+        ],
+        "flag": "red",
+        "note": "竞品额外适配车型，需人工确认（同平台车可能共享零件）"
+      }
+    ],
+    "structure_warnings": [],
+    "structure_alerts": [],
+    "accessory_alerts": []
+  }
+}

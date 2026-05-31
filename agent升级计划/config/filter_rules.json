@@ -1,0 +1,77 @@
+{
+  "hard_rules": {
+    "vehicle_make_model": {
+      "action": "reject",
+      "description": "Make + Model completely different"
+    },
+    "product_type": {
+      "action": "reject",
+      "description": "Door Handle vs Handle Cover vs Mirror Trim"
+    },
+    "cab": {
+      "action": "reject_on_mismatch",
+      "description": "Crew Cab vs Extended Cab → reject; cab absent → skip",
+      "skip_if_absent": true
+    },
+    "bed_length": {
+      "action": "reject_on_mismatch",
+      "description": "Short Bed vs Long Bed → reject; absent → skip",
+      "skip_if_absent": true
+    },
+    "year_range": {
+      "action": "reject_on_zero_overlap",
+      "description": "Year range with zero overlap → reject; partial overlap → soft penalty"
+    },
+    "product_semantics": {
+      "action": "reject",
+      "description": "Cover/Overlay vs Replacement → hard reject (fundamentally different product)",
+      "cover_terms": ["cover", "overlay", "skin", "cap cover", "trim cover", "stick-on", "adhesive", "decorative", "not a replacement", "non-replacement"],
+      "replacement_terms": ["replacement", "direct replacement", "oem replacement", "replace"]
+    },
+    "attachment_type": {
+      "action": "reject",
+      "description": "Adhesive/Stick-on vs Bolt-on/Clip-on → hard reject (different installation mechanism)",
+      "adhesive_terms": ["adhesive", "stick-on", "stick on", "tape", "3m", "self-adhesive", "glue", "double-sided", "peel and stick"],
+      "spec_keys": ["Attachment Type", "Mounting Type", "Installation Type", "Fitment Type"]
+    }
+  },
+  "soft_rules": {
+    "position": {
+      "penalty": 15,
+      "description": "Position mismatch → penalty but no reject (sellers often write wrong position)"
+    },
+    "finish": {
+      "penalty": 5,
+      "description": "Finish mismatch → minor penalty"
+    },
+    "count": {
+      "penalty": 5,
+      "description": "Count mismatch → minor penalty"
+    },
+    "year_partial": {
+      "penalty": 8,
+      "description": "Year range partially overlaps → moderate penalty"
+    },
+    "cab_absent": {
+      "penalty": 2,
+      "description": "Cab not mentioned in candidate → tiny penalty"
+    },
+    "bed_length_absent": {
+      "penalty": 2,
+      "description": "Bed length not mentioned in candidate → tiny penalty"
+    }
+  },
+  "oe_fast_pass": {
+    "enabled": true,
+    "description": "OE/OEM/Interchange part number match → skip all rules, direct approve, similarity=1.0"
+  },
+  "seo_spam": {
+    "cross_family_threshold": 2,
+    "description": "Titles mentioning ≥2 different ontology families → flag as SEO spam"
+  },
+  "universal_detect": {
+    "patterns": ["universal", "fits most", "fits all", "universal fit", "multi fit"],
+    "action": "flag",
+    "description": "Flag but do not reject (valuable for market insights)"
+  }
+}

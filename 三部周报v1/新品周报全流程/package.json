@@ -1,0 +1,29 @@
+{
+  "name": "new-product-weekly-report",
+  "version": "1.0.0",
+  "description": "新品周报可视化看板 - 支持多周期数据汇总与多维度分析",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext .js",
+    "format": "prettier --write \"src/**/*.js\""
+  },
+  "keywords": [
+    "weekly-report",
+    "dashboard",
+    "data-visualization",
+    "chart.js"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chart.js": "^4.4.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.1.0"
+  }
+}

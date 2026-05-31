@@ -1,0 +1,32 @@
+{
+  "main": {
+    "label": "Product Main Image",
+    "path": "c:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Chevy-Colorado_2004-2012_Door-Handle\\生成图片\\gen_quality_1779616977.png",
+    "status": "ok"
+  },
+  "fitment": {
+    "label": "Vehicle Compatibility Infographic",
+    "path": "c:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Chevy-Colorado_2004-2012_Door-Handle\\生成图片\\gen_quality_1779617036.png",
+    "status": "ok"
+  },
+  "install": {
+    "label": "Installation Effect",
+    "path": "c:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Chevy-Colorado_2004-2012_Door-Handle\\生成图片\\gen_quality_1779617092.png",
+    "status": "ok"
+  },
+  "selling_points": {
+    "label": "Selling Points Visualization",
+    "path": "c:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Chevy-Colorado_2004-2012_Door-Handle\\生成图片\\gen_quality_1779617146.png",
+    "status": "ok"
+  },
+  "detail": {
+    "label": "Macro Detail Shot",
+    "path": "c:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Chevy-Colorado_2004-2012_Door-Handle\\生成图片\\gen_quality_1779617211.png",
+    "status": "ok"
+  },
+  "shipping": {
+    "label": "Logistics & After-Sale Service",
+    "path": "c:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Chevy-Colorado_2004-2012_Door-Handle\\生成图片\\gen_quality_1779617267.png",
+    "status": "ok"
+  }
+}

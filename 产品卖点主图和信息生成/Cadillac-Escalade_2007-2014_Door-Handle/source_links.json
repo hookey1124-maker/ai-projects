@@ -1,0 +1,27 @@
+{
+  "mother_name": "Cadillac-Escalade_2007-2014_Door-Handle",
+  "created_at": "2026-05-23T12:07:09.274931",
+  "total_links": 1,
+  "benchmark": {
+    "url": "https://www.ebay.com/itm/226643967736",
+    "title": "Set of 4 Front-Rear Door Handle For 2007-2014 Cadillac Escalade Escalade ESV",
+    "reason": "图片最多的 listing（待爬虫确认）"
+  },
+  "links": [
+    {
+      "url": "https://www.ebay.com/itm/226643967736",
+      "title": "Set of 4 Front-Rear Door Handle For 2007-2014 Cadillac Escalade Escalade ESV",
+      "identity": {
+        "make": "Cadillac",
+        "model": "Escalade",
+        "year_start": 2007,
+        "year_end": 2014,
+        "product_type": "Door-Handle",
+        "product_category": "Door-Handle",
+        "raw_title": "Set of 4 Front-Rear Door Handle For 2007-2014 Cadillac Escalade Escalade ESV",
+        "url": "https://www.ebay.com/itm/226643967736"
+      },
+      "status": "pending"
+    }
+  ]
+}

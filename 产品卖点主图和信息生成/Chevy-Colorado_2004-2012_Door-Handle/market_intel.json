@@ -1,0 +1,525 @@
+{
+  "mother_name": "Chevy-Colorado_2004-2012_Door-Handle",
+  "generated_at": "2026-05-27T11:47:26.084426",
+  "total_links_analyzed": 8,
+  "valid_listings": 8,
+  "anchor_count": 0,
+  "price_range": "$13.29 - $14.89",
+  "avg_price": 14.13,
+  "product_count_mentions": [
+    "1x"
+  ],
+  "image_counts": {
+    "min": 12,
+    "max": 26,
+    "avg": 19.0
+  },
+  "best_image_listing": {
+    "title": "Door Exterior Handle For 2004-2012 Colorado Chevrolet Canyon GMC Front LH Black",
+    "images": [
+      "https://i.ebayimg.com/images/g/G9AAAeSwsaxpx0eE/s-l500.webp",
+      "https://i.ebayimg.com/images/g/vTYAAeSwpLhpx0eF/s-l500.webp",
+      "https://i.ebayimg.com/images/g/yk8AAeSw2mBpx0eG/s-l500.webp",
+      "https://i.ebayimg.com/images/g/2XUAAeSwxNtpx0eI/s-l500.webp",
+      "https://i.ebayimg.com/images/g/8lQAAeSw6o1px0eJ/s-l500.webp"
+    ],
+    "item_id": "397770972158"
+  },
+  "reference_images": [
+    "https://i.ebayimg.com/images/g/G9AAAeSwsaxpx0eE/s-l500.webp",
+    "https://i.ebayimg.com/images/g/vTYAAeSwpLhpx0eF/s-l500.webp",
+    "https://i.ebayimg.com/images/g/yk8AAeSw2mBpx0eG/s-l500.webp",
+    "https://i.ebayimg.com/images/g/2XUAAeSwxNtpx0eI/s-l500.webp",
+    "https://i.ebayimg.com/images/g/8lQAAeSw6o1px0eJ/s-l500.webp",
+    "https://i.ebayimg.com/images/g/1CYAAeSwZbVpx0eK/s-l500.webp"
+  ],
+  "key_specs": {
+    "Compatibility": {
+      "value": "See compatible vehicles",
+      "consensus": 0.88
+    },
+    "Returns": {
+      "value": "Accepted within 30 days",
+      "consensus": 0.62
+    },
+    "Payments": {
+      "value": ". See details",
+      "consensus": 1.0
+    },
+    "Condition": {
+      "value": "New: A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is ... Read more\nabout the condition",
+      "consensus": 1.0
+    },
+    "Fitment Type": {
+      "value": "Direct Replacement",
+      "consensus": 0.62
+    },
+    "Type": {
+      "value": "Door Handle",
+      "consensus": 0.88
+    },
+    "Number of Pieces": {
+      "value": "1",
+      "consensus": 0.88
+    },
+    "Placement on Vehicle": {
+      "value": "Front, Left",
+      "consensus": 0.5
+    },
+    "Manufacturer Warranty": {
+      "value": "1 Year",
+      "consensus": 0.62
+    },
+    "Color": {
+      "value": "Black",
+      "consensus": 0.75
+    },
+    "Material": {
+      "value": "Plastic",
+      "consensus": 0.62
+    },
+    "UPC": {
+      "value": "Does not apply",
+      "consensus": 0.88
+    },
+    "Location": {
+      "value": "Ontario, California, United States",
+      "consensus": 0.62
+    },
+    "Handling time": {
+      "value": "Will usually ship within 1 business day of receiving cleared payment. Learn moreLearn more - handling time",
+      "consensus": 0.75
+    },
+    "Taxes": {
+      "value": "Taxes may be applicable at checkout. Learn moreLearn more about paying tax on eBay purchases.",
+      "consensus": 1.0
+    },
+    "Returns shipping": {
+      "value": "Seller pays return shipping",
+      "consensus": 1.0
+    },
+    "Return policy": {
+      "value": "Refer to eBay Return policyopens in a new tab or window for more details. You are covered by the eBay Money Back Guaranteeopens in a new tab or window if you receive an item that is not as described in the listing.",
+      "consensus": 1.0
+    }
+  },
+  "title_samples": [
+    "Outside Front Left LH For 04-12 Canyon Colorado Chevy Textured Black Door Handle",
+    "1x Front Left Door Handle Exterior For Chevrolet Colorado GMC Canyon 2004-2012",
+    "For Canyon Colorado Chevy GMC 25875521 Outside Door Handle Front Left Driver LH",
+    "For 2004-2012 Canyon Colorado Chevy GMC Exterior Textured Front Left Door Handle",
+    "New Front Driver Side Exterior Door Handle For 04-12 Colorado Canyon GM1310141"
+  ],
+  "title_strategies": [
+    {
+      "title": "Outside Front Left LH For 04-12 Canyon Colorado Chevy Textured Black Door Handle",
+      "keywords": [
+        "Outside Front Left",
+        "For",
+        "Canyon Colorado Chevy Textured Black Door Handle"
+      ],
+      "has_count": false,
+      "has_chrome": false,
+      "has_exterior": false
+    },
+    {
+      "title": "1x Front Left Door Handle Exterior For Chevrolet Colorado GMC Canyon 2004-2012",
+      "keywords": [
+        "Front Left Door Handle Exterior For Chevrolet Colorado",
+        "Canyon"
+      ],
+      "has_count": true,
+      "has_chrome": false,
+      "has_exterior": true
+    },
+    {
+      "title": "For Canyon Colorado Chevy GMC 25875521 Outside Door Handle Front Left Driver LH",
+      "keywords": [
+        "For Canyon Colorado Chevy",
+        "Outside Door Handle Front Left Driver"
+      ],
+      "has_count": false,
+      "has_chrome": false,
+      "has_exterior": false
+    }
+  ],
+  "common_keywords": [
+    [
+      "front",
+      8
+    ],
+    [
+      "for",
+      8
+    ],
+    [
+      "colorado",
+      8
+    ],
+    [
+      "door",
+      8
+    ],
+    [
+      "handle",
+      8
+    ],
+    [
+      "canyon",
+      7
+    ],
+    [
+      "exterior",
+      6
+    ],
+    [
+      "2004",
+      5
+    ],
+    [
+      "left",
+      4
+    ],
+    [
+      "chevrolet",
+      4
+    ],
+    [
+      "2012",
+      4
+    ],
+    [
+      "outside",
+      3
+    ],
+    [
+      "12",
+      3
+    ],
+    [
+      "chevy",
+      3
+    ],
+    [
+      "black",
+      3
+    ],
+    [
+      "driver",
+      3
+    ],
+    [
+      "04",
+      2
+    ],
+    [
+      "textured",
+      2
+    ],
+    [
+      "side",
+      2
+    ],
+    [
+      "1",
+      1
+    ]
+  ],
+  "product_classifications": [
+    {
+      "item_id": "125765928671",
+      "title": "Outside Front Left LH For 04-12 Canyon Colorado Chevy Textured Black Door Handle",
+      "classification": {
+        "position": "Front-Driver-Side",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Textured-Black",
+        "finish_source": "title",
+        "color": "Black",
+        "material": "Plastic",
+        "sub_type": "Replacement",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2004,
+          "year_end": 2012,
+          "year_range": "2004-2012",
+          "makes": [
+            "Chevy"
+          ],
+          "models": [
+            "Textured Black"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "196892597545",
+      "title": "1x Front Left Door Handle Exterior For Chevrolet Colorado GMC Canyon 2004-2012",
+      "classification": {
+        "position": "Front-Driver-Side",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Chrome",
+        "finish_source": "item_specifics",
+        "color": "Black",
+        "material": "Plastic",
+        "sub_type": "Door Handle",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2004,
+          "year_end": 2012,
+          "year_range": "2004-2012",
+          "makes": [
+            "Chevrolet",
+            "GMC"
+          ],
+          "models": [
+            "Canyon",
+            "Colorado GMC"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "225410221700",
+      "title": "For Canyon Colorado Chevy GMC 25875521 Outside Door Handle Front Left Driver LH",
+      "classification": {
+        "position": "Front-Driver-Side",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Unknown",
+        "finish_source": null,
+        "color": "Unknown",
+        "material": "Plastic",
+        "sub_type": "Replacement",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": null,
+          "year_end": null,
+          "year_range": null,
+          "makes": [
+            "Chevy",
+            "GMC"
+          ],
+          "models": [
+            "GMC"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure",
+          "finish"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "276664524923",
+      "title": "For 2004-2012 Canyon Colorado Chevy GMC Exterior Textured Front Left Door Handle",
+      "classification": {
+        "position": "Front-Driver-Side",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Textured-Black",
+        "finish_source": "title",
+        "color": "Black",
+        "material": "Unknown",
+        "sub_type": "Replacement",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2004,
+          "year_end": 2012,
+          "year_range": "2004-2012",
+          "makes": [
+            "Chevy",
+            "GMC"
+          ],
+          "models": [
+            "Exterior Textured",
+            "GMC Exterior"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "355047614160",
+      "title": "New Front Driver Side Exterior Door Handle For 04-12 Colorado Canyon GM1310141",
+      "classification": {
+        "position": "Front-Driver-Side",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Textured-Black",
+        "finish_source": "item_specifics",
+        "color": "Black",
+        "material": "Plastic",
+        "sub_type": "Door Handle",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": null,
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "387425652749",
+      "title": "Exterior Door Handle For 2004-12 Chevrolet Colorado GMC Canyon Front LH Black",
+      "classification": {
+        "position": "Front-Driver-Side",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Black",
+        "finish_source": "title",
+        "color": "Black",
+        "material": "Plastic",
+        "sub_type": "Replacement",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2004,
+          "year_end": 2012,
+          "year_range": "2004-2012",
+          "makes": [
+            "Chevrolet",
+            "GMC"
+          ],
+          "models": [
+            "Canyon Front",
+            "Colorado GMC"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "397770972158",
+      "title": "Door Exterior Handle For 2004-2012 Colorado Chevrolet Canyon GMC Front LH Black",
+      "classification": {
+        "position": "Front-Driver-Side",
+        "position_source": "title",
+        "count": "Unknown",
+        "count_source": null,
+        "finish": "Black",
+        "finish_source": "title",
+        "color": "Black",
+        "material": "ABS",
+        "sub_type": "Replacement",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2004,
+          "year_end": 2012,
+          "year_range": "2004-2012",
+          "makes": [
+            "Chevrolet",
+            "GMC"
+          ],
+          "models": [
+            "Canyon GMC",
+            "Front LH"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    },
+    {
+      "item_id": "404851972573",
+      "title": "For 2004-2012 Chevrolet Colorado Door Handle Exterior Outside Front Driver Side",
+      "classification": {
+        "position": "Front-Driver-Side",
+        "position_source": "title",
+        "count": 1,
+        "count_source": "item_specifics",
+        "finish": "Polished",
+        "finish_source": "item_specifics",
+        "color": "Black",
+        "material": "ABS",
+        "sub_type": "Door Handle",
+        "door_config": "Unknown",
+        "structure": "Unknown",
+        "structure_source": "unknown",
+        "accessories": [],
+        "vehicle": {
+          "year_start": 2004,
+          "year_end": 2012,
+          "year_range": "2004-2012",
+          "makes": [
+            "Chevrolet"
+          ],
+          "models": [
+            "Colorado Door"
+          ],
+          "trims": [],
+          "engines": []
+        },
+        "bed_length": null,
+        "needs_vision": [
+          "structure"
+        ],
+        "vision_result": null
+      }
+    }
+  ],
+  "anchor_analysis": {}
+}

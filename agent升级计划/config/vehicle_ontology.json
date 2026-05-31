@@ -1,0 +1,42 @@
+{
+  "families": {
+    "GM Full-Size Truck": {
+      "makes": ["Chevrolet", "Chevy", "GMC"],
+      "models": ["Silverado", "Sierra", "Silverado 1500", "Sierra 1500",
+                 "Silverado 2500HD", "Sierra 2500HD", "Silverado 3500HD", "Sierra 3500HD"]
+    },
+    "GM Full-Size SUV": {
+      "makes": ["Chevrolet", "Chevy", "GMC", "Cadillac"],
+      "models": ["Tahoe", "Yukon", "Suburban", "Escalade", "Yukon XL", "Escalade ESV"]
+    },
+    "GM Mid-Size Truck": {
+      "makes": ["Chevrolet", "Chevy", "GMC"],
+      "models": ["Colorado", "Canyon"]
+    },
+    "GM Van": {
+      "makes": ["Chevrolet", "Chevy", "GMC"],
+      "models": ["Express", "Savana"]
+    },
+    "Ford F-Series": {
+      "makes": ["Ford"],
+      "models": ["F-150", "F-250", "F-350", "F-250 Super Duty", "F-350 Super Duty",
+                 "F-450", "F-550", "F-150 Raptor"]
+    },
+    "Ford SUV": {
+      "makes": ["Ford", "Lincoln"],
+      "models": ["Expedition", "Navigator", "Expedition Max", "Navigator L"]
+    },
+    "Ram Truck": {
+      "makes": ["Ram", "Dodge"],
+      "models": ["1500", "2500", "3500", "1500 Classic"]
+    },
+    "Jeep Grand Cherokee": {
+      "makes": ["Jeep"],
+      "models": ["Grand Cherokee", "Grand Cherokee L"]
+    },
+    "Toyota Truck": {
+      "makes": ["Toyota"],
+      "models": ["Tacoma", "Tundra"]
+    }
+  }
+}

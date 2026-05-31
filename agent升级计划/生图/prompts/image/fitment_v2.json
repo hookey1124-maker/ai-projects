@@ -1,0 +1,21 @@
+{
+  "prompt_id": "IMG_FITMENT_V2",
+  "version": "2.0",
+  "purpose": "eBay 产品适配图 — 信息图风格的车型兼容展示",
+  "last_updated": "2026-05-24",
+  "model": "gpt-image-2",
+  "size": "1:1",
+  "strength": 0.5,
+  "description": "干净的车型适配信息图，展示年份+品牌+车型。产品可作为小参考图出现在角落。类似高端产品目录的规格参数页。",
+  "template": "由 DeepSeek (prompt_builder.py) 动态生成，非固定模板",
+  "variables": ["vehicle_desc", "product_type"],
+  "constraints": [
+    "信息图风格，非实拍产品图",
+    "年份+品牌+车型为 hero element",
+    "禁止出现任何汽车品牌 Logo 或商标",
+    "文字信息必须清晰可读",
+    "设计干净、专业",
+    "Prompt 必须用英文"
+  ],
+  "generator": "prompt_builder.py"
+}

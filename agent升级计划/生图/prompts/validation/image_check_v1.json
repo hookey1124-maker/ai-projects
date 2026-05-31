@@ -1,0 +1,16 @@
+{
+  "prompt_id": "VAL_IMAGE_V1",
+  "version": "1.0",
+  "purpose": "生图后 GLM-4V 验证 — 检查产品数量/结构/Logo/悬浮/光影/透视",
+  "last_updated": "2026-05-23",
+  "model": "GLM-4V-Plus",
+  "template": "请严格检查这张产品图片，按以下每一项输出 JSON：\n\n1. product_count_match: 图中可见产品数量是否与描述一致？（true/false）\n2. structure_changed: 产品结构是否被修改/变形/新增部件？（true/false）\n3. missing_parts: 产品是否有缺失部件？（true/false）\n4. floating_issue: 产品是否悬浮/漂浮，没有与背景自然结合？（true/false）\n5. logo_detected: 图中是否有汽车品牌Logo/商标/品牌文字（如 Ford/BMW/Toyota 等）？（true/false）\n6. perspective_ok: 透视是否合理一致？（true/false）\n7. lighting_ok: 光影是否合理？（true/false）\n8. confidence: 你对整体判断的置信度（0-1）\n9. issues: 如果发现问题，用中文描述具体是什么问题。如果没有问题，写「无」\n10. passed: 根据判定条件判定是否通过\n\n只输出 JSON，不要任何其他文字。",
+  "variables": [],
+  "constraints": [
+    "仅检查视觉内容，不做业务判断",
+    "structure_changed=true 或 logo_detected=true → 自动拒绝",
+    "floating_issue=true 或 product_count_match=false → 自动重试",
+    "confidence < 0.85 → 人工审核"
+  ],
+  "output_format": "json"
+}

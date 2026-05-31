@@ -1,0 +1,16 @@
+{
+  "prompt_id": "COPY_TITLE_V1",
+  "version": "1.0",
+  "purpose": "eBay 产品标题生成 — 80字符以内，含关键词",
+  "last_updated": "2026-05-23",
+  "model": "DeepSeek",
+  "template": "为以下汽车配件产品生成eBay标题，要求：\n1. 必须 ≤ 80 字符（含空格）\n2. 包含：产品类型 + 核心特征 + 适配车型/年份 + 卖点关键词\n3. 禁止出现OEM品牌词（Ford/BMW/Toyota等）和商标符号\n4. 英文标题，标题格式紧凑\n5. 参考标题示例：Set Of Door Hinges 4pcs Upper Lower For 1968-1979 Chevy Nova / Camaro / Firebird\n\n产品信息：\n{product_info}\n\n只输出标题本身，不要任何解释。",
+  "variables": ["product_info"],
+  "constraints": [
+    "≤ 80 字符（含空格）",
+    "不含 OEM 品牌词",
+    "不含 ®/™ 符号",
+    "仅英文"
+  ],
+  "output_format": "plain_text"
+}

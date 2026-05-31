@@ -1,0 +1,264 @@
+{
+  "mother_name": "Ram-1500_2009-2022_Door-Window-Glass",
+  "generated_at": "2026-05-23T14:07:45.357747",
+  "total_links_analyzed": 2,
+  "valid_listings": 2,
+  "price_range": "$65.00 - $107.55",
+  "avg_price": 86.28,
+  "product_count_mentions": [],
+  "image_counts": {
+    "min": 22,
+    "max": 24,
+    "avg": 23.0
+  },
+  "best_image_listing": {
+    "title": "Fit For Ram Pickup 1500 2019-2022 Passenger Right Side Front Door Window Glass",
+    "images": [
+      "https://i.ebayimg.com/images/g/xnwAAeSw0OtpxJwz/s-l1600.webp",
+      "https://i.ebayimg.com/images/g/rD8AAeSwVklpxJw1/s-l140.webp",
+      "https://i.ebayimg.com/images/g/K7QAAeSwkhFpxJw3/s-l140.webp",
+      "https://i.ebayimg.com/images/g/sDwAAeSwIXxpxJw6/s-l140.webp",
+      "https://i.ebayimg.com/images/g/uywAAeSwWtdpxJw8/s-l500.webp"
+    ],
+    "item_id": "327068755538"
+  },
+  "reference_images": [
+    "https://i.ebayimg.com/images/g/xnwAAeSw0OtpxJwz/s-l1600.webp",
+    "https://i.ebayimg.com/images/g/rD8AAeSwVklpxJw1/s-l140.webp",
+    "https://i.ebayimg.com/images/g/K7QAAeSwkhFpxJw3/s-l140.webp",
+    "https://i.ebayimg.com/images/g/sDwAAeSwIXxpxJw6/s-l140.webp",
+    "https://i.ebayimg.com/images/g/uywAAeSwWtdpxJw8/s-l500.webp",
+    "https://i.ebayimg.com/images/g/KOcAAeSwwaxpxJw-/s-l500.webp"
+  ],
+  "key_specs": {
+    "Compatibility": {
+      "value": "See compatible vehicles",
+      "consensus": 1.0
+    },
+    "Shipping": {
+      "value": "Economy ShippingEstimated between Tue, May 26 and Fri, May 29 to ?Shipping: Free shipping",
+      "consensus": 0.5
+    },
+    "Delivery": {
+      "value": "Estimated between Tue, May 26 and Fri, May 29 to ?",
+      "consensus": 1.0
+    },
+    "Returns": {
+      "value": "Accepted within 60 days",
+      "consensus": 0.5
+    },
+    "Payments": {
+      "value": ". See details",
+      "consensus": 1.0
+    },
+    "Condition": {
+      "value": "New: A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is ... Read more\nabout the condition",
+      "consensus": 1.0
+    },
+    "Color": {
+      "value": "Light Green",
+      "consensus": 0.5
+    },
+    "Material": {
+      "value": "Tempered Glass",
+      "consensus": 0.5
+    },
+    "Placement on Vehicle": {
+      "value": "Front, Left",
+      "consensus": 0.5
+    },
+    "Brand": {
+      "value": "performance_autoparts_pro",
+      "consensus": 0.5
+    },
+    "Type": {
+      "value": "Side Door Glass",
+      "consensus": 0.5
+    },
+    "Language": {
+      "value": "English",
+      "consensus": 0.5
+    },
+    "Manufacturer Warranty": {
+      "value": "Lifetime",
+      "consensus": 0.5
+    },
+    "Package Dimensions(LengthxWidthxHeight:cm)": {
+      "value": "90*78*6",
+      "consensus": 0.5
+    },
+    "Package Weight(kg)": {
+      "value": "8",
+      "consensus": 0.5
+    },
+    "Features": {
+      "value": "Tempered Glass",
+      "consensus": 0.5
+    },
+    "Package Includes": {
+      "value": "1 X Side Door Glass (Left Side)",
+      "consensus": 0.5
+    },
+    "Shipping Note": {
+      "value": "We use multiple warehouses, and will select the nearest warehouse",
+      "consensus": 0.5
+    },
+    "Country of Origin": {
+      "value": "China",
+      "consensus": 0.5
+    },
+    "UPC": {
+      "value": "Does not apply",
+      "consensus": 1.0
+    },
+    "Location": {
+      "value": "Andale, Kansas, United States",
+      "consensus": 0.5
+    },
+    "Ships to": {
+      "value": "United StatesUnited States",
+      "consensus": 1.0
+    },
+    "Excludes": {
+      "value": "PO Box, APO/FPO, Africa, Alaska/Hawaii, Asia, Barbados, Bermuda, Canada, Central America and ... Show morePO Box, APO/FPO, Africa, Alaska/Hawaii, Asia, Barbados, Bermuda, Canada, Central America and Caribbean, Europe, French Guiana, French Polynesia, Greenland, Guadeloupe, Libya, Martinique, Mexico, Middle East, New Caledonia, Oceania, Reunion, Russian Federation, Saint Pierre and Miquelon, South America, Southeast Asia, US Protectorates, Ukraine, VenezuelaShow less",
+      "consensus": 0.5
+    },
+    "Handling time": {
+      "value": "Will usually ship within 1 business day of receiving cleared payment. Learn moreLearn more - handling time",
+      "consensus": 0.5
+    },
+    "Taxes": {
+      "value": "Taxes may be applicable at checkout. Learn moreLearn more about paying tax on eBay purchases.",
+      "consensus": 1.0
+    },
+    "Returns shipping": {
+      "value": "Seller pays return shipping",
+      "consensus": 1.0
+    },
+    "Return policy": {
+      "value": "Refer to eBay Return policyopens in a new tab or window for more details. You are covered by the eBay Money Back Guaranteeopens in a new tab or window if you receive an item that is not as described in the listing.",
+      "consensus": 1.0
+    },
+    "Manufacturer Part Number": {
+      "value": "PO1455050LT",
+      "consensus": 0.5
+    },
+    "OE/OEM Part Number": {
+      "value": "68276778AA DD12971GTY",
+      "consensus": 0.5
+    },
+    "Universal Fitment": {
+      "value": "No",
+      "consensus": 0.5
+    }
+  },
+  "title_samples": [
+    "Driver Side Front Door Window Glass For 2009-2018 Dodge Ram 1500 2500 3500 4Door",
+    "Fit For Ram Pickup 1500 2019-2022 Passenger Right Side Front Door Window Glass"
+  ],
+  "title_strategies": [
+    {
+      "title": "Driver Side Front Door Window Glass For 2009-2018 Dodge Ram 1500 2500 3500 4Door",
+      "keywords": [
+        "Driver Side Front Door Window Glass For",
+        "Dodge Ram",
+        "Door"
+      ],
+      "has_count": false,
+      "has_chrome": false,
+      "has_exterior": false
+    },
+    {
+      "title": "Fit For Ram Pickup 1500 2019-2022 Passenger Right Side Front Door Window Glass",
+      "keywords": [
+        "Fit For Ram Pickup",
+        "Passenger Right Side Front Door Window Glass"
+      ],
+      "has_count": false,
+      "has_chrome": false,
+      "has_exterior": false
+    }
+  ],
+  "common_keywords": [
+    [
+      "door",
+      3
+    ],
+    [
+      "side",
+      2
+    ],
+    [
+      "front",
+      2
+    ],
+    [
+      "window",
+      2
+    ],
+    [
+      "glass",
+      2
+    ],
+    [
+      "for",
+      2
+    ],
+    [
+      "ram",
+      2
+    ],
+    [
+      "1500",
+      2
+    ],
+    [
+      "driver",
+      1
+    ],
+    [
+      "2009",
+      1
+    ],
+    [
+      "2018",
+      1
+    ],
+    [
+      "dodge",
+      1
+    ],
+    [
+      "2500",
+      1
+    ],
+    [
+      "3500",
+      1
+    ],
+    [
+      "4",
+      1
+    ],
+    [
+      "fit",
+      1
+    ],
+    [
+      "pickup",
+      1
+    ],
+    [
+      "2019",
+      1
+    ],
+    [
+      "2022",
+      1
+    ],
+    [
+      "passenger",
+      1
+    ]
+  ]
+}

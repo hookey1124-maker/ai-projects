@@ -1,0 +1,247 @@
+{
+  "mother_name": "Ford-F-150_2015-2022_Door-Window-Glass",
+  "generated_at": "2026-05-23T14:04:40.004218",
+  "total_links_analyzed": 5,
+  "valid_listings": 5,
+  "price_range": "$62.53 - $70.00",
+  "avg_price": 66.51,
+  "product_count_mentions": [],
+  "image_counts": {
+    "min": 18,
+    "max": 30,
+    "avg": 20.4
+  },
+  "best_image_listing": {
+    "title": "Rear Driver Left Door Window Glass For Ford F150 2015-2022/F250-F550 2017-2022",
+    "images": [
+      "https://i.ebayimg.com/images/g/9QcAAeSwo~hpWyER/s-l500.webp",
+      "https://i.ebayimg.com/images/g/oioAAeSwRXhpWyET/s-l500.webp",
+      "https://i.ebayimg.com/images/g/nuYAAeSwGWlpWyEV/s-l500.webp",
+      "https://i.ebayimg.com/images/g/NmMAAeSwLt5pWyEY/s-l500.webp",
+      "https://i.ebayimg.com/images/g/n7oAAeSwyPRpWyEa/s-l500.webp"
+    ],
+    "item_id": "306694311204"
+  },
+  "reference_images": [
+    "https://i.ebayimg.com/images/g/9QcAAeSwo~hpWyER/s-l500.webp",
+    "https://i.ebayimg.com/images/g/oioAAeSwRXhpWyET/s-l500.webp",
+    "https://i.ebayimg.com/images/g/nuYAAeSwGWlpWyEV/s-l500.webp",
+    "https://i.ebayimg.com/images/g/NmMAAeSwLt5pWyEY/s-l500.webp",
+    "https://i.ebayimg.com/images/g/n7oAAeSwyPRpWyEa/s-l500.webp",
+    "https://i.ebayimg.com/images/g/lTQAAeSwTfhpWyEc/s-l500.webp"
+  ],
+  "key_specs": {
+    "Compatibility": {
+      "value": "See compatible vehicles",
+      "consensus": 1.0
+    },
+    "Returns": {
+      "value": "Accepted within 60 days",
+      "consensus": 0.8
+    },
+    "Payments": {
+      "value": ". See details",
+      "consensus": 1.0
+    },
+    "Condition": {
+      "value": "New: A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is ... Read more\nabout the condition",
+      "consensus": 1.0
+    },
+    "Color": {
+      "value": "Dark",
+      "consensus": 0.8
+    },
+    "UPC": {
+      "value": "Does not apply",
+      "consensus": 1.0
+    },
+    "Material": {
+      "value": "Tempered Glass",
+      "consensus": 0.8
+    },
+    "Type": {
+      "value": "Side Door Glass",
+      "consensus": 0.8
+    },
+    "Language": {
+      "value": "English",
+      "consensus": 0.6
+    },
+    "Package Dimensions(LengthxWidthxHeight:cm)": {
+      "value": "84*69*10",
+      "consensus": 0.8
+    },
+    "Manufacturer Warranty": {
+      "value": "1 Year",
+      "consensus": 0.6
+    },
+    "Package Weight(kg)": {
+      "value": "4",
+      "consensus": 0.8
+    },
+    "Features": {
+      "value": "Tempered Glass",
+      "consensus": 0.6
+    },
+    "Shipping Note": {
+      "value": "We use multiple warehouses, and will select the nearest ware",
+      "consensus": 0.8
+    },
+    "Country of Origin": {
+      "value": "China",
+      "consensus": 0.6
+    },
+    "Location": {
+      "value": "Ontario, California, United States",
+      "consensus": 0.6
+    },
+    "Ships to": {
+      "value": "United StatesUnited States",
+      "consensus": 1.0
+    },
+    "Excludes": {
+      "value": "PO Box, APO/FPO, Africa, Alaska/Hawaii, Asia, Barbados, Bermuda, Canada, Central America and ... Show morePO Box, APO/FPO, Africa, Alaska/Hawaii, Asia, Barbados, Bermuda, Canada, Central America and Caribbean, Europe, French Guiana, French Polynesia, Greenland, Guadeloupe, Libya, Martinique, Mexico, Middle East, New Caledonia, Oceania, Reunion, Russian Federation, Saint Pierre and Miquelon, South America, Southeast Asia, US Protectorates, Ukraine, VenezuelaShow less",
+      "consensus": 0.8
+    },
+    "Handling time": {
+      "value": "Will usually ship within 1 business day of receiving cleared payment. Learn moreLearn more - handling time",
+      "consensus": 0.8
+    },
+    "Taxes": {
+      "value": "Taxes may be applicable at checkout. Learn moreLearn more about paying tax on eBay purchases.",
+      "consensus": 1.0
+    },
+    "Returns shipping": {
+      "value": "Seller pays return shipping",
+      "consensus": 1.0
+    },
+    "Return policy": {
+      "value": "Refer to eBay Return policyopens in a new tab or window for more details. You are covered by the eBay Money Back Guaranteeopens in a new tab or window if you receive an item that is not as described in the listing.",
+      "consensus": 1.0
+    }
+  },
+  "title_samples": [
+    "Driver Side Rear Door Window Glass For 2015-2022 Ford F-150 F150 4 Door Crew Cab",
+    "RH Passenger Side Rear Door Glass Tempered Window For 2015-22 Ford F150 Crew Cab",
+    "Driver Left Side Rear Back Door Window Glass For 2015-2022 Ford F150 Crew Cab",
+    "Rear Driver Left Door Window Glass For Ford F150 2015-2022/F250-F550 2017-2022",
+    "For 2015-2022 Ford F-150 Crew Cab Right Side Rear Door Window Glass Tempered"
+  ],
+  "title_strategies": [
+    {
+      "title": "Driver Side Rear Door Window Glass For 2015-2022 Ford F-150 F150 4 Door Crew Cab",
+      "keywords": [
+        "Driver Side Rear Door Window Glass For",
+        "Ford",
+        "Door Crew Cab"
+      ],
+      "has_count": false,
+      "has_chrome": false,
+      "has_exterior": false
+    },
+    {
+      "title": "RH Passenger Side Rear Door Glass Tempered Window For 2015-22 Ford F150 Crew Cab",
+      "keywords": [
+        "Passenger Side Rear Door Glass Tempered Window For",
+        "Ford",
+        "Crew Cab"
+      ],
+      "has_count": false,
+      "has_chrome": false,
+      "has_exterior": false
+    },
+    {
+      "title": "Driver Left Side Rear Back Door Window Glass For 2015-2022 Ford F150 Crew Cab",
+      "keywords": [
+        "Driver Left Side Rear Back Door Window Glass For",
+        "Ford",
+        "Crew Cab"
+      ],
+      "has_count": false,
+      "has_chrome": false,
+      "has_exterior": false
+    }
+  ],
+  "common_keywords": [
+    [
+      "door",
+      6
+    ],
+    [
+      "150",
+      6
+    ],
+    [
+      "rear",
+      5
+    ],
+    [
+      "window",
+      5
+    ],
+    [
+      "glass",
+      5
+    ],
+    [
+      "for",
+      5
+    ],
+    [
+      "2015",
+      5
+    ],
+    [
+      "2022",
+      5
+    ],
+    [
+      "ford",
+      5
+    ],
+    [
+      "side",
+      4
+    ],
+    [
+      "crew",
+      4
+    ],
+    [
+      "cab",
+      4
+    ],
+    [
+      "driver",
+      3
+    ],
+    [
+      "tempered",
+      2
+    ],
+    [
+      "left",
+      2
+    ],
+    [
+      "4",
+      1
+    ],
+    [
+      "passenger",
+      1
+    ],
+    [
+      "22",
+      1
+    ],
+    [
+      "back",
+      1
+    ],
+    [
+      "250",
+      1
+    ]
+  ]
+}
