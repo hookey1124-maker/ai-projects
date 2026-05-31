@@ -10,6 +10,7 @@ import { useModulePeriodInfo } from '../useModulePeriodInfo';
 import {
   mockNewProductStatusData,
   loadCorrectedNewProductData,
+  rawRows as _rawRows,
   type NewProductStatusData,
 } from './newProductStatusAdapter';
 
@@ -56,8 +57,8 @@ export default function NewProductStatusPage() {
   const dataPeriod = '5/14 - 5/20';
   const prevDataPeriod = '5/7 - 5/13';
 
-  // 原始行数据（从 demoData._rawRows 获取；mock 数据无此字段则为空）
-  const rawRows = useMemo(() => (demoData as any)._rawRows || [], []);
+  // 原始行数据：直接从 JSON 导入，不依赖 loadCorrectedNewProductData 处理结果
+  const rawRows = _rawRows;
   const hasRawData = rawRows.length > 0;
 
   // ===== 派生统计 =====

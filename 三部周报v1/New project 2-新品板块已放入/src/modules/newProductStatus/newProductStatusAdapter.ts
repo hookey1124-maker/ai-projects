@@ -1249,6 +1249,9 @@ export const mockNewProductStatusData: NewProductStatusData = {
 // ==================== 从 corrected_data.json 加载真实数据 ====================
 import correctedData from './corrected_data.json';
 
+/** 直接暴露原始行数据，供页面 Tab 使用 */
+export const rawRows: any[] = (correctedData as any).cum43Data || [];
+
 /**
  * 从 corrected_data.json 加载并转换为 NewProductStatusData 格式
  */
