@@ -70,3 +70,25 @@ temp/
 *.onnx
 *.h5
 *.pb
+
+# ===== 调试临时文件 =====
+*_out.txt
+rebuild*.txt
+gen*.txt
+fix_out.txt
+check_out.txt
+ext_check.txt
+final_check.txt
+kpi_check.txt
+verify.txt
+verify_out.txt
+analyze_output.txt
+build_out*.txt
+build_output.txt
+py_out.txt
+out.txt
+
+# ===== 月报临时测试文件 =====
+temp_check*.js
+test*.js
+tmp_*.html
