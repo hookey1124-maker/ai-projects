@@ -1566,6 +1566,7 @@ export function loadCorrectedNewProductData(): NewProductStatusData {
   const listDates = cum43Data.map((r: any) => r.listDate || r['实际上架日期'] || '').filter(Boolean).sort();
 
   return {
+    _rawRows: cum43Data as any[],
     currentPeriod: '5.14-5.20',
     previousPeriod: '5.7-5.13',
     overall: {
@@ -1719,5 +1720,5 @@ export function loadCorrectedNewProductData(): NewProductStatusData {
       totalLowShare: plgStats.totalNewProducts || 0,
       byAnalyst: plgStats.byAnalyst || [],
     },
-  };
+  } as any;
 }

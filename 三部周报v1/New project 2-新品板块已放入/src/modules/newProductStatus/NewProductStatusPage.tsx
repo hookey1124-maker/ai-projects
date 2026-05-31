@@ -49,19 +49,6 @@ const demoData: NewProductStatusData = (() => {
   return mockNewProductStatusData;
 })();
 
-// ===== 从 demoData 提取原始数据 =====
-// loadCorrectedNewProductData 返回的 cum43Data 在 overall/kpi/dimensions 里，
-// 但 hardcoded cum43Data 在组件内。为保持兼容，用 demoData 里能拿到的数据。
-const getRawRows = (): any[] => {
-  try {
-    // 尝试从 adapter 导入的 corrected_data 获取原始行
-    const d = loadCorrectedNewProductData() as any;
-    if (d?._rawRows?.length) return d._rawRows;
-    if (d?.cum43Data?.length) return d.cum43Data;
-  } catch {}
-  return [];
-};
-
 export default function NewProductStatusPage() {
   const [activeTab, setActiveTab] = useState<TabId>('overview');
   const { periodTypeLabel, sourceStatusLabel } = useModulePeriodInfo('newProductStatus');
@@ -69,8 +56,9 @@ export default function NewProductStatusPage() {
   const dataPeriod = '5/14 - 5/20';
   const prevDataPeriod = '5/7 - 5/13';
 
-  // 原始行数据
-  const rawRows = useMemo(() => getRawRows(), []);
+  // 原始行数据（从 demoData._rawRows 获取；mock 数据无此字段则为空）
+  const rawRows = useMemo(() => (demoData as any)._rawRows || [], []);
+  const hasRawData = rawRows.length > 0;
 
   // ===== 派生统计 =====
   const kpi = useMemo(() => demoData.overall.kpi, []);
@@ -466,7 +454,9 @@ export default function NewProductStatusPage() {
   );
 
   // ===== Tab 2: 市场分布 =====
-  const renderMarketDist = () => (
+  const renderMarketDist = () => {
+    if (!hasRawData) return <p style={{ color: '#888', padding: 40, textAlign: 'center' }}>需要上传 Excel 或加载 corrected_data.json 后才能查看市场分布数据</p>;
+    return (
     <>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, marginBottom: 20 }}>
         {[
@@ -582,6 +572,7 @@ export default function NewProductStatusPage() {
       </div>
     </>
   );
+  };
 
   // ===== Tab 3: 品效分析 =====
   const renderPerformance = () => (
