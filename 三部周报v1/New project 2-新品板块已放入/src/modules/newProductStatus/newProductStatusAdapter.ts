@@ -1017,52 +1017,52 @@ function parsePLGData(rows: unknown[][]): PLGData {
 
 // ==================== Demo 数据 ====================
 export const mockNewProductStatusData: NewProductStatusData = {
-  currentPeriod: '4.30-5.6',
-  previousPeriod: '4.23-4.29',
+  currentPeriod: '5.14-5.20',
+  previousPeriod: '5.7-5.13',
   overall: {
     kpi: {
-      totalSku: 101,
-      curNewSku: 11,
-      prevNewSku: 10,
-      totalSalesQty: 195,
-      prevTotalSalesQty: 151,
-      salesQtyChange: '+29.1%',
-      totalRevenue: 20494.85,
-      prevTotalRevenue: 17688.39,
-      revenueChange: '+15.9%',
-      hasCompetitorSku: 43,
-      prevHasCompetitorSku: 32,
-      noCompetitorSku: 58,
-      prevNoCompetitorSku: 58,
+      totalSku: 134,
+      curNewSku: 18,
+      prevNewSku: 15,
+      totalSalesQty: 185,
+      prevTotalSalesQty: 184,
+      salesQtyChange: '+0.5%',
+      totalRevenue: 17618.93,
+      prevTotalRevenue: 18897.55,
+      revenueChange: '-6.8%',
+      hasCompetitorSku: 48,
+      prevHasCompetitorSku: 45,
+      noCompetitorSku: 86,
+      prevNoCompetitorSku: 81,
     },
     timeliness: {
-      timelyCount: 71,
-      noAnalysis8dCount: 16,
-      noAnalysis7dCount: 15,
-      totalCount: 101,
-      timelyRate: '70.3%',
-      prevTimelyCount: 58,
-      prevTimelyRate: '64.4%',
-      change: '+5.9%',
+      timelyCount: 88,
+      noAnalysis8dCount: 5,
+      noAnalysis7dCount: 41,
+      totalCount: 134,
+      timelyRate: '65.7%',
+      prevTimelyCount: 86,
+      prevTimelyRate: '68.3%',
+      change: '-2.6%',
     },
     salesSituation: {
-      hasCompetitorSku: 43,
-      prevHasCompetitorSku: 32,
-      change: 11,
-      yCount: 27,
-      prevYCount: 21,
-      yChange: 6,
-      nCount: 13,
-      prevNCount: 11,
-      nChange: 2,
-      noSaleCount: 3,
-      prevNoSaleCount: 0,
-      noSaleChange: 3,
-      soldCount: 40,
-      prevSoldCount: 32,
-      soldChange: 8,
-      soldRate: '93.0%',
-      prevSoldRate: '100.0%',
+      hasCompetitorSku: 48,
+      prevHasCompetitorSku: 45,
+      change: 3,
+      yCount: 29,
+      prevYCount: 27,
+      yChange: 2,
+      nCount: 14,
+      prevNCount: 13,
+      nChange: 1,
+      noSaleCount: 5,
+      prevNoSaleCount: 5,
+      noSaleChange: 0,
+      soldCount: 43,
+      prevSoldCount: 40,
+      soldChange: 3,
+      soldRate: '89.6%',
+      prevSoldRate: '88.9%',
     },
   },
   categoryMetrics: [
@@ -1295,20 +1295,25 @@ export function loadCorrectedNewProductData(): NewProductStatusData {
   const plpSummaryData = corrected.plpSummaryData || [];
   const plpDetailData = corrected.plpDetailData || [];
 
-  // 计算总体数据
+  // 计算总体数据 — 兼容新旧两种 JSON 字段名
+  const getField = (item: any, newKey: string, oldKey: string): any =>
+    item[newKey] !== undefined ? item[newKey] : item[oldKey];
+
   const totalSku = cum43Data.length;
   const lowShareCount = lowShareData.length;
-  const hasCompetitorSku = cum43Data.filter((item: any) => item['5.6对手销量'] > 0).length;
+  const hasCompetitorSku = cum43Data.filter((item: any) => getField(item, 'rivalCurr', '5.6对手销量') > 0).length;
   const noCompetitorSku = totalSku - hasCompetitorSku;
-  const soldSku = cum43Data.filter((item: any) => item['5.6 8日出单情况'] === 'Y' || item['5.6 8日出单情况'] === 'N').length;
-  const yCount = cum43Data.filter((item: any) => item['5.6 8日出单情况'] === 'Y').length;
-  const nCount = cum43Data.filter((item: any) => item['5.6 8日出单情况'] === 'N').length;
-  const noSaleCount = cum43Data.filter((item: any) => item['5.6 8日出单情况'] !== 'Y' && item['5.6 8日出单情况'] !== 'N').length;
-  
-  // 本周新上架: 上架日期在 4.30 或之后
+  const ord8Field = getField(cum43Data[0] || {}, 'ord8Curr', '') ? 'ord8Curr' : '5.6 8日出单情况';
+  const soldSku = cum43Data.filter((item: any) => item[ord8Field] === 'Y' || item[ord8Field] === 'N').length;
+  const yCount = cum43Data.filter((item: any) => item[ord8Field] === 'Y').length;
+  const nCount = cum43Data.filter((item: any) => item[ord8Field] === 'N').length;
+  const noSaleCount = cum43Data.filter((item: any) => item[ord8Field] !== 'Y' && item[ord8Field] !== 'N').length;
+
+  // 本周新上架: 上架日期在当期起始日或之后 (兼容新旧字段)
+  const listDateField = getField(cum43Data[0] || {}, 'listDate', '') ? 'listDate' : '实际上架日期';
   const curNewSku = cum43Data.filter((item: any) => {
-    const date = item['实际上架日期'];
-    return date && date >= '2026-04-30';
+    const date = item[listDateField];
+    return date && date >= '2026-05-14';
   }).length;
 
   // 按分析人汇总 - 从 Excel 真实数据读取
@@ -1343,31 +1348,31 @@ export function loadCorrectedNewProductData(): NewProductStatusData {
       prevHasCompetitor: 0,
     }));
 
-  // 转换低占比数据 - 匹配 LowShareRecord 接口
+  // 转换低占比数据 - 兼容新旧 JSON 字段名
   const lowShareRecords: any[] = lowShareData.map((item: any) => ({
-    salesCode: item.salesCode || item['SKU'] || '',
+    salesCode: item.salesCode || item.saleNo || item['SKU'] || '',
     sku: item.sku || item['SKU'] || '',
-    launchDate: item.launchDate || item['实际上架日期'] || '',
+    launchDate: item.launchDate || item.listDate || item['实际上架日期'] || '',
     analyst: item.analyst || item['4月分析人'] || '',
     category: item.category || item['品类'] || '',
     expandType: item.expandType || item['产品拓展'] || '',
-    curSalesQty: Number(item.curSalesQty || item['4.30-5.6销量'] || 0),
+    curSalesQty: Number(item.curSalesQty || item.salesCurr || item['4.30-5.6销量'] || 0),
     salesQtyChange: item.salesQtyChange || '-',
-    curRevenue: Number(item.curRevenue || item['4.30-5.6销售额'] || 0),
+    curRevenue: Number(item.curRevenue || item.revenueCurr || item['4.30-5.6销售额'] || 0),
     revenueChange: item.revenueChange || '-',
-    prevCompetitorQty: Number(item.prevCompetitorQty || 0),
-    curCompetitorQty: Number(item.curCompetitorQty || item['5.6对手销量'] || 0),
+    prevCompetitorQty: Number(item.prevCompetitorQty || item.rivalPrev || 0),
+    curCompetitorQty: Number(item.curCompetitorQty || item.rivalCurr || item['5.6对手销量'] || 0),
     competitorQtyChange: item.competitorQtyChange || '-',
-    prevMarketShare: item.prevMarketShare || '0%',
-    curMarketShare: item.curMarketShare || item['5.6市占比']?.toString() || '0%',
+    prevMarketShare: item.prevMarketShare || (item.sharePrev !== undefined ? item.sharePrev + '%' : '0%'),
+    curMarketShare: item.curMarketShare || (item.shareCurr !== undefined ? item.shareCurr + '%' : item['5.6市占比']?.toString()) || '0%',
     marketShareChange: item.marketShareChange || '-',
-    cur8dStatus: item.cur8dStatus || item['5.6 8日出单情况'] || '',
-    cur7dFreqTag: item.cur7dFreqTag || '正常',
-    prevMarketStatus: item.prevMarketStatus || '',
-    curOperation: item.curOperation || '',
-    curMarketStatus: item.curMarketStatus || item['5.6市场状态'] || '',
-    plpEnabled: item.plpEnabled || 'N',
-    plgFee: item.plgFee || '0%',
+    cur8dStatus: item.cur8dStatus || item.ord8Curr || item['5.6 8日出单情况'] || '',
+    cur7dFreqTag: item.cur7dFreqTag || item.freq7Curr || '正常',
+    prevMarketStatus: item.prevMarketStatus || item.mktStatusPrev || '',
+    curOperation: item.curOperation || item.opJudge || '',
+    curMarketStatus: item.curMarketStatus || item.mktStatus || item['5.6市场状态'] || '',
+    plpEnabled: item.plpEnabled || item.plpCurr || 'N',
+    plgFee: item.plgFee || (item.plgCurr !== undefined ? item.plgCurr + '%' : '0%'),
     riskLevel: 'high' as const,
   }));
 

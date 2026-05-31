@@ -20,8 +20,14 @@ import { generateNewProductStatusSummary } from './newProductStatusSummary';
 // Tab 类型
 type TabId = 'overview' | 'lowShare' | 'ads' | 'cum43' | 'report';
 
-// Demo 数据源
-const demoData: NewProductStatusData = mockNewProductStatusData;
+// Demo 数据源 — 优先使用 corrected_data.json 真实数据，fallback 到 mock
+const demoData: NewProductStatusData = (() => {
+  try {
+    return loadCorrectedNewProductData();
+  } catch {
+    return mockNewProductStatusData;
+  }
+})();
 
 // 四三累计数据（来源：v2.html 完整101条，含8条周期外上架过滤数据）
 const cum43Data = [
