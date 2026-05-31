@@ -2347,22 +2347,26 @@ export default function NewProductStatusPage() {
     });
   })();
 
+  // 兼容新旧两种 JSON 字段名
+  const gf = (r: any, newKey: string, oldKey: string): any => (r[newKey] !== undefined ? r[newKey] : r[oldKey]);
+
   const cum43FilteredData = cum43Data.filter(r => {
-    if (cum43Filters.status && r['5.6市场状态'] !== cum43Filters.status) return false;
-    if (cum43Filters.analyst && r['4月分析人'] !== cum43Filters.analyst) return false;
-    if (cum43Filters.category && r['品类'] !== cum43Filters.category) return false;
-    if (cum43Filters.expand && r['产品拓展'] !== cum43Filters.expand) return false;
-    if (cum43Filters.ord8 && r['5.6 8日出单情况'] !== cum43Filters.ord8) return false;
-    // 市占比筛选
+    if (cum43Filters.status && gf(r, 'mktStatus', '5.6市场状态') !== cum43Filters.status) return false;
+    if (cum43Filters.analyst && gf(r, 'analyst', '4月分析人') !== cum43Filters.analyst) return false;
+    if (cum43Filters.category && gf(r, 'category', '品类') !== cum43Filters.category) return false;
+    if (cum43Filters.expand && gf(r, 'expandType', '产品拓展') !== cum43Filters.expand) return false;
+    if (cum43Filters.ord8 && gf(r, 'ord8Curr', '5.6 8日出单情况') !== cum43Filters.ord8) return false;
+    // 市占比筛选 (新格式已×100，旧格式需要×100)
     if (cum43Filters.marketShare) {
-      const share = parseFloat(String(r['5.6市占比'])) || 0;
-      if (cum43Filters.marketShare === 'high' && share < 0.75) return false;
-      if (cum43Filters.marketShare === 'mid' && (share <= 0.5 || share >= 0.75)) return false;
-      if (cum43Filters.marketShare === 'low' && share >= 0.5) return false;
+      const rawShare = gf(r, 'shareCurr', '5.6市占比');
+      const share = typeof rawShare === 'number' && rawShare > 1 ? rawShare : parseFloat(String(rawShare || 0)) * 100;
+      if (cum43Filters.marketShare === 'high' && share < 75) return false;
+      if (cum43Filters.marketShare === 'mid' && (share <= 50 || share >= 75)) return false;
+      if (cum43Filters.marketShare === 'low' && share >= 50) return false;
     }
     // 市场竞争筛选
     if (cum43Filters.competition) {
-      const compQty = parseFloat(String(r['5.6对手销量'])) || 0;
+      const compQty = parseFloat(String(gf(r, 'rivalCurr', '5.6对手销量') || 0));
       if (cum43Filters.competition === 'hasComp' && compQty === 0) return false;
       if (cum43Filters.competition === 'noComp' && compQty !== 0) return false;
     }
