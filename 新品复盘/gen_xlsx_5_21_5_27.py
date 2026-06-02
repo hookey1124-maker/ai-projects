@@ -12,7 +12,7 @@ from collections import defaultdict, Counter
 WORKDIR = os.path.dirname(os.path.abspath(__file__)) + '/'
 SOURCE_FILE = WORKDIR + '周报/新品检查周源数据和PLP数据.xlsx'
 OUTPUT_FILE = WORKDIR + '新品周报数据表_5.21-5.27.xlsx'
-HTML_FILE = WORKDIR + '新品板块_5.21-5.27.html'
+HTML_FILE = WORKDIR + '新品板块_4.30-5.27_4weeks_drill.html'
 
 # ===== 从HTML提取数据 =====
 print("读取HTML中的数据...")
@@ -74,11 +74,14 @@ ws1.title = "总盘概览"
 t = data_blocks['cum43Stats']
 pk = data_blocks['prevWeekKpi']
 td = data_blocks['timelinessData']['total']
+# 本周数据从4周数组中取最后一个（最新周）
+cur_sales = data_blocks['totalSales4w'][3] if 'totalSales4w' in data_blocks else int(pk['prevTotalSalesQty'])
+cur_rev = data_blocks['totalRev4w'][3] if 'totalRev4w' in data_blocks else pk['prevTotalRevenue']
 
 kpi_data = [
     ['累计SKU数', t['total'], f"上周{pk['prevTotalSku']}"],
-    ['本品总销量', int(pk['prevTotalSalesQty']), f"环比{pk['salesQtyChange']}"],
-    ['总销售额(USD)', f"${pk['prevTotalRevenue']:,.2f}", f"环比{pk['revenueChange']}"],
+    ['本品总销量', cur_sales, f"上周{int(pk['prevTotalSalesQty'])} | 环比{pk['salesQtyChange']}"],
+    ['总销售额(USD)', f"${cur_rev:,.2f}", f"上周${pk['prevTotalRevenue']:,.2f} | 环比{pk['revenueChange']}"],
     ['新品总市占比', f"{t['totalMarketShare']}%", f"上周{t['totalMarketSharePrev']}%"],
     ['出单率(有对手)', f"{round((t['yCount']+t['nCount'])/t['hasRivalCount']*100,1)}%", f"Y:{t['yCount']} N:{t['nCount']} 未:{t['unCount']}"],
     ['分析及时率', td['timelyRate'], f"环比{td['change']}"],

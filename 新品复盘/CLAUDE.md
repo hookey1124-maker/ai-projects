@@ -28,17 +28,47 @@
 
 ## 数据管道
 
+### 旧管线（gen_html_*.py，已归档保留）
 ```
-周报/新品检查周源数据和PLP数据.xlsx  ← 单一数据源
-    ├── Sheet "四三数据累计"：~137列/SKU（销量/销售额/对手/市占/出单/PLP/PLG）
+周报/新品检查周源数据和PLP数据.xlsx
+    ├── Sheet "四三数据累计"：~137列/SKU
     ├── Sheet "PLP明细"：广告投放数据
-    └── Sheet "周销售数据"：部门级汇总
+    └── Sheet "自然周销售数据"：SKU级自然周销售
               │
               ├─→ gen_xlsx_*.py ──→ 新品周报数据表_X.X-X.X.xlsx
               │
               └─→ gen_html_*.py ──→ 新品板块_X.X-X.X.html
-                    (内嵌 Chart.js CDN + CSS动画 + 24个JS数据块)
+                    (内嵌 Chart.js CDN + 37个JS数据块)
 ```
+
+### 新管线（上传接口，⭐ 推荐使用）
+```
+新品检查周源数据和PLP数据.xlsx
+    ↓ 拖入浏览器（SheetJS 解析表头名匹配列）
+新品板块.html  ← 通用模板，无内嵌数据
+    ├── JS计算引擎 computeEngine() — 替代 Python ~1063 行
+    ├── Chart.js 渲染 — 14 个图表
+    ├── 6 Tab 表格渲染
+    └── XLSX 导出（SheetJS 写，替代 openpyxl）
+```
+
+### 新管线核心优势
+- **列自动定位**：表头名正则匹配（`/销量.*5\.21/`），Excel 加列/调序不受影响
+- **单一计算源**：所有计算在浏览器 JS 中完成，消除 Python→JS 变量映射不一致
+- **即拖即用**：每周期只需拖入新 Excel，无需修改任何代码
+- **零依赖**：离线版内置 SheetJS + Chart.js，双击 HTML 即可使用
+
+### 文件说明
+
+| 文件 | 说明 |
+|------|------|
+| `新品板块.html` | ⭐ **主文件**，通用看板模板（CDN版，需联网） |
+| `compute_engine.js` | JS 计算引擎源码（已内嵌到 HTML 中） |
+| `render_dashboard.js` | JS 渲染引擎源码（已内嵌到 HTML 中） |
+| `build_offline.py` | 离线构建脚本，下载 SheetJS+Chart.js 内嵌 |
+| `新品板块_离线版.html` | 构建产物，完全离线可用 |
+| `gen_html_*.py` | 归档保留，不再使用 |
+| `gen_xlsx_*.py` | 归档保留，XLSX 导出由 HTML 内置 |
 
 ## 三个数据周期
 
@@ -88,8 +118,42 @@
 
 - **三部周报v1** 是原型（React SPA + generate_report_v3.py）
 - **新品复盘** 是正式版（直接读xlsx，单文件HTML输出）
+- **React重写(2026-06-01)**: 新品复盘HTML → 提取53个JS数据块 → `corrected_data.json`(409KB) → 三部周报v1 React的 `newProductStatusAdapter.ts` → `NewProductStatusPage.tsx`(6 Tab)
 - `copy_to_template.py` 仍引用 `三部周报v1/胡煜星-周报统一Workbook表头模板.xlsx`
 - `gen_xlsx_506_acoas.py` 曾从 `三部周报v1/周报/` 读取源数据
+
+## JSON 提取协议（供 React 消费）
+
+当 HTML 更新后，需重新提取 JSON 给 React：
+```python
+# 从 HTML 提取 JS 数据块到 corrected_data.json
+# HTML 中的 const xxx = {...}; 会被解析为 JSON key-value
+# 确保 encoding='utf-8'，HTML 的 <meta charset="UTF-8"> 保证中文正确
+```
+
+## ⚠️ 易错点 & 易生Bug点
+
+### 百分比输出一致性
+Python 端所有百分比输出必须统一为**百分数格式**（×100后的值），React 端不再做 ×100：
+- `share4w`: `[52.6, 49.1]` ← Python: `round(share*100, 1)`，不是 `0.526`
+- `curMarketShare`: `48.2`，不是 `0.482`
+- PLP/PLG 4周 `acos4w/acoas4w`: `[14.3, 10.2]`，不是 `[0.143, 0.102]`
+- **例外**: `plpDetailData[].acos` 保持 0-1 小数 `0.0381`（明细表React端自行×100）
+
+### 数据块命名必须稳定
+React Adapter 按固定 key 名读取 JSON，Python 端生成 JS 数据块时命名不能变：
+- `cum43Stats`, `prevWeekKpi`, `categoryRevenueData`, `analystRevenueData`
+- `totalSales4w`, `totalShare4w`, `catShare4w`, `anShare4w`
+- `plpAnalysts`, `plpCategories`, `plpExpandTypes`, `plpDetailData`
+- `plgStats`（含 `byAnalyst` 数组，字段: `analyst/total/plpAndPlgBoth/singleLinkPlpPlg/plgOnly/plpOnly/noAd/plpDisabledNoSale/plgSpend/plgAdRev/plgNatRev/acos/acoas`）
+- `plgAn4w`, `plpAn4w`, `plpCat4w`, `plpExp4w`
+- `timelinessData`（含 `analysts` 数组 + `total`，每个分析人有 `prevTimelyRate`/`change`）
+- `priceOverview`（`byAnalyst` 是 `[{analyst, "$0-10":0, ...}]` 结构，非字典嵌套）
+
+### 数据结构方向
+- `priceOverview.byAnalyst`: **按分析人行** → `[{analyst: "俞东旭", "$0-10": 0}]`
+- `mktDistOverall.distribution`: **按状态行** → `[{status: "正常", curCount: 52}]`
+- `shareTierOverview.byCategory`: **按品线行** → `[{category: "车门系统", high: 10, mid: 5, low: 3}]`
 
 ## 分析维度
 

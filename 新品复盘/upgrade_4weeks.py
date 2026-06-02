@@ -7,9 +7,11 @@ from openpyxl import load_workbook
 from datetime import date, datetime
 from collections import defaultdict
 
-HTML = 'C:/Users/Hardy/ai-projects/新品复盘/新品板块_5.21-5.27.html'
-OUTPUT = 'C:/Users/Hardy/ai-projects/新品复盘/新品板块_4.30-5.27_4weeks.html'
-SRC = 'C:/Users/Hardy/ai-projects/新品复盘/周报/新品检查周源数据和PLP数据.xlsx'
+import os
+WORKDIR = os.path.dirname(os.path.abspath(__file__)) + '/'
+HTML = WORKDIR + '新品板块_5.21-5.27.html'
+OUTPUT = WORKDIR + '新品板块_4.30-5.27_4weeks.html'
+SRC = WORKDIR + '周报/新品检查周源数据和PLP数据.xlsx'
 
 with open(HTML, 'r', encoding='utf-8') as f:
     html = f.read()
@@ -186,18 +188,18 @@ js = js[:kpi_m.start(1)] + new_kpi + js[kpi_m.end(1):]
 
 # ===== 5. 升级Tab1图表：品线/分析人销量/销售额从2-bar改为4-week折线 =====
 print("5. 升级图表为4周趋势...")
+# Note: upgrade patterns already include indentation matching gen_html output
 
 # 5a. 升级 chart-cat-sales → 4周折线图
-old_cat_sales = r"""new Chart(document.getElementById('chart-cat-sales'), {
+old_cat_sales = r"""  new Chart(document.getElementById('chart-cat-sales'), {
     type: 'bar', data: { labels: catLabels, datasets: [
-      { label: '本周销量', data: categoryRevenueData.map(function(d){return d.curSalesQty;}), backgroundColor: '#0f3460', yAxisID: 'y' },
-      { label: '上周销量', data: categoryRevenueData.map(function(d){return d.prevSalesQty;}), backgroundColor: '#ccc', yAxisID: 'y' },
-      { label: '环比变化(%)', data: categoryRevenueData.map(function(d){ var v=parseFloat(d.salesQtyChange); return isNaN(v)?0:v; }), borderColor: '#c0392b', backgroundColor: 'transparent', type: 'line', yAxisID: 'y1', tension: 0.3, borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#c0392b' }
+      { label: '本周销量', data: categoryRevenueData.map(function(d){return d.curSalesQty;}), backgroundColor: '#0f3460' },
+      { label: '上周销量', data: categoryRevenueData.map(function(d){return d.prevSalesQty;}), backgroundColor: '#ccc' }
     ]},
-    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true, title: { display: true, text: '销量' } }, y1: { position: 'right', title: { display: true, text: '环比变化(%)' }, grid: { drawOnChartArea: false } } } }
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
   });"""
 
-new_cat_sales = r"""new Chart(document.getElementById('chart-cat-sales'), {
+new_cat_sales = r"""  new Chart(document.getElementById('chart-cat-sales'), {
     type: 'line', data: { labels: ['4.30-5.6','5.7-5.13','5.14-5.20','5.21-5.27'], datasets: categoryRevenueData.map(function(d,i){ var colors=['#0f3460','#2980b9','#8e44ad','#e07b24','#08845a','#c0392b']; return { label: d.category, data: d.sales4w || [d.curSalesQty,d.prevSalesQty,d.salesW2||0,d.salesW3||0], borderColor: colors[i%colors.length], backgroundColor: 'transparent', tension: 0.3, borderWidth: 2, pointRadius: 3 }; }) },
     options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true, title: { display: true, text: '销量' } } } }
   });"""
@@ -205,16 +207,15 @@ new_cat_sales = r"""new Chart(document.getElementById('chart-cat-sales'), {
 js = js.replace(old_cat_sales, new_cat_sales)
 
 # 5b. 升级 chart-an-sales → 4周折线图
-old_an_sales = r"""new Chart(document.getElementById('chart-an-sales'), {
+old_an_sales = r"""  new Chart(document.getElementById('chart-an-sales'), {
     type: 'bar', data: { labels: anLabels, datasets: [
-      { label: '本周销量', data: analystRevenueData.map(function(d){return d.curSalesQty;}), backgroundColor: '#0f3460', yAxisID: 'y' },
-      { label: '上周销量', data: analystRevenueData.map(function(d){return d.prevSalesQty;}), backgroundColor: '#ccc', yAxisID: 'y' },
-      { label: '环比变化(%)', data: analystRevenueData.map(function(d){ var v=parseFloat(d.salesQtyChange); return isNaN(v)?0:v; }), borderColor: '#c0392b', backgroundColor: 'transparent', type: 'line', yAxisID: 'y1', tension: 0.3, borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#c0392b' }
+      { label: '本周销量', data: analystRevenueData.map(function(d){return d.curSalesQty;}), backgroundColor: '#0f3460' },
+      { label: '上周销量', data: analystRevenueData.map(function(d){return d.prevSalesQty;}), backgroundColor: '#ccc' }
     ]},
-    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true, title: { display: true, text: '销量' } }, y1: { position: 'right', title: { display: true, text: '环比变化(%)' }, grid: { drawOnChartArea: false } } } }
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
   });"""
 
-new_an_sales = r"""new Chart(document.getElementById('chart-an-sales'), {
+new_an_sales = r"""  new Chart(document.getElementById('chart-an-sales'), {
     type: 'line', data: { labels: ['4.30-5.6','5.7-5.13','5.14-5.20','5.21-5.27'], datasets: analystRevenueData.map(function(d,i){ var colors=['#0f3460','#2980b9','#8e44ad','#e07b24','#08845a','#c0392b']; return { label: d.analyst, data: d.sales4w || [d.curSalesQty,d.prevSalesQty,d.salesW2||0,d.salesW3||0], borderColor: colors[i%colors.length], backgroundColor: 'transparent', tension: 0.3, borderWidth: 2, pointRadius: 3 }; }) },
     options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true, title: { display: true, text: '销量' } } } }
   });"""
@@ -222,7 +223,7 @@ new_an_sales = r"""new Chart(document.getElementById('chart-an-sales'), {
 js = js.replace(old_an_sales, new_an_sales)
 
 # 5c. 升级 chart-cat-rev → 4周折线图
-old_cat_rev = r"""new Chart(document.getElementById('chart-cat-rev'), {
+old_cat_rev = r"""  new Chart(document.getElementById('chart-cat-rev'), {
     type: 'bar', data: { labels: catLabels, datasets: [
       { label: '本周销售额($)', data: categoryRevenueData.map(function(d){return d.curRevenue;}), backgroundColor: '#8e44ad' },
       { label: '上周销售额($)', data: categoryRevenueData.map(function(d){return d.prevRevenue;}), backgroundColor: '#ddd' }
@@ -230,7 +231,7 @@ old_cat_rev = r"""new Chart(document.getElementById('chart-cat-rev'), {
     options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
   });"""
 
-new_cat_rev = r"""new Chart(document.getElementById('chart-cat-rev'), {
+new_cat_rev = r"""  new Chart(document.getElementById('chart-cat-rev'), {
     type: 'line', data: { labels: ['4.30-5.6','5.7-5.13','5.14-5.20','5.21-5.27'], datasets: categoryRevenueData.map(function(d,i){ var colors=['#8e44ad','#2980b9','#e07b24','#08845a','#c0392b','#0f3460']; return { label: d.category, data: d.revenue4w || [d.curRevenue,d.prevRevenue,d.revenueW2||0,d.revenueW3||0], borderColor: colors[i%colors.length], backgroundColor: 'transparent', tension: 0.3, borderWidth: 2, pointRadius: 3 }; }) },
     options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true, title: { display: true, text: '销售额($)' } } } }
   });"""
@@ -238,7 +239,7 @@ new_cat_rev = r"""new Chart(document.getElementById('chart-cat-rev'), {
 js = js.replace(old_cat_rev, new_cat_rev)
 
 # 5d. 升级 chart-an-rev → 4周折线图
-old_an_rev = r"""new Chart(document.getElementById('chart-an-rev'), {
+old_an_rev = r"""  new Chart(document.getElementById('chart-an-rev'), {
     type: 'bar', data: { labels: anLabels, datasets: [
       { label: '本周销售额($)', data: analystRevenueData.map(function(d){return d.curRevenue;}), backgroundColor: '#8e44ad' },
       { label: '上周销售额($)', data: analystRevenueData.map(function(d){return d.prevRevenue;}), backgroundColor: '#ddd' }
@@ -246,7 +247,7 @@ old_an_rev = r"""new Chart(document.getElementById('chart-an-rev'), {
     options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
   });"""
 
-new_an_rev = r"""new Chart(document.getElementById('chart-an-rev'), {
+new_an_rev = r"""  new Chart(document.getElementById('chart-an-rev'), {
     type: 'line', data: { labels: ['4.30-5.6','5.7-5.13','5.14-5.20','5.21-5.27'], datasets: analystRevenueData.map(function(d,i){ var colors=['#8e44ad','#2980b9','#e07b24','#08845a','#c0392b','#0f3460']; return { label: d.analyst, data: d.revenue4w || [d.curRevenue,d.prevRevenue,d.revenueW2||0,d.revenueW3||0], borderColor: colors[i%colors.length], backgroundColor: 'transparent', tension: 0.3, borderWidth: 2, pointRadius: 3 }; }) },
     options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true, title: { display: true, text: '销售额($)' } } } }
   });"""
@@ -292,7 +293,7 @@ html = html[:script_m.start(1)] + js + html[script_m.end(1):]
 
 # 5f. Tab1 body中插入4周趋势图canvas（在重组后操作，避免位移）
 new_4w_chart = '<div class="chart-box"><h4>&#128200; 4周销量趋势</h4><canvas id="chart-4w-sales"></canvas></div>\n      <div class="chart-box"><h4>&#128200; 4周销售额趋势</h4><canvas id="chart-4w-rev"></canvas></div>\n      <div class="chart-box"><h4>&#128200; 4周市占比趋势</h4><canvas id="chart-4w-share"></canvas></div>'
-html_body_part = re.search(r'(<div class="chart-box"><h4>&#128101; 分析人销售额对比</h4><canvas id="chart-an-rev"></canvas></div>)\s*</div>\s*<div class="section"><h3>&#128200; 新品出单情况</h3>', html, re.DOTALL)
+html_body_part = re.search(r'(<div class="chart-box"><h4>[^<]*</h4><canvas id="chart-ord8"></canvas></div>)\s*</div>\s*<div class="section"><h3>[^<]*新品出单情况</h3>', html, re.DOTALL)
 if html_body_part:
     html = html[:html_body_part.end(1)] + '\n      ' + new_4w_chart + html[html_body_part.end(1):]
     print("5f. 已插入4周趋势canvas到body")

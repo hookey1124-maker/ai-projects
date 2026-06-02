@@ -91,9 +91,9 @@ def get_exp(r_data):
     return e if e else '其他'
 
 ANALYSTS = ['俞东旭', '张潇', '朱培源', '王偲涵', '章鹏', '胡煜星']
-CATEGORIES = ['车门系统', '车身外扩件', '挡泥板', '机盖及附件', '其他', '饰条', '牌照板支架', '未分类']
+CATEGORIES = ['车门系统', '车身外扩件', '挡泥板', '机盖及附件', '其他', '饰条', '牌照板支架']  # 未分类已移除，如出现请更新源数据
 EXPAND_TYPES = ['原开品', '拓展品', '组合件']
-ALL_MKT_STATUSES = ['正常', '竞争无优势', '无市场', '站外出单', '站内无价格优势', '#N/A', '未知', '其他']
+ALL_MKT_STATUSES = ['正常', '竞争无优势', '无市场', '站外出单', '站内无价格优势']
 
 # 自然周周期
 PLP_CURR = '5.18-5.24'
@@ -135,12 +135,16 @@ total_rival_sales_prev = sum(num(r[C['rival_prev']]) for r in rows_prev)
 total_market_share_curr = round(total_sales_curr / (total_sales_curr + total_rival_sales_curr) * 100, 1) if (total_sales_curr + total_rival_sales_curr) > 0 else 0
 total_market_share_prev = round(total_sales_prev / (total_sales_prev + total_rival_sales_prev) * 100, 1) if (total_sales_prev + total_rival_sales_prev) > 0 else 0
 
+# 检查未分类SKU
+uncategorized = [r for r in rows_curr if get_cat(r) == '未分类']
+if uncategorized: print(f"  WARNING: 发现 {len(uncategorized)} 个未分类SKU，请更新源数据产品分配表！")
+
 # 部门销售数据
 dept_total_sales = 0
 dept_total_revenue = 0.0
 for row in ws_dept.iter_rows(min_row=2, max_row=2, values_only=True):
-    dept_total_sales = int(num(row[4])) if row[4] else 0
-    dept_total_revenue = num(row[5])
+    dept_total_sales = int(num(row[2])) if row[2] else 0
+    dept_total_revenue = num(row[3])
 
 dept_ratio = round(total_rev_curr / dept_total_revenue * 100, 1) if dept_total_revenue > 0 else 0
 
@@ -445,8 +449,8 @@ timelinessData['total'] = {
 # 6. hasCompetitorUnsold
 has_rival_no_curr = [r for r in rows_curr if str(r[C['ord8_curr']] or '').strip() == '未出单' and num(r[C['rival_curr']]) > 0]
 has_rival_no_prev = [r for r in rows_prev if str(r[C['ord8_prev']] or '').strip() == '未出单' and num(r[C['rival_prev']]) > 0]
-mkt_has_order = ['竞争无优势', '无市场', '站内无价格优势', '站外出单', '正常', '#N/A', '未知']
-mkt_no_order = ['无市场', '未知', '竞争无优势', '#N/A', '其他']
+mkt_has_order = ['竞争无优势', '站内无价格优势']
+mkt_no_order = ['无市场', '站外出单']
 
 def build_unsold_analysis(items, mkt_order, col_mkt):
     reasons = []
@@ -480,6 +484,12 @@ def build_unsold_analysis(items, mkt_order, col_mkt):
 hasCompetitorUnsold = build_unsold_analysis(has_rival_no_curr, mkt_has_order, C['mkt_curr'])
 hasCompetitorUnsold['prevTotal'] = len(has_rival_no_prev)
 hasCompetitorUnsold['change'] = len(has_rival_no_curr) - len(has_rival_no_prev)
+
+# 检查有对手未出单中是否出现异常原因
+wu_mkt = sum(1 for r in has_rival_no_curr if str(r[C['mkt_curr']] or '').strip() == '无市场')
+zc_mkt = sum(1 for r in has_rival_no_curr if str(r[C['mkt_curr']] or '').strip() == '站外出单')
+if wu_mkt > 0: print(f"  WARNING: 有对手未出单中出现'无市场' {wu_mkt} 个SKU，已从表格中移除，请核实！")
+if zc_mkt > 0: print(f"  WARNING: 有对手未出单中出现'站外出单' {zc_mkt} 个SKU，已从表格中移除，请核实！")
 
 # 7-11. PLP 广告数据（自然周）
 plpTotal = {
@@ -812,7 +822,8 @@ shareTierOverview = {
 # ===== 市场分布数据 =====
 def normalize_mkt(r_data, col_idx):
     v = str(r_data[col_idx] or '').strip()
-    return v if v in ALL_MKT_STATUSES else '其他'
+    if v in ('#N/A', '未知', ''): return None
+    return v
 
 mkt_curr_counter = Counter()
 mkt_prev_counter = Counter()
@@ -826,7 +837,14 @@ mktDistOverall = {
     'prevTotal': len(rows_prev),
     'distribution': []
 }
-for s in ALL_MKT_STATUSES:
+seen_statuses = set(ALL_MKT_STATUSES)
+for s in mkt_curr_counter:
+    if s is None or s in ('#N/A', '未知'): continue
+    seen_statuses.add(s)
+for s in mkt_prev_counter:
+    if s is None or s in ('#N/A', '未知'): continue
+    seen_statuses.add(s)
+for s in sorted(seen_statuses, key=lambda x: (x not in ALL_MKT_STATUSES, ALL_MKT_STATUSES.index(x) if x in ALL_MKT_STATUSES else 99, x)):
     cur_c = mkt_curr_counter.get(s, 0)
     prev_c = mkt_prev_counter.get(s, 0)
     mktDistOverall['distribution'].append({
@@ -890,6 +908,136 @@ priceOverview = {
     "byCategory": priceByCategory,
 }
 
+# ===== 4 周数据提取 =====
+WEEK_LABELS_4W = ['4.30-5.6', '5.7-5.13', '5.14-5.20', '5.21-5.27']
+# 4周列组: [W-3, W-2, prev, curr]
+W4_SALES = [15, 16, 17, 18]
+W4_REVENUE = [28, 29, 30, 31]
+W4_RIVAL = [41, 42, 43, 44]
+W4_SHARE = [53, 54, 55, 56]
+W4_FREQ7 = [89, 90, 91, 92]
+W4_NFREQ7 = [101, 102, 103, 104]
+
+# 汇总4周数据
+def sum4w(items, cols):
+    return [int(sum(num(r[c]) for r in items)) for c in cols]
+def sum4w_rev(items, cols):
+    return [round(sum(num(r[c]) for r in items), 2) for c in cols]
+def share4w(items, sales_cols, rival_cols):
+    result = []
+    for i in range(4):
+        s = sum(num(r[sales_cols[i]]) for r in items)
+        r = sum(num(r[rival_cols[i]]) for r in items)
+        result.append(round(s/(s+r)*100, 1) if (s+r) > 0 else 0)
+    return result
+
+totalSales4w = sum4w(rows_curr, W4_SALES)
+totalRev4w = sum4w_rev(rows_curr, W4_REVENUE)
+totalShare4w = share4w(rows_curr, W4_SALES, W4_RIVAL)
+
+# 按品线4周
+catSales4w = []
+catRev4w = []
+catShare4w = []
+for cat in CATEGORIES:
+    items = [r for r in rows_curr if get_cat(r) == cat]
+    catSales4w.append({'category': cat, 'sales4w': sum4w(items, W4_SALES)})
+    catRev4w.append({'category': cat, 'rev4w': sum4w_rev(items, W4_REVENUE)})
+    catShare4w.append({'category': cat, 'share4w': share4w(items, W4_SALES, W4_RIVAL)})
+
+# 按分析人4周
+anSales4w = []
+anRev4w = []
+anShare4w = []
+for an in ANALYSTS:
+    items = [r for r in rows_curr if get_an(r) == an]
+    anSales4w.append({'analyst': an, 'sales4w': sum4w(items, W4_SALES)})
+    anRev4w.append({'analyst': an, 'rev4w': sum4w_rev(items, W4_REVENUE)})
+    anShare4w.append({'analyst': an, 'share4w': share4w(items, W4_SALES, W4_RIVAL)})
+
+# 分析及时率4周
+timeliness4w = {
+    'labels': WEEK_LABELS_4W,
+    'analysts': [],
+    'totalRates': []
+}
+for an in ANALYSTS:
+    items = [r for r in rows_curr if get_an(r) == an]
+    rates = []
+    for i in range(4):
+        total = len(items)
+        timely = sum(1 for r in items if str(r[W4_NFREQ7[i]] or '').strip() != '异常' and str(r[W4_FREQ7[i]] or '').strip() != '异常')
+        rates.append(round(timely/total*100, 1) if total > 0 else 0)
+    timeliness4w['analysts'].append({'analyst': an, 'rates4w': rates})
+# 总及时率
+total_rates = []
+for i in range(4):
+    total = len(rows_curr)
+    timely = sum(1 for r in rows_curr if str(r[W4_NFREQ7[i]] or '').strip() != '异常' and str(r[W4_FREQ7[i]] or '').strip() != '异常')
+    total_rates.append(round(timely/total*100, 1) if total > 0 else 0)
+timeliness4w['totalRates'] = total_rates
+
+# ===== PLP 4周下钻数据 =====
+PLP_PERIODS_4W = ['4.27-5.3', '5.4-5.10', '5.11-5.17', '5.18-5.24']
+plp4w_cost = [0.0]*4
+plp4w_adRev = [0.0]*4
+plp4w_acos = [0.0]*4
+plp4w_acoas = [0.0]*4
+plp4w_an = {}
+for an in ANALYSTS:
+    plp4w_an[an] = {'cost4w': [0.0]*4, 'adRev4w': [0.0]*4, 'acos4w': [0.0]*4, 'acoas4w': [0.0]*4}
+
+plp_all_rows = list(ws_plp.iter_rows(min_row=2, values_only=True))
+for i, period in enumerate(PLP_PERIODS_4W):
+    period_cost = 0.0; period_ad_rev = 0.0; period_total_rev = 0.0
+    seen_sku = set()
+    an_cost = {an: 0.0 for an in ANALYSTS}
+    an_ad_rev = {an: 0.0 for an in ANALYSTS}
+    an_total_rev = {an: 0.0 for an in ANALYSTS}
+    for row in plp_all_rows:
+        p = str(row[PC['period']] or '').strip()
+        sku = str(row[PC['sku']] or '').strip()
+        if p != period or not sku or sku.startswith('广告') or sku.startswith('总数据'):
+            continue
+        list_d = get_date(row[PC['list_date']])
+        if not list_d or list_d > cutoff_curr:
+            continue
+        c = num(row[PC['cost']])
+        ar = num(row[PC['ad_rev']])
+        tr = num(row[PC['total_rev']])
+        period_cost += c
+        period_ad_rev += ar
+        if sku not in seen_sku:
+            period_total_rev += tr
+            seen_sku.add(sku)
+        an = str(row[PC['analyst']] or '').strip()
+        if an in an_cost:
+            an_cost[an] += c
+            an_ad_rev[an] += ar
+            if sku not in seen_sku:
+                an_total_rev[an] += tr
+    plp4w_cost[i] = round(period_cost, 2)
+    plp4w_adRev[i] = round(period_ad_rev, 2)
+    plp4w_acos[i] = round(period_cost/period_ad_rev*100, 2) if period_ad_rev > 0 else 0
+    plp4w_acoas[i] = round(period_cost/period_total_rev*100, 2) if period_total_rev > 0 else 0
+    for an in ANALYSTS:
+        plp4w_an[an]['cost4w'][i] = round(an_cost[an], 2)
+        plp4w_an[an]['adRev4w'][i] = round(an_ad_rev[an], 2)
+        plp4w_an[an]['acos4w'][i] = round(an_cost[an]/an_ad_rev[an]*100, 2) if an_ad_rev[an] > 0 else 0
+        plp4w_an[an]['acoas4w'][i] = round(an_cost[an]/an_total_rev[an]*100, 2) if an_total_rev[an] > 0 else 0
+
+plp4wAnalysts = [{'analyst': an, **plp4w_an[an]} for an in ANALYSTS]
+
+# 四三累计 SKU 4周明细（供下钻）
+cum43_4w = {}
+for r in rows_curr:
+    sku = str(r[C['sku']]).strip()
+    cum43_4w[sku] = {
+        'sales4w': [int(num(r[c])) for c in W4_SALES],
+        'rev4w': [round(num(r[c]), 2) for c in W4_REVENUE],
+        'share4w': share4w([r], W4_SALES, W4_RIVAL),
+    }
+
 # ===== 序列化 JS 变量 =====
 print("序列化数据...")
 data_blocks = {
@@ -904,6 +1052,14 @@ data_blocks = {
     'plpSummaryData': plpSummaryData, 'plpDetailData': plpDetailData,
     'mktDistOverall': mktDistOverall, 'shareTierOverview': shareTierOverview,
     'priceOverview': priceOverview,
+    'weekLabels4w': WEEK_LABELS_4W, 'totalSales4w': totalSales4w,
+    'totalRev4w': totalRev4w, 'totalShare4w': totalShare4w,
+    'catSales4w': catSales4w, 'catRev4w': catRev4w, 'catShare4w': catShare4w,
+    'anSales4w': anSales4w, 'anRev4w': anRev4w, 'anShare4w': anShare4w,
+    'timeliness4w': timeliness4w,
+    'plp4wLabels': PLP_PERIODS_4W, 'plp4wCost': plp4w_cost,
+    'plp4wAdRev': plp4w_adRev, 'plp4wAcos': plp4w_acos, 'plp4wAcoas': plp4w_acoas,
+    'plp4wAnalysts': plp4wAnalysts, 'cum43_4w': cum43_4w,
 }
 
 js_lines = []
@@ -1053,10 +1209,7 @@ HTML_BODY = r'''
     <div class="kpi-grid" id="t1-kpi"></div>
     <div class="chart-grid">
       <div class="chart-box"><h4>&#128200; 出单分布（4段）</h4><canvas id="chart-ord8"></canvas></div>
-      <div class="chart-box"><h4>&#128200; 品线销量对比</h4><canvas id="chart-cat-sales"></canvas></div>
-      <div class="chart-box"><h4>&#128101; 分析人销量对比</h4><canvas id="chart-an-sales"></canvas></div>
-      <div class="chart-box"><h4>&#128200; 品线销售额对比</h4><canvas id="chart-cat-rev"></canvas></div>
-      <div class="chart-box"><h4>&#128101; 分析人销售额对比</h4><canvas id="chart-an-rev"></canvas></div>
+
     </div>
     <div class="section"><h3>&#128200; 新品出单情况</h3><div id="t1-ord8"></div></div>
     <div class="section"><h3>&#128269; 多维度分析（含市占比）</h3>
@@ -1086,9 +1239,12 @@ HTML_BODY = r'''
       </div>
     </div>
     <div class="section"><h3>&#128203; 货值明细</h3><div id="t2-price-table"></div></div>
-    <div class="section"><h3>&#127919; 市占比分布（品线 x 高中低）</h3>
+    <div class="section"><h3>&#127919; 市占比分布</h3>
       <div class="chart-grid">
-        <div class="chart-box"><h4>&#128200; 各品线高中低市占比SKU分布</h4><canvas id="chart-share-tier"></canvas></div>
+        <div class="chart-box"><h4>&#128200; 总市占比4周趋势</h4><canvas id="chart-total-share-4w"></canvas></div>
+        <div class="chart-box"><h4>&#128200; 品线市占比4周趋势</h4><canvas id="chart-cat-share-4w"></canvas></div>
+        <div class="chart-box"><h4>&#128200; 分析人市占比4周趋势</h4><canvas id="chart-an-share-4w"></canvas></div>
+        <div class="chart-box"><h4>&#128200; 各品线高中低市占比分布</h4><canvas id="chart-share-tier"></canvas></div>
       </div>
     </div>
     <div class="section"><h3>&#128203; 市占比分布明细</h3><div id="t2-share-tier-table"></div></div>
@@ -1199,6 +1355,7 @@ function switchTab(tabId, el) {
   document.querySelectorAll('.sidebar a').forEach(function(a) { a.classList.remove('active'); });
   if (el) el.classList.add('active');
   if (tabId === 'tab1' && !window._charts1Init) { initCharts1(); }
+    if (tabId === 'tab2' && !window._charts2Init) { initCharts2(); }
 }
 
 // ========== Tab1: 总盘概览 ==========
@@ -1280,133 +1437,251 @@ function initCharts1() {
     },
     options: { responsive: true, plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: function(ctx) { return ctx.label + ': ' + ctx.parsed + '个 (' + (ctx.parsed/t.total*100).toFixed(1) + '%)'; } } } } }
   });
-
-  // 2. 新品总市占比（环比柱状图）
-  var totalShareCurr = t.totalMarketShare;
-  var totalSharePrev = t.totalMarketSharePrev;
-  new Chart(document.getElementById('chart-total-share'), {
-    type: 'bar',
-    data: { labels: ['本周(5.27)', '上周(5.20)'], datasets: [
-      { label: '新品总市占比(%)', data: [totalShareCurr, totalSharePrev], backgroundColor: ['#0f3460', '#ccc'] }
-    ]},
-    options: { responsive: true, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(ctx) { return ctx.parsed + '%'; } } } }, scales: { y: { beginAtZero: true, max: 100 } } }
-  });
-
-  // 3. 品线市占比对比
-  var catLabels = categoryRevenueData.map(function(d) { return d.category; });
-  new Chart(document.getElementById('chart-cat-share'), {
-    type: 'bar', data: { labels: catLabels, datasets: [
-      { label: '本周市占比(%)', data: categoryRevenueData.map(function(d){return d.curMarketShare;}), backgroundColor: '#0f3460' },
-      { label: '上周市占比(%)', data: categoryRevenueData.map(function(d){return d.prevMarketShare;}), backgroundColor: '#ccc' }
-    ]},
-    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true, max: 100 } } }
-  });
-
-  // 4. 分析人市占比对比
-  var anLabels = analystRevenueData.map(function(d) { return d.analyst; });
-  new Chart(document.getElementById('chart-an-share'), {
-    type: 'bar', data: { labels: anLabels, datasets: [
-      { label: '本周市占比(%)', data: analystRevenueData.map(function(d){return d.curMarketShare;}), backgroundColor: '#8e44ad' },
-      { label: '上周市占比(%)', data: analystRevenueData.map(function(d){return d.prevMarketShare;}), backgroundColor: '#ddd' }
-    ]},
-    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true, max: 100 } } }
-  });
-
-  // 5. 品线销量对比
-  new Chart(document.getElementById('chart-cat-sales'), {
-    type: 'bar', data: { labels: catLabels, datasets: [
-      { label: '本周销量', data: categoryRevenueData.map(function(d){return d.curSalesQty;}), backgroundColor: '#0f3460' },
-      { label: '上周销量', data: categoryRevenueData.map(function(d){return d.prevSalesQty;}), backgroundColor: '#ccc' }
-    ]},
-    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
-  });
-
-  // 6. 分析人销量对比
-  new Chart(document.getElementById('chart-an-sales'), {
-    type: 'bar', data: { labels: anLabels, datasets: [
-      { label: '本周销量', data: analystRevenueData.map(function(d){return d.curSalesQty;}), backgroundColor: '#0f3460' },
-      { label: '上周销量', data: analystRevenueData.map(function(d){return d.prevSalesQty;}), backgroundColor: '#ccc' }
-    ]},
-    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
-  });
-
-  // 7. 品线销售额对比
-  new Chart(document.getElementById('chart-cat-rev'), {
-    type: 'bar', data: { labels: catLabels, datasets: [
-      { label: '本周销售额($)', data: categoryRevenueData.map(function(d){return d.curRevenue;}), backgroundColor: '#8e44ad' },
-      { label: '上周销售额($)', data: categoryRevenueData.map(function(d){return d.prevRevenue;}), backgroundColor: '#ddd' }
-    ]},
-    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
-  });
-
-  // 8. 分析人销售额对比
-  new Chart(document.getElementById('chart-an-rev'), {
-    type: 'bar', data: { labels: anLabels, datasets: [
-      { label: '本周销售额($)', data: analystRevenueData.map(function(d){return d.curRevenue;}), backgroundColor: '#8e44ad' },
-      { label: '上周销售额($)', data: analystRevenueData.map(function(d){return d.prevRevenue;}), backgroundColor: '#ddd' }
-    ]},
-    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
-  });
 }
 setTimeout(initCharts1, 100);
 
-// ========== Tab2: 低占比分析 ==========
+// ========== Tab2: 市场分布 ==========
+(function() {
+  var mo = mktDistOverall;
+  var normalItem = mo.distribution.find(function(d) { return d.status === '正常'; }) || {curCount:0, curPct:0, change:0};
+  var competitiveItem = mo.distribution.find(function(d) { return d.status === '竞争无优势'; }) || {curCount:0, change:0};
+  var noMarketItem = mo.distribution.find(function(d) { return d.status === '无市场'; }) || {curCount:0, change:0};
+  var stationOutItem = mo.distribution.find(function(d) { return d.status === '站外出单'; }) || {curCount:0, change:0};
+
+  document.getElementById('t2-kpi').innerHTML =
+    '<div class="kpi-card primary"><div class="label">&#127758; 在售SKU总数</div><div class="val">' + mo.curTotal + '</div><div class="hb">上周 ' + mo.prevTotal + '</div></div>' +
+    '<div class="kpi-card success"><div class="label">&#9989; 市场正常</div><div class="val">' + normalItem.curCount + '</div><div class="hb">占比 ' + normalItem.curPct + '%</div></div>' +
+    '<div class="kpi-card warning"><div class="label">&#9888; 竞争无优势</div><div class="val">' + competitiveItem.curCount + '</div><div class="hb">' + hbSign((competitiveItem.change >= 0 ? '+' : '') + competitiveItem.change) + ' vs 上周</div></div>' +
+    '<div class="kpi-card danger"><div class="label">&#10060; 无市场</div><div class="val">' + noMarketItem.curCount + '</div><div class="hb">' + hbSign((noMarketItem.change >= 0 ? '+' : '') + noMarketItem.change) + ' vs 上周</div></div>' +
+    '<div class="kpi-card purple"><div class="label">&#128640; 站外出单</div><div class="val">' + stationOutItem.curCount + '</div><div class="hb">' + hbSign((stationOutItem.change >= 0 ? '+' : '') + stationOutItem.change) + ' vs 上周</div></div>';
+
+  // 市场状态明细表
+  var mh = '<div class="table-scroll-wrap"><table class="data-table"><thead><tr><th>市场状态</th><th>本周数量</th><th>本周占比</th><th>上周数量</th><th>上周占比</th><th>变化</th></tr></thead><tbody>';
+  mo.distribution.forEach(function(d) {
+    mh += '<tr><td>' + badgeStatus(d.status) + '</td><td>' + d.curCount + '</td><td>' + d.curPct + '%</td><td>' + d.prevCount + '</td><td>' + d.prevPct + '%</td><td>' + hbSign((d.change >= 0 ? '+' : '') + d.change) + '</td></tr>';
+  });
+  mh += '</tbody></table></div>';
+  document.getElementById('t2-mkt-table').innerHTML = mh;
+
+  // 货值明细表
+  var po = priceOverview;
+  var ph = '<div class="table-scroll-wrap"><table class="data-table"><thead><tr><th>价格区间</th><th>SKU数</th><th>占比</th></tr></thead><tbody>';
+  po.distribution.forEach(function(d) {
+    ph += '<tr><td>' + d.range + '</td><td>' + d.count + '</td><td>' + d.pct + '%</td></tr>';
+  });
+  ph += '<tfoot><tr class="total-row"><td><b>汇总</b></td><td><b>' + po.totalWithSales + ' 个有销售额</b></td><td><b>均价 $' + (po.avgPrice || 0).toFixed(2) + ' / 中位 $' + (po.medianPrice || 0).toFixed(2) + '</b></td></tr></tfoot></tbody></table></div>';
+  document.getElementById('t2-price-table').innerHTML = ph;
+
+  // 市占比分布明细表（品线+分析人 4周市占比）
+  var sh = '<div class="table-scroll-wrap"><table class="data-table"><thead><tr><th>品线</th>';
+  weekLabels4w.forEach(function(w) { sh += '<th>' + w + '</th>'; });
+  sh += '<th>环比变化</th></tr></thead><tbody>';
+  catShare4w.forEach(function(d) {
+    sh += '<tr><td><b>' + d.category + '</b></td>';
+    d.share4w.forEach(function(v) { sh += '<td>' + v + '%</td>'; });
+    var chg = d.share4w[0] - d.share4w[1];
+    sh += '<td>' + hbSign((chg>=0?'+':'')+chg.toFixed(1)+'%') + '</td></tr>';
+  });
+  sh += '</tbody></table></div>';
+  sh += '<div class="table-scroll-wrap" style="margin-top:10px"><table class="data-table"><thead><tr><th>分析人</th>';
+  weekLabels4w.forEach(function(w) { sh += '<th>' + w + '</th>'; });
+  sh += '<th>环比变化</th></tr></thead><tbody>';
+  anShare4w.forEach(function(d) {
+    sh += '<tr><td><b>' + d.analyst + '</b></td>';
+    d.share4w.forEach(function(v) { sh += '<td>' + v + '%</td>'; });
+    var chg = d.share4w[0] - d.share4w[1];
+    sh += '<td>' + hbSign((chg>=0?'+':'')+chg.toFixed(1)+'%') + '</td></tr>';
+  });
+  sh += '</tbody></table></div>';
+  document.getElementById('t2-share-tier-table').innerHTML = sh;
+})();
+
+// ========== Tab2 图表（懒初始化）==========
+window._charts2Init = false;
+function initCharts2() {
+  if (window._charts2Init) return;
+  window._charts2Init = true;
+
+  var mktColors = {
+    '正常': '#08845a',
+    '竞争无优势': '#e07b24',
+    '无市场': '#c0392b',
+    '站外出单': '#8e44ad',
+    '站内无价格优势': '#f39c12',
+    '#N/A': '#95a5a6',
+    '未知': '#7f8c8d',
+    '其他': '#bdc3c7'
+  };
+
+  // 1. 市场状态环形图
+  var ringData = mktDistOverall.distribution.filter(function(d) { return d.curCount > 0; });
+  new Chart(document.getElementById('chart-mkt-ring'), {
+    type: 'doughnut',
+    data: {
+      labels: ringData.map(function(d) { return d.status; }),
+      datasets: [{ data: ringData.map(function(d) { return d.curCount; }), backgroundColor: ringData.map(function(d) { return mktColors[d.status] || '#999'; }), borderWidth: 2 }]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: function(ctx) { return ctx.label + ': ' + ctx.parsed + '个 (' + ringData[ctx.dataIndex].curPct + '%)'; } } } } }
+  });
+
+  // 2. 市场状态本周vs上周柱状图
+  var mktLabels = mktDistOverall.distribution.map(function(d) { return d.status; });
+  new Chart(document.getElementById('chart-mkt-bar'), {
+    type: 'bar',
+    data: {
+      labels: mktLabels,
+      datasets: [
+        { label: '本周', data: mktDistOverall.distribution.map(function(d) { return d.curCount; }), backgroundColor: '#0f3460' },
+        { label: '上周', data: mktDistOverall.distribution.map(function(d) { return d.prevCount; }), backgroundColor: '#ccc' }
+      ]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'SKU数' } } } }
+  });
+
+  // 3. 价格区间分布
+  var priceLabels = priceOverview.distribution.map(function(d) { return d.range; });
+  new Chart(document.getElementById('chart-price-dist'), {
+    type: 'bar',
+    data: {
+      labels: priceLabels,
+      datasets: [{ label: 'SKU数', data: priceOverview.distribution.map(function(d) { return d.count; }), backgroundColor: ['#08845a','#2980b9','#e07b24','#8e44ad','#c0392b','#0f3460'] }]
+    },
+    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'SKU数' } } } }
+  });
+
+  // 4. 按分析人价格区间堆叠图
+  var priceRanges = priceOverview.priceRanges;
+  var anPriceDatasets = [];
+  priceOverview.byAnalyst.forEach(function(d) {
+    anPriceDatasets.push({ label: d.analyst, data: priceRanges.map(function(r) { return d[r] || 0; }), backgroundColor: '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6,'0') });
+  });
+  if (anPriceDatasets.length > 0) {
+    new Chart(document.getElementById('chart-price-an'), {
+      type: 'bar',
+      data: { labels: priceLabels, datasets: anPriceDatasets },
+      options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, title: { display: true, text: 'SKU数' } } } }
+    });
+  }
+
+  // 5. 品线高中低市占比分布
+  var tierLabels = shareTierOverview.byCategory.map(function(d) { return d.category; });
+  new Chart(document.getElementById('chart-share-tier'), {
+    type: 'bar',
+    data: {
+      labels: tierLabels,
+      datasets: [
+        { label: '高(>=75%)', data: shareTierOverview.byCategory.map(function(d) { return d.high; }), backgroundColor: '#08845a' },
+        { label: '中(50-75%)', data: shareTierOverview.byCategory.map(function(d) { return d.mid; }), backgroundColor: '#e07b24' },
+        { label: '低(<50%)', data: shareTierOverview.byCategory.map(function(d) { return d.low; }), backgroundColor: '#c0392b' }
+      ]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, title: { display: true, text: 'SKU数' } } } }
+  });
+
+  // 6. 总市占比4周趋势
+  new Chart(document.getElementById('chart-total-share-4w'), {
+    type: 'line',
+    data: { labels: weekLabels4w, datasets: [
+      { label: '总市占比(%)', data: totalShare4w, borderColor: '#0f3460', backgroundColor: 'rgba(15,52,96,0.1)', fill: true, tension: 0.3, borderWidth: 2 }
+    ]},
+    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { min: 0, max: 100, title: { display: true, text: '市占比(%)' } } } }
+  });
+
+  // 7. 品线市占比4周趋势
+  var catShareDatasets = catShare4w.map(function(d) {
+    return { label: d.category, data: d.share4w, borderColor: '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6,'0'), backgroundColor: 'transparent', tension: 0.3 };
+  });
+  new Chart(document.getElementById('chart-cat-share-4w'), {
+    type: 'line',
+    data: { labels: weekLabels4w, datasets: catShareDatasets },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { min: 0, max: 100, title: { display: true, text: '市占比(%)' } } } }
+  });
+
+  // 8. 分析人市占比4周趋势
+  var anShareDatasets = anShare4w.map(function(d) {
+    return { label: d.analyst, data: d.share4w, borderColor: '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6,'0'), backgroundColor: 'transparent', tension: 0.3 };
+  });
+  new Chart(document.getElementById('chart-an-share-4w'), {
+    type: 'line',
+    data: { labels: weekLabels4w, datasets: anShareDatasets },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { min: 0, max: 100, title: { display: true, text: '市占比(%)' } } } }
+  });
+}
+setTimeout(initCharts2, 150);
+
+// ========== Tab3: 低占比分析 ==========
 (function() {
   var hcu = hasCompetitorUnsold;
   var unc = unsoldNoCompetitor;
   var t = cum43Stats;
 
-  document.getElementById('t2-kpi').innerHTML =
+  document.getElementById('t3-kpi').innerHTML =
     '<div class="kpi-card warning"><div class="label">有对手未出单</div><div class="val">' + hcu.total + '</div><div class="hb">上周 ' + hcu.prevTotal + ' | ' + (hcu.change >= 0 ? '+' : '') + hcu.change + '</div></div>' +
     '<div class="kpi-card danger"><div class="label">无对手未出单</div><div class="val">' + unc.total + '</div><div class="hb">上周 ' + unc.prevTotal + ' | ' + (unc.change >= 0 ? '+' : '') + unc.change + '</div></div>' +
     '<div class="kpi-card info"><div class="label">有对手SKU总数</div><div class="val">' + t.hasRivalCount + '</div></div>' +
     '<div class="kpi-card primary"><div class="label">有对手未出单占比</div><div class="val">' + (t.unCount/t.total*100).toFixed(1) + '%</div><div class="hb">' + t.unCount + ' / ' + t.total + '</div></div>';
 
-  var hasMkts = ['竞争无优势', '无市场', '站内无价格优势', '站外出单', '正常', '#N/A', '未知'];
+  var hasMkts = ['竞争无优势', '站内无价格优势'];
   var hasAnHtml = '<table class="data-table"><thead><tr><th>分析人</th>';
+  var ht = 0;
   hasMkts.forEach(function(m) { hasAnHtml += '<th>' + m + '</th>'; });
   hasAnHtml += '<th>未出单总数</th></tr></thead><tbody>';
   hcu.byAnalyst.forEach(function(d) {
     hasAnHtml += '<tr><td>' + d.analyst + '</td>';
     hasMkts.forEach(function(m) { hasAnHtml += '<td>' + (d[m] || 0) + '</td>'; });
     hasAnHtml += '<td><b>' + d.total + '</b></td></tr>';
+    ht += d.total;
   });
-  hasAnHtml += '</tbody></table>';
-  document.getElementById('t2-has-an').innerHTML = hasAnHtml;
+  hasAnHtml += '<tfoot><tr class="total-row"><td><b>合计</b></td>';
+  hasMkts.forEach(function(m) { var s=0; hcu.byAnalyst.forEach(function(d){ s+=(d[m]||0); }); hasAnHtml += '<td><b>'+s+'</b></td>'; });
+  hasAnHtml += '<td><b>' + ht + '</b></td></tr></tfoot></tbody></table>';
+  document.getElementById('t3-has-an').innerHTML = hasAnHtml;
 
   var hasCatHtml = '<table class="data-table"><thead><tr><th>品线</th>';
+  var ht2 = 0;
   hasMkts.forEach(function(m) { hasCatHtml += '<th>' + m + '</th>'; });
   hasCatHtml += '<th>未出单总数</th></tr></thead><tbody>';
   hcu.byCategory.forEach(function(d) {
     hasCatHtml += '<tr><td>' + d.category + '</td>';
     hasMkts.forEach(function(m) { hasCatHtml += '<td>' + (d[m] || 0) + '</td>'; });
     hasCatHtml += '<td><b>' + d.total + '</b></td></tr>';
+    ht2 += d.total;
   });
-  hasCatHtml += '</tbody></table>';
-  document.getElementById('t2-has-cat').innerHTML = hasCatHtml;
+  hasCatHtml += '<tfoot><tr class="total-row"><td><b>合计</b></td>';
+  hasMkts.forEach(function(m) { var s=0; hcu.byCategory.forEach(function(d){ s+=(d[m]||0); }); hasCatHtml += '<td><b>'+s+'</b></td>'; });
+  hasCatHtml += '<td><b>' + ht2 + '</b></td></tr></tfoot></tbody></table>';
+  document.getElementById('t3-has-cat').innerHTML = hasCatHtml;
 
-  var noMkts = ['无市场', '未知', '竞争无优势', '#N/A', '其他'];
+  var noMkts = ['无市场', '站外出单'];
   var noAnHtml = '<table class="data-table"><thead><tr><th>分析人</th>';
+  var nht = 0;
   noMkts.forEach(function(m) { noAnHtml += '<th>' + m + '</th>'; });
   noAnHtml += '<th>未出单总数</th></tr></thead><tbody>';
   unc.byAnalyst.forEach(function(d) {
     noAnHtml += '<tr><td>' + d.analyst + '</td>';
     noMkts.forEach(function(m) { noAnHtml += '<td>' + (d[m] || 0) + '</td>'; });
     noAnHtml += '<td><b>' + d.total + '</b></td></tr>';
+    nht += d.total;
   });
-  noAnHtml += '</tbody></table>';
-  document.getElementById('t2-no-an').innerHTML = noAnHtml;
+  noAnHtml += '<tfoot><tr class="total-row"><td><b>合计</b></td>';
+  noMkts.forEach(function(m) { var s=0; unc.byAnalyst.forEach(function(d){ s+=(d[m]||0); }); noAnHtml += '<td><b>'+s+'</b></td>'; });
+  noAnHtml += '<td><b>' + nht + '</b></td></tr></tfoot></tbody></table>';
+  document.getElementById('t3-no-an').innerHTML = noAnHtml;
 
   var noCatHtml = '<table class="data-table"><thead><tr><th>品线</th>';
+  var nct = 0;
   noMkts.forEach(function(m) { noCatHtml += '<th>' + m + '</th>'; });
   noCatHtml += '<th>未出单总数</th></tr></thead><tbody>';
   unc.byCategory.forEach(function(d) {
     noCatHtml += '<tr><td>' + d.category + '</td>';
     noMkts.forEach(function(m) { noCatHtml += '<td>' + (d[m] || 0) + '</td>'; });
     noCatHtml += '<td><b>' + d.total + '</b></td></tr>';
+    nct += d.total;
   });
-  noCatHtml += '</tbody></table>';
-  document.getElementById('t2-no-cat').innerHTML = noCatHtml;
+  noCatHtml += '<tfoot><tr class=\"total-row\"><td><b>合计</b></td>';
+  noMkts.forEach(function(m) { var s=0; unc.byCategory.forEach(function(d){ s+=(d[m]||0); }); noCatHtml += '<td><b>'+s+'</b></td>'; });
+  noCatHtml += '<td><b>' + nct + '</b></td></tr></tfoot></tbody></table>';
+  document.getElementById('t3-no-cat').innerHTML = noCatHtml;
 
   // 低占比筛选栏
   var ls8dOpts = ['', 'Y', 'N', '未出单'];
@@ -1446,8 +1721,8 @@ setTimeout(initCharts1, 100);
   lsAdKeys.forEach(function(v) { lsFilHtml += '<option value="' + v + '">' + v + '</option>'; });
   lsFilHtml += '</select></span>';
   lsFilHtml += '<button class="reset-btn" onclick="resetLowShareFilters()">重置筛选</button>';
-  lsFilHtml += '<span class="count" id="t2-ls-count"></span>';
-  document.getElementById('t2-lowshare-filters').innerHTML = lsFilHtml;
+  lsFilHtml += '<span class="count" id="t3-ls-count"></span>';
+  document.getElementById('t3-lowshare-filters').innerHTML = lsFilHtml;
 
   window.resetLowShareFilters = function() {
     document.getElementById("ls-f-8d").value = "";
@@ -1468,7 +1743,7 @@ setTimeout(initCharts1, 100);
       if (fAd && d.adClass !== fAd) return false;
       return true;
     });
-    var lsTotalSales = 0, lsTotalRev = 0;
+    var lsTotalSales = 0, lsTotalRev = 0, lsTotalRival = 0, lsTotalShare = 0;
     var h = '<div class="table-scroll-wrap"><table class="data-table"><thead><tr><th>SKU</th><th>上架日期</th><th>分析人</th><th>品类</th><th>本周销量</th><th>销量环比</th><th>本周销售额</th><th>对手量</th><th>市占比</th><th>8日出单</th><th>上期市场状态</th><th>本期运作判断</th><th>本期市场状态</th><th>广告分类</th></tr></thead><tbody>';
     filtered.forEach(function(d) {
       h += '<tr><td>' + d.SKU + '</td><td>' + d.launchDate + '</td><td>' + d.analyst + '</td><td>' + d.category + '</td>';
@@ -1479,21 +1754,24 @@ setTimeout(initCharts1, 100);
       h += '<td>' + badgeAdClass(d.adClass) + '</td></tr>';
       lsTotalSales += d.curSalesQty;
       lsTotalRev += (d.curRevenue || 0);
+      lsTotalRival += (d.curRivalQty || 0);
+      lsTotalShare += (d.curMarketShare || 0);
     });
-    h += '</tbody><tfoot><tr><td colspan="2">合计（' + filtered.length + '条）</td><td></td><td></td><td>' + lsTotalSales + '</td><td></td><td>' + fmtMoney(lsTotalRev) + '</td><td colspan="7"></td></tr></tfoot></table></div>';
-    document.getElementById('t2-lowshare-table').innerHTML = h;
-    document.getElementById('t2-ls-count').textContent = '筛选结果:' + filtered.length + ' / ' + lowShareData.length + ' 条';
+    var lsAvgShare = filtered.length > 0 ? (lsTotalShare / filtered.length).toFixed(1) : '-';
+    h += '</tbody><tfoot><tr class="total-row"><td colspan="2">合计（' + filtered.length + '条）</td><td></td><td></td><td><b>' + lsTotalSales + '</b></td><td></td><td><b>' + fmtMoney(lsTotalRev) + '</b></td><td><b>' + lsTotalRival + '</b></td><td><b>' + lsAvgShare + '%</b></td><td colspan="5"></td></tr></tfoot></table></div>';
+    document.getElementById('t3-lowshare-table').innerHTML = h;
+    document.getElementById('t3-ls-count').textContent = '筛选结果:' + filtered.length + ' / ' + lowShareData.length + ' 条';
   };
   renderLowShareTable();
 })();
 
-// ========== Tab3: 广告追踪（PLP + PLG 自然周）==========
+// ========== Tab4: 广告追踪（PLP + PLG 自然周）==========
 (function() {
   var pt = plpTotal;
   var pp = plpPrevTotal;
 
   // PLP KPI
-  document.getElementById('t3-plp-kpi').innerHTML =
+  document.getElementById('t4-plp-kpi').innerHTML =
     '<div class="kpi-card primary"><div class="label">广告活动数</div><div class="val">' + pt.campaignCount + '</div><div class="hb">上周 ' + pp.campaignCount + '</div></div>' +
     '<div class="kpi-card info"><div class="label">投放链接数</div><div class="val">' + pt.linkCount + '</div><div class="hb">上周 ' + pp.linkCount + '</div></div>' +
     '<div class="kpi-card primary"><div class="label">曝光量</div><div class="val">' + fmtNum(pt.impression) + '</div></div>' +
@@ -1502,7 +1780,7 @@ setTimeout(initCharts1, 100);
     '<div class="kpi-card purple"><div class="label">广告销售额</div><div class="val">' + fmtMoney(pt.revenue) + '</div></div>';
 
   // PLP 核心指标
-  document.getElementById('t3-plp-core').innerHTML =
+  document.getElementById('t4-plp-core').innerHTML =
     '<div class="kpi-card primary"><div class="label">ROAS</div><div class="val">' + pt.roas + '</div><div class="hb">上周 ' + pp.roas + '</div></div>' +
     '<div class="kpi-card info"><div class="label">CVR</div><div class="val">' + pt.cvr + '</div><div class="hb">上周 ' + pp.cvr + '</div></div>' +
     '<div class="kpi-card primary"><div class="label">CTR</div><div class="val">' + pt.ctr + '</div><div class="hb">上周 ' + pp.ctr + '</div></div>' +
@@ -1523,13 +1801,13 @@ setTimeout(initCharts1, 100);
     h += '</tbody></table>';
     return h;
   }
-  document.getElementById('t3-plp-an').innerHTML = renderPlpDim(plpAnalysts, '分析人');
-  document.getElementById('t3-plp-cat').innerHTML = renderPlpDim(plpCategories, '品线');
-  document.getElementById('t3-plp-exp').innerHTML = renderPlpDim(plpExpandTypes, '拓展类型');
+  document.getElementById('t4-plp-an').innerHTML = renderPlpDim(plpAnalysts, '分析人');
+  document.getElementById('t4-plp-cat').innerHTML = renderPlpDim(plpCategories, '品线');
+  document.getElementById('t4-plp-exp').innerHTML = renderPlpDim(plpExpandTypes, '拓展类型');
 
   // PLG KPI 卡片（含花费、广告销售额、ACOS、ACOAS）
   var pg = plgStats;
-  document.getElementById('t3-plg-kpi').innerHTML =
+  document.getElementById('t4-plg-kpi').innerHTML =
     '<div class="kpi-card purple"><div class="label">PLG广告花费</div><div class="val">' + fmtMoney(pg.totalSpend) + '</div></div>' +
     '<div class="kpi-card info"><div class="label">PLG广告销售额</div><div class="val">' + fmtMoney(pg.totalAdRev) + '</div></div>' +
     '<div class="kpi-card primary"><div class="label">PLG自然周总销售额</div><div class="val">' + fmtMoney(pg.totalNatRev) + '</div></div>' +
@@ -1547,15 +1825,17 @@ setTimeout(initCharts1, 100);
   plgHtml += '<div class="kpi-card danger"><div class="label">单PLG且未出单</div><div class="val">' + (pg.plpDisabledNoSaleCount || 0) + '</div></div>';
   plgHtml += '</div>';
   plgHtml += '<table class="data-table"><thead><tr><th>分析人</th><th>总数</th><th>PLP+PLG</th><th>单链接PLP+PLG</th><th>单PLG</th><th>单PLP</th><th>无广告</th><th>PLP未开未出单</th></tr></thead><tbody>';
+  var plgTotals = {total:0, plpAndPlgBoth:0, singleLinkPlpPlg:0, plgOnly:0, plpOnly:0, noAd:0, plpDisabledNoSale:0};
   pg.byAnalyst.forEach(function(d) {
     plgHtml += '<tr><td>' + d.analyst + '</td><td>' + d.total + '</td>';
     plgHtml += '<td>' + d.plpAndPlgBoth + '</td>';
     plgHtml += '<td style="color:#c0392b;font-weight:600">' + d.singleLinkPlpPlg + '</td>';
     plgHtml += '<td>' + d.plgOnly + '</td><td>' + d.plpOnly + '</td><td>' + d.noAd + '</td>';
     plgHtml += '<td style="color:#c0392b;font-weight:600">' + d.plpDisabledNoSale + '</td></tr>';
+    for (var k in plgTotals) { plgTotals[k] += (d[k] || 0); }
   });
-  plgHtml += '</tbody></table>';
-  document.getElementById('t3-plg').innerHTML = plgHtml;
+  plgHtml += '<tfoot><tr class="total-row"><td><b>合计</b></td><td><b>' + plgTotals.total + '</b></td><td><b>' + plgTotals.plpAndPlgBoth + '</b></td><td><b>' + plgTotals.singleLinkPlpPlg + '</b></td><td><b>' + plgTotals.plgOnly + '</b></td><td><b>' + plgTotals.plpOnly + '</b></td><td><b>' + plgTotals.noAd + '</b></td><td><b>' + plgTotals.plpDisabledNoSale + '</b></td></tr></tfoot></tbody></table>';
+  document.getElementById('t4-plg').innerHTML = plgHtml;
 
   // PLG 按分析人（含花费/ACOS/ACOAS）
   var plgAnHtml = '<table class="data-table"><thead><tr><th>分析人</th><th>SKU数</th><th>PLG花费</th><th>PLG广告销售额</th><th>自然周销售额</th><th>PLG ACOS</th><th>PLG ACOAS</th></tr></thead><tbody>';
@@ -1564,7 +1844,7 @@ setTimeout(initCharts1, 100);
   });
   plgAnHtml += '<tr class="total-row"><td>合计</td><td>' + pg.totalNewProducts + '</td><td>' + fmtMoney(pg.totalSpend) + '</td><td>' + fmtMoney(pg.totalAdRev) + '</td><td>' + fmtMoney(pg.totalNatRev) + '</td><td>' + pg.acos + '</td><td>' + pg.acoas + '</td></tr>';
   plgAnHtml += '</tbody></table>';
-  document.getElementById('t3-plg-an').innerHTML = plgAnHtml;
+  document.getElementById('t4-plg-an').innerHTML = plgAnHtml;
 
   // PLP 广告明细
   var detHtml = '<div class="table-scroll-wrap"><table class="data-table"><thead><tr><th>SKU</th><th>广告活动</th><th>分析人</th><th>品类</th><th>曝光</th><th>点击</th><th>售出</th><th>花费</th><th>广告销售额</th><th>总销售额</th><th>ROAS</th><th>ACOS</th><th>ACOAS</th><th>广告分类</th></tr></thead><tbody>';
@@ -1581,13 +1861,13 @@ setTimeout(initCharts1, 100);
     detTotalCost += (d.spend || 0); detTotalAdRev += (d.adRevenue || 0); detTotalRev += (d.totalRevenue || 0);
   });
   detHtml += '</tbody><tfoot><tr><td colspan="2">合计（' + plpDetailData.length + '条）</td><td></td><td></td><td>' + fmtNum(detTotalImpr) + '</td><td>' + fmtNum(detTotalClick) + '</td><td>' + detTotalSold + '</td><td>' + fmtMoney(detTotalCost) + '</td><td>' + fmtMoney(detTotalAdRev) + '</td><td>' + fmtMoney(detTotalRev) + '</td><td></td><td></td><td></td><td></td></tr></tfoot></table></div>';
-  document.getElementById('t3-plp-detail').innerHTML = detHtml;
+  document.getElementById('t4-plp-detail').innerHTML = detHtml;
 })();
 
-// ========== Tab4: 四三累计 ==========
+// ========== Tab5: 四三累计 ==========
 (function() {
   var t = cum43Stats;
-  document.getElementById('t4-kpi').innerHTML =
+  document.getElementById('t5-kpi').innerHTML =
     '<div class="kpi-card primary"><div class="label">累计总SKU</div><div class="val">' + t.total + '</div></div>' +
     '<div class="kpi-card success"><div class="label">已出单(Y+N)</div><div class="val">' + (t.yCount + t.nCount) + '</div></div>' +
     '<div class="kpi-card warning"><div class="label">有对手未出单</div><div class="val">' + t.unCount + '</div></div>' +
@@ -1605,7 +1885,7 @@ setTimeout(initCharts1, 100);
   cum43Data.forEach(function(d) { if (!seenCat[d.category]) { seenCat[d.category]=1; uniqCats.push(d.category); } });
   uniqCats.sort();
 
-  var filHtml = '<span class="fg"><label>市场状态</label><select id="f-mkt" onchange="applyFilters()"><option value="">全部</option><option>正常</option><option>竞争无优势</option><option>无市场</option></select></span>';
+  var filHtml = '<span class="fg"><label>市场状态</label><select id="f-mkt" onchange="applyFilters()"><option value="">全部</option><option>正常</option><option>竞争无优势</option><option>无市场</option><option>站外出单</option></select></span>';
   filHtml += '<span class="fg"><label>分析人</label><select id="f-an" onchange="applyFilters()"><option value="">全部</option>';
   uniqAnalysts.forEach(function(a) { filHtml += '<option>' + a + '</option>'; });
   filHtml += '</select></span>';
@@ -1617,10 +1897,10 @@ setTimeout(initCharts1, 100);
   filHtml += '<span class="fg"><label>市占比</label><select id="f-share" onchange="applyFilters()"><option value="">全部</option><option value="high">75%及以上</option><option value="mid">50%-75%</option><option value="low">50%以下</option></select></span>';
   filHtml += '<span class="fg"><label>广告条件</label><select id="f-ad" onchange="applyFilters()"><option value="">全部</option><option>PLP+PLG同开</option><option>单链接PLP+PLG同开</option><option>单PLG</option><option>单PLP</option><option>单PLG且未出单</option><option>无广告</option></select></span>';
   filHtml += '<button class="reset-btn" onclick="resetFilters()">重置筛选</button>';
-  filHtml += '<span class="count" id="t4-count"></span>';
-  document.getElementById('t4-filters').innerHTML = filHtml;
+  filHtml += '<span class="count" id="t5-count"></span>';
+  document.getElementById('t5-filters').innerHTML = filHtml;
 
-  window.renderT4Table = function(data) {
+  window.renderT5Table = function(data) {
     var t4TotalSales=0, t4TotalRev=0, t4TotalRival=0;
     var h = '<div class="table-scroll-wrap"><table class="data-table"><thead><tr><th>SKU</th><th>上架日期</th><th>首次出单</th><th>分析人</th><th>品类</th><th>拓展类型</th><th>本周销量</th><th>本周销售额</th><th>对手量</th><th>市占比</th><th>PLG费率</th><th>市场状态</th><th>8日出单</th><th>广告分类</th></tr></thead><tbody>';
     data.forEach(function(d) {
@@ -1634,8 +1914,8 @@ setTimeout(initCharts1, 100);
       t4TotalSales += d.curSalesQty; t4TotalRev += (d.curRevenue || 0); t4TotalRival += d.curRivalQty;
     });
     h += '</tbody><tfoot><tr><td colspan="2">合计（' + data.length + '条）</td><td></td><td></td><td></td><td></td><td>' + t4TotalSales + '</td><td>' + fmtMoney(t4TotalRev) + '</td><td>' + t4TotalRival + '</td><td colspan="5"></td></tr></tfoot></table></div>';
-    document.getElementById('t4-table').innerHTML = h;
-    document.getElementById('t4-count').textContent = '筛选结果:' + data.length + ' / ' + cum43Data.length + ' 条';
+    document.getElementById('t5-table').innerHTML = h;
+    document.getElementById('t5-count').textContent = '筛选结果:' + data.length + ' / ' + cum43Data.length + ' 条';
   };
 
   window.applyFilters = function() {
@@ -1656,25 +1936,25 @@ setTimeout(initCharts1, 100);
     else if (share === 'mid') data = data.filter(function(d) { return d.curMarketShare >= 50 && d.curMarketShare < 75; });
     else if (share === 'low') data = data.filter(function(d) { return d.curMarketShare < 50; });
     if (ad) data = data.filter(function(d) { return d.adClass === ad; });
-    renderT4Table(data);
+    renderT5Table(data);
   };
 
   window.resetFilters = function() {
-    document.querySelectorAll('#t4-filters select').forEach(function(s) { s.value = ''; });
-    renderT4Table(cum43Data);
+    document.querySelectorAll('#t5-filters select').forEach(function(s) { s.value = ''; });
+    renderT5Table(cum43Data);
   };
 
-  renderT4Table(cum43Data);
+  renderT5Table(cum43Data);
 })();
 
-// ========== Tab5: 汇报输出 ==========
+// ========== Tab6: 汇报输出 ==========
 (function() {
   var t = cum43Stats;
   var pk = prevWeekKpi;
   var saleRate = t.hasRivalCount ? (t.yCount + t.nCount) / t.hasRivalCount * 100 : 0;
   var timelyRate = parseFloat(timelinessData.total.timelyRate) || 0;
 
-  document.getElementById('t5-kpi').innerHTML =
+  document.getElementById('t6-kpi').innerHTML =
     '<div class="kpi-card primary"><div class="label">在售SKU</div><div class="val">' + t.total + '</div></div>' +
     '<div class="kpi-card success"><div class="label">总销量</div><div class="val">' + fmtNum(pk.prevTotalSalesQty) + '</div></div>' +
     '<div class="kpi-card purple"><div class="label">总销售额</div><div class="val">' + fmtMoney(pk.prevTotalRevenue) + '</div></div>' +
@@ -1700,7 +1980,7 @@ setTimeout(initCharts1, 100);
     var cls = r.level === 'high' ? 'risk-high' : (r.level === 'medium' ? 'risk-medium' : 'risk-low');
     riskHtml += '<div class="report-block ' + cls + '"><h4>' + (r.level==='high'?'🔴':(r.level==='medium'?'🟡':'🟢')) + ' ' + r.title + '</h4><pre>' + r.text + '</pre></div>';
   });
-  document.getElementById('t5-risk').innerHTML = riskHtml;
+  document.getElementById('t6-risk').innerHTML = riskHtml;
 
   // 主要发现
   var findings = [
@@ -1714,7 +1994,7 @@ setTimeout(initCharts1, 100);
   findings.forEach(function(f) {
     findingsHtml += '<div class="findings-card"><div class="title">' + f.title + '</div><div class="desc">' + f.desc + '</div></div>';
   });
-  document.getElementById('t5-findings').innerHTML = findingsHtml;
+  document.getElementById('t6-findings').innerHTML = findingsHtml;
 
   // 下周动作
   var actions = [
@@ -1728,7 +2008,7 @@ setTimeout(initCharts1, 100);
   actions.forEach(function(a) {
     actionsHtml += '<div class="action-card"><div class="title">' + a.title + '</div><div class="desc">' + a.desc + '</div></div>';
   });
-  document.getElementById('t5-actions').innerHTML = actionsHtml;
+  document.getElementById('t6-actions').innerHTML = actionsHtml;
 
   // 可复制周报文案
   var reportSections = [
@@ -1771,7 +2051,7 @@ setTimeout(initCharts1, 100);
   reportSections.forEach(function(sec) {
     reportHtml += '<div class="report-block"><h4>' + sec.title + '</h4><pre>' + sec.text + '</pre><button class="copy-btn" onclick="copyReport(this)">复制</button></div>';
   });
-  document.getElementById('t5-report').innerHTML = reportHtml;
+  document.getElementById('t6-report').innerHTML = reportHtml;
 })();
 
 function copyReport(btn) {

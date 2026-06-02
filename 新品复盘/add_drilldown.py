@@ -8,9 +8,11 @@ sys.stdout.reconfigure(encoding='utf-8')
 from openpyxl import load_workbook
 from collections import defaultdict
 
-INPUT = 'C:/Users/Hardy/ai-projects/新品复盘/新品板块_4.30-5.27_4weeks.html'
-OUTPUT = 'C:/Users/Hardy/ai-projects/新品复盘/新品板块_4.30-5.27_4weeks_drill.html'
-SRC = 'C:/Users/Hardy/ai-projects/新品复盘/周报/新品检查周源数据和PLP数据.xlsx'
+import os
+WORKDIR = os.path.dirname(os.path.abspath(__file__)) + '/'
+INPUT = WORKDIR + '新品板块_4.30-5.27_4weeks.html'
+OUTPUT = WORKDIR + '新品板块_4.30-5.27_4weeks_drill.html'
+SRC = WORKDIR + '周报/新品检查周源数据和PLP数据.xlsx'
 
 with open(INPUT, 'r', encoding='utf-8') as f:
     html = f.read()
@@ -38,22 +40,30 @@ for row in ws_plp.iter_rows(min_row=2, values_only=True):
             'analyst': str(row[8] or '').strip() or '未知',
             'category': str(row[9] or '').strip() or '未分类',
             'expand_type': str(row[10] or '').strip() or '其他',
+            'sku': str(row[2] or '').strip(),
             'cost': safe_f(row[14]),
             'ad_rev': safe_f(row[15]),
+            'total_rev': safe_f(row[16]),
         })
 
 def aggregate_plp_4w(dim_key):
-    result = defaultdict(lambda: {'spend4w':[0,0,0,0], 'adSales4w':[0,0,0,0]})
+    result = defaultdict(lambda: {'spend4w':[0,0,0,0], 'adSales4w':[0,0,0,0], 'totalRev4w':[0,0,0,0]})
+    # Per-period SKU dedup sets for total_rev
+    seen_sku = [set(), set(), set(), set()]
     for r in plp_rows:
         wi = PLP_PERIODS.index(r['period'])
         key = r[dim_key]
         result[key]['spend4w'][wi] += r['cost']
         result[key]['adSales4w'][wi] += r['ad_rev']
+        if r['sku'] not in seen_sku[wi]:
+            result[key]['totalRev4w'][wi] += r['total_rev']
+            seen_sku[wi].add(r['sku'])
     for k, v in result.items():
         v['acos4w'] = [round(v['spend4w'][i]/v['adSales4w'][i]*100,1) if v['adSales4w'][i]>0 else 0 for i in range(4)]
-        v['acoas4w'] = [round(v['spend4w'][i]/v['adSales4w'][i]*100,1) if v['adSales4w'][i]>0 else 0 for i in range(4)]
+        v['acoas4w'] = [round(v['spend4w'][i]/v['totalRev4w'][i]*100,1) if v['totalRev4w'][i]>0 else 0 for i in range(4)]
         v['spend4w'] = [round(x,2) for x in v['spend4w']]
         v['adSales4w'] = [round(x,2) for x in v['adSales4w']]
+        v['totalRev4w'] = [round(x,2) for x in v['totalRev4w']]
     return result
 
 plp_an_4w = aggregate_plp_4w('analyst')
@@ -66,13 +76,14 @@ def make_js_arr(name, data, keyname):
               'acos4w': v['acos4w'], 'acoas4w': v['acoas4w']} for k,v in data.items()]
     return 'const ' + name + ' = ' + json.dumps(items, ensure_ascii=False, separators=(',',':')) + ';'
 
-# 提取PLG 4周数据（PLG费 × 周销量 = PLG花费，再算ACOS/ACOAS）
+# 提取PLG 4周数据
 print("0b. 提取PLG 4周数据...")
 ws_main = wb['四三数据累计']
 PLG_FEE_COLS = [141, 142, 143, 144]  # 4.30-5.6, 5.4-5.10, 5.11-5.17, 5.18-5.24 PLG费率
-SALES_COLS = [15, 16, 17, 18]  # 4.30-5.6 → 5.21-5.27 销量 (col 15=W3, 16=W2, 17=prev, 18=curr)
+SALES_COLS = [15, 16, 17, 18]  # 销量
+REVENUE_COLS = [28, 29, 30, 31]  # 销售额(对应4周)
 
-plg_an_data = defaultdict(lambda: {'spend4w':[0,0,0,0], 'adSales4w':[0,0,0,0]})
+plg_an_data = defaultdict(lambda: {'spend4w':[0,0,0,0], 'adSales4w':[0,0,0,0], 'totalRev4w':[0,0,0,0]})
 for row in ws_main.iter_rows(min_row=2, values_only=True):
     sku = str(row[1] or '').strip()
     if not sku: continue
@@ -80,17 +91,23 @@ for row in ws_main.iter_rows(min_row=2, values_only=True):
     for wi in range(4):
         rate = safe_f(row[PLG_FEE_COLS[wi]])
         sales = safe_f(row[SALES_COLS[wi]])
+        rev = safe_f(row[REVENUE_COLS[wi]])
         spend = round(rate * sales, 2)
         plg_an_data[analyst]['spend4w'][wi] += spend
-        plg_an_data[analyst]['adSales4w'][wi] += spend  # 近似：PLG广告销售额≈PLG花费（保守估计）
+        plg_an_data[analyst]['adSales4w'][wi] += spend  # PLG广告销售额≈spend（保守估计，实际需PLP明细）
+        plg_an_data[analyst]['totalRev4w'][wi] += rev   # 自然周总销售额
 
 for k, v in plg_an_data.items():
     v['acos4w'] = [round(v['spend4w'][i]/v['adSales4w'][i]*100,1) if v['adSales4w'][i]>0 else 0 for i in range(4)]
-    v['acoas4w'] = v['acos4w'][:]  # PLG的ACOAS≈ACOS（因为用同一分母近似）
+    v['acoas4w'] = [round(v['spend4w'][i]/v['totalRev4w'][i]*100,1) if v['totalRev4w'][i]>0 else 0 for i in range(4)]
     v['spend4w'] = [round(x,2) for x in v['spend4w']]
     v['adSales4w'] = [round(x,2) for x in v['adSales4w']]
+    v['totalRev4w'] = [round(x,2) for x in v['totalRev4w']]
 
-plg_an_4w_js = make_js_arr('plgAn4w', plg_an_data, 'analyst')
+# PLG needs custom make_js_arr to include totalRev4w
+plg_items = [{'analyst': k, 'spend4w': v['spend4w'], 'adSales4w': v['adSales4w'],
+              'totalRev4w': v['totalRev4w'], 'acos4w': v['acos4w'], 'acoas4w': v['acoas4w']} for k,v in plg_an_data.items()]
+plg_an_4w_js = 'const plgAn4w = ' + json.dumps(plg_items, ensure_ascii=False, separators=(',',':')) + ';'
 print(f"  PLG分析人:{len(plg_an_data)}")
 
 # 生成JS数据块
@@ -169,19 +186,21 @@ function buildDrillDataMap() {
     if (entry) entry.newSku4w[wi]++;
   });
 
-  // Tab5 SKU维度
-  cum43Data.forEach(function(d) {
-    var wi = weekIdx(d.listDate);
-    var ns = [0,0,0,0];
-    if (wi >= 0) ns[wi] = 1;
-    map.set('sku:' + d.SKU, {
-      label: d.SKU, tab: 't5-sku',
-      sales4w: [d.salesW3||0, d.salesW2||0, d.prevSalesQty||0, d.curSalesQty||0],
-      revenue4w: [d.revenueW3||0, d.revenueW2||0, d.prevRevenue||0, d.curRevenue||0],
-      share4w: [d.shareW3||0, d.shareW2||0, d.prevMarketShare||0, d.curMarketShare||0],
-      newSku4w: ns
+  // Tab1 及时率维度
+  if (typeof timeliness4w !== 'undefined') {
+    timeliness4w.analysts.forEach(function(d) {
+      map.set('time:' + d.analyst, {
+        label: d.analyst + ' 及时率', tab: 't1-time',
+        rates4w: d.rates4w,
+        isTimeliness: true
+      });
     });
-  });
+    map.set('time:总及时率', {
+      label: '总及时率', tab: 't1-time',
+      rates4w: timeliness4w.totalRates,
+      isTimeliness: true
+    });
+  }
 
   // Tab4 PLP分析人
   if (typeof plpAn4w !== 'undefined') {
@@ -281,6 +300,9 @@ function showDrillChart(key, data, title) {
     if (data.acoas4w && data.acoas4w.some(function(v){return v>0;})) {
       datasets.push({label:'ACOAS(%)',data:data.acoas4w,borderColor:'#0f3460',backgroundColor:'transparent',tension:0.3,borderWidth:2,borderDash:[3,3],pointRadius:3,yAxisID:'y1'});
     }
+  } else if (data.isTimeliness) {
+    // 及时率: 单Y轴折线，0-100%
+    datasets.push({label:'及时率(%)',data:data.rates4w,borderColor:'#0f3460',backgroundColor:'rgba(15,52,96,0.1)',tension:0.3,borderWidth:3,pointRadius:5,fill:true,yAxisID:'y'});
   } else {
     // 新品: 销量、新上架SKU (左轴), 销售额、市占比 (右轴)
     var hasSales = data.sales4w && data.sales4w.some(function(v){return v>0;});
@@ -312,8 +334,8 @@ function showDrillChart(key, data, title) {
   panel.classList.add('open');
   panel.classList.remove('closing');
 
-  var yLabel = isAd ? '金额($)' : '销量';
-  var y1Label = isPLP ? '百分比(%)' : '金额/占比';
+  var yLabel = data.isTimeliness ? '及时率(%)' : (isAd ? '金额($)' : '销量');
+  var y1Label = data.isTimeliness ? '' : (isPLP ? '百分比(%)' : '金额/占比');
   window._drillChartInstance = new Chart(document.getElementById('drill-canvas'), {
     type: 'line',
     data: { labels: WLABELS, datasets: datasets },
@@ -418,10 +440,10 @@ print("3. JS核心函数 已插入")
 # ===== 4. buildDrillDataMap 调用 + Tab5 wiring =====
 html = html.replace(
     "  renderT5Table(cum43Data);\n})();\n\n// ========== Tab6",
-    "  renderT5Table(cum43Data);\n  buildDrillDataMap();\n  setTimeout(function(){setupDrillTrigger('t5-table', 'sku:');}, 100);\n})();\n\n// ========== Tab6",
+    "  renderT5Table(cum43Data);\n  buildDrillDataMap();\n})();\n\n// ========== Tab6",
     1
 )
-print("4. buildDrillDataMap + Tab5 wiring 已插入")
+print("4. buildDrillDataMap 已插入")
 
 # ===== 5. Tab1 品线 wiring =====
 html = html.replace(
@@ -439,15 +461,7 @@ html = html.replace(
 )
 print("6. Tab1 分析人表 wiring 已插入")
 
-# ===== 7. Tab5 renderT5Table 内 wiring =====
-html = html.replace(
-    "document.getElementById('t5-table').innerHTML = h;\n    document.getElementById('t5-count')",
-    "document.getElementById('t5-table').innerHTML = h;\n    setTimeout(function(){setupDrillTrigger('t5-table', 'sku:');}, 50);\n    document.getElementById('t5-count')",
-    1
-)
-print("7. Tab5 renderT5Table wiring 已插入")
-
-# ===== 8. Tab4 PLP tables wiring =====
+# ===== 7. Tab4 PLP tables wiring =====
 html = html.replace(
     "document.getElementById('t4-plp-an').innerHTML = renderPlpDim(plpAnalysts, '分析人');",
     "document.getElementById('t4-plp-an').innerHTML = renderPlpDim(plpAnalysts, '分析人');\n  setTimeout(function(){setupDrillTrigger('t4-plp-an', 'plp:an:');}, 50);",
@@ -476,6 +490,15 @@ html = html.replace(
     1
 )
 print("9. Tab4 PLG分析人 wiring 已插入")
+
+# ===== 10. Tab1 及时率 wiring =====
+html = html.replace(
+    "document.getElementById('t1-time-table').innerHTML = timeHtml;",
+    "document.getElementById('t1-time-table').innerHTML = timeHtml;\n  setTimeout(function(){setupDrillTrigger('t1-time-table', 'time:');}, 50);",
+    1
+)
+print("10. Tab1 及时率 wiring 已插入")
+
 after = len(html)
 print(f"\n输入: {before/1024:.0f}KB → 输出: {after/1024:.0f}KB (+{(after-before)/1024:.0f}KB)")
 

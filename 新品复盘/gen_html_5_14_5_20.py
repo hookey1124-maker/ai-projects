@@ -83,7 +83,7 @@ print("读取源数据...")
 wb_src = load_workbook(SOURCE_FILE, data_only=True)
 ws_main = wb_src['四三数据累计']
 ws_plp = wb_src['PLP明细']
-ws_dept = wb_src['周销售数据']
+ws_dept = wb_src['四三销售数据']
 
 rows_raw = []
 for row in ws_main.iter_rows(min_row=2, values_only=True):
