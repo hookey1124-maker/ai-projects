@@ -10,17 +10,14 @@
 
 ```
 新品复盘/
-├── 新品板块.html                      # ⭐ 通用看板模板（CDN版，拖入Excel即用）
-├── 新品板块_clean.html                # 去重整理版
-├── 新品板块_离线版.html               # 内嵌SheetJS+Chart.js，完全离线
+├── 新品板块_4.30-5.27_4weeks_drill.html # ⭐ 正式周报看板（6Tab+下钻+4周）
+├── 新品板块.html                      # 新管线通用模板（CDN版，拖入Excel即用）
+├── 新品板块_离线版.html               # 离线版模板（内嵌SheetJS+Chart.js）
 ├── compute_engine.js                  # ⭐ JS计算引擎（~1314行，替代Python）
 ├── render_dashboard.js                # ⭐ JS渲染引擎（~1075行）
-├── build_html_clean.py                # 重建脚本（消除代码重复）
 ├── build_offline.py                   # 离线构建（下载CDN内嵌）
 ├── add_drilldown.py                   # 下钻图表注入脚本
 ├── upgrade_4weeks.py                  # 4周数据升级脚本
-├── 新品板块_4.30-5.27_4weeks.html     # 4周版看板输出
-├── 新品板块_4.30-5.27_4weeks_drill.html # 4周+下钻版看板输出
 ├── 周报/                              # 数据源+验证截图
 ├── 月报/                              # 月报子项目（独立）
 ├── screenshots/                       # 看板截图
@@ -69,13 +66,14 @@
 
 | 文件 | 说明 |
 |------|------|
-| `新品板块.html` | ⭐ **主文件**，通用看板模板（CDN版，需联网） |
-| `compute_engine.js` | JS 计算引擎源码（已内嵌到 HTML 中） |
-| `render_dashboard.js` | JS 渲染引擎源码（已内嵌到 HTML 中） |
-| `build_offline.py` | 离线构建脚本，下载 SheetJS+Chart.js 内嵌 |
-| `新品板块_离线版.html` | 构建产物，完全离线可用 |
-| `gen_html_*.py` | 归档保留，不再使用 |
-| `gen_xlsx_*.py` | 归档保留，XLSX 导出由 HTML 内置 |
+| `新品板块_4.30-5.27_4weeks_drill.html` | ⭐ **正式周报看板**，6Tab+16图表+7下钻表+4周趋势 |
+| `新品板块.html` | 新管线通用模板（CDN版，拖入Excel即用） |
+| `新品板块_离线版.html` | 离线版模板，内嵌SheetJS+Chart.js |
+| `compute_engine.js` | JS 计算引擎源码（~1314行） |
+| `render_dashboard.js` | JS 渲染引擎源码（~1075行） |
+| `build_offline.py` | 离线构建脚本，下载CDN内嵌 |
+| `add_drilldown.py` | 下钻图表注入（旧管线增量脚本） |
+| `upgrade_4weeks.py` | 4周数据升级（旧管线增量脚本） |
 
 ## 三个数据周期
 
