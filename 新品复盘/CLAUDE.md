@@ -10,20 +10,27 @@
 
 ```
 新品复盘/
-├── gen_html_5_14_5_20.py              # ⭐ 最新 HTML 生成（7标签/24数据块，推荐模板）
-├── html_template_part.py              # CSS/HTML/JS 共享模板
-├── gen_html_5_7_5_13.py               # 5.7-5.13 HTML 生成
-├── gen_html_4_30_5_6.py               # 4.30-5.6 HTML 生成（早期版本）
-├── gen_html_506.py ~ _v4.py           # 4.30-5.6 迭代版本（历史遗留）
-├── gen_html_dashboard.py              # 4.30-5.6 看板样式 HTML
-├── gen_xlsx_4_30_5_6_v4.py            # ⭐ XLSX 最终版
-├── gen_xlsx_5_7_5_13.py, gen_xlsx_5_14_5_20.py
-├── copy_to_template.py                # SKU→模板映射工具
-├── gen_report_4_30_5_6.py             # 数据提取+JSON构建
-├── 周报/                              # 周报数据+验证
-├── 月报/                              # 月报子项目（独立数据+脚本）
+├── 新品板块.html                      # ⭐ 通用看板模板（CDN版，拖入Excel即用）
+├── 新品板块_clean.html                # 去重整理版
+├── 新品板块_离线版.html               # 内嵌SheetJS+Chart.js，完全离线
+├── compute_engine.js                  # ⭐ JS计算引擎（~1314行，替代Python）
+├── render_dashboard.js                # ⭐ JS渲染引擎（~1075行）
+├── build_html_clean.py                # 重建脚本（消除代码重复）
+├── build_offline.py                   # 离线构建（下载CDN内嵌）
+├── add_drilldown.py                   # 下钻图表注入脚本
+├── upgrade_4weeks.py                  # 4周数据升级脚本
+├── 新品板块_4.30-5.27_4weeks.html     # 4周版看板输出
+├── 新品板块_4.30-5.27_4weeks_drill.html # 4周+下钻版看板输出
+├── 周报/                              # 数据源+验证截图
+├── 月报/                              # 月报子项目（独立）
 ├── screenshots/                       # 看板截图
-└── .venv/                             # Python 3.14 (uv)
+├── .venv/                             # Python 3.14 (uv)
+└── _archive/                          # 📦 历史文件归档
+    ├── 4.30-5.6/                      # 第一期（5版HTML+5版XLSX+JSON）
+    ├── 5.7-5.13/                      # 第二期
+    ├── 5.14-5.20/                     # 第三期
+    ├── 5.21-5.27/                     # 第四期
+    └── 工具脚本/                      # 一次性验证/压缩/检查脚本
 ```
 
 ## 数据管道
