@@ -10,14 +10,19 @@
 
 ```
 新品复盘/
-├── 新品板块_4.30-5.27_4weeks_drill.html # ⭐ 正式周报看板（6Tab+下钻+4周）
-├── 新品板块.html                      # 新管线通用模板（CDN版，拖入Excel即用）
-├── 新品板块_离线版.html               # 离线版模板（内嵌SheetJS+Chart.js）
-├── compute_engine.js                  # ⭐ JS计算引擎（~1314行，替代Python）
-├── render_dashboard.js                # ⭐ JS渲染引擎（~1075行）
-├── build_offline.py                   # 离线构建（下载CDN内嵌）
-├── add_drilldown.py                   # 下钻图表注入脚本
-├── upgrade_4weeks.py                  # 4周数据升级脚本
+├── 新品板块_4.30-5.27_4weeks_drill.html   # ⭐ 正式周报看板（旧管线，6Tab+下钻+4周，静态数据）
+├── 新品板块_drill_upload.html             # ⭐ 上传版下钻看板（新管线，拖入Excel+下钻+广告结构）
+├── 新品板块_4.30-5.27_4weeks_drill_v3.html # 正式看板v3（部门占比+PW市占→Tab1，广告构成明细）
+├── 新品板块.html                          # 新管线通用模板（CDN版，拖入Excel即用）
+├── 新品板块_离线版.html                   # 离线版模板（内嵌SheetJS+Chart.js，双击即用）
+├── compute_engine.js                      # ⭐ JS计算引擎（~1314行，替代Python）
+├── render_dashboard.js                    # ⭐ JS渲染引擎（~1075行）
+├── build_offline.py                       # 离线构建（下载CDN→内嵌）
+├── build_html_clean.py                    # 在线版构建（组装模板+引擎+渲染）
+├── inject_drill_upload.py                 # 向上传版注入下钻+广告结构（输出drill_upload.html）
+├── rebuild_ad_tab.py                      # 重构广告Tab（旧管线，openpyxl计算→drill_v2.html）
+├── fix_drill_upload.py                    # 修复drill_upload版（部门+PW→Tab1，广告构成明细）
+├── fix_drill_v2.py                        # 同步修复正式版（drill→v3，同fix_drill逻辑）
 ├── 周报/                              # 数据源+验证截图
 ├── 月报/                              # 月报子项目（独立）
 ├── screenshots/                       # 看板截图
@@ -72,6 +77,13 @@
 | `compute_engine.js` | JS 计算引擎源码（~1314行） |
 | `render_dashboard.js` | JS 渲染引擎源码（~1075行） |
 | `build_offline.py` | 离线构建脚本，下载CDN内嵌 |
+| `新品板块_drill_upload.html` | 上传版+下钻+广告结构合体（`inject_drill_upload.py` 输出） |
+| `新品板块_4.30-5.27_4weeks_drill_v3.html` | 正式看板v3：部门占比+PW→Tab1，广告构成明细 |
+| `inject_drill_upload.py` | 向上传版注入下钻+广告结构+`computeAdExtras()` |
+| `rebuild_ad_tab.py` | Python端计算广告结构数据→重构drill v1→v2 |
+| `fix_drill_upload.py` | 修复drill_upload版（7个fix，部门+PW移到Tab1） |
+| `fix_drill_v2.py` | 同步修复正式版（6个fix，输出drill_v3） |
+| `build_html_clean.py` | 组装模板+compute_engine.js+render_dashboard.js→clean.html |
 | `add_drilldown.py` | 下钻图表注入（旧管线增量脚本） |
 | `upgrade_4weeks.py` | 4周数据升级（旧管线增量脚本） |
 
@@ -99,14 +111,14 @@
 - **低占比新品**：市占比 < 75% 且对手销量 > 0
 - **销售额**：USD原值，禁止货币转换
 
-### HTML 看板结构（5.14-5.20/7标签）
-1. 总盘概览 — KPI 卡片 + 趋势
-2. 低占比分析 — 市占<75%且对手>0的SKU
-3. 广告追踪 — PLP ROAS/ACOS/ACOAS/CVR
-4. 四三累计 — 累计数据汇总
-5. 品效分析 — 按上架月的队列分析
-6. 市场分布 — 价格分布/市占分层
-7. 汇报输出 — 一键复制汇报文案
+## HTML 看板结构（6 Tab）
+
+1. **总盘概览** — KPI卡片 + 4周趋势折线图 + 部门占比&PW市占（v3新增）
+2. **低占比分析** — 市占<75%且对手>0的SKU明细
+3. **广告结构** — 广告构成分布（PLP+PLG/单PLP/仅PLG/无广告）+ PLG费率四档 + 部门占比 + PW市占对比
+4. **四三累计** — SKU级累计数据汇总+筛选
+5. **品效分析** — 按上架月的队列分析
+6. **汇报输出** — 一键复制汇报文案（含部门占比、广告构成、PLG费率）
 
 ## 环境
 
@@ -151,6 +163,12 @@ React Adapter 按固定 key 名读取 JSON，Python 端生成 JS 数据块时命
 - `totalSales4w`, `totalShare4w`, `catShare4w`, `anShare4w`
 - `plpAnalysts`, `plpCategories`, `plpExpandTypes`, `plpDetailData`
 - `plgStats`（含 `byAnalyst` 数组，字段: `analyst/total/plpAndPlgBoth/singleLinkPlpPlg/plgOnly/plpOnly/noAd/plpDisabledNoSale/plgSpend/plgAdRev/plgNatRev/acos/acoas`）
+- `adDeptPct`（部门占比: `salesPct/revPct/newSales/newRevenue/deptSales/deptRevenue`）
+- `adPwVsNew`（PW爬虫 vs 新品市占: `pwShare/newShare/pwTotalLinks/newSkuCount/newTotalSales/newRivalSales`）
+- `adCompDist`（广告构成: `{'PLP+PLG':N, '单PLP':N, '仅PLG':N, '无广告':N}`）
+- `adPlgTierDist`（PLG费率四档: `{'无广告':N, '低费率':N, '中费率':N, '高费率':N}`，阈值 ≤2%, 2-4%, >4%）
+- `adPlpPlgLink`（PLP→PLG链接统计: `totalSku/plgY/plgN`）
+- `adAnDetail/adCatDetail`（广告构成按分析人/品线明细表）
 - `plgAn4w`, `plpAn4w`, `plpCat4w`, `plpExp4w`
 - `timelinessData`（含 `analysts` 数组 + `total`，每个分析人有 `prevTimelyRate`/`change`）
 - `priceOverview`（`byAnalyst` 是 `[{analyst, "$0-10":0, ...}]` 结构，非字典嵌套）
