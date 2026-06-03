@@ -66,6 +66,8 @@ rival_cols = build_col_map('对手销量')
 share_cols = build_col_map('市占比')
 mkt_cols = build_col_map('市场状态')
 ord8_cols = build_col_map('8日出单情况')
+freq7_cols = build_col_map('7日频次标签')
+nfreq7_cols = build_col_map('上架8日内新品频次标签')
 plp_cols = build_col_map('开启PLP')
 plg_fee_cols = build_col_map('PLG最高费率')
 
@@ -111,6 +113,8 @@ for row_idx in range(2, ws.max_row + 1):
         'shareAll': [],
         'mktAll': [],
         'ord8All': [],
+        'freq7All': [],
+        'nfreq7All': [],
         'plpAll': [],
         'plgFeeAll': [],
     }
@@ -148,6 +152,16 @@ for row_idx in range(2, ws.max_row + 1):
         o8c = ord8_cols[wi]
         o8 = str(ws.cell(row_idx, o8c).value or '').strip() if o8c else ''
         rec['ord8All'].append(o8)
+
+        # 7日频次标签
+        f7c = freq7_cols[wi] if wi < len(freq7_cols) else None
+        f7 = str(ws.cell(row_idx, f7c).value or '').strip() if f7c else ''
+        rec['freq7All'].append(f7)
+
+        # 上架8日内新品频次标签
+        nf7c = nfreq7_cols[wi] if wi < len(nfreq7_cols) else None
+        nf7 = str(ws.cell(row_idx, nf7c).value or '').strip() if nf7c else ''
+        rec['nfreq7All'].append(nf7)
 
         # PLP
         pc = plp_cols[wi] if wi < len(plp_cols) else None

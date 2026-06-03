@@ -87,6 +87,8 @@ function buildSkuRowForPeriod(sku: any, idx: number, periodEndStr?: string): any
     prevMarketShare: sku.shareAll?.[idx-1] || 0,
     curMarketStatus: sku.mktAll?.[idx] || '',
     cur8dStatus: sku.ord8All?.[idx] || '',
+    freq7: sku.freq7All?.[idx] || '',
+    nfreq7: sku.nfreq7All?.[idx] || '',
     plpEnabled: sku.plpAll?.[idx] || 'N',
     plgFee: (sku.plgFeeAll?.[idx] || 0) + '%',
   };
@@ -142,6 +144,28 @@ function buildUnsoldDetail(rows: any[], analysts: string[], categories: string[]
     byCat.push(entry);
   });
   return { total: unsold.length, prevTotal: 0, change: 0, byAnalyst: byAn, byCategory: byCat };
+}
+
+function computeTimeliness(rows: any[], analysts: string[]) {
+  const total = rows.length;
+  const timely = rows.filter((r: any) => {
+    const f7 = (r.freq7 || '').trim();
+    return f7 !== '异常' && f7 !== '';
+  }).length;
+  const noAnalysis7d = rows.filter((r: any) => {
+    const nf7 = (r.nfreq7 || '').trim();
+    return nf7 === '异常';
+  }).length;
+  return {
+    curSku: total,
+    totalCount: total,
+    timelyCount: timely,
+    timelyRate: total > 0 ? (timely / total * 100).toFixed(1) + '%' : '0%',
+    prevTimelyRate: '-',
+    noAnalysis8dCount: total - timely,
+    noAnalysis7dCount: noAnalysis7d,
+    change: '-',
+  };
 }
 
 // ===== 数据访问器 =====
@@ -284,7 +308,14 @@ export function getData(periodEndIndex?: number) {
     anSales4w,
     anRev4w: anSales4w,
     anShare4w: anSales4w,
-    timelinessData: CD.timelinessData || { analysts: [], total: {} },
+    timelinessData: {
+      total: computeTimeliness(cum43Data, AD_ANALYSTS),
+      analysts: AD_ANALYSTS.map(an => {
+        const anRows = cum43Data.filter((r: any) => r.analyst === an);
+        const t = computeTimeliness(anRows, [an]);
+        return { ...t, analyst: an };
+      }),
+    },
     timeliness4w: CD.timeliness4w || { labels: [], analysts: [], totalRates: [] },
     lowShareData: cum43Data.filter((r: any) => r.curMarketShare < 75 && r.curRivalQty > 0),
     mktDistOverall: {
