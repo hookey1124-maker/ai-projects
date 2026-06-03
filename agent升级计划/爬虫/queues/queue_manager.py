@@ -6,7 +6,7 @@ from pathlib import Path
 from datetime import datetime
 
 # 产品归档根目录
-ARCHIVE_ROOT = Path(r"C:\Users\Administrator\Desktop\AI项目\产品卖点主图和信息生成")
+ARCHIVE_ROOT = Path(r"c:\Users\Hardy\ai-projects\产品卖点主图和信息生成")
 QUEUE_DIR = Path(__file__).parent
 PENDING_FILE = QUEUE_DIR / "pending.json"
 DONE_FILE = QUEUE_DIR / "done.json"

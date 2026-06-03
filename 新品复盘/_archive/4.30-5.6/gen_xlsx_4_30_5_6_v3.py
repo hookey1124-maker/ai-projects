@@ -72,7 +72,7 @@ def bdr(ws, r1, r2, c1, c2):
         for c in row: c.border = bd
 
 # ── 读取源数据 ──
-SRC = r'C:\Users\Administrator\Desktop\新品复盘\新品检查周源数据和PLP数据.xlsx'
+SRC = r'c:\Users\Hardy\ai-projects\新品复盘\新品检查周源数据和PLP数据.xlsx'
 wb_src = openpyxl.load_workbook(SRC, data_only=True)
 ws_main = wb_src['四三数据累计']
 ws_plp  = wb_src['PLP明细']
@@ -981,7 +981,7 @@ for c in 'CDE': ws10.column_dimensions[c].width = 14
 bdr(ws10, 3, ri-1, 1, 5)
 
 # ── 保存 ──
-OUT = r'C:\Users\Administrator\Desktop\新品复盘\新品周报数据表_4.30-5.6.xlsx'
+OUT = r'c:\Users\Hardy\ai-projects\新品复盘\新品周报数据表_4.30-5.6.xlsx'
 wb.save(OUT)
 print(f'\nXLSX saved: {OUT}')
 print(f'Sheets ({len(wb.sheetnames)}): {wb.sheetnames}')

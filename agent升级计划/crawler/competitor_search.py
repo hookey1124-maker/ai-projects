@@ -17,7 +17,7 @@ _DIR = Path(__file__).parent
 _CONFIG = _DIR.parent / "config"
 
 PROXY_SERVER = "http://127.0.0.1:7897"
-USER_DATA_DIR = Path(r"C:\Users\Administrator\Desktop\AI项目\agent升级计划\browser_profile")
+USER_DATA_DIR = Path(r"c:\Users\Hardy\ai-projects\agent升级计划\browser_profile")
 USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",

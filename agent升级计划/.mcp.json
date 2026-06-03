@@ -73,13 +73,13 @@
     "image-vision": {
       "transport": "stdio",
       "command": "node",
-      "args": ["C:/Users/Administrator/Desktop/AI项目/agent升级计划/MCP/mcp-image-vision/index.js", "--api-key=YOUR_ZHIPU_API_KEY", "--model=GLM-4V-Plus"],
+      "args": ["c:/Users/Hardy/ai-projects/agent升级计划/MCP/mcp-image-vision/index.js", "--api-key=YOUR_ZHIPU_API_KEY", "--model=GLM-4V-Plus"],
       "env": {}
     },
     "image-gen": {
       "transport": "stdio",
       "command": "node",
-      "args": ["C:/Users/Administrator/Desktop/AI项目/agent升级计划/MCP/mcp-image-gen/index.js", "--api-key=YOUR_MAIZI_API_KEY"],
+      "args": ["c:/Users/Hardy/ai-projects/agent升级计划/MCP/mcp-image-gen/index.js", "--api-key=YOUR_MAIZI_API_KEY"],
       "env": {}
     }
   }

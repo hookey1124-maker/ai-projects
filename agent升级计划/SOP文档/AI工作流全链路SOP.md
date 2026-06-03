@@ -63,7 +63,7 @@ Phase 1 竞品分析 + 内容生成（已有）：
 ### 1.3 目录结构
 
 ```
-C:\Users\Administrator\Desktop\AI项目\
+c:\Users\Hardy\ai-projects\
 └── agent升级计划/                  # 主工作区
     ├── CLAUDE.md                   #   核心规则文件（必须保留在根目录）
     ├── .mcp.json                   #   MCP 服务器注册
@@ -138,7 +138,7 @@ C:\Users\Administrator\Desktop\AI项目\
     ├── md2docx.py                  #   Markdown → Word 转换
     └── browser_profile/            #   浏览器持久化 Profile
 
-C:\Users\Administrator\Desktop\AI项目\
+c:\Users\Hardy\ai-projects\
 └── 产品卖点主图和信息生成/         # 输出归档（按 SKU 命名目录）
     └── {Make}-{Model}_{Year-Range}_{Position}_{Finish}_{Count}_{Product-Type}/
         ├── 锚定产品xlsx/           #   锚定商品独立 xlsx（6 Sheet）
@@ -176,8 +176,8 @@ npm install -g @anthropic-ai/claude-code
 ### 2.3 创建工作区
 
 ```bash
-mkdir "C:\Users\Administrator\Desktop\AI项目\agent升级计划"
-cd "C:\Users\Administrator\Desktop\AI项目\agent升级计划"
+mkdir "c:\Users\Hardy\ai-projects\agent升级计划"
+cd "c:\Users\Hardy\ai-projects\agent升级计划"
 ```
 
 在 Claude Code 中注册工作区（通过 VSCode 扩展或 CLI）。
@@ -241,7 +241,7 @@ cd "C:\Users\Administrator\Desktop\AI项目\agent升级计划"
 ### 2.5 CLAUDE.md 创建
 
 CLAUDE.md 是本工作流的核心配置文件，包含所有规则。详见本 SOP 第 12 节核心铁律速查。完整内容参考：
-`C:\Users\Administrator\Desktop\AI项目\agent升级计划\CLAUDE.md`
+`c:\Users\Hardy\ai-projects\agent升级计划\CLAUDE.md`
 
 ---
 
@@ -269,7 +269,7 @@ CLAUDE.md 是本工作流的核心配置文件，包含所有规则。详见本 
       "transport": "stdio",
       "command": "node",
       "args": [
-        "C:/Users/Administrator/Desktop/AI项目/agent升级计划/MCP/mcp-image-vision/index.js",
+        "c:/Users/Hardy/ai-projects/agent升级计划/MCP/mcp-image-vision/index.js",
         "--api-key=你的智谱API-KEY",
         "--model=GLM-4V-Plus"
       ]
@@ -278,7 +278,7 @@ CLAUDE.md 是本工作流的核心配置文件，包含所有规则。详见本 
       "transport": "stdio",
       "command": "node",
       "args": [
-        "C:/Users/Administrator/Desktop/AI项目/agent升级计划/MCP/mcp-image-gen/index.js",
+        "c:/Users/Hardy/ai-projects/agent升级计划/MCP/mcp-image-gen/index.js",
         "--api-key=你的麦子AI-KEY"
       ]
     },
@@ -428,7 +428,7 @@ Input → Task Classification → Data Collection → Structure Extraction
 
 **启动命令：**
 ```bash
-"C:\Program Files\Clash Verge\verge-mihomo.exe" -f "C:\Users\Administrator\Desktop\AI项目\agent升级计划\VPN\mihomo_scraper.yaml"
+"C:\Program Files\Clash Verge\verge-mihomo.exe" -f "c:\Users\Hardy\ai-projects\agent升级计划\VPN\mihomo_scraper.yaml"
 ```
 
 **验证 API 可用：**
@@ -479,7 +479,7 @@ document.cookie = 'shzip=27513;...'; // 邮编
 **用法：**
 ```bash
 # 批量抓取（传入 SKU 目录）
-python 爬虫/product_intel.py "C:\Users\Administrator\Desktop\AI项目\产品卖点主图和信息生成\{SKU目录}"
+python 爬虫/product_intel.py "c:\Users\Hardy\ai-projects\产品卖点主图和信息生成\{SKU目录}"
 
 # 带视觉分析
 python 爬虫/product_intel.py "{mother_dir}" --vision

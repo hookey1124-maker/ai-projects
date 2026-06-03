@@ -12,7 +12,7 @@ ZHIPU_API_KEY = "61ffd79cb5394e0284550b88ff3c0eda.hai1zorE9yumVzsd"
 ZHIPU_BASE_URL = "https://open.bigmodel.cn/api/paas/v4/"
 VISION_MODEL = "glm-4v"
 
-SKU_DIR = Path(r"C:\Users\Administrator\Desktop\AI项目\产品卖点主图和信息生成\Universal_Rear_Glossy-Black_4pcs_Bumper-Diffuser")
+SKU_DIR = Path(r"c:\Users\Hardy\ai-projects\产品卖点主图和信息生成\Universal_Rear_Glossy-Black_4pcs_Bumper-Diffuser")
 ANCHOR_IMG = SKU_DIR / "ebay_images" / "vision_116781928287.webp"
 
 MISCLASSIFIED = [

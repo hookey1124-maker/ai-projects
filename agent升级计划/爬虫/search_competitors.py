@@ -9,8 +9,8 @@ if sys.platform == 'win32':
 from playwright.async_api import async_playwright
 
 PROXY = "http://127.0.0.1:7897"
-USER_DATA = Path(r"C:\Users\Administrator\Desktop\AI项目\agent升级计划\browser_profile")
-MOTHER_DIR = Path(r"C:\Users\Administrator\Desktop\AI项目\产品卖点主图和信息生成\Chevy-Silverado_2007-2014_Front-Rear_Chrome_4pcs_Door-Handle")
+USER_DATA = Path(r"c:\Users\Hardy\ai-projects\agent升级计划\browser_profile")
+MOTHER_DIR = Path(r"c:\Users\Hardy\ai-projects\产品卖点主图和信息生成\Chevy-Silverado_2007-2014_Front-Rear_Chrome_4pcs_Door-Handle")
 
 ANCHOR_IDS = {
     "176994107624", "355545628474", "285758239190", "116036305188",

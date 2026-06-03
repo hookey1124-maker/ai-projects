@@ -38,7 +38,7 @@ def fmt_chg(v, is_pct=False):
 
 # ── 读取数据 ──────────────────────────────────────────────
 wb1 = openpyxl.load_workbook(
-    r'C:\Users\Administrator\Desktop\新品复盘\新品检查周源数据和PLP数据.xlsx',
+    r'c:\Users\Hardy\ai-projects\新品复盘\新品检查周源数据和PLP数据.xlsx',
     data_only=True)
 
 ws_main = wb1[wb1.sheetnames[1]]  # 四三数据累计
@@ -170,7 +170,7 @@ for exp in exps:
 
 # ── 5. 分析及时率 —— 从新品周报数据.xlsx读取 ─────────────────
 wb2 = openpyxl.load_workbook(
-    r'C:\Users\Administrator\Desktop\新品复盘\新品周报数据.xlsx',
+    r'c:\Users\Hardy\ai-projects\新品复盘\新品周报数据.xlsx',
     data_only=True)
 ws_timely = wb2['分析及时率']
 timely_rows_raw = {r[0]: list(r) for r in ws_timely.iter_rows(min_row=2, values_only=True)
@@ -502,7 +502,7 @@ js_data = {
 }
 
 # 保存JSON
-with open(r'C:\Users\Administrator\Desktop\新品复盘\report_data_4_30_5_6.json', 'w', encoding='utf-8') as f:
+with open(r'c:\Users\Hardy\ai-projects\新品复盘\report_data_4_30_5_6.json', 'w', encoding='utf-8') as f:
     json.dump(js_data, f, ensure_ascii=False, indent=2, default=str)
 print(f'\n✅ JSON数据已保存')
 

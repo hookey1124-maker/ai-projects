@@ -129,7 +129,7 @@ def chg_color(v):
     if v is None or v == 0: return '888888'
     return C_GRN if v > 0 else C_RED
 
-SRC = r'C:\Users\Administrator\Desktop\新品复盘\新品检查周源数据和PLP数据.xlsx'
+SRC = r'c:\Users\Hardy\ai-projects\新品复盘\新品检查周源数据和PLP数据.xlsx'
 wb_src = openpyxl.load_workbook(SRC, data_only=True)
 ws_main = wb_src['四三数据累计']
 ws_plp  = wb_src['PLP明细']
@@ -845,6 +845,6 @@ auto_width(ws10, [3,18,12,12,12], NC10)
 freeze_header(ws10)
 
 # ── 保存 ──
-OUT = r'C:\Users\Administrator\Desktop\新品复盘\新品周报数据表_4.30-5.6.xlsx'
+OUT = r'c:\Users\Hardy\ai-projects\新品复盘\新品周报数据表_4.30-5.6.xlsx'
 wb.save(OUT)
 print(f'Saved: {OUT}\nSheets: {wb.sheetnames}')

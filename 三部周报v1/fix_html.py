@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 
-html_path = 'C:/Users/Administrator/Desktop/三部周报v1/New project 2-新品板块已放入/src/modules/newProductStatus/新品板块_4.30-5.6_v3.html'
+html_path = 'c:/Users/Hardy/ai-projects/三部周报v1/New project 2-新品板块已放入/src/modules/newProductStatus/新品板块_4.30-5.6_v3.html'
 
 with open(html_path, 'r', encoding='utf-8') as f:
     content = f.read()

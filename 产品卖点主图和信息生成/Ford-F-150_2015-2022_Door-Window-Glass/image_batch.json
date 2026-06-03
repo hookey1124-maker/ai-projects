@@ -1,32 +1,32 @@
 {
   "main": {
     "label": "主图-白底",
-    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Door-Window-Glass\\gen_main_fast_1779516699.png",
+    "path": "c:\\Users\\Hardy\\ai-projects\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Door-Window-Glass\\gen_main_fast_1779516699.png",
     "status": "ok"
   },
   "scene": {
     "label": "场景图",
-    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Door-Window-Glass\\gen_main_fast_1779516725.png",
+    "path": "c:\\Users\\Hardy\\ai-projects\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Door-Window-Glass\\gen_main_fast_1779516725.png",
     "status": "ok"
   },
   "detail": {
     "label": "细节图",
-    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Door-Window-Glass\\gen_main_fast_1779516756.png",
+    "path": "c:\\Users\\Hardy\\ai-projects\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Door-Window-Glass\\gen_main_fast_1779516756.png",
     "status": "ok"
   },
   "angle": {
     "label": "多视角图",
-    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Door-Window-Glass\\gen_main_fast_1779516780.png",
+    "path": "c:\\Users\\Hardy\\ai-projects\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Door-Window-Glass\\gen_main_fast_1779516780.png",
     "status": "ok"
   },
   "install": {
     "label": "安装效果图",
-    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Door-Window-Glass\\gen_main_fast_1779516804.png",
+    "path": "c:\\Users\\Hardy\\ai-projects\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Door-Window-Glass\\gen_main_fast_1779516804.png",
     "status": "ok"
   },
   "kit": {
     "label": "套装展示图",
-    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Door-Window-Glass\\gen_main_fast_1779516831.png",
+    "path": "c:\\Users\\Hardy\\ai-projects\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Door-Window-Glass\\gen_main_fast_1779516831.png",
     "status": "ok"
   }
 }

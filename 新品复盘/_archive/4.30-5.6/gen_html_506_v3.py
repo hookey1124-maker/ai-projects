@@ -7,8 +7,8 @@
 
 import json, os
 
-JSON = r"C:/Users/Administrator/Desktop/新品复盘/sheets_506.json"
-DST  = r"C:/Users/Administrator/Desktop/新品复盘/新品周报_4.30-5.6_可视化.html"
+JSON = r"c:/Users/Hardy/ai-projects/新品复盘/sheets_506.json"
+DST  = r"c:/Users/Hardy/ai-projects/新品复盘/新品周报_4.30-5.6_可视化.html"
 
 with open(JSON, encoding='utf-8') as f:
     sheets = json.load(f)

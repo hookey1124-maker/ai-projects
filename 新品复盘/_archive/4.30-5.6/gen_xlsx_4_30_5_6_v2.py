@@ -86,7 +86,7 @@ def add_border(ws, min_r, max_r, min_c, max_c):
             c.border = bd
 
 # ── 读取源数据 ──
-SRC = r'C:\Users\Administrator\Desktop\新品复盘\新品检查周源数据和PLP数据.xlsx'
+SRC = r'c:\Users\Hardy\ai-projects\新品复盘\新品检查周源数据和PLP数据.xlsx'
 wb_src = openpyxl.load_workbook(SRC, data_only=True)
 ws_main = wb_src['四三数据累计']
 ws_plp  = wb_src['PLP明细']
@@ -988,7 +988,7 @@ for c in 'CDE':
     ws10.column_dimensions[c].width = 14
 
 # ── 保存 ──
-OUT = r'C:\Users\Administrator\Desktop\新品复盘\新品周报数据表_4.30-5.6.xlsx'
+OUT = r'c:\Users\Hardy\ai-projects\新品复盘\新品周报数据表_4.30-5.6.xlsx'
 wb.save(OUT)
 print(f'\n✅ XLSX已保存: {OUT}')
 print(f'Sheets: {wb.sheetnames}')

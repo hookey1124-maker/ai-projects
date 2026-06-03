@@ -7,9 +7,9 @@
 
 import json, os
 
-SRC = r"C:/Users/Administrator/Desktop/新品复盘/新品周报数据_4.30-5.6.xlsx"
-JSON = r"C:/Users/Administrator/Desktop/新品复盘/sheets_506.json"
-DST = r"C:/Users/Administrator/Desktop/新品复盘/新品周报_4.30-5.6_可视化.html"
+SRC = r"c:/Users/Hardy/ai-projects/新品复盘/新品周报数据_4.30-5.6.xlsx"
+JSON = r"c:/Users/Hardy/ai-projects/新品复盘/sheets_506.json"
+DST = r"c:/Users/Hardy/ai-projects/新品复盘/新品周报_4.30-5.6_可视化.html"
 
 # ── 读取 JSON ──────────────────────────────────────────────────────────────────
 with open(JSON, encoding='utf-8') as f:

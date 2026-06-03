@@ -8,7 +8,7 @@ if sys.platform == 'win32':
 from playwright.async_api import async_playwright
 
 PROXY = "http://127.0.0.1:7897"
-USER_DATA = Path(r"C:\Users\Administrator\Desktop\AI项目\agent升级计划\browser_profile")
+USER_DATA = Path(r"c:\Users\Hardy\ai-projects\agent升级计划\browser_profile")
 
 async def search(query: str):
     async with async_playwright() as p:
@@ -141,7 +141,7 @@ async def main():
         print(f"  [{i+1}] {r['item_id']}: {r.get('title','')[:120]}")
 
     final = result_list[:50]
-    out = Path(r"C:\Users\Administrator\Desktop\AI项目\agent升级计划\爬虫\search_results.json")
+    out = Path(r"c:\Users\Hardy\ai-projects\agent升级计划\爬虫\search_results.json")
     out.write_text(json.dumps(final, ensure_ascii=False, indent=2), encoding='utf-8')
     print(f"\nSaved {len(final)} results to {out}")
 

@@ -8,8 +8,8 @@ if sys.platform == 'win32':
 from playwright.async_api import async_playwright
 
 PROXY = "http://127.0.0.1:7897"
-USER_DATA = Path(r"C:\Users\Administrator\Desktop\AI项目\agent升级计划\browser_profile")
-MOTHER_DIR = Path(r"C:\Users\Administrator\Desktop\AI项目\产品卖点主图和信息生成\Universal_Rear_Glossy-Black_4pcs_Bumper-Diffuser")
+USER_DATA = Path(r"c:\Users\Hardy\ai-projects\agent升级计划\browser_profile")
+MOTHER_DIR = Path(r"c:\Users\Hardy\ai-projects\产品卖点主图和信息生成\Universal_Rear_Glossy-Black_4pcs_Bumper-Diffuser")
 
 ANCHOR_IDS = {"116781928287", "188299528230", "196020510372", "227141995383"}
 

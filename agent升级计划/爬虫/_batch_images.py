@@ -3,7 +3,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-PRODUCT_DIR = Path(r"C:\Users\Administrator\Desktop\AI项目\产品卖点主图和信息生成")
+PRODUCT_DIR = Path(r"c:\Users\Hardy\ai-projects\产品卖点主图和信息生成")
 
 LINES = [
     "Ford-F-150_2015-2022_Door-Window-Glass",

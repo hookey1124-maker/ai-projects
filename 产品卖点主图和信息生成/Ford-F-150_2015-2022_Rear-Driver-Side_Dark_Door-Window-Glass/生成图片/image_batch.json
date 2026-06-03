@@ -1,32 +1,32 @@
 {
   "main": {
     "label": "主图-白底",
-    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Rear-Driver-Side_Dark_Door-Window-Glass\\gen_quality_1779523818.png",
+    "path": "c:\\Users\\Hardy\\ai-projects\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Rear-Driver-Side_Dark_Door-Window-Glass\\gen_quality_1779523818.png",
     "status": "ok"
   },
   "scene": {
     "label": "场景图",
-    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Rear-Driver-Side_Dark_Door-Window-Glass\\gen_quality_1779523885.png",
+    "path": "c:\\Users\\Hardy\\ai-projects\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Rear-Driver-Side_Dark_Door-Window-Glass\\gen_quality_1779523885.png",
     "status": "ok"
   },
   "detail": {
     "label": "细节图",
-    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Rear-Driver-Side_Dark_Door-Window-Glass\\gen_quality_1779523939.png",
+    "path": "c:\\Users\\Hardy\\ai-projects\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Rear-Driver-Side_Dark_Door-Window-Glass\\gen_quality_1779523939.png",
     "status": "ok"
   },
   "angle": {
     "label": "多视角图",
-    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Rear-Driver-Side_Dark_Door-Window-Glass\\gen_quality_1779524004.png",
+    "path": "c:\\Users\\Hardy\\ai-projects\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Rear-Driver-Side_Dark_Door-Window-Glass\\gen_quality_1779524004.png",
     "status": "ok"
   },
   "install": {
     "label": "安装效果图",
-    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Rear-Driver-Side_Dark_Door-Window-Glass\\gen_quality_1779524084.png",
+    "path": "c:\\Users\\Hardy\\ai-projects\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Rear-Driver-Side_Dark_Door-Window-Glass\\gen_quality_1779524084.png",
     "status": "ok"
   },
   "kit": {
     "label": "套装展示图",
-    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Rear-Driver-Side_Dark_Door-Window-Glass\\gen_quality_1779524140.png",
+    "path": "c:\\Users\\Hardy\\ai-projects\\产品卖点主图和信息生成\\Ford-F-150_2015-2022_Rear-Driver-Side_Dark_Door-Window-Glass\\gen_quality_1779524140.png",
     "status": "ok"
   }
 }

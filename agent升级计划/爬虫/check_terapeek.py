@@ -8,7 +8,7 @@ if sys.platform == 'win32':
 from playwright.async_api import async_playwright
 
 PROXY = "http://127.0.0.1:7897"
-USER_DATA = Path(r"C:\Users\Administrator\Desktop\AI项目\agent升级计划\browser_profile")
+USER_DATA = Path(r"c:\Users\Hardy\ai-projects\agent升级计划\browser_profile")
 
 
 async def check():
@@ -96,7 +96,7 @@ async def check():
 
             # Save page
             html = await page.content()
-            html_path = Path(r"C:\Users\Administrator\Desktop\AI项目\agent升级计划\爬虫\terapeek_page.html")
+            html_path = Path(r"c:\Users\Hardy\ai-projects\agent升级计划\爬虫\terapeek_page.html")
             html_path.write_text(html[:200000], encoding='utf-8')
             print(f"  Saved to {html_path}")
 

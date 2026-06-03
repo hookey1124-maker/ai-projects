@@ -6,7 +6,7 @@ from openpyxl.styles import Font, PatternFill, Alignment, Border, Side, numbers
 from openpyxl.utils import get_column_letter
 
 # ── 加载数据 ──
-with open(r'C:\Users\Administrator\Desktop\三部周报v1\New project 2-新品板块已放入\src\modules\newProductStatus\corrected_data.json', 'r', encoding='utf-8') as f:
+with open(r'c:\Users\Hardy\ai-projects\三部周报v1\New project 2-新品板块已放入\src\modules\newProductStatus\corrected_data.json', 'r', encoding='utf-8') as f:
     D = json.load(f)
 
 wb = Workbook()
@@ -570,7 +570,7 @@ auto_width(ws12, len(tm_headers))
 # ================================================================
 # 保存
 # ================================================================
-output_path = r'C:\Users\Administrator\Desktop\三部周报v1\新品周报_4.30-5.6.xlsx'
+output_path = r'c:\Users\Hardy\ai-projects\三部周报v1\新品周报_4.30-5.6.xlsx'
 wb.save(output_path)
 print(f'XLSX 已保存: {output_path}')
 print(f'Sheet 数量: {len(wb.sheetnames)}')

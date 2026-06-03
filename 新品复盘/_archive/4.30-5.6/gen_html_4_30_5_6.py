@@ -3,7 +3,7 @@
 """
 import json, datetime
 
-with open(r'C:\Users\Administrator\Desktop\新品复盘\report_data_4_30_5_6.json', 'r', encoding='utf-8') as f:
+with open(r'c:\Users\Hardy\ai-projects\新品复盘\report_data_4_30_5_6.json', 'r', encoding='utf-8') as f:
     D = json.load(f)
 
 P = D['periods']
@@ -758,7 +758,7 @@ function showSection(name, el) {{
 </body>
 </html>'''
 
-output_path = r'C:\Users\Administrator\Desktop\新品复盘\新品周报_4.30-5.6.html'
+output_path = r'c:\Users\Hardy\ai-projects\新品复盘\新品周报_4.30-5.6.html'
 with open(output_path, 'w', encoding='utf-8') as f:
     f.write(html)
 print(f'HTML report generated: {output_path}')

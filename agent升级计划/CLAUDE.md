@@ -250,7 +250,7 @@ python 生图/batch_image_gen.py <mother_dir> [--prompts-file <path>]
 ## eBay Listing 规则
 
 - eBay 产品 ID 从 URL 提取，如 `https://www.ebay.com/itm/XXX/304052751324` → ID 为 `304052751324`
-- **所有输出文件按 SKU 命名目录归档**：`C:\Users\Administrator\Desktop\AI项目\产品卖点主图和信息生成\{Make}-{Model}_{Year-Range}_{Position}_{Finish}_{Product-Type}\`
+- **所有输出文件按 SKU 命名目录归档**：`c:\Users\Hardy\ai-projects\产品卖点主图和信息生成\{Make}-{Model}_{Year-Range}_{Position}_{Finish}_{Product-Type}\`
 - 每个产品目录结构：
   ```
   ├── 锚定产品xlsx/       # 锚定商品独立xlsx（6 Sheet）
@@ -374,7 +374,7 @@ python 生图/batch_image_gen.py <mother_dir> [--prompts-file <path>]
 
 **启动独立 mihomo：**
 ```bash
-"C:\Program Files\Clash Verge\verge-mihomo.exe" -f "C:\Users\Administrator\Desktop\AI项目\agent升级计划\VPN\mihomo_scraper.yaml"
+"C:\Program Files\Clash Verge\verge-mihomo.exe" -f "c:\Users\Hardy\ai-projects\agent升级计划\VPN\mihomo_scraper.yaml"
 ```
 
 **自动节点轮换：** `VPN/clash_rotator.py` 通过 REST API（`PUT /proxies/{group}`）切换 `🔰 选择节点` 组内的 47 个节点。美国节点 2x 权重优先。

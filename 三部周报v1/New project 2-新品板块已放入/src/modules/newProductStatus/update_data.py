@@ -2,11 +2,11 @@ import json
 import re
 
 # 读取 corrected_data.json
-with open(r'C:\Users\Administrator\Desktop\三部周报v1\New project 2\src\modules\newProductStatus\corrected_data.json', 'r', encoding='utf-8') as f:
+with open(r'c:\Users\Hardy\ai-projects\三部周报v1\New project 2\src\modules\newProductStatus\corrected_data.json', 'r', encoding='utf-8') as f:
     data = json.load(f)
 
 # 读取 NewProductStatusPage.tsx
-with open(r'C:\Users\Administrator\Desktop\三部周报v1\New project 2\src\modules\newProductStatus\NewProductStatusPage.tsx', 'r', encoding='utf-8') as f:
+with open(r'c:\Users\Hardy\ai-projects\三部周报v1\New project 2\src\modules\newProductStatus\NewProductStatusPage.tsx', 'r', encoding='utf-8') as f:
     content = f.read()
 
 # 1. 更新四三累计数据（从10条更新为109条）
@@ -156,7 +156,7 @@ plp_total_replacement = f'''const plpTotal = {{
 content = re.sub(plp_total_pattern, plp_total_replacement, content, flags=re.DOTALL)
 
 # 保存更新后的文件
-with open(r'C:\Users\Administrator\Desktop\三部周报v1\New project 2\src\modules\newProductStatus\NewProductStatusPage.tsx', 'w', encoding='utf-8') as f:
+with open(r'c:\Users\Hardy\ai-projects\三部周报v1\New project 2\src\modules\newProductStatus\NewProductStatusPage.tsx', 'w', encoding='utf-8') as f:
     f.write(content)
 
 print("NewProductStatusPage.tsx 已更新")

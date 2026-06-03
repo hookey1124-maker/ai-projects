@@ -2,8 +2,8 @@ import pandas as pd
 import json
 
 # 读取所有数据
-file1 = r'C:\Users\Administrator\Desktop\三部周报v1\新品周报全流程\新品检查周源数据和PLP数据.xlsx'
-file3 = r'C:\Users\Administrator\Desktop\三部周报v1\新品周报全流程\新品周报数据_4.30-5.6.xlsx'
+file1 = r'c:\Users\Hardy\ai-projects\三部周报v1\新品周报全流程\新品检查周源数据和PLP数据.xlsx'
+file3 = r'c:\Users\Hardy\ai-projects\三部周报v1\新品周报全流程\新品周报数据_4.30-5.6.xlsx'
 
 # ========== 1. 四三累计数据（109条）==========
 df_cum43 = pd.read_excel(file1, sheet_name='四三数据累计')
@@ -244,7 +244,7 @@ output = {
     "unsoldNoCompetitor": unsold_no_competitor
 }
 
-with open(r'C:\Users\Administrator\Desktop\三部周报v1\New project 2\src\modules\newProductStatus\corrected_data.json', 'w', encoding='utf-8') as f:
+with open(r'c:\Users\Hardy\ai-projects\三部周报v1\New project 2\src\modules\newProductStatus\corrected_data.json', 'w', encoding='utf-8') as f:
     json.dump(output, f, ensure_ascii=False, indent=2)
 
 print("所有数据已保存到 corrected_data.json")

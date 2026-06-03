@@ -7,8 +7,8 @@ from datetime import date, datetime
 from collections import defaultdict, Counter
 
 # ===== Config =====
-SOURCE_FILE = 'C:/Users/Administrator/Desktop/新品复盘/周报/新品检查周源数据和PLP数据.xlsx'
-OUTPUT_FILE = 'C:/Users/Administrator/Desktop/新品复盘/新品周报_5.7-5.13_可视化.html'
+SOURCE_FILE = 'c:/Users/Hardy/ai-projects/新品复盘/周报/新品检查周源数据和PLP数据.xlsx'
+OUTPUT_FILE = 'c:/Users/Hardy/ai-projects/新品复盘/新品周报_5.7-5.13_可视化.html'
 
 C = {
     'sale_no': 0, 'sku': 1, 'list_date': 2, 'first_order': 3,
@@ -760,7 +760,7 @@ assert len(data_blocks) == 21, f"Expected 21 data blocks, got {len(data_blocks)}
 print(f"All 21 data blocks built successfully.")
 
 # Save intermediate JSON (useful for debugging)
-json_path = 'C:/Users/Administrator/Desktop/新品复盘/sheets_5_7_5_13.json'
+json_path = 'c:/Users/Hardy/ai-projects/新品复盘/sheets_5_7_5_13.json'
 with open(json_path, 'w', encoding='utf-8') as f:
     json.dump(data_blocks, f, ensure_ascii=False, default=str)
 print(f"JSON saved to {json_path}")

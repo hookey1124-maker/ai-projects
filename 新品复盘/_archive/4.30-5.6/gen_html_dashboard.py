@@ -6,8 +6,8 @@
 """
 import json, datetime
 
-JSON = r"C:/Users/Administrator/Desktop/新品复盘/sheets_506.json"
-DST  = r"C:/Users/Administrator/Desktop/新品复盘/新品周报_4.30-5.6_看板.html"
+JSON = r"c:/Users/Hardy/ai-projects/新品复盘/sheets_506.json"
+DST  = r"c:/Users/Hardy/ai-projects/新品复盘/新品周报_4.30-5.6_看板.html"
 
 with open(JSON, encoding='utf-8') as f:
     sheets = json.load(f)

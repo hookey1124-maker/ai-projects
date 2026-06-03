@@ -1,32 +1,32 @@
 {
   "main": {
     "label": "主图-白底",
-    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Chevy-Colorado_2004-2012_Door-Handle\\gen_main_fast_1779516359.png",
+    "path": "c:\\Users\\Hardy\\ai-projects\\产品卖点主图和信息生成\\Chevy-Colorado_2004-2012_Door-Handle\\gen_main_fast_1779516359.png",
     "status": "ok"
   },
   "scene": {
     "label": "场景图",
-    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Chevy-Colorado_2004-2012_Door-Handle\\gen_main_fast_1779516380.png",
+    "path": "c:\\Users\\Hardy\\ai-projects\\产品卖点主图和信息生成\\Chevy-Colorado_2004-2012_Door-Handle\\gen_main_fast_1779516380.png",
     "status": "ok"
   },
   "detail": {
     "label": "细节图",
-    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Chevy-Colorado_2004-2012_Door-Handle\\gen_main_fast_1779516404.png",
+    "path": "c:\\Users\\Hardy\\ai-projects\\产品卖点主图和信息生成\\Chevy-Colorado_2004-2012_Door-Handle\\gen_main_fast_1779516404.png",
     "status": "ok"
   },
   "angle": {
     "label": "多视角图",
-    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Chevy-Colorado_2004-2012_Door-Handle\\gen_main_fast_1779516429.png",
+    "path": "c:\\Users\\Hardy\\ai-projects\\产品卖点主图和信息生成\\Chevy-Colorado_2004-2012_Door-Handle\\gen_main_fast_1779516429.png",
     "status": "ok"
   },
   "install": {
     "label": "安装效果图",
-    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Chevy-Colorado_2004-2012_Door-Handle\\gen_main_fast_1779516448.png",
+    "path": "c:\\Users\\Hardy\\ai-projects\\产品卖点主图和信息生成\\Chevy-Colorado_2004-2012_Door-Handle\\gen_main_fast_1779516448.png",
     "status": "ok"
   },
   "kit": {
     "label": "套装展示图",
-    "path": "C:\\Users\\Administrator\\Desktop\\AI项目\\产品卖点主图和信息生成\\Chevy-Colorado_2004-2012_Door-Handle\\gen_main_fast_1779516470.png",
+    "path": "c:\\Users\\Hardy\\ai-projects\\产品卖点主图和信息生成\\Chevy-Colorado_2004-2012_Door-Handle\\gen_main_fast_1779516470.png",
     "status": "ok"
   }
 }

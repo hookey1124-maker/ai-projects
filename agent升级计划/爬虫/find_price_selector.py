@@ -6,7 +6,7 @@ from playwright.async_api import async_playwright
 from pathlib import Path
 
 PROXY = "http://127.0.0.1:7897"
-USER_DATA = Path(r"C:\Users\Administrator\Desktop\AI项目\agent升级计划\browser_profile")
+USER_DATA = Path(r"c:\Users\Hardy\ai-projects\agent升级计划\browser_profile")
 
 async def find_price():
     async with async_playwright() as p:

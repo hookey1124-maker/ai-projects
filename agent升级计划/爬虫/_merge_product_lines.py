@@ -3,7 +3,7 @@ import json
 import shutil
 from pathlib import Path
 
-BASE = Path(r"C:\Users\Administrator\Desktop\AI项目\产品卖点主图和信息生成")
+BASE = Path(r"c:\Users\Hardy\ai-projects\产品卖点主图和信息生成")
 
 # 品线定义: (保留目录, [碎片目录列表])
 MERGES = [

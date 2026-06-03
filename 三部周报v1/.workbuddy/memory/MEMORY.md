@@ -2,7 +2,7 @@
 
 ## 项目概览
 
-**项目路径**：`C:\Users\Administrator\Desktop\三部周报v1\New project 2`
+**项目路径**：`c:\Users\Hardy\ai-projects\三部周报v1\New project 2`
 **技术栈**：Vite + React + TypeScript + xlsx + Recharts
 
 **项目定性**：多模块周报自动生成看板，支持上传 Excel 解析真实业务数据。

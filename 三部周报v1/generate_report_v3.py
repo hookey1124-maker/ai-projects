@@ -7,8 +7,8 @@
 import json
 import os
 
-JSON_PATH = r"C:/Users/Administrator/Desktop/三部周报v1/New project 2-新品板块已放入/src/modules/newProductStatus/corrected_data.json"
-OUTPUT_PATH = r"C:/Users/Administrator/Desktop/三部周报v1/新品周报-单模块/新品板块_4.30-5.6_v3.html"
+JSON_PATH = r"c:/Users/Hardy/ai-projects/三部周报v1/New project 2-新品板块已放入/src/modules/newProductStatus/corrected_data.json"
+OUTPUT_PATH = r"c:/Users/Hardy/ai-projects/三部周报v1/新品周报-单模块/新品板块_4.30-5.6_v3.html"
 
 DATA_KEYS = [
     "cum43Data", "cum43Stats", "lowShareData", "expandTypeData", "timelinessData",

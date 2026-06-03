@@ -7,8 +7,8 @@ from collections import defaultdict, Counter
 from datetime import date, datetime
 
 # ===== 配置 =====
-WORKDIR = 'C:/Users/Administrator/Desktop/新品复盘/'
-SOURCE_FILE = 'C:/Users/Administrator/Desktop/三部周报v1/周报/新品检查周源数据和PLP数据.xlsx'
+WORKDIR = 'c:/Users/Hardy/ai-projects/新品复盘/'
+SOURCE_FILE = 'c:/Users/Hardy/ai-projects/三部周报v1/周报/新品检查周源数据和PLP数据.xlsx'
 OUTPUT_FILE = WORKDIR + '新品周报数据_4.30-5.6_含ACOAS.xlsx'
 
 # 列索引（基于四三数据累计 sheet）

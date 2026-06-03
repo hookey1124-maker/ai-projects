@@ -28,7 +28,7 @@ except ImportError:
 
 # ── 配置 ─────────────────────────────────────────────
 PROXY = "http://127.0.0.1:7897"
-BROWSER_PROFILE = Path(r"C:\Users\Administrator\Desktop\AI项目\agent升级计划\browser_profile")
+BROWSER_PROFILE = Path(r"c:\Users\Hardy\ai-projects\agent升级计划\browser_profile")
 
 
 # ═══════════════════════════════════════════════════════════

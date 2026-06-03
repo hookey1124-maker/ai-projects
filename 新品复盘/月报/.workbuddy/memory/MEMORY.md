@@ -1,9 +1,9 @@
 # MEMORY.md - 新品月报项目
 
 ## 项目概述
-- 用户在 `C:\Users\Administrator\Desktop\新品复盘\月报\` 目录下处理新品月报数据
+- 用户在 `c:\Users\Hardy\ai-projects\新品复盘\月报\` 目录下处理新品月报数据
 - 关键文件：`新品月报数据.xlsx`（156个SKU）、`process_data.py`（数据处理脚本）
-- 参考格式：`C:\Users\Administrator\Desktop\新品复盘\新品数据处理报告_3.19-3.25.html`
+- 参考格式：`c:\Users\Hardy\ai-projects\新品复盘\新品数据处理报告_3.19-3.25.html`
 
 ## 数据记录规则（重要）
 - **按月上架新品分别统计**，不做1-3月累计

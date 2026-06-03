@@ -1,6 +1,6 @@
 import re
 
-with open(r'C:\Users\Administrator\Desktop\三部周报v1\必看.rtf', 'r', encoding='latin-1') as f:
+with open(r'c:\Users\Hardy\ai-projects\三部周报v1\必看.rtf', 'r', encoding='latin-1') as f:
     content = f.read()
 
 all_chars = []

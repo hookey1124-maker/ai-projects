@@ -6,7 +6,7 @@ import json
 import datetime
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 
-with open(r'C:\Users\Administrator\Desktop\新品复盘\report_data_4_30_5_6.json', 'r', encoding='utf-8') as f:
+with open(r'c:\Users\Hardy\ai-projects\新品复盘\report_data_4_30_5_6.json', 'r', encoding='utf-8') as f:
     D = json.load(f)
 
 P = D['periods']
@@ -340,6 +340,6 @@ for ci, w in enumerate([10, 22, 14, 10, 12, 12, 10, 12, 12, 12, 10, 14, 14], 1):
     ws10.column_dimensions[openpyxl.utils.get_column_letter(ci)].width = w
 
 # ── 保存 ──
-path = r'C:\Users\Administrator\Desktop\新品复盘\新品周报数据表_4.30-5.6.xlsx'
+path = r'c:\Users\Hardy\ai-projects\新品复盘\新品周报数据表_4.30-5.6.xlsx'
 wb.save(path)
 print(f'XLSX saved: {path}')
