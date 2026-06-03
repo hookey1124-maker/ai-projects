@@ -34,54 +34,273 @@ export function parseNewProductStatusData(_data: any): any { return {}; }
 // ===== 原始数据导出 =====
 const CD = correctedData as Record<string, any>;
 
-/** 四三累计原始行（140条） */
+// ===== 多周期支持 =====
+export const ALL_PERIODS: Array<{label: string, index: number}> = CD.allPeriods || [];
+export const ALL_WEEK_LABELS: string[] = CD.allWeekLabels || [];
+const _NWEEKS = ALL_WEEK_LABELS.length || 4;
+
+function slice4w(arr: number[], endIdx: number): number[] {
+  if (!arr || arr.length === 0) return [0,0,0,0];
+  const start = Math.max(0, endIdx - 3);
+  const result: number[] = [];
+  for (let i = start; i <= endIdx && i < arr.length; i++) result.push(arr[i] ?? 0);
+  while (result.length < 4) result.unshift(0);
+  return result;
+}
+
+function sliceLabels(endIdx: number): string[] {
+  const start = Math.max(0, endIdx - 3);
+  return ALL_WEEK_LABELS.slice(start, endIdx + 1);
+}
+
+function toDateKey(d: string): number {
+  if (!d) return 0;
+  if (d.includes('-')) {
+    const parts = d.split('-');
+    return parseInt(parts[0]) * 10000 + parseInt(parts[1]) * 100 + parseInt(parts[2]);
+  }
+  const parts2 = d.split('.');
+  if (parts2.length === 2) {
+    return 20260000 + parseInt(parts2[0]) * 100 + parseInt(parts2[1]);
+  }
+  return 0;
+}
+
+function buildSkuRowForPeriod(sku: any, idx: number, periodEndStr?: string): any | null {
+  // 剔除在周期结束后上架的SKU
+  if (periodEndStr) {
+    const listKey = toDateKey(sku.listDate || '');
+    const endKey = toDateKey(periodEndStr);
+    if (listKey > 0 && endKey > 0 && listKey > endKey) return null;
+  }
+  return {
+    sku: sku.sku, saleNo: sku.saleNo, listDate: sku.listDate,
+    firstOrderDate: sku.firstOrderDate, analyst: sku.analyst,
+    category: sku.category, expandType: sku.expandType,
+    curSalesQty: sku.salesAll?.[idx] || 0,
+    prevSalesQty: sku.salesAll?.[idx-1] || 0,
+    curRevenue: sku.revenueAll?.[idx] || 0,
+    prevRevenue: sku.revenueAll?.[idx-1] || 0,
+    curRivalQty: sku.rivalAll?.[idx] || 0,
+    prevRivalQty: sku.rivalAll?.[idx-1] || 0,
+    curMarketShare: sku.shareAll?.[idx] || 0,
+    prevMarketShare: sku.shareAll?.[idx-1] || 0,
+    curMarketStatus: sku.mktAll?.[idx] || '',
+    cur8dStatus: sku.ord8All?.[idx] || '',
+    plpEnabled: sku.plpAll?.[idx] || 'N',
+    plgFee: (sku.plgFeeAll?.[idx] || 0) + '%',
+  };
+}
+
+function getDefaultPeriodIndex(): number {
+  return ALL_PERIODS.length > 0 ? ALL_PERIODS[ALL_PERIODS.length - 1].index : _NWEEKS - 1;
+}
+
+/** 四三累计原始行（默认最新周期，静态快照） */
 export const rawRows: any[] = CD.cum43Data || [];
 
-/** 4周标签 */
+/** 获取指定周期的四三累计行（剔除周期后上架的SKU） */
+export function getRawRows(periodEndIndex?: number): any[] {
+  const idx = periodEndIndex ?? getDefaultPeriodIndex();
+  const periodEndStr = ALL_WEEK_LABELS[idx]?.split('-').pop() || '';
+  const skuAll: any[] = CD.skuAll || [];
+  if (skuAll.length === 0) return CD.cum43Data || [];
+  return skuAll
+    .map((sku: any) => buildSkuRowForPeriod(sku, idx, periodEndStr))
+    .filter((r: any) => r !== null);
+}
+
+/** 4周标签（默认最新周期） */
 export const WEEK_LABELS: string[] = CD.weekLabels4w || ['4.30-5.6', '5.7-5.13', '5.14-5.20', '5.21-5.27'];
 
+/** 动态获取4周标签 */
+export function getWeekLabels(periodEndIndex?: number): string[] {
+  const idx = periodEndIndex ?? getDefaultPeriodIndex();
+  return ALL_WEEK_LABELS.length >= 4 ? sliceLabels(idx) : WEEK_LABELS;
+}
+
+function buildUnsoldDetail(rows: any[], analysts: string[], categories: string[]) {
+  const mktReasons = ['竞争无优势', '站内无价格优势'];
+  const noMktReasons = ['无市场', '站外出单'];
+  const unsold = rows.filter((r: any) => r.cur8dStatus !== 'Y' && r.cur8dStatus !== 'N');
+  const byAn: any[] = [];
+  const byCat: any[] = [];
+  analysts.forEach(an => {
+    const anRows = unsold.filter((r: any) => r.analyst === an);
+    if (anRows.length === 0) return;
+    const entry: any = { analyst: an, total: anRows.length };
+    mktReasons.forEach(m => { entry[m] = anRows.filter((r: any) => r.curMarketStatus === m).length; });
+    noMktReasons.forEach(m => { entry[m] = anRows.filter((r: any) => r.curMarketStatus === m).length; });
+    byAn.push(entry);
+  });
+  categories.forEach(cat => {
+    const catRows = unsold.filter((r: any) => r.category === cat);
+    if (catRows.length === 0) return;
+    const entry: any = { category: cat, total: catRows.length };
+    mktReasons.forEach(m => { entry[m] = catRows.filter((r: any) => r.curMarketStatus === m).length; });
+    noMktReasons.forEach(m => { entry[m] = catRows.filter((r: any) => r.curMarketStatus === m).length; });
+    byCat.push(entry);
+  });
+  return { total: unsold.length, prevTotal: 0, change: 0, byAnalyst: byAn, byCategory: byCat };
+}
+
 // ===== 数据访问器 =====
-export function getData() {
+export function getData(periodEndIndex?: number) {
+  const idx = periodEndIndex ?? getDefaultPeriodIndex();
+  const skuAll: any[] = CD.skuAll || [];
+
+  // 为选定周期重建 cum43Data（剔除周期后上架的SKU）
+  const periodEndStr = ALL_WEEK_LABELS[idx]?.split('-').pop() || '';
+  const cum43Data = skuAll.length > 0
+    ? skuAll.map((sku: any) => buildSkuRowForPeriod(sku, idx, periodEndStr)).filter((r: any) => r !== null)
+    : (CD.cum43Data || []);
+
+  // 重建 cum43Stats
+  const totalSku = cum43Data.length;
+  const yCount = cum43Data.filter((r: any) => r.cur8dStatus === 'Y').length;
+  const nCount = cum43Data.filter((r: any) => r.cur8dStatus === 'N').length;
+  const hasRivalRows = cum43Data.filter((r: any) => r.curRivalQty > 0);
+  const noRivalRows = cum43Data.filter((r: any) => r.curRivalQty === 0);
+  const normalCount = cum43Data.filter((r: any) => r.curMarketStatus === '正常').length;
+  const competitiveCount = cum43Data.filter((r: any) => r.curMarketStatus === '竞争无优势').length;
+  const noMarketCount = cum43Data.filter((r: any) => r.curMarketStatus === '无市场').length;
+  const stationOutCount = cum43Data.filter((r: any) => r.curMarketStatus === '站外出单').length;
+  const noRivalSold = noRivalRows.filter((r: any) => r.cur8dStatus === 'Y' || r.cur8dStatus === 'N').length;
+  const totalSalesW = cum43Data.reduce((s: number, r: any) => s + r.curSalesQty, 0);
+  const totalRivalW = cum43Data.reduce((s: number, r: any) => s + r.curRivalQty, 0);
+  const totalShareW = (totalSalesW + totalRivalW) > 0 ? Math.round(totalSalesW / (totalSalesW + totalRivalW) * 1000) / 10 : 0;
+
+  // Previous week (idx-1)
+  const prevIdx = Math.max(0, idx - 1);
+  const prevRows = skuAll.length > 0
+    ? skuAll.map((sku: any) => buildSkuRowForPeriod(sku, prevIdx))
+    : [];
+  const prevTotalSalesW = prevRows.reduce((s: number, r: any) => s + r.curSalesQty, 0);
+  const prevTotalRevW = prevRows.reduce((s: number, r: any) => s + r.curRevenue, 0);
+  const prevTotalRivalW = prevRows.reduce((s: number, r: any) => s + r.curRivalQty, 0);
+  const prevTotalShareW = (prevTotalSalesW + prevTotalRivalW) > 0 ? Math.round(prevTotalSalesW / (prevTotalSalesW + prevTotalRivalW) * 1000) / 10 : 0;
+
+  const cum43Stats = {
+    total: totalSku, yCount, nCount, unCount: totalSku - yCount - nCount,
+    noRivalSold, noRivalUnsold: noRivalRows.length - noRivalSold,
+    normalCount, competitiveCount, noMarketCount, stationOutCount,
+    hasRivalCount: hasRivalRows.length, noRivalCount: noRivalRows.length,
+    totalMarketShare: totalShareW, totalMarketSharePrev: prevTotalShareW,
+    sales4w: [totalSalesW, prevTotalSalesW, 0, 0],
+    revenue4w: [cum43Data.reduce((s: number, r: any) => s + r.curRevenue, 0), prevTotalRevW, 0, 0],
+  };
+
+  // 4周切片
+  const totalSalesAll: number[] = CD.totalSalesAll || [];
+  const totalRevAll: number[] = CD.totalRevAll || [];
+  const totalShareAll: number[] = CD.totalShareAll || [];
+
+  // Compute SKU counts per category/analyst for this period
+  const periodStartStr = ALL_WEEK_LABELS[idx]?.split('-')[0] || '';
+  const skuByCat: Record<string, any[]> = {};
+  const skuByAn: Record<string, any[]> = {};
+  skuAll.forEach((sku: any) => {
+    const cat = sku.category || '未分类';
+    const an = sku.analyst || '未知';
+    if (!skuByCat[cat]) skuByCat[cat] = [];
+    if (!skuByAn[an]) skuByAn[an] = [];
+    skuByCat[cat].push(sku);
+    skuByAn[an].push(sku);
+  });
+  function countActiveSku(list: any[], weekEnd: string): number {
+    if (!weekEnd) return list.length;
+    const weKey = toDateKey(weekEnd);
+    return list.filter(s => {
+      const ldKey = toDateKey(s.listDate || '');
+      if (!ldKey) return true; // No date = always active
+      return ldKey <= weKey;
+    }).length;
+  }
+  function countNewSku(list: any[], weekStart: string, weekEnd: string): number {
+    if (!weekStart || !weekEnd) return 0;
+    const wsKey = toDateKey(weekStart);
+    const weKey = toDateKey(weekEnd);
+    return list.filter(s => {
+      const ldKey = toDateKey(s.listDate || '');
+      if (!ldKey) return false;
+      return ldKey >= wsKey && ldKey <= weKey;
+    }).length;
+  }
+
+  // Category 4w
+  const catSalesAll: any[] = CD.catSalesAll || [];
+  const catSales4w = catSalesAll.map((c: any) => {
+    const skuList = skuByCat[c.category] || [];
+    return {
+      category: c.category,
+      curSku: countActiveSku(skuList, periodEndStr),
+      curNewSku: countNewSku(skuList, periodStartStr, periodEndStr),
+      curSalesQty: c.sales?.[idx] || 0, prevSalesQty: c.sales?.[idx-1] || 0,
+      curRevenue: c.revenue?.[idx] || 0, prevRevenue: c.revenue?.[idx-1] || 0,
+      curHasCompetitor: skuList.filter((s: any) => (s.rivalAll?.[idx] || 0) > 0).length,
+      curMarketShare: c.share?.[idx] || 0, prevMarketShare: c.share?.[idx-1] || 0,
+      sales4w: slice4w(c.sales || [], idx),
+      revenue4w: slice4w(c.revenue || [], idx),
+      share4w: slice4w(c.share || [], idx),
+    };
+  });
+
+  // Analyst 4w
+  const anSalesAll: any[] = CD.anSalesAll || [];
+  const anSales4w = anSalesAll.map((a: any) => {
+    const skuList = skuByAn[a.analyst] || [];
+    return {
+      analyst: a.analyst,
+      curSku: countActiveSku(skuList, periodEndStr),
+      curNewSku: countNewSku(skuList, periodStartStr, periodEndStr),
+      curSalesQty: a.sales?.[idx] || 0, prevSalesQty: a.sales?.[idx-1] || 0,
+      curRevenue: a.revenue?.[idx] || 0, prevRevenue: a.revenue?.[idx-1] || 0,
+      curHasCompetitor: skuList.filter((s: any) => (s.rivalAll?.[idx] || 0) > 0).length,
+      curMarketShare: a.share?.[idx] || 0, prevMarketShare: a.share?.[idx-1] || 0,
+      sales4w: slice4w(a.sales || [], idx),
+      revenue4w: slice4w(a.revenue || [], idx),
+      share4w: slice4w(a.share || [], idx),
+    };
+  });
+
   return {
-    // 总体统计
-    cum43Stats: CD.cum43Stats || {},
-    prevWeekKpi: CD.prevWeekKpi || {},
-
-    // 维度数据
-    categoryRevenueData: CD.categoryRevenueData || [],
-    analystRevenueData: CD.analystRevenueData || [],
+    cum43Stats,
+    prevWeekKpi: {
+      prevTotalSku: totalSku,
+      prevTotalSalesQty: prevTotalSalesW,
+      prevTotalRevenue: Math.round(prevTotalRevW * 100) / 100,
+      deptRatio: CD.prevWeekKpi?.deptRatio || '--',
+      deptTotalRevenue: CD.deptTotalRevenue || 0,
+    },
+    categoryRevenueData: catSales4w,
+    analystRevenueData: anSales4w,
     expandTypeData: CD.expandTypeData || [],
-
-    // 4周趋势
-    totalSales4w: CD.totalSales4w || [0, 0, 0, 0],
-    totalRev4w: CD.totalRev4w || [0, 0, 0, 0],
-    totalShare4w: CD.totalShare4w || [0, 0, 0, 0],
-    catSales4w: CD.catSales4w || [],
-    catRev4w: CD.catRev4w || [],
-    catShare4w: CD.catShare4w || [],
-    anSales4w: CD.anSales4w || [],
-    anRev4w: CD.anRev4w || [],
-    anShare4w: CD.anShare4w || [],
-
-    // 及时率
+    totalSales4w: slice4w(totalSalesAll, idx),
+    totalRev4w: slice4w(totalRevAll, idx),
+    totalShare4w: slice4w(totalShareAll, idx),
+    catSales4w,
+    catRev4w: catSales4w,
+    catShare4w: catSales4w,
+    anSales4w,
+    anRev4w: anSales4w,
+    anShare4w: anSales4w,
     timelinessData: CD.timelinessData || { analysts: [], total: {} },
     timeliness4w: CD.timeliness4w || { labels: [], analysts: [], totalRates: [] },
-
-    // 低占比
-    lowShareData: CD.lowShareData || [],
-    lsAdKeys: CD.lsAdKeys || {},
-    lsOpKeys: CD.lsOpKeys || {},
-
-    // 市场分布
-    mktDistOverall: CD.mktDistOverall || { curTotal: 0, prevTotal: 0, distribution: [] },
+    lowShareData: cum43Data.filter((r: any) => r.curMarketShare < 75 && r.curRivalQty > 0),
+    mktDistOverall: {
+      curTotal: totalSku, prevTotal: totalSku,
+      distribution: ['正常','竞争无优势','无市场','站外出单'].map(st => ({
+        status: st, curCount: cum43Data.filter((r: any) => r.curMarketStatus === st).length,
+        prevCount: 0, curPct: 0, prevPct: 0, change: 0,
+      })),
+    },
     priceOverview: CD.priceOverview || { avgPrice: 0, medianPrice: 0, distribution: [], byAnalyst: {}, byCategory: {} },
     shareTierOverview: CD.shareTierOverview || { tiers: [], byCategory: [] },
+    hasCompetitorUnsold: buildUnsoldDetail(hasRivalRows, AD_ANALYSTS, AD_CATEGORIES),
+    unsoldNoCompetitor: buildUnsoldDetail(noRivalRows, AD_ANALYSTS, AD_CATEGORIES),
 
-    // 未出单原因
-    hasCompetitorUnsold: CD.hasCompetitorUnsold || { total: 0, prevTotal: 0, reasons: [], byAnalyst: [], byCategory: [] },
-    unsoldNoCompetitor: CD.unsoldNoCompetitor || { total: 0, prevTotal: 0, reasons: [], byAnalyst: [], byCategory: [] },
-
-    // PLP广告
+    lsAdKeys: CD.lsAdKeys || {},
+    lsOpKeys: CD.lsOpKeys || {},
     plpTotal: CD.plpTotal || {},
     plpPrevTotal: CD.plpPrevTotal || {},
     plpAnalysts: CD.plpAnalysts || [],
@@ -89,8 +308,6 @@ export function getData() {
     plpExpandTypes: CD.plpExpandTypes || [],
     plpSummaryData: CD.plpSummaryData || [],
     plpDetailData: CD.plpDetailData || [],
-
-    // PLP 4周
     plp4wLabels: CD.plp4wLabels || [],
     plp4wCost: CD.plp4wCost || [0, 0, 0, 0],
     plp4wAdRev: CD.plp4wAdRev || [0, 0, 0, 0],
@@ -100,22 +317,22 @@ export function getData() {
     plpAn4w: CD.plpAn4w || [],
     plpCat4w: CD.plpCat4w || [],
     plpExp4w: CD.plpExp4w || [],
-
-    // PLG
     plgRecords: CD.plgRecords || [],
     plgStats: CD.plgStats || {},
     plgAn4w: CD.plgAn4w || [],
-
-    // 四三累计4周
     cum43_4w: CD.cum43_4w || {},
+    deptTotalSales: CD.deptTotalSales || 0,
+    deptTotalRevenue: CD.deptTotalRevenue || 0,
+    pwShare: CD.pwShare || 0,
+    pwTotalLinks: CD.pwTotalLinks || 0,
   };
 }
 
 // ===== 派生计算 =====
 
 /** 解析总盘概览 KPI */
-export function getOverviewKpi() {
-  const d = getData();
+export function getOverviewKpi(periodEndIndex?: number) {
+  const d = getData(periodEndIndex);
   const stats = d.cum43Stats;
   const prev = d.prevWeekKpi;
   const totalSku = stats.total || rawRows.length;
@@ -157,12 +374,50 @@ export function getOverviewKpi() {
     soldRate,
     timeliness,
     lowShareCount,
+    totalMarketShare: stats.totalMarketShare || 0,
+    totalMarketSharePrev: stats.totalMarketSharePrev || 0,
+  };
+}
+
+/** 部门对比 + PW爬虫市占 KPI */
+export function getDeptKpi(periodEndIndex?: number) {
+  const d = getData(periodEndIndex);
+  const rows = getRawRows(periodEndIndex);
+  const stats = d.cum43Stats;
+  const totalRevenue = stats.revenue4w?.[0] || 0;
+  const totalSales = stats.sales4w?.[0] || 0;
+  const deptTotalSales = d.deptTotalSales || 0;
+  const deptTotalRev = d.deptTotalRevenue || 0;
+  const salesPct = deptTotalSales > 0 ? (totalSales / deptTotalSales * 100).toFixed(1) : '--';
+  const revPct = deptTotalRev > 0 ? (totalRevenue / deptTotalRev * 100).toFixed(1) : '--';
+
+  // 新品加权市占：只算有对手的SKU（按选定周期）
+  const skuWR = rows.filter((r: any) => (r.curRivalQty || 0) > 0);
+  const newSalesW = skuWR.reduce((s: number, r: any) => s + (r.curSalesQty || 0), 0);
+  const rivalSalesW = skuWR.reduce((s: number, r: any) => s + (r.curRivalQty || 0), 0);
+  const newShareW = (newSalesW + rivalSalesW) > 0 ? Math.round(newSalesW / (newSalesW + rivalSalesW) * 1000) / 10 : 0;
+
+  const pwShare = d.pwShare || 0;
+  const diffShare = Math.abs(pwShare - newShareW).toFixed(1);
+
+  return {
+    salesPct,
+    revPct,
+    newSales: totalSales,
+    deptSales: deptTotalSales,
+    newRevenue: totalRevenue,
+    deptRevenue: deptTotalRev,
+    pwShare,
+    pwTotalLinks: d.pwTotalLinks || 0,
+    newShareW,
+    newSkuCount: skuWR.length,
+    diffShare,
   };
 }
 
 /** 品类维度数据（含4周） */
-export function getCategoryMetrics() {
-  const d = getData();
+export function getCategoryMetrics(periodEndIndex?: number) {
+  const d = getData(periodEndIndex);
   return d.categoryRevenueData.map((c: any) => ({
     category: c.category,
     curSku: c.curSku || 0,
@@ -181,8 +436,8 @@ export function getCategoryMetrics() {
 }
 
 /** 分析人维度数据（含4周） */
-export function getAnalystMetrics() {
-  const d = getData();
+export function getAnalystMetrics(periodEndIndex?: number) {
+  const d = getData(periodEndIndex);
   return d.analystRevenueData.map((a: any) => ({
     analyst: a.analyst,
     curSku: a.curSku || 0,
@@ -200,8 +455,8 @@ export function getAnalystMetrics() {
 }
 
 /** 4周趋势数据（总盘） */
-export function get4wTrends() {
-  const d = getData();
+export function get4wTrends(periodEndIndex?: number) {
+  const d = getData(periodEndIndex);
   return {
     labels: WEEK_LABELS,
     totalSales: d.totalSales4w,
@@ -252,8 +507,9 @@ export function getPlgFeeTier(plgFee: number): string {
   return '高费率';
 }
 
-/** 广告构成分布数据（从 cum43Data 计算） */
-export function getAdCompData() {
+/** 广告构成分布数据（从选定周期 cum43Data 计算） */
+export function getAdCompData(periodEndIndex?: number) {
+  const rows = getRawRows(periodEndIndex);
   const comp: Record<string, number> = { 'PLP+PLG': 0, '单PLP': 0, '仅PLG': 0, '无广告': 0 };
   const tierDist: Record<string, number> = { '无广告': 0, '低费率': 0, '中费率': 0, '高费率': 0 };
   const anComp: Record<string, any> = {};
@@ -262,7 +518,7 @@ export function getAdCompData() {
   AD_ANALYSTS.forEach(a => { anComp[a] = { 'PLP+PLG':0,'单PLP':0,'仅PLG':0,'无广告':0,total:0,tierNone:0,tierLow:0,tierMid:0,tierHigh:0 }; });
   AD_CATEGORIES.forEach(c => { catComp[c] = { 'PLP+PLG':0,'单PLP':0,'仅PLG':0,'无广告':0,total:0 }; });
 
-  rawRows.forEach((r: any) => {
+  rows.forEach((r: any) => {
     const an = r.analyst || '未知';
     const cat = r.category || '未分类';
     const plpEnabled = r.plpEnabled || 'N';
@@ -290,14 +546,15 @@ export function getAdCompData() {
   };
 }
 
-/** 链接明细（PLP+PLG同开，链接维度） */
-export function getLinkDetail() {
-  const d = getData();
+/** 链接明细（PLP+PLG同开，链接维度，按选定周期） */
+export function getLinkDetail(periodEndIndex?: number) {
+  const d = getData(periodEndIndex);
+  const rows = getRawRows(periodEndIndex);
   const plpDetail = d.plpDetailData || [];
 
-  // Build SKU info lookup from cum43Data
+  // Build SKU info lookup from per-period cum43Data
   const skuMap: Record<string, any> = {};
-  rawRows.forEach((r: any) => {
+  rows.forEach((r: any) => {
     const sku = String(r.sku || '').trim();
     if (!sku) return;
     const shareStr = String(r.curMarketShare || '0').replace('%', '');

@@ -8,8 +8,8 @@ import ModulePageLayout from '../../components/common/ModulePageLayout';
 import { useModulePeriodInfo } from '../useModulePeriodInfo';
 import {
   getData, getOverviewKpi, getCategoryMetrics, getAnalystMetrics, get4wTrends,
-  rawRows, WEEK_LABELS,
-  getAdCompData, getLinkDetail, getShareTier, getHasOrder,
+  rawRows as _staticRawRows, WEEK_LABELS, ALL_PERIODS, getWeekLabels, getRawRows,
+  getAdCompData, getLinkDetail, getShareTier, getHasOrder, getDeptKpi,
 } from './newProductStatusAdapter';
 
 // ===== 常量 =====
@@ -32,12 +32,12 @@ const hbStr = (curr: number, prev: number) => {
   return `${r > 0 ? '+' : ''}${r.toFixed(1)}%`;
 };
 
-// ===== 数据加载 =====
-const allData = getData();
-
 export default function NewProductStatusPage() {
   const [activeTab, setActiveTab] = useState<TabId>('overview');
   const [drillOpen, setDrillOpen] = useState(false);
+  const defaultPeriodIdx = ALL_PERIODS.length > 0 ? ALL_PERIODS[ALL_PERIODS.length-1].index : 0;
+  const [selectedPeriodIndex, setSelectedPeriodIndex] = useState(defaultPeriodIdx);
+  const allData = useMemo(() => getData(selectedPeriodIndex), [selectedPeriodIndex]);
   const [drillData, setDrillData] = useState<{
     title: string; labels: string[]; datasets: any[]; dualY?: boolean; y2Label?: string;
   } | null>(null);
@@ -48,10 +48,13 @@ export default function NewProductStatusPage() {
   const [cum43Filter, setCum43Filter] = useState({ analyst: '', category: '', ord8: '', mktStatus: '', expandType: '', share: '', adClass: '' });
 
   // ===== 派生 =====
-  const kpi = useMemo(() => getOverviewKpi(), []);
-  const catMetrics = useMemo(() => getCategoryMetrics(), []);
-  const anMetrics = useMemo(() => getAnalystMetrics(), []);
-  const w4 = useMemo(() => get4wTrends(), []);
+  const weekLabels = useMemo(() => getWeekLabels(selectedPeriodIndex), [selectedPeriodIndex]);
+  const rawRows = useMemo(() => getRawRows(selectedPeriodIndex), [selectedPeriodIndex]);
+  const kpi = useMemo(() => getOverviewKpi(selectedPeriodIndex), [selectedPeriodIndex]);
+  const deptKpi = useMemo(() => getDeptKpi(selectedPeriodIndex), [selectedPeriodIndex]);
+  const catMetrics = useMemo(() => getCategoryMetrics(selectedPeriodIndex), [selectedPeriodIndex]);
+  const anMetrics = useMemo(() => getAnalystMetrics(selectedPeriodIndex), [selectedPeriodIndex]);
+  const w4 = useMemo(() => get4wTrends(selectedPeriodIndex), [selectedPeriodIndex]);
 
   const timeliness = allData.timelinessData;
   const timeliness4w = allData.timeliness4w;
@@ -64,8 +67,8 @@ export default function NewProductStatusPage() {
   const plgAn4w = allData.plgAn4w;
 
   // 广告构成数据（从 cum43Data 实时计算）
-  const adComp = useMemo(() => getAdCompData(), []);
-  const linkDetail = useMemo(() => getLinkDetail(), []);
+  const adComp = useMemo(() => getAdCompData(selectedPeriodIndex), [selectedPeriodIndex]);
+  const linkDetail = useMemo(() => getLinkDetail(selectedPeriodIndex), [selectedPeriodIndex]);
 
   // 链接明细筛选
   const [linkFilter, setLinkFilter] = useState({ hasOrder: '', shareTier: '' });
@@ -89,7 +92,7 @@ export default function NewProductStatusPage() {
 
   // 4周趋势数据
   const trend4wData = useMemo(() =>
-    WEEK_LABELS.map((l, i) => ({
+    weekLabels.map((l, i) => ({
       week: l,
       销量: w4.totalSales[i] || 0,
       销售额: w4.totalRev[i] || 0,
@@ -98,7 +101,7 @@ export default function NewProductStatusPage() {
 
   // 品线4周趋势（用于图表）
   const catShare4wChart = useMemo(() =>
-    WEEK_LABELS.map((l, i) => {
+    weekLabels.map((l, i) => {
       const pt: any = { week: l };
       CATEGORIES.forEach(cat => {
         const entry = w4.catShare.find((x: any) => x.category === cat);
@@ -109,7 +112,7 @@ export default function NewProductStatusPage() {
 
   // 分析人4周趋势
   const anShare4wChart = useMemo(() =>
-    WEEK_LABELS.map((l, i) => {
+    weekLabels.map((l, i) => {
       const pt: any = { week: l };
       ANALYSTS.forEach(an => {
         const entry = w4.anShare.find((x: any) => x.analyst === an);
@@ -333,13 +336,23 @@ export default function NewProductStatusPage() {
   const renderOverview = () => (
     <>
       {renderKpiGrid([
-        { label: '累计在跟SKU', value: fmtNum(kpi.totalSku), helper: `新上架 +${kpi.curNewSku}` },
+        { label: '累计在售SKU', value: fmtNum(kpi.totalSku), helper: `新上架 +${kpi.curNewSku}` },
         { label: '本周销量', value: fmtNum(kpi.totalSalesQty), helper: `环比 ${hbStr(kpi.totalSalesQty, kpi.prevTotalSalesQty)}` },
-        { label: '本周销售额', value: fmtUsd(kpi.totalRevenue), helper: `环比 ${hbStr(kpi.totalRevenue, kpi.prevTotalRevenue)}` },
+        { label: '本周销售额', value: fmtUsd(kpi.totalRevenue), helper: `上周${fmtUsd(kpi.prevTotalRevenue)} | 环比 ${hbStr(kpi.totalRevenue, kpi.prevTotalRevenue)}` },
+        { label: '新品总市占比', value: `${kpi.totalMarketShare.toFixed(1)}%`, helper: `上周${kpi.totalMarketSharePrev.toFixed(1)}% | ${kpi.totalMarketShare - kpi.totalMarketSharePrev >= 0 ? '+' : ''}${(kpi.totalMarketShare - kpi.totalMarketSharePrev).toFixed(1)}%` },
         { label: '有对手SKU', value: fmtNum(kpi.hasCompetitorSku), helper: `无对手 ${kpi.noCompetitorSku}` },
         { label: '出单率', value: fmtPct(kpi.soldRate), helper: `已出单 ${kpi.soldCount}/${kpi.hasCompetitorSku}` },
         { label: '分析及时率', value: String(kpi.timeliness?.timelyRate || '-'), helper: `超7日 ${kpi.timeliness?.noAnalysis7dCount || 0}` },
         { label: '低占比新品', value: fmtNum(kpi.lowShareCount), helper: '市占比<75%' },
+      ])}
+
+      {/* 部门对比 + PW爬虫市占 KPI */}
+      {renderKpiGrid([
+        { label: '新品销量占部门比', value: `${deptKpi.salesPct}%`, helper: `新品${fmtNum(deptKpi.newSales)} / 部门${fmtNum(deptKpi.deptSales)}` },
+        { label: '新品销售额占部门比', value: `${deptKpi.revPct}%`, helper: `新品$${fmtNum(deptKpi.newRevenue)} / 部门$${fmtNum(deptKpi.deptRevenue)}` },
+        { label: 'PW爬虫市占', value: `${deptKpi.pwShare}%`, helper: `${deptKpi.pwTotalLinks}个有对手SKU` },
+        { label: '新品加权市占', value: `${deptKpi.newShareW}%`, helper: `${deptKpi.newSkuCount}个有对手SKU` },
+        { label: '市占差值', value: `${deptKpi.diffShare}%`, helper: 'PW vs 新品（平行参考）' },
       ])}
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
@@ -915,7 +928,7 @@ export default function NewProductStatusPage() {
     return (
       <>
         {renderKpiGrid([
-          { label: '累计在跟SKU', value: fmtNum(kpi.totalSku), helper: `新上架 +${kpi.curNewSku}` },
+          { label: '累计在售SKU', value: fmtNum(kpi.totalSku), helper: `新上架 +${kpi.curNewSku}` },
           { label: '本周销量', value: fmtNum(kpi.totalSalesQty), helper: `环比 ${hbStr(kpi.totalSalesQty, kpi.prevTotalSalesQty)}` },
           { label: '本周销售额', value: fmtUsd(kpi.totalRevenue), helper: `环比 ${hbStr(kpi.totalRevenue, kpi.prevTotalRevenue)}` },
           { label: '出单率', value: fmtPct(kpi.soldRate), helper: `已出单 ${kpi.soldCount}/${kpi.hasCompetitorSku}` },
@@ -1009,6 +1022,25 @@ ${actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}`}
           </button>
         ))}
       </div>
+
+      {/* 周期选择器 */}
+      {ALL_PERIODS.length > 0 && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, background: '#f5f7ff', padding: '8px 14px', borderRadius: 8 }}>
+          <span style={{ fontSize: 13, color: '#555', whiteSpace: 'nowrap' }}>截止周:</span>
+          <select
+            value={selectedPeriodIndex}
+            onChange={e => setSelectedPeriodIndex(Number(e.target.value))}
+            style={{ padding: '6px 12px', border: '1px solid #ddd', borderRadius: 6, fontSize: 13, background: '#fff' }}
+          >
+            {ALL_PERIODS.map((p: any) => (
+              <option key={p.index} value={p.index}>{p.label}</option>
+            ))}
+          </select>
+          <span style={{ fontSize: 12, color: '#888' }}>
+            (显示 {weekLabels[0] || '--'} ~ {weekLabels[weekLabels.length-1] || '--'} 共4周)
+          </span>
+        </div>
+      )}
 
       {renderTab()}
 

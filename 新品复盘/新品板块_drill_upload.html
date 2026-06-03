@@ -186,6 +186,8 @@ body { font-family: 'Segoe UI', '微软雅黑', sans-serif; background: #f0f2f5;
       <p>数据截至 <span id="h1-date">--</span> &nbsp;|&nbsp; 三部新品 &nbsp;|&nbsp; 含PLP/PLG广告追踪 &nbsp;|&nbsp; <span id="h1-sku">--</span></p>
     </div>
     <div class="actions">
+      <select id="period-selector" style="padding:6px 12px;border:1px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.15);color:#fff;border-radius:6px;font-size:12px;cursor:pointer;margin-right:6px">
+      </select>
       <button onclick="exportXLSX()" title="导出Excel报表">&#128190; 导出Excel</button>
       <button onclick="location.reload()" title="更换数据文件">&#128194; 更换文件</button>
     </div>
@@ -343,7 +345,7 @@ var PRICE_RANGES = [
     ["$0-10", 0, 10], ["$10-20", 10, 20], ["$20-30", 20, 30],
     ["$30-50", 30, 50], ["$50-100", 50, 100], ["$100+", 100, Infinity]
 ];
-var PLP_PERIODS_4W = ['4.27-5.3', '5.4-5.10', '5.11-5.17', '5.18-5.24'];
+var PLP_PERIODS_4W = []; // 由 computeAll 中动态赋值，基于 weekLabels4w
 
 // ===== 表头列映射 =====
 // 用正则匹配表头文字，返回列索引映射表
@@ -391,70 +393,87 @@ function mapColumns(headers) {
     }
 
     // 给常用指标分配快捷列索引
-    var last = function(metric, offset) {
+    // 支持周期选择：_periodEndIndex 可滑动
+    cols._periodEndIndex = cols._dateCols['销量'] ? cols._dateCols['销量'].length - 1 : 0;
+
+    // 将 last/last4 挂在 cols 上，供 onPeriodChange 复用
+    cols._last = function(metric, offset) {
         offset = offset || 0;
-        var arr = cols._dateCols[metric];
+        var arr = this._dateCols[metric];
         if (!arr || arr.length <= offset) return -1;
-        return arr[arr.length - 1 - offset].col;
+        var idx = this._periodEndIndex - offset;
+        return (idx >= 0 && idx < arr.length) ? arr[idx].col : -1;
     };
-    var last4 = function(metric) {
-        var arr = cols._dateCols[metric];
+    cols._last4 = function(metric) {
+        var arr = this._dateCols[metric];
         if (!arr || arr.length < 4) return [];
-        return arr.slice(-4).map(function(e) { return e.col; });
+        var startIdx = Math.max(0, this._periodEndIndex - 3);
+        return arr.slice(startIdx, this._periodEndIndex + 1).map(function(e) { return e.col; });
     };
 
-    cols.salesCurr = last('销量', 0);
-    cols.salesPrev = last('销量', 1);
-    cols.revCurr = last('销售额', 0);
-    cols.revPrev = last('销售额', 1);
-    cols.rivalCurr = last('对手销量', 0);
-    cols.rivalPrev = last('对手销量', 1);
-    cols.shareCurr = last('市占比', 0);
-    cols.sharePrev = last('市占比', 1);
-    cols.ord8Curr = last('8日出单情况', 0);
-    cols.ord8Prev = last('8日出单情况', 1);
-    cols.freq7Curr = last('7日频次标签', 0);
-    cols.freq7Prev = last('7日频次标签', 1);
-    cols.nfreq7Curr = last('上架8日内新品频次标签', 0);
-    cols.nfreq7Prev = last('上架8日内新品频次标签', 1);
-    cols.mktCurr = last('市场状态', 0);
-    cols.mktPrev = last('市场状态', 1);
-    cols.opCurr = last('操作判断', 0);
-    cols.plpCurr = last('开启PLP', 0);
-    cols.plpSpend = last('PLP广告花费', 0);
-    cols.plpAdRev = last('PLP广告销售额', 0);
-    cols.plgFee = last('PLG最高费率', 0);
-    cols.plgSpend = last('PLG广告花费', 0);
-    cols.plgAdRev = last('PLG广告销售额', 0);
+    // 重建列别名的函数（也挂在 cols 上供周期切换复用）
+    cols._rebuildAliases = function() {
+        var c = this;
+        c.salesCurr = c._last('销量', 0);
+        c.salesPrev = c._last('销量', 1);
+        c.revCurr = c._last('销售额', 0);
+        c.revPrev = c._last('销售额', 1);
+        c.rivalCurr = c._last('对手销量', 0);
+        c.rivalPrev = c._last('对手销量', 1);
+        c.shareCurr = c._last('市占比', 0);
+        c.sharePrev = c._last('市占比', 1);
+        c.ord8Curr = c._last('8日出单情况', 0);
+        c.ord8Prev = c._last('8日出单情况', 1);
+        c.freq7Curr = c._last('7日频次标签', 0);
+        c.freq7Prev = c._last('7日频次标签', 1);
+        c.nfreq7Curr = c._last('上架8日内新品频次标签', 0);
+        c.nfreq7Prev = c._last('上架8日内新品频次标签', 1);
+        c.mktCurr = c._last('市场状态', 0);
+        c.mktPrev = c._last('市场状态', 1);
+        c.opCurr = c._last('操作判断', 0);
+        c.plpCurr = c._last('开启PLP', 0);
+        c.plpSpend = c._last('PLP广告花费', 0);
+        c.plpAdRev = c._last('PLP广告销售额', 0);
+        c.plgFee = c._last('PLG最高费率', 0);
+        c.plgSpend = c._last('PLG广告花费', 0);
+        c.plgAdRev = c._last('PLG广告销售额', 0);
+        c.w4Sales = c._last4('销量');
+        c.w4Revenue = c._last4('销售额');
+        c.w4Rival = c._last4('对手销量');
+        c.w4Share = c._last4('市占比');
+        c.w4Freq7 = c._last4('7日频次标签');
+        c.w4Nfreq7 = c._last4('上架8日内新品频次标签');
+    };
+    cols._rebuildAliases();
 
-    // 4周列
-    cols.w4Sales = last4('销量');
-    cols.w4Revenue = last4('销售额');
-    cols.w4Rival = last4('对手销量');
-    cols.w4Share = last4('市占比');
-    cols.w4Freq7 = last4('7日频次标签');
-    cols.w4Nfreq7 = last4('上架8日内新品频次标签');
-
-    // 生成4周标签
+    // 生成4周标签（基于 _periodEndIndex）
     var salesEntries = cols._dateCols['销量'];
     cols.weekLabels4w = [];
     if (salesEntries && salesEntries.length >= 4) {
-        var last4e = salesEntries.slice(-4);
-        for (var j = 0; j < last4e.length; j++) {
-            cols.weekLabels4w.push(last4e[j].dateStr);
+        var wStart = Math.max(0, cols._periodEndIndex - 3);
+        for (var j = wStart; j <= cols._periodEndIndex; j++) {
+            cols.weekLabels4w.push(salesEntries[j].dateStr);
         }
     }
 
-    // 上周截止日期
-    if (salesEntries && salesEntries.length >= 2) {
-        var prevEntry = salesEntries[salesEntries.length - 2];
+    // 构建所有可选周期（至少有3个前序周才能形成完整4周窗口）
+    cols._allPeriods = [];
+    if (salesEntries && salesEntries.length >= 4) {
+        for (var pi = 3; pi < salesEntries.length; pi++) {
+            cols._allPeriods.push({ label: salesEntries[pi].dateStr, index: pi });
+        }
+    }
+
+    // 截止日期（基于 _periodEndIndex）
+    if (salesEntries && cols._periodEndIndex >= 1 && cols._periodEndIndex < salesEntries.length) {
+        var prevEntry = salesEntries[cols._periodEndIndex - 1];
         var prevParts = prevEntry.dateStr.split('-');
         var prevEnd = prevParts[prevParts.length - 1];
         var pm = prevEnd.split('.');
         cols.cutoffPrev = new Date(2026, +pm[0]-1, +pm[1]);
     }
-    if (salesEntries && salesEntries.length >= 1) {
-        var currEntry = salesEntries[salesEntries.length - 1];
+    if (salesEntries && cols._periodEndIndex >= 0 && cols._periodEndIndex < salesEntries.length) {
+        var currEntry = salesEntries[cols._periodEndIndex];
         var currEnd = currEntry.dateStr.split('-').pop();
         var cm = currEnd.split('.');
         cols.cutoffCurr = new Date(2026, +cm[0]-1, +cm[1]);
@@ -521,20 +540,49 @@ function getAdClass(sku, r_data, cols, plpPlgEnabled, skuCampaignCount) {
 }
 
 // ===== 主计算入口 =====
-function computeAll(workbook) {
-    // 读取4个Sheet
-    var mainSheet = workbook.Sheets['四三数据累计'];
-    var plpSheet = workbook.Sheets['PLP明细'];
-    var deptSheet = workbook.Sheets['四三销售数据'];
-    var natSheet = workbook.Sheets['自然周销售数据'];
+function computeAll(workbook, reuseCols) {
+    var cols, mainRows, plpSheet, deptSheet, natSheet;
 
-    if (!mainSheet) throw new Error('找不到Sheet「四三数据累计」，请确认Excel文件正确');
-
-    // 解析主表
-    var mainRows = XLSX.utils.sheet_to_json(mainSheet, {header: 1, defval: '', cellDates: true});
-    var headers = mainRows[0];
-    var cols = mapColumns(headers);
-    var PLP_CURR = '5.18-5.24'; // 默认，后续可从header检测
+    if (reuseCols) {
+        // 周期切换：复用已有 cols
+        cols = reuseCols;
+        var ms = workbook.Sheets['四三数据累计'];
+        if (!ms) throw new Error('找不到Sheet「四三数据累计」');
+        mainRows = XLSX.utils.sheet_to_json(ms, {header: 1, defval: '', cellDates: true});
+        plpSheet = workbook.Sheets['PLP明细'];
+        deptSheet = workbook.Sheets['四三销售数据'];
+        natSheet = workbook.Sheets['自然周销售数据'];
+        // 重建 weekLabels4w + cutoff
+        var se = cols._dateCols['销量'];
+        cols.weekLabels4w = [];
+        if (se && se.length >= 4) {
+            for (var jj = Math.max(0, cols._periodEndIndex - 3); jj <= cols._periodEndIndex; jj++) {
+                cols.weekLabels4w.push(se[jj].dateStr);
+            }
+        }
+        if (se && cols._periodEndIndex >= 1 && cols._periodEndIndex < se.length) {
+            var pe = se[cols._periodEndIndex - 1];
+            var pe2 = pe.dateStr.split('-').pop().split('.');
+            cols.cutoffPrev = new Date(2026, +pe2[0]-1, +pe2[1]);
+        }
+        if (se && cols._periodEndIndex >= 0 && cols._periodEndIndex < se.length) {
+            var ce = se[cols._periodEndIndex];
+            var ce2 = ce.dateStr.split('-').pop().split('.');
+            cols.cutoffCurr = new Date(2026, +ce2[0]-1, +ce2[1]);
+        }
+    } else {
+        // 首次加载：正常解析
+        var mainSheet = workbook.Sheets['四三数据累计'];
+        plpSheet = workbook.Sheets['PLP明细'];
+        deptSheet = workbook.Sheets['四三销售数据'];
+        natSheet = workbook.Sheets['自然周销售数据'];
+        if (!mainSheet) throw new Error('找不到Sheet「四三数据累计」，请确认Excel文件正确');
+        var mainRows2 = XLSX.utils.sheet_to_json(mainSheet, {header: 1, defval: '', cellDates: true});
+        var headers = mainRows2[0];
+        cols = mapColumns(headers);
+        mainRows = mainRows2;
+    }
+    var PLP_CURR = cols.weekLabels4w.length >= 4 ? cols.weekLabels4w[3] : '5.18-5.24';
 
     // 检查关键列
     var missingCols = [];
@@ -608,32 +656,38 @@ function computeAll(workbook) {
     }
 
     // ===== PLP 数据处理 =====
-    var plpRows = XLSX.utils.sheet_to_json(plpSheet, {header: 1, defval: '', cellDates: true});
-    if (plpRows.length > 5000) plpRows.length = 5000;
-    var plpHeaders = plpRows[0];
-    var PC = mapPlpColumns(plpHeaders);
-
-    var plpCurrRows = [];
-    var plpPlgEnabled = new Set();
-    for (var pi = 1; pi < plpRows.length; pi++) {
-        var pr = plpRows[pi];
-        var period = String(pr[PC.period] || '').trim();
-        var psku = String(pr[PC.sku] || '').trim();
-        if (!psku || psku.indexOf('广告') === 0 || psku.indexOf('总数据') === 0) continue;
-        var plistD = parseDate(pr[PC.listDate]);
-        if (period === PLP_CURR && plistD && plistD <= cutoffCurr) {
-            plpCurrRows.push(pr);
-            if (String(pr[PC.plgEnabled] || '').trim() === 'Y') plpPlgEnabled.add(psku);
+    var plpRows, PC, plpCurrRows, plpPlgEnabled, skuCampaignCount;
+    if (reuseCols) {
+        // 周期切换：跳过PLP明细解析（1M+行），广告数据由onPeriodChange恢复
+        plpCurrRows = [];
+        plpPlgEnabled = new Set();
+        skuCampaignCount = {};
+        plpRows = [['']];
+    } else {
+        plpRows = XLSX.utils.sheet_to_json(plpSheet, {header: 1, defval: '', cellDates: true});
+        if (plpRows.length > 5000) plpRows.length = 5000;
+        PC = mapPlpColumns(plpRows[0]);
+        plpCurrRows = [];
+        plpPlgEnabled = new Set();
+        for (var pi = 1; pi < plpRows.length; pi++) {
+            var pr = plpRows[pi];
+            var period = String(pr[PC.period] || '').trim();
+            var psku = String(pr[PC.sku] || '').trim();
+            if (!psku || psku.indexOf('广告') === 0 || psku.indexOf('总数据') === 0) continue;
+            var plistD = parseDate(pr[PC.listDate]);
+            if (period === PLP_CURR && plistD && plistD <= cutoffCurr) {
+                plpCurrRows.push(pr);
+                if (String(pr[PC.plgEnabled] || '').trim() === 'Y') plpPlgEnabled.add(psku);
+            }
         }
-    }
-
-    var skuCampaignCount = {};
-    plpCurrRows.forEach(function(pr) {
-        var psku = String(pr[PC.sku] || '').trim();
-        if (plpPlgEnabled.has(psku)) {
-            skuCampaignCount[psku] = (skuCampaignCount[psku] || 0) + 1;
-        }
-    });
+        skuCampaignCount = {};
+        plpCurrRows.forEach(function(pr) {
+            var psku2 = String(pr[PC.sku] || '').trim();
+            if (plpPlgEnabled.has(psku2)) {
+                skuCampaignCount[psku2] = (skuCampaignCount[psku2] || 0) + 1;
+            }
+        });
+    } // end else (reuseCols)
 
     // PLP 聚合
     function aggPlp(rows) {
@@ -904,6 +958,11 @@ function computeAll(workbook) {
         cutoffCurr: cutoffCurr
     };
 
+    // 周期选择器数据
+    DATA._allPeriods = cols._allPeriods || [];
+    DATA._periodEndIndex = cols._periodEndIndex || 0;
+    DATA._cols = cols; // 缓存 cols 供 onPeriodChange 使用
+
     return DATA;
 }
 
@@ -1019,8 +1078,8 @@ function computeAllPart2(DATA) {
     DATA.plpExpandTypes = plpDimData(plpCurrSku, function(sku, info) { return info ? getExp(info, cols) : '其他'; });
     DATA.plpAnalysts = plpDimData(plpCurrSku, function(sku, info) { return info ? getAn(info, cols) : '未知'; });
 
-    // PLP prev totals — properly compute from PLP_PREV period
-    var PLP_PREV = '5.11-5.17';
+    // PLP prev totals — 从 weekLabels4w 取上期
+    var PLP_PREV = (ctx.cols && ctx.cols.weekLabels4w && ctx.cols.weekLabels4w.length >= 3) ? ctx.cols.weekLabels4w[2] : '5.11-5.17';
     var allPlpRows = ctx.allPlpRows;
     var plpPrevRows = [];
     for (var pi = 0; pi < allPlpRows.length; pi++) {
@@ -1466,7 +1525,7 @@ function computeAllPart3(DATA) {
 
     // 26. PLP 4-week drill data (from all PLP rows, not just current period)
     var allPlpRows = ctx.allPlpRows;
-    var PLP_PERIODS = ['4.27-5.3', '5.4-5.10', '5.11-5.17', '5.18-5.24'];
+    var PLP_PERIODS = DATA.weekLabels4w || ['4.27-5.3', '5.4-5.10', '5.11-5.17', '5.18-5.24'];
     DATA.plp4wLabels = PLP_PERIODS;
     var plp4wCost = [0,0,0,0], plp4wAdRev = [0,0,0,0], plp4wAcos = [0,0,0,0], plp4wAcoas = [0,0,0,0];
     var plp4wAn = {};
@@ -1516,7 +1575,7 @@ function computeAllPart3(DATA) {
     });
 
     // 27. PLG 4-week drill data (per-analyst PLG spend/revenue/acos/acoas)
-    var PLG_PERIODS = ['4.27-5.3', '5.4-5.10', '5.11-5.17', '5.18-5.24'];
+    var PLG_PERIODS = DATA.weekLabels4w || ['4.27-5.3', '5.4-5.10', '5.11-5.17', '5.18-5.24'];
     DATA.plg4wLabels = PLG_PERIODS;
     DATA.plgAn4w = ANALYSTS.map(function(an) {
         var anItems = rowsCurr.filter(function(r) { return getAn(r, cols) === an; });
@@ -1620,8 +1679,8 @@ function computeAllPart3(DATA) {
 }
 
 // ===== 完整计算入口 =====
-function computeEngine(workbook) {
-    var DATA = computeAll(workbook);
+function computeEngine(workbook, reuseCols) {
+    var DATA = computeAll(workbook, reuseCols);
     DATA = computeAllPart2(DATA);
     DATA = computeAllPart3(DATA);
     return DATA;
@@ -2077,6 +2136,27 @@ function renderAll(data) {
   document.getElementById('h1-period').textContent = period;
   document.getElementById('h1-date').textContent = '2026-' + period.replace(/\./g,'-');
   document.getElementById('h1-sku').textContent = t.total + ' SKU';
+
+  // 填充周期选择器
+  var sel = document.getElementById('period-selector');
+  if (sel && DATA._allPeriods && DATA._allPeriods.length > 0) {
+    sel.style.display = '';
+    sel.innerHTML = '';
+    DATA._allPeriods.forEach(function(p) {
+      var opt = document.createElement('option');
+      opt.value = p.index;
+      opt.textContent = p.label;
+      if (p.index === DATA._periodEndIndex) opt.selected = true;
+      sel.appendChild(opt);
+    });
+    sel.onchange = function() {
+      var chosenIdx = parseInt(sel.value);
+      if (!isNaN(chosenIdx) && DATA._cols && window._workbookCache) {
+        DATA._cols._periodEndIndex = chosenIdx;
+        onPeriodChange(window._workbookCache.workbook, DATA._cols);
+      }
+    };
+  }
 
   document.getElementById('upload-overlay').classList.add('hidden');
   document.getElementById('dashboard-container').classList.add('visible');
@@ -2602,6 +2682,33 @@ function exportXLSX(){
   XLSX.writeFile(wb,'新品周报数据表_'+p+'.xlsx');
 }
 
+// ===== 周期切换 =====
+function onPeriodChange(workbook, cols) {
+  try {
+    var se = document.getElementById('upload-status');
+    se.textContent = '⏳ 切换中...'; se.className = 'status'; se.style.display = 'block';
+
+    // 保存不随周期变化的广告数据
+    var savedAd = {};
+    if (DATA) {
+      ['adCompDist','adCompDistPrev','adAnDetail','adCatDetail','adPlgTierDist',
+       'adPlpPlgLinks','adDeptPct','adPwVsNew','plpDetailData','plgStats'].forEach(function(k) {
+        if (DATA[k] !== undefined) savedAd[k] = DATA[k];
+      });
+    }
+
+    cols._rebuildAliases();
+    var data = computeEngine(workbook, cols);
+    // 恢复广告数据
+    for (var k in savedAd) { data[k] = savedAd[k]; }
+    renderAll(data);
+
+    se.style.display = 'none';
+  } catch(e) {
+    console.error('onPeriodChange error:', e);
+  }
+}
+
 // ===== 文件上传 =====
 (function(){
   var dz=document.getElementById('drop-zone'),fi=document.getElementById('file-input'),se=document.getElementById('upload-status');
@@ -2620,14 +2727,21 @@ function exportXLSX(){
       try{
         var wb=XLSX.read(e.target.result,{type:'array'});
         console.log('[handleFile] Sheets:', wb.SheetNames.join(', '));
+        // 缓存 workbook 供周期切换使用
+        window._workbookCache = { workbook: wb };
         se.textContent='⏳ 检测到Sheet: '+wb.SheetNames.join(',')+'，计算中...';
         setTimeout(function(){
           try{
             console.log('[handleFile] 开始计算...');
             var data=computeEngine(wb);
 	            data=computeAdExtras(wb, data);
+            // 缓存 mainRows / plpRows
+            if (window._workbookCache) {
+              window._workbookCache.mainRows = data._ctx ? data._ctx.rowsRaw : null;
+              window._workbookCache.plpRows = data._ctx ? data._ctx.allPlpRows : null;
+            }
             console.log('[handleFile] 计算完成, 数据keys:', Object.keys(data).join(', '));
-            se.textContent='✅ 计算完成，渲染中...';
+            se.textContent='✅ 渲染中...';
             setTimeout(function(){renderAll(data);},50);
           }catch(err){se.textContent='❌ 计算失败: '+err.message;se.className='status error';console.error('[handleFile] 计算错误:', err);}
         },100);
