@@ -5,7 +5,7 @@ echo   AI项目 — 新电脑环境配置
 echo ========================================
 echo.
 
-echo [1/6] 安装 Python 依赖...
+echo [1/7] 安装 Python 依赖...
 pip install -r requirements.txt
 if %errorlevel% neq 0 (
     echo ❌ pip install 失败，请检查 Python 是否已安装
@@ -15,7 +15,7 @@ if %errorlevel% neq 0 (
 echo ✅ 依赖安装完成
 echo.
 
-echo [2/6] 安装 Playwright 浏览器...
+echo [2/7] 安装 Playwright 浏览器...
 playwright install chromium
 if %errorlevel% neq 0 (
     echo ⚠️  Playwright 浏览器安装失败（不影响 Excel/OCR 功能）
@@ -23,7 +23,18 @@ if %errorlevel% neq 0 (
 echo ✅ Playwright 完成
 echo.
 
-echo [3/6] 安装 Git post-merge hook（自动修正路径）...
+echo [3/7] 修复硬编码路径（Administrator → 当前用户）...
+set "OLD_PATH=C:/Users/Administrator/Desktop/AI项目"
+set "NEW_PATH=%~dp0"
+set "NEW_PATH=%NEW_PATH:\=/%"
+if "%NEW_PATH:~-1%"=="/" set "NEW_PATH=%NEW_PATH:~0,-1%"
+echo   旧路径: %OLD_PATH%
+echo   新路径: %NEW_PATH%
+powershell -Command "$projectRoot='%NEW_PATH%'; $oldPath='C:/Users/Administrator/Desktop/AI项目'; Get-ChildItem -Path $projectRoot -Recurse -Include '*.json','*.py','*.md','*.bat' -File | Where-Object { $_.FullName -notmatch '\\node_modules\\|\\.venv\\|\\.git\\' } | ForEach-Object { $c = Get-Content -Path $_.FullName -Raw -Encoding UTF8 -ErrorAction SilentlyContinue; if ($c -and $c.Contains($oldPath)) { $c = $c.Replace($oldPath, $projectRoot); [System.IO.File]::WriteAllText($_.FullName, $c, [System.Text.UTF8Encoding]::new($false)); Write-Host ('  ✓ ' + $_.Name) } }"
+echo ✅ 路径替换完成
+echo.
+
+echo [4/7] 安装 Git post-merge hook（每次 pull 自动修正路径）...
 if not exist ".git\hooks\" mkdir ".git\hooks"
 (
 echo #!/bin/bash
@@ -40,7 +51,7 @@ echo fi
 echo ✅ post-merge hook 安装完成
 echo.
 
-echo [4/6] 部署 Claude Code 配置...
+echo [5/7] 部署 Claude Code 配置...
 if exist "%USERPROFILE%\.claude\.git" (
     echo ⚠️  .claude 已存在，跳过 clone
     cd /d "%USERPROFILE%\.claude"
@@ -55,7 +66,7 @@ if %errorlevel% neq 0 (
 )
 echo.
 
-echo [5/6] 安装 Node.js 依赖...
+echo [6/7] 安装 Node.js 依赖...
 cd /d "%~dp0三部周报v1\New project 2-新品板块已放入"
 if exist package.json (
     call npm install
@@ -69,7 +80,7 @@ if exist package.json (
 )
 echo.
 
-echo [6/6] 验证关键库...
+echo [7/7] 验证关键库...
 python -c "import openpyxl; print('  openpyxl:', openpyxl.__version__)"
 python -c "import pandas; print('  pandas:', pandas.__version__)"
 python -c "import easyocr; print('  easyocr:', easyocr.__version__)"
