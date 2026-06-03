@@ -24,13 +24,15 @@ echo ✅ Playwright 完成
 echo.
 
 echo [3/7] 修复硬编码路径（Administrator → 当前用户）...
-set "OLD_PATH=C:/Users/Administrator/Desktop/AI项目"
+REM 使用变量拼接旧用户名避免被 fix_paths.py 误替换
+set "OLD_USER=Administrator"
+set "OLD_PATH=C:/Users/%OLD_USER%/Desktop/AI项目"
 set "NEW_PATH=%~dp0"
 set "NEW_PATH=%NEW_PATH:\=/%"
 if "%NEW_PATH:~-1%"=="/" set "NEW_PATH=%NEW_PATH:~0,-1%"
 echo   旧路径: %OLD_PATH%
 echo   新路径: %NEW_PATH%
-powershell -Command "$projectRoot='%NEW_PATH%'; $oldPath='C:/Users/Administrator/Desktop/AI项目'; Get-ChildItem -Path $projectRoot -Recurse -Include '*.json','*.py','*.md','*.bat' -File | Where-Object { $_.FullName -notmatch '\\node_modules\\|\\.venv\\|\\.git\\' } | ForEach-Object { $c = Get-Content -Path $_.FullName -Raw -Encoding UTF8 -ErrorAction SilentlyContinue; if ($c -and $c.Contains($oldPath)) { $c = $c.Replace($oldPath, $projectRoot); [System.IO.File]::WriteAllText($_.FullName, $c, [System.Text.UTF8Encoding]::new($false)); Write-Host ('  ✓ ' + $_.Name) } }"
+powershell -Command "$oldUser='Administrator'; $oldPath='C:/Users/'+$oldUser+'/Desktop/AI项目'; $projectRoot='%NEW_PATH%'; Get-ChildItem -Path $projectRoot -Recurse -Include '*.json','*.py','*.md','*.bat' -File | Where-Object { $_.FullName -notmatch '\\node_modules\\|\\.venv\\|\\.git\\' } | ForEach-Object { $c = Get-Content -Path $_.FullName -Raw -Encoding UTF8 -ErrorAction SilentlyContinue; if ($c -and $c.Contains($oldPath)) { $c = $c.Replace($oldPath, $projectRoot); [System.IO.File]::WriteAllText($_.FullName, $c, [System.Text.UTF8Encoding]::new($false)); Write-Host ('  ✓ ' + $_.Name) } }"
 echo ✅ 路径替换完成
 echo.
 
