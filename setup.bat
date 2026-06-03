@@ -38,6 +38,17 @@ if %errorlevel% neq 0 (
 )
 echo.
 
+echo [3.5/5] 修复硬编码路径（Administrator → %USERNAME%）...
+set "OLD_PATH=C:/Users/Administrator/Desktop/AI项目"
+set "NEW_PATH=%~dp0"
+set "NEW_PATH=%NEW_PATH:\=/%"
+if "%NEW_PATH:~-1%"=="/" set "NEW_PATH=%NEW_PATH:~0,-1%"
+echo   旧路径: %OLD_PATH%
+echo   新路径: %NEW_PATH%
+powershell -Command "$projectRoot='%NEW_PATH%'; $oldPath='C:/Users/Administrator/Desktop/AI项目'; Get-ChildItem -Path $projectRoot -Recurse -Include '*.json','*.py','*.md','*.bat' -File | Where-Object { $_.FullName -notmatch '\\\\node_modules\\\\|\\\\.venv\\\\|\\\\.git\\\\' } | ForEach-Object { $c = Get-Content -Path $_.FullName -Raw -Encoding UTF8 -ErrorAction SilentlyContinue; if ($c -and $c.Contains($oldPath)) { $c = $c.Replace($oldPath, $projectRoot); [System.IO.File]::WriteAllText($_.FullName, $c, [System.Text.UTF8Encoding]::new($false)); Write-Host ('  ✓ ' + $_.Name) } }"
+echo ✅ 路径替换完成
+echo.
+
 echo [4/5] 安装 Node.js 依赖...
 cd /d "%~dp0三部周报v1\New project 2-新品板块已放入"
 if exist package.json (
