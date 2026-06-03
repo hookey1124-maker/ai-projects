@@ -215,3 +215,132 @@ export function get4wTrends() {
     anShare: d.anShare4w,
   };
 }
+
+// ==================== 广告构成 & 链接明细 ====================
+
+const AD_ANALYSTS = ['俞东旭','张潇','朱培源','王偲涵','章鹏','胡煜星'];
+const AD_CATEGORIES = ['车门系统','车身外扩件','挡泥板','机盖及附件','牌照板支架','其他','饰条'];
+
+/** 市占比分档 */
+export function getShareTier(share: number, rivalQty: number): string {
+  if (share >= 75) return '高';
+  if (share >= 50) return '中';
+  if (share > 0 || rivalQty > 0) return '低';
+  return '无市场';
+}
+
+/** 是否出单（上架后是否出过单） */
+export function getHasOrder(cur8dStatus: string, curSalesQty: number): '是' | '否' {
+  return (cur8dStatus === 'Y' || cur8dStatus === 'N' || curSalesQty > 0) ? '是' : '否';
+}
+
+/** 广告分类标签 */
+export function getAdClassLabel(plpEnabled: string, plgFee: number): string {
+  const hasPlp = plpEnabled === 'Y' || plpEnabled === '是';
+  const hasPlg = plgFee > 0;
+  if (hasPlp && hasPlg) return 'PLP+PLG';
+  if (hasPlp) return '单PLP';
+  if (hasPlg) return '仅PLG';
+  return '无广告';
+}
+
+/** PLG费率分档 */
+export function getPlgFeeTier(plgFee: number): string {
+  if (plgFee === 0) return '无广告';
+  if (plgFee <= 2) return '低费率';
+  if (plgFee <= 4) return '中费率';
+  return '高费率';
+}
+
+/** 广告构成分布数据（从 cum43Data 计算） */
+export function getAdCompData() {
+  const comp: Record<string, number> = { 'PLP+PLG': 0, '单PLP': 0, '仅PLG': 0, '无广告': 0 };
+  const tierDist: Record<string, number> = { '无广告': 0, '低费率': 0, '中费率': 0, '高费率': 0 };
+  const anComp: Record<string, any> = {};
+  const catComp: Record<string, any> = {};
+
+  AD_ANALYSTS.forEach(a => { anComp[a] = { 'PLP+PLG':0,'单PLP':0,'仅PLG':0,'无广告':0,total:0,tierNone:0,tierLow:0,tierMid:0,tierHigh:0 }; });
+  AD_CATEGORIES.forEach(c => { catComp[c] = { 'PLP+PLG':0,'单PLP':0,'仅PLG':0,'无广告':0,total:0 }; });
+
+  rawRows.forEach((r: any) => {
+    const an = r.analyst || '未知';
+    const cat = r.category || '未分类';
+    const plpEnabled = r.plpEnabled || 'N';
+    const feeStr = String(r.plgFee || '0%').replace('%', '');
+    const feePct = parseFloat(feeStr) || 0;
+    const label = getAdClassLabel(plpEnabled, feePct);
+    const tier = getPlgFeeTier(feePct);
+
+    comp[label] = (comp[label] || 0) + 1;
+    tierDist[tier] = (tierDist[tier] || 0) + 1;
+
+    if (anComp[an]) { anComp[an][label]++; anComp[an].total++; }
+    if (!catComp[cat]) catComp[cat] = { 'PLP+PLG':0,'单PLP':0,'仅PLG':0,'无广告':0,total:0 };
+    catComp[cat][label]++; catComp[cat].total++;
+
+    const tierKey = tier === '无广告' ? 'tierNone' : tier === '低费率' ? 'tierLow' : tier === '中费率' ? 'tierMid' : 'tierHigh';
+    if (anComp[an]) anComp[an][tierKey]++;
+  });
+
+  return {
+    compKpis: (['PLP+PLG', '单PLP', '仅PLG', '无广告'] as const).map(k => ({ label: k, count: comp[k] || 0 })),
+    tierKpis: (['无广告', '低费率', '中费率', '高费率'] as const).map(k => ({ label: k, count: tierDist[k] || 0 })),
+    byAnalyst: AD_ANALYSTS.filter(a => anComp[a] && anComp[a].total > 0).map(a => ({ analyst: a, ...anComp[a] })),
+    byCategory: AD_CATEGORIES.filter(c => catComp[c] && catComp[c].total > 0).map(c => ({ category: c, ...catComp[c] })),
+  };
+}
+
+/** 链接明细（PLP+PLG同开，链接维度） */
+export function getLinkDetail() {
+  const d = getData();
+  const plpDetail = d.plpDetailData || [];
+
+  // Build SKU info lookup from cum43Data
+  const skuMap: Record<string, any> = {};
+  rawRows.forEach((r: any) => {
+    const sku = String(r.sku || '').trim();
+    if (!sku) return;
+    const shareStr = String(r.curMarketShare || '0').replace('%', '');
+    skuMap[sku] = {
+      analyst: r.analyst || '未知',
+      category: r.category || '未分类',
+      plgFee: parseFloat(String(r.plgFee || '0%').replace('%', '')) || 0,
+      curSalesQty: Number(r.curSalesQty || 0),
+      curRevenue: Number(r.curRevenue || 0),
+      curMarketShare: parseFloat(shareStr) || 0,
+      curRivalQty: Number(r.curRivalQty || 0),
+      cur8dStatus: String(r.cur8dStatus || '').trim(),
+    };
+  });
+
+  // 当期 PLP+PLG同开（链接维度）：plgEnabled === 'Y' 的链接
+  const links = plpDetail
+    .filter((r: any) => r.plgEnabled === 'Y' || r.plgEnabled === '是')
+    .map((r: any) => {
+      const sku = String(r.SKU || '').trim();
+      const info = skuMap[sku] || {};
+      const share = info.curMarketShare || 0;
+      const rivalQty = info.curRivalQty || 0;
+      const salesQty = info.curSalesQty || 0;
+      return {
+        sku: sku || r.SKU || '',
+        linkId: String(r.id || ''),
+        campaign: r.campaign || '',
+        analyst: info.analyst || r.analyst || '未知',
+        category: info.category || r.category || '未分类',
+        hasOrder: getHasOrder(info.cur8dStatus || '', salesQty),
+        marketShare: share,
+        shareTier: getShareTier(share, rivalQty),
+        rivalQty,
+        salesQty,
+        revenue: info.curRevenue || 0,
+        plgFee: info.plgFee || 0,
+      };
+    });
+
+  return {
+    totalLinks: plpDetail.length,
+    plpPlgLinks: links,
+    plpPlgCount: links.length,
+  };
+}

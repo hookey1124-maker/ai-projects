@@ -9,6 +9,7 @@ import { useModulePeriodInfo } from '../useModulePeriodInfo';
 import {
   getData, getOverviewKpi, getCategoryMetrics, getAnalystMetrics, get4wTrends,
   rawRows, WEEK_LABELS,
+  getAdCompData, getLinkDetail, getShareTier, getHasOrder,
 } from './newProductStatusAdapter';
 
 // ===== 常量 =====
@@ -60,14 +61,20 @@ export default function NewProductStatusPage() {
   const hasUnsold = allData.hasCompetitorUnsold;
   const noUnsold = allData.unsoldNoCompetitor;
   const lowShareData = allData.lowShareData;
-  const plpTotal = allData.plpTotal;
-  const plpAnalysts = allData.plpAnalysts;
-  const plpCategories = allData.plpCategories;
-  const plpExpandTypes = allData.plpExpandTypes;
-  const plpDetail = allData.plpDetailData;
-  const plgStats = allData.plgStats;
-  const plgRecords = allData.plgRecords;
   const plgAn4w = allData.plgAn4w;
+
+  // 广告构成数据（从 cum43Data 实时计算）
+  const adComp = useMemo(() => getAdCompData(), []);
+  const linkDetail = useMemo(() => getLinkDetail(), []);
+
+  // 链接明细筛选
+  const [linkFilter, setLinkFilter] = useState({ hasOrder: '', shareTier: '' });
+  const filteredLinks = useMemo(() =>
+    linkDetail.plpPlgLinks.filter((d: any) => {
+      if (linkFilter.hasOrder && d.hasOrder !== linkFilter.hasOrder) return false;
+      if (linkFilter.shareTier && d.shareTier !== linkFilter.shareTier) return false;
+      return true;
+    }), [linkDetail, linkFilter]);
 
   // 出单分布（4段：有/无对手 × 已/未出单）
   const ord8Dist = useMemo(() => {
@@ -693,124 +700,110 @@ export default function NewProductStatusPage() {
   // ===== Tab 4: 广告追踪 =====
   const renderAds = () => (
     <>
-      {renderKpiGrid([
-        { label: '广告活动数', value: fmtNum(plpTotal.campaignCount || 0), helper: `上周 ${allData.plpPrevTotal?.campaignCount || '-'}` },
-        { label: '投放链接数', value: fmtNum(plpTotal.linkCount || 0), helper: `上周 ${allData.plpPrevTotal?.linkCount || '-'}` },
-        { label: '曝光量', value: fmtNum(plpTotal.impression || 0) },
-        { label: '点击量', value: fmtNum(plpTotal.click || 0) },
-        { label: '售出数', value: fmtNum(plpTotal.sold || 0) },
-        { label: '广告销售额', value: fmtUsd(plpTotal.revenue || 0) },
-      ])}
-
-      {renderKpiGrid([
-        { label: 'ROAS', value: plpTotal.roas || '-', helper: `上周 ${allData.plpPrevTotal?.roas || '-'}` },
-        { label: 'CVR', value: plpTotal.cvr || '-', helper: `上周 ${allData.plpPrevTotal?.cvr || '-'}` },
-        { label: 'CTR', value: plpTotal.ctr || '-', helper: `上周 ${allData.plpPrevTotal?.ctr || '-'}` },
-        { label: 'CPC', value: plpTotal.cpc || '-', helper: `上周 ${allData.plpPrevTotal?.cpc || '-'}` },
-        { label: 'CPA', value: plpTotal.cpa || '-', helper: `上周 ${allData.plpPrevTotal?.cpa || '-'}` },
-        { label: 'ACOS', value: plpTotal.acos || '-', helper: `上周 ${allData.plpPrevTotal?.acos || '-'}` },
-        { label: 'ACOAS（去重）', value: plpTotal.acoas || '-', helper: `上周 ${allData.plpPrevTotal?.acoas || '-'}` },
-      ])}
-
+      {/* 广告构成分布 */}
       <div style={{ background: '#fff', borderRadius: 10, padding: 20, marginBottom: 20 }}>
-        <h3 style={{ fontSize: 15, color: BLUE, marginBottom: 16 }}>🔍 PLP 维度分析</h3>
+        <h3 style={{ fontSize: 15, color: BLUE, marginBottom: 16 }}>📊 广告构成分布</h3>
+        {renderKpiGrid(
+          (['PLP+PLG', '单PLP', '仅PLG', '无广告'] as const).map(k => {
+            const item = adComp.compKpis.find(x => x.label === k) || { label: k, count: 0 };
+            const color = { 'PLP+PLG': RED, '单PLP': BLUE, '仅PLG': ORANGE, '无广告': '#95a5a6' }[k];
+            return { label: k, value: fmtNum(item.count), helper: '', _color: color };
+          })
+        )}
         <h4 style={{ fontSize: 13, color: BLUE, background: '#f5f7ff', padding: '8px 12px', borderLeft: `3px solid ${BLUE}`, marginBottom: 10 }}>按分析人</h4>
         {renderTable(
-          ['分析人', '活动数', '链接数', '曝光量', '点击量', '售出数', '花费', '广告销售额', 'ROAS', 'CVR', 'CTR', 'CPC', 'CPA', 'ACOS', 'ACOAS'],
-          plpAnalysts,
-          (r: any) => [
-            drillLink('plp:an:' + r.name, r.name),
-            r.campaignCount, r.linkCount || '-', fmtNum0(r.impression), fmtNum0(r.click), fmtNum0(r.sold),
-            fmtUsd(r.cost || 0), fmtUsd(r.revenue || 0),
-            r.roas || '-', r.cvr || '-', r.ctr || '-',
-            r.cpc || '-', r.cpa || '-', r.acos || '-', r.acoas || '-',
-          ],
+          ['分析人', '总数', 'PLP+PLG', '单PLP', '仅PLG', '无广告'],
+          adComp.byAnalyst,
+          (r: any) => [r.analyst, r.total, <b style={{color:RED}}>{r['PLP+PLG']}</b>, r['单PLP'], r['仅PLG'], r['无广告']],
         )}
         <h4 style={{ fontSize: 13, color: BLUE, background: '#f5f7ff', padding: '8px 12px', borderLeft: `3px solid ${BLUE}`, margin: '16px 0 10px' }}>按品线</h4>
         {renderTable(
-          ['品线', '活动数', '链接数', '曝光量', '点击量', '售出数', '花费', '广告销售额', 'ROAS', 'CVR', 'CTR', 'CPC', 'CPA', 'ACOS', 'ACOAS'],
-          plpCategories,
-          (r: any) => [
-            drillLink('plp:cat:' + r.name, r.name),
-            r.campaignCount, r.linkCount || '-', fmtNum0(r.impression), fmtNum0(r.click), fmtNum0(r.sold),
-            fmtUsd(r.cost || 0), fmtUsd(r.revenue || 0),
-            r.roas || '-', r.cvr || '-', r.ctr || '-',
-            r.cpc || '-', r.cpa || '-', r.acos || '-', r.acoas || '-',
-          ],
-        )}
-        <h4 style={{ fontSize: 13, color: BLUE, background: '#f5f7ff', padding: '8px 12px', borderLeft: `3px solid ${BLUE}`, margin: '16px 0 10px' }}>按拓展类型</h4>
-        {renderTable(
-          ['拓展类型', '活动数', '链接数', '曝光量', '点击量', '售出数', '花费', '广告销售额', 'ROAS', 'CVR', 'CTR', 'CPC', 'CPA', 'ACOS', 'ACOAS'],
-          plpExpandTypes,
-          (r: any) => [
-            r.name, r.campaignCount, r.linkCount || '-', fmtNum0(r.impression), fmtNum0(r.click), fmtNum0(r.sold),
-            fmtUsd(r.cost || 0), fmtUsd(r.revenue || 0),
-            r.roas || '-', r.cvr || '-', r.ctr || '-',
-            r.cpc || '-', r.cpa || '-', r.acos || '-', r.acoas || '-',
-          ],
+          ['品线', '总数', 'PLP+PLG', '单PLP', '仅PLG', '无广告'],
+          adComp.byCategory,
+          (r: any) => [r.category, r.total, <b style={{color:RED}}>{r['PLP+PLG']}</b>, r['单PLP'], r['仅PLG'], r['无广告']],
         )}
       </div>
 
-      {/* PLG 总览 */}
+      {/* PLG费率分档 */}
       <div style={{ background: '#fff', borderRadius: 10, padding: 20, marginBottom: 20 }}>
-        <h3 style={{ fontSize: 15, color: BLUE, marginBottom: 16 }}>📊 PLG 总览</h3>
-        {renderKpiGrid([
-          { label: 'PLG广告花费', value: fmtUsd(plgStats.totalSpend || 0) },
-          { label: 'PLG广告销售额', value: fmtUsd(plgStats.totalAdRev || 0) },
-          { label: 'PLG自然周总销售额', value: fmtUsd(plgStats.totalNatRev || 0) },
-          { label: 'PLG ACOS', value: plgStats.acos || '-', helper: '花费/广告销售额' },
-          { label: 'PLG ACOAS', value: plgStats.acoas || '-', helper: '花费/自然周总销售额' },
-        ])}
-
-        <h4 style={{ fontSize: 13, color: BLUE, background: '#f5f7ff', padding: '8px 12px', borderLeft: `3px solid ${BLUE}`, marginBottom: 10 }}>PLG费率分布</h4>
-        {renderKpiGrid([
-          { label: '新品总数', value: fmtNum(plgStats.totalNewProducts || 0) },
-          { label: 'PLP+PLG同开', value: fmtNum(plgStats.plpAndPlgBothCount || 0) },
-          { label: '单链接PLP+PLG同开', value: fmtNum(plgStats.singleLinkPlpPlgCount || 0) },
-          { label: '单PLG', value: fmtNum(plgStats.plgOnlyCount || 0) },
-          { label: '单PLP', value: fmtNum(plgStats.plpOnlyCount || 0) },
-          { label: '无广告', value: fmtNum(plgStats.noAdCount || 0) },
-          { label: '单PLG且未出单', value: fmtNum(plgStats.plpDisabledNoSaleCount || 0) },
-        ])}
-        {renderTable(
-          ['分析人', '总数', 'PLP+PLG', '单链接PLP+PLG', '单PLG', '单PLP', '无广告', 'PLP未开未出单'],
-          plgStats.byAnalyst || [],
-          (r: any) => [
-            r.analyst, r.total || 0, r.plpAndPlgBoth || 0, r.singleLinkPlpPlg || 0,
-            r.plgOnly || 0, r.plpOnly || 0, r.noAd || 0, r.plpDisabledNoSale || 0,
-          ],
-          { analyst: '合计', total: plgStats.totalNewProducts, plpAndPlgBoth: plgStats.plpAndPlgBothCount, singleLinkPlpPlg: plgStats.singleLinkPlpPlgCount, plgOnly: plgStats.plgOnlyCount, plpOnly: plgStats.plpOnlyCount, noAd: plgStats.noAdCount, plpDisabledNoSale: plgStats.plpDisabledNoSaleCount },
-        )}
-
-        <h4 style={{ fontSize: 13, color: BLUE, background: '#f5f7ff', padding: '8px 12px', borderLeft: `3px solid ${BLUE}`, margin: '16px 0 10px' }}>PLG按分析人（含花费/ACOS/ACOAS）</h4>
-        {renderTable(
-          ['分析人', 'SKU数', 'PLG花费', 'PLG广告销售额', '自然周销售额', 'PLG ACOS', 'PLG ACOAS'],
-          plgStats.byAnalyst || [],
-          (r: any) => [
-            drillLink('plg:an:' + r.analyst, r.analyst), r.total || 0, fmtUsd(r.plgSpend || 0), fmtUsd(r.plgAdRev || 0),
-            fmtUsd(r.plgNatRev || 0), r.acos || '-', r.acoas || '-',
-          ],
-          { analyst: '合计', total: plgStats.totalNewProducts, plgSpend: plgStats.totalSpend, plgAdRev: plgStats.totalAdRev, plgNatRev: plgStats.totalNatRev, acos: plgStats.acos, acoas: plgStats.acoas },
+        <h3 style={{ fontSize: 15, color: BLUE, marginBottom: 16 }}>🏷️ PLG费率分档</h3>
+        {renderKpiGrid(
+          (['无广告', '低费率', '中费率', '高费率'] as const).map(k => {
+            const item = adComp.tierKpis.find(x => x.label === k) || { label: k, count: 0 };
+            const color = { '高费率': RED, '中费率': ORANGE, '低费率': GREEN, '无广告': '#95a5a6' }[k];
+            return { label: k + (k === '低费率' ? '(≤2%)' : k === '中费率' ? '(2-4%)' : k === '高费率' ? '(>4%)' : ''), value: fmtNum(item.count), helper: '', _color: color };
+          })
         )}
       </div>
 
-      {/* PLP 广告明细 */}
-      <div style={{ background: '#fff', borderRadius: 10, padding: 20 }}>
-        <h3 style={{ fontSize: 15, color: BLUE, marginBottom: 16 }}>📋 PLP 广告明细 ({plpDetail.length})</h3>
-        {renderTable(
-          ['周期', '广告系列', 'SKU', '分析人', '品类', '曝光', '点击', '售出', '花费', '广告销售额', '总销售额', 'ROAS', 'CVR', 'CTR', 'ACOS', 'ACOAS'],
-          plpDetail,
-          (r: any) => [
-            r.period || '-', r.campaign || '-', r.SKU || r.sku || '-',
-            r.analyst || '-', r.category || '-',
-            fmtNum0(r.impressions || r.impression), fmtNum0(r.clicks || r.click), fmtNum0(r.salesQty || r.sold),
-            fmtUsd(r.spend || 0), fmtUsd(r.adRevenue || 0), fmtUsd(r.totalRevenue || 0),
-            r.roas != null ? Number(r.roas).toFixed(2) : '-',
-            r.cvr != null ? (typeof r.cvr === 'number' ? (r.cvr * 100).toFixed(2) + '%' : r.cvr) : '-',
-            r.ctr != null ? (typeof r.ctr === 'number' ? (r.ctr * 100).toFixed(2) + '%' : r.ctr) : '-',
-            r.acos != null ? (typeof r.acos === 'number' ? (r.acos * 100).toFixed(2) + '%' : r.acos) : '-',
-            r.acoas != null ? (typeof r.acoas === 'number' ? (r.acoas * 100).toFixed(2) + '%' : r.acoas) : '-',
-          ],
+      {/* 链接明细（PLP+PLG同开，链接维度） */}
+      <div style={{ background: '#fff', borderRadius: 10, padding: 20, marginBottom: 20 }}>
+        <h3 style={{ fontSize: 15, color: BLUE, marginBottom: 16 }}>🔗 广告构成明细（链接维度：PLP+PLG同开）</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, marginBottom: 16 }}>
+          <KpiCard
+            label={linkFilter.hasOrder || linkFilter.shareTier ? 'PLP+PLG同开（筛选后）' : 'PLP+PLG同开（链接数）'}
+            value={fmtNum(filteredLinks.length)}
+            style={{ borderLeft: '4px solid #c0392b' }}
+          />
+        </div>
+        {/* 筛选栏 */}
+        <div style={{
+          position: 'sticky', top: 0, zIndex: 100, background: '#f5f7ff',
+          padding: '14px 18px', marginBottom: 14, display: 'flex', flexWrap: 'nowrap',
+          gap: 10, alignItems: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          borderRadius: 0,
+        }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12 }}>
+            <label style={{ color: '#555', whiteSpace: 'nowrap' }}>是否出单</label>
+            <select value={linkFilter.hasOrder} onChange={e => setLinkFilter({ ...linkFilter, hasOrder: e.target.value })}
+              style={{ padding: '6px 10px', border: '1px solid #ddd', borderRadius: 6, fontSize: 12, background: '#fff' }}>
+              <option value="">全部</option>
+              <option value="是">是</option>
+              <option value="否">否</option>
+            </select>
+          </span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12 }}>
+            <label style={{ color: '#555', whiteSpace: 'nowrap' }}>市占比</label>
+            <select value={linkFilter.shareTier} onChange={e => setLinkFilter({ ...linkFilter, shareTier: e.target.value })}
+              style={{ padding: '6px 10px', border: '1px solid #ddd', borderRadius: 6, fontSize: 12, background: '#fff' }}>
+              <option value="">全部</option>
+              <option value="高">高(≥75%)</option>
+              <option value="中">中(50%-75%)</option>
+              <option value="低">低(&lt;50%)</option>
+              <option value="无市场">无市场(对手0销量)</option>
+            </select>
+          </span>
+          <button onClick={() => setLinkFilter({ hasOrder: '', shareTier: '' })}
+            style={{ color: '#c0392b', border: '1px solid #c0392b', background: '#fff', padding: '6px 14px', borderRadius: 6, cursor: 'pointer', fontSize: 12 }}>
+            重置
+          </button>
+          <span style={{ fontSize: 12, color: '#888', marginLeft: 'auto' }}>
+            筛选: {filteredLinks.length} / {linkDetail.plpPlgCount} 条
+          </span>
+        </div>
+        {/* 链接明细表 */}
+        {linkDetail.plpPlgCount > 0 ? (
+          <div style={{ maxHeight: 360, overflow: 'auto' }}>
+            {renderTable(
+              ['SKU', 'ID', '广告活动', '分析人', '品类', '是否出单', '市占比', '对手销量', '销量', '销售额', 'PLG费率'],
+              filteredLinks,
+              (d: any) => [
+                d.sku,
+                <span style={{fontSize:11}}>{d.linkId || '-'}</span>,
+                d.campaign,
+                d.analyst,
+                d.category,
+                d.hasOrder,
+                <>{d.marketShare > 0 ? `${d.marketShare.toFixed(1)}%` : '-'} <span style={{fontSize:10,color:'#888'}}>[{d.shareTier}]</span></>,
+                d.rivalQty > 0 ? d.rivalQty : '-',
+                d.salesQty > 0 ? d.salesQty : '-',
+                d.revenue > 0 ? `$${d.revenue.toFixed(2)}` : '-',
+                `${d.plgFee.toFixed(1)}%`,
+              ],
+            )}
+          </div>
+        ) : (
+          <p style={{ color: '#888', fontSize: 13 }}>暂无PLP+PLG同开链接（需从PLP明细Sheet筛选plgEnabled=Y的记录）</p>
         )}
       </div>
     </>

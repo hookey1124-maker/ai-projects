@@ -2009,9 +2009,15 @@ function computeAdExtras(wb, DATA) {
           cur8dStatus: String(r.cur8dStatus||'').trim()
         };
       });
+      var currPeriod = (DATA.weekLabels4w && DATA.weekLabels4w.length >= 4) ? DATA.weekLabels4w[3] : '';
       for (var j = 2; j < plpArr.length; j++) {
         var pr = plpArr[j];
         if (!pr || pr.length < 5) continue;
+        // 只取当期（统计周期=第0列）
+        if (currPeriod) {
+          var rowPeriod = String(pr[0]||'').trim();
+          if (rowPeriod && rowPeriod !== currPeriod) continue;
+        }
         var psku = String(pr[2]||'').trim();
         var plgFlag = String(pr[4]||'').trim();
         if (!psku) continue;
