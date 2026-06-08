@@ -584,7 +584,7 @@ function renderT6(){
         filtered.forEach(function(s){
           var pw=DATA.pwBySku[s.sku]||{},hasRival=(pw.rival||0)>0?'有':'无';
           var pwShare=pw.share||0,own=s['s'+m]||0;
-          var rival=s['ri'+m]||0;if(!rival&&pv>0)rival=s['ri'+pv]||0; // 当月无对手用上月
+          var rival=s['ri'+m]||0;if(!rival&&pv>0&&s.listDate.substring(0,7)!=='2026-0'+m)rival=s['ri'+pv]||0; // 无对手且非当月新上架→用上月
           var cap=own+rival,capT=capTier6(cap);
           h+='<tr><td>'+s.sku+'</td><td>'+s.listDate.substring(0,10)+'</td><td>'+s['a'+m]+'</td><td>'+s.cat+'</td><td>'+fm(s['s'+pv])+'</td><td>'+fm(own)+'</td><td>'+fmm(s['r'+pv])+'</td><td>'+fmm(s['r'+m])+'</td><td>'+hasRival+'</td><td>'+fp(pwShare)+'</td><td>'+fm(cap)+' ('+capT+')</td><td>'+s['o'+m]+'</td><td>'+s['m'+m]+'</td></tr>';
           tSp+=s['s'+pv];tSc+=own;tRp+=s['r'+pv];tRc+=s['r'+m];
@@ -626,9 +626,10 @@ function renderT8(){
     var shareDist={}; // by capacity tier x share tier
     var catDims={},anDims={};
     // 5月对手数据未出，用4月对手；过往月用实际数据
-    var rivalLookup={};if(m>=5){var pvR2=getRows(m-1);pvR2.forEach(function(x){rivalLookup[x.sku]=x.curRivalQty||0;});}
+    var rivalLookup={},newLaunch={};if(m>=5){var pvR2=getRows(m-1);pvR2.forEach(function(x){rivalLookup[x.sku]=x.curRivalQty||0;});}
+    rows.forEach(function(r){if(r.listDate&&r.listDate.substring(0,7)==='2026-0'+m)newLaunch[r.sku]=1;});
     rows.forEach(function(r){
-        var rival=r.curRivalQty||rivalLookup[r.sku]||0;
+        var rival=r.curRivalQty||(newLaunch[r.sku]?0:rivalLookup[r.sku]||0);
         var own=r.curSalesQty||0,rev=r.curRevenue||0;
         var cap=own+rival,share=cap>0?own/cap:0;
         capTotal+=cap;ownTotal+=own;revTotal+=rev;
