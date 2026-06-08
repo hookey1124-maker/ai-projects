@@ -327,7 +327,7 @@ function renderT2(){
         var c2=document.getElementById('chart-px-eff');if(c2)allCharts.push(new Chart(c2,{type:'line',data:{labels:['1月','2月','3月','4月','5月'],datasets:eds},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}}));
     }catch(e){}
     // 品线集中度：X=品线, 堆叠=上架月份, Y=SKU数
-    var concMonths=Object.keys(batches).sort(),concCats={};DATA.skuData.forEach(function(s){var ld=s.listDate.substring(0,7);var c=s.cat||'未分类';if(!concCats[c])concCats[c]={};concCats[c][ld]=(concCats[c][ld]||0)+1;});
+    var concMonths=Object.keys(batches).sort(),concCats={};pxData.forEach(function(s){var ld=s.listDate.substring(0,7);if(!ld||!concMonths.includes(ld))return;var c=s.cat||'未分类';if(!concCats[c])concCats[c]={};concCats[c][ld]=(concCats[c][ld]||0)+1;});
     var catList=Object.keys(concCats).sort();
     var moColors=['#0f3460','#8e44ad','#e67e22','#c0392b','#27ae60','#2980b9'];
     var concDS=[];concMonths.forEach(function(m,i){concDS.push({label:m.substring(5)+'月上架',data:catList.map(function(c){return concCats[c][m]||0}),backgroundColor:moColors[i%6]});});
