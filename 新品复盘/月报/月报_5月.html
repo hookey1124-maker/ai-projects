@@ -905,6 +905,14 @@ function renderT8(){
     rpt+='▎新品出单情况（数据来源：Tab5 出单分析）\n';
     rpt+='已出单'+(y+n)+'款（Y:'+y+' N:'+n+'），未出单'+unsold7.length+'款，出单率'+fp(soldRate)+'。\n';
     if(hasR.length)rpt+='有对手SKU中：已出单'+hy+'款，出单率'+fp(hy/hasR.length)+'。\n';
+    // 按分析人出单率
+    var ordByAn={};rows.forEach(function(r){var a=r.analyst;if(!a)return;if(!ordByAn[a])ordByAn[a]={t:0,ord:0};ordByAn[a].t++;if(r.cur8dStatus==='Y'||r.cur8dStatus==='N')ordByAn[a].ord++;});
+    var anOrdSorted=Object.keys(ordByAn).sort(function(a,b){return(ordByAn[b].ord/ordByAn[b].t)-(ordByAn[a].ord/ordByAn[a].t);});
+    rpt+='分析人出单率：'+anOrdSorted.map(function(a){return a+fp(ordByAn[a].ord/ordByAn[a].t);}).join('、')+'。\n';
+    // 按品线出单率
+    var ordByCat={};rows.forEach(function(r){var c=r.category||'未分类';if(!ordByCat[c])ordByCat[c]={t:0,ord:0};ordByCat[c].t++;if(r.cur8dStatus==='Y'||r.cur8dStatus==='N')ordByCat[c].ord++;});
+    var catOrdSorted=Object.keys(ordByCat).sort(function(a,b){return(ordByCat[b].ord/ordByCat[b].t)-(ordByCat[a].ord/ordByCat[a].t);});
+    rpt+='品线出单率：'+catOrdSorted.map(function(c){return c+fp(ordByCat[c].ord/ordByCat[c].t);}).join('、')+'。\n';
     rpt+='\n';
 
     // 市场分布
