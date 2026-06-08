@@ -332,7 +332,7 @@ function renderT2(){
     var moLbls=concMonths.map(function(m){return m.substring(5)+'月上架'});
     var catColors2=['#0f3460','#8e44ad','#e67e22','#c0392b','#27ae60','#2980b9','#95a5a6'];
     // 自定义插件：柱下方绘制总数
-    var totalLabelPlugin={id:'totalLabels',afterDatasetsDraw:function(chart){var ctx=chart.ctx,meta=chart.getDatasetMeta(0);if(!meta||!meta.data)return;var sums=[],yScale=chart.scales[meta.yAxisID];if(!yScale)return;chart.data.datasets.forEach(function(ds){ds.data.forEach(function(v,i){sums[i]=(sums[i]||0)+v;});});ctx.font='bold 11px -apple-system,sans-serif';ctx.fillStyle='#333';ctx.textAlign='center';meta.data.forEach(function(bar,i){var x=bar.x,y=yScale.bottom+14;ctx.fillText(sums[i]||0,x,y);});}};
+    var totalLabelPlugin={id:'totalLabels',afterDatasetsDraw:function(chart){var ctx=chart.ctx,dsCount=chart.data.datasets.length;var lastMeta=chart.getDatasetMeta(dsCount-1);if(!lastMeta||!lastMeta.data)return;var sums=[];chart.data.datasets.forEach(function(ds){ds.data.forEach(function(v,i){sums[i]=(sums[i]||0)+v;});});ctx.font='bold 11px -apple-system,sans-serif';ctx.fillStyle='#333';ctx.textAlign='center';lastMeta.data.forEach(function(bar,i){ctx.fillText(sums[i]||0,bar.x,bar.y-6);});}};
     var optMo={responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true,title:{display:true,text:'SKU数'}}},plugins:{legend:{position:'bottom',labels:{font:{size:9},usePointStyle:true,boxWidth:8}}}};
     // 月度维度：X=上架月份, 堆叠=品线
     var dsMo=[];allCatNames.forEach(function(c,i){dsMo.push({label:c,data:concMonths.map(function(m){return concCats[c][m]||0}),backgroundColor:catColors2[i%7]});});
