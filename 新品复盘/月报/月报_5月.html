@@ -267,11 +267,12 @@ function renderT1(){
       mktShareLabel='PW市占(当月参考)';mktShareHint='对手数据未出，暂用PW';
     }
     var prvOrdRate=pv>0?getRows(pv).filter(function(r){return r.cur8dStatus==='Y'||r.cur8dStatus==='N'}).length/getRows(pv).length:0;
-    kpiGrid('t1-kpi',[{l:'累计SKU',v:fm(N),h:'环比'+(pvRows.length?((N-pvRows.length)/pvRows.length*100).toFixed(1)+'%':'-')},
-        {l:m+'月销量',v:fm(cur.sales),h:'环比'+hb(prv.sales?((cur.sales-prv.sales)/prv.sales):'-')},
-        {l:m+'月销售额',v:fmm(cur.revenue),h:'环比'+hb(prv.revenue?((cur.revenue-prv.revenue)/prv.revenue):'-')},
-        {l:mktShareLabel,v:fp(mktShareVal),h:mktShareHint},
-        {l:'出单率',v:fp((y+n)/N),h:'环比'+hb(prvOrdRate?((y+n)/N-prvOrdRate):'-')}]);
+    kpiGrid('t1-kpi',[
+        {l:'累计SKU',v:fm(N),h:'上月'+fm(pvRows.length)+(pvRows.length?' | 环比'+hb((N-pvRows.length)/pvRows.length):'')},
+        {l:m+'月销量',v:fm(cur.sales),h:prv.sales?'上月'+fm(prv.sales)+' | 环比'+hb((cur.sales-prv.sales)/prv.sales):'-'},
+        {l:m+'月销售额',v:fmm(cur.revenue),h:prv.revenue?'上月'+fmm(prv.revenue)+' | 环比'+hb((cur.revenue-prv.revenue)/prv.revenue):'-'},
+        {l:mktShareLabel,v:fp(mktShareVal),h:mktShareHint+(prvShareVal?' | 上月'+fp(prvShareVal):'')},
+        {l:'出单率',v:fp((y+n)/N),h:prvOrdRate?'上月'+fp(prvOrdRate)+' | 环比'+hb((y+n)/N-prvOrdRate):'-'}]);
     var lb=[],sd=[],rd=[];
     for(var mi=1;mi<=m;mi++){lb.push(mi+'月');sd.push(DATA.mTot[mi]?DATA.mTot[mi].sales:0);rd.push(DATA.mTot[mi]?DATA.mTot[mi].revenue:0);}
     try{
@@ -290,11 +291,11 @@ function renderT1(){
       var dps=DATA.deptSalesPct||0,dpr=DATA.deptRevPct||0;
       var prvDps=0,prvDpr=0;
       if(pv>0&&dm.sales[pv]>0){prvDps=DATA.mTot[pv].sales/dm.sales[pv];prvDpr=DATA.mTot[pv].revenue/dm.revenue[pv];}
-      deptHtml+='<div class=kpi-card style=border-left:4px solid var(--c-primary)><div class=label>新品'+m+'月销量</div><div class=val>'+fm(cur.sales)+'</div><div class=hb>环比'+hb(prv.sales?((cur.sales-prv.sales)/prv.sales):'-')+'</div></div>';
-      deptHtml+='<div class=kpi-card style=border-left:4px solid #1a5276><div class=label>部门'+m+'月销量</div><div class=val>'+fm(Math.round(dm.sales[m]))+'</div><div class=hb>环比'+hb(pv>0&&dm.sales[pv]?((dm.sales[m]-dm.sales[pv])/dm.sales[pv]):'-')+'</div></div>';
-      deptHtml+='<div class=kpi-card style=border-left:4px solid var(--c-share)><div class=label>销量占部门比</div><div class=val>'+fp(dps)+'</div><div class=hb>环比'+hb(prvDps?(dps-prvDps):'-')+'</div></div>';
-      deptHtml+='<div class=kpi-card style=border-left:4px solid #6c3483><div class=label>部门'+m+'月销售额</div><div class=val>'+fmm(Math.round(dm.revenue[m]))+'</div><div class=hb>环比'+hb(pv>0&&dm.revenue[pv]?((dm.revenue[m]-dm.revenue[pv])/dm.revenue[pv]):'-')+'</div></div>';
-      deptHtml+='<div class=kpi-card style=border-left:4px solid #08845a><div class=label>销售额占部门比</div><div class=val>'+fp(dpr)+'</div><div class=hb>环比'+hb(prvDpr?(dpr-prvDpr):'-')+'</div></div>';
+      deptHtml+='<div class=kpi-card style=border-left:4px solid var(--c-primary)><div class=label>新品'+m+'月销量</div><div class=val>'+fm(cur.sales)+'</div><div class=hb>'+(prv.sales?'上月'+fm(prv.sales)+' | 环比'+hb((cur.sales-prv.sales)/prv.sales):'-')+'</div></div>';
+      deptHtml+='<div class=kpi-card style=border-left:4px solid #1a5276><div class=label>部门'+m+'月销量</div><div class=val>'+fm(Math.round(dm.sales[m]))+'</div><div class=hb>'+(pv>0&&dm.sales[pv]?'上月'+fm(Math.round(dm.sales[pv]))+' | 环比'+hb((dm.sales[m]-dm.sales[pv])/dm.sales[pv]):'-')+'</div></div>';
+      deptHtml+='<div class=kpi-card style=border-left:4px solid var(--c-share)><div class=label>销量占部门比</div><div class=val>'+fp(dps)+'</div><div class=hb>'+(prvDps?'上月'+fp(prvDps)+' | 环比'+hb(dps-prvDps):'-')+'</div></div>';
+      deptHtml+='<div class=kpi-card style=border-left:4px solid #6c3483><div class=label>部门'+m+'月销售额</div><div class=val>'+fmm(Math.round(dm.revenue[m]))+'</div><div class=hb>'+(pv>0&&dm.revenue[pv]?'上月'+fmm(Math.round(dm.revenue[pv]))+' | 环比'+hb((dm.revenue[m]-dm.revenue[pv])/dm.revenue[pv]):'-')+'</div></div>';
+      deptHtml+='<div class=kpi-card style=border-left:4px solid #08845a><div class=label>销售额占部门比</div><div class=val>'+fp(dpr)+'</div><div class=hb>'+(prvDpr?'上月'+fp(prvDpr)+' | 环比'+hb(dpr-prvDpr):'-')+'</div></div>';
     }else{
       deptHtml+='<div class=kpi-card style=border-left:4px solid #ccc;grid-column:1/-1><div class=label>部门对比数据</div><div class=val style=font-size:14px;color:#999>需"三部月度汇总"Sheet</div></div>';
     }
@@ -411,10 +412,10 @@ function renderT4(){
     var pvNy=pvRows.filter(function(r){return !hr(r)&&od(r)}).length;
     var pvNn=pvRows.filter(function(r){return !hr(r)&&!od(r)}).length;
     kpiGrid('t4-kpi',[
-      {l:'有对手出单',v:fm(hy.length),h:'环比'+hb(pvN?((hy.length-pvHy)/pvN):'-'),c:'#27ae60'},
-      {l:'有对手未出单',v:fm(hn.length),h:'环比'+hb(pvN?((hn.length-pvHn)/pvN):'-'),c:'#c0392b'},
-      {l:'无对手出单',v:fm(ny.length),h:'环比'+hb(pvN?((ny.length-pvNy)/pvN):'-'),c:'#2980b9'},
-      {l:'无对手未出单',v:fm(nn.length),h:'环比'+hb(pvN?((nn.length-pvNn)/pvN):'-'),c:'#e67e22'}]);
+      {l:'有对手出单',v:fm(hy.length),h:'上月'+fm(pvHy)+(pvN?' | 环比'+hb((hy.length-pvHy)/pvN):''),c:'#27ae60'},
+      {l:'有对手未出单',v:fm(hn.length),h:'上月'+fm(pvHn)+(pvN?' | 环比'+hb((hn.length-pvHn)/pvN):''),c:'#c0392b'},
+      {l:'无对手出单',v:fm(ny.length),h:'上月'+fm(pvNy)+(pvN?' | 环比'+hb((ny.length-pvNy)/pvN):''),c:'#2980b9'},
+      {l:'无对手未出单',v:fm(nn.length),h:'上月'+fm(pvNn)+(pvN?' | 环比'+hb((nn.length-pvNn)/pvN):''),c:'#e67e22'}]);
     var qh='<table class=data-table><thead><tr><th>分类</th><th>SKU数</th><th>占比</th></tr></thead><tbody>';
     qh+='<tr><td>有对手出单</td><td>'+hy.length+'</td><td>'+fp(hy.length/N)+'</td></tr>';
     qh+='<tr><td>有对手未出单</td><td>'+hn.length+'</td><td>'+fp(hn.length/N)+'</td></tr>';
@@ -484,23 +485,23 @@ function renderT5(){
     var bothPv=pvRows5.filter(function(r){return(r.plpCost>0||r.plpRev>0)&&(r.plgCost>0||r.plgRev>0)}).length;
 
     kpiGrid('t5-plp-kpi',[
-      {l:'PLP SKU数',v:fm(pp.length),h:'环比'+hb(ppPv.length?((pp.length-ppPv.length)/ppPv.length):'-')},
-      {l:'广告销量',v:fm(pS),h:'环比'+hb(pSC?((pS-pSC)/pSC):'-')},
-      {l:'广告销售额',v:fmm(pR),h:'环比'+hb(pRC?((pR-pRC)/pRC):'-')},
-      {l:'广告花费',v:fmm(pC),h:'环比'+hb(pCC?((pC-pCC)/pCC):'-')},
-      {l:'ACOS',v:aco(pC,pR),h:'上期'+aco(pCC,pRC)},
-      {l:'ACOAS',v:aco(pC,tR),h:'上期'+(tRPv?aco(pCC,tRPv):'-')}]);
+      {l:'PLP SKU数',v:fm(pp.length),h:ppPv.length?'上月'+fm(ppPv.length)+' | 环比'+hb((pp.length-ppPv.length)/ppPv.length):'-'},
+      {l:'广告销量',v:fm(pS),h:pSC?'上月'+fm(pSC)+' | 环比'+hb((pS-pSC)/pSC):'-'},
+      {l:'广告销售额',v:fmm(pR),h:pRC?'上月'+fmm(pRC)+' | 环比'+hb((pR-pRC)/pRC):'-'},
+      {l:'广告花费',v:fmm(pC),h:pCC?'上月'+fmm(pCC)+' | 环比'+hb((pC-pCC)/pCC):'-'},
+      {l:'ACOS',v:aco(pC,pR),h:pRC?'上月'+aco(pCC,pRC):'-'},
+      {l:'ACOAS',v:aco(pC,tR),h:tRPv?'上月'+aco(pCC,tRPv):'-'}]);
     kpiGrid('t5-plg-kpi',[
-      {l:'PLG SKU数',v:fm(pg.length),h:'环比'+hb(pgPv.length?((pg.length-pgPv.length)/pgPv.length):'-')},
-      {l:'广告销售额',v:fmm(gR),h:'环比'+hb(gRC?((gR-gRC)/gRC):'-')},
-      {l:'广告花费',v:fmm(gC),h:'环比'+hb(gCC?((gC-gCC)/gCC):'-')},
-      {l:'ACOS',v:aco(gC,gR),h:'上期'+aco(gCC,gRC)},
-      {l:'ACOAS',v:aco(gC,tR),h:'上期'+(tRPv?aco(gCC,tRPv):'-')}]);
+      {l:'PLG SKU数',v:fm(pg.length),h:pgPv.length?'上月'+fm(pgPv.length)+' | 环比'+hb((pg.length-pgPv.length)/pgPv.length):'-'},
+      {l:'广告销售额',v:fmm(gR),h:gRC?'上月'+fmm(gRC)+' | 环比'+hb((gR-gRC)/gRC):'-'},
+      {l:'广告花费',v:fmm(gC),h:gCC?'上月'+fmm(gCC)+' | 环比'+hb((gC-gCC)/gCC):'-'},
+      {l:'ACOS',v:aco(gC,gR),h:gRC?'上月'+aco(gCC,gRC):'-'},
+      {l:'ACOAS',v:aco(gC,tR),h:tRPv?'上月'+aco(gCC,tRPv):'-'}]);
     kpiGrid('t5-ad-comp',[
-      {l:'PLP+PLG同开',v:fm(both.length),h:'环比'+hb(bothPv?((both.length-bothPv)/bothPv):'-'),c:'#c0392b'},
-      {l:'单PLP',v:fm(pOnly.length),h:'环比'+hb(ppPv.length-bothPv?(((pOnly.length)-(ppPv.length-bothPv))/(ppPv.length-bothPv)*100):'-'),c:'#2980b9'},
-      {l:'仅PLG',v:fm(gOnly.length),h:'环比'+hb(pgPv.length-bothPv?(((gOnly.length)-(pgPv.length-bothPv))/(pgPv.length-bothPv)*100):'-'),c:'#e67e22'},
-      {l:'无广告',v:fm(noAd),h:'环比'+hb(pvRows5.length-noAd?((noAd-(pvRows5.length-noAd))/(pvRows5.length-noAd)*100):'-'),c:'#95a5a6'}]);
+      {l:'PLP+PLG同开',v:fm(both.length),h:bothPv?'上月'+fm(bothPv)+' | 环比'+hb((both.length-bothPv)/(bothPv||1)):'-',c:'#c0392b'},
+      {l:'单PLP',v:fm(pOnly.length),h:ppPv.length?'上月'+fm(ppPv.length-bothPv):'-',c:'#2980b9'},
+      {l:'仅PLG',v:fm(gOnly.length),h:pgPv.length?'上月'+fm(pgPv.length-bothPv):'-',c:'#e67e22'},
+      {l:'无广告',v:fm(noAd),h:pvRows5.length?'上月'+fm(pvRows5.length-noAd):'-',c:'#95a5a6'}]);
 
     function adDim(id,key,label,cf,rf){
         var dims={};rows.forEach(function(r){var k=key(r);var c=cf(r),rv=rf(r);if(!dims[k])dims[k]={sk:0,c:0,r:0};if(c>0||rv>0){dims[k].sk++;dims[k].c+=c;dims[k].r+=rv}});
@@ -596,12 +597,12 @@ function renderT8(){
     pvRows8.forEach(function(r){var rival=r.pwRival||r.curRivalQty||0;var own=r.curSalesQty||0;var cap=own+rival;pvCap+=cap;pvOwn+=own;pvRev+=r.curRevenue||0;pvCapDist[capTier(cap)]++;});
     pvAllShare=pvCap>0?pvOwn/pvCap:0;pvAllAvg=pvOwn>0?pvRev/pvOwn:0;
     kpiGrid('t8-kpi',[
-        {l:'月市场总容量',v:fm(capTotal),h:'环比'+hb(pvCap?((capTotal-pvCap)/pvCap):'-')},
-        {l:'新品总市占比',v:fp(allShare),h:'环比'+hb(pvAllShare?(allShare-pvAllShare):'-')},
-        {l:'月均货值(均价)',v:'$'+Math.round(allAvg),h:'环比'+hb(pvAllAvg?((allAvg-pvAllAvg)/pvAllAvg):'-')},
-        {l:'低市场(≤6)',v:capDist['低市场'],h:'环比'+hb(pvN2?((capDist['低市场']-pvCapDist['低市场'])/pvN2):'-'),c:'#c0392b'},
-        {l:'中市场(7-15)',v:capDist['中市场'],h:'环比'+hb(pvN2?((capDist['中市场']-pvCapDist['中市场'])/pvN2):'-'),c:'#e67e22'},
-        {l:'高市场(≥16)',v:capDist['高市场'],h:'环比'+hb(pvN2?((capDist['高市场']-pvCapDist['高市场'])/pvN2):'-'),c:'#27ae60'}
+        {l:'月市场总容量',v:fm(capTotal),h:pvCap?'上月'+fm(pvCap)+' | 环比'+hb((capTotal-pvCap)/pvCap):'-'},
+        {l:'新品总市占比',v:fp(allShare),h:pvAllShare?'上月'+fp(pvAllShare)+' | 环比'+hb(allShare-pvAllShare):'-'},
+        {l:'月均货值(均价)',v:'$'+Math.round(allAvg),h:pvAllAvg?'上月$'+Math.round(pvAllAvg)+' | 环比'+hb((allAvg-pvAllAvg)/pvAllAvg):'-'},
+        {l:'低市场(≤6)',v:capDist['低市场'],h:pvN2?'上月'+fm(pvCapDist['低市场'])+' | 环比'+hb((capDist['低市场']-pvCapDist['低市场'])/pvN2):'-',c:'#c0392b'},
+        {l:'中市场(7-15)',v:capDist['中市场'],h:pvN2?'上月'+fm(pvCapDist['中市场'])+' | 环比'+hb((capDist['中市场']-pvCapDist['中市场'])/pvN2):'-',c:'#e67e22'},
+        {l:'高市场(≥16)',v:capDist['高市场'],h:pvN2?'上月'+fm(pvCapDist['高市场'])+' | 环比'+hb((capDist['高市场']-pvCapDist['高市场'])/pvN2):'-',c:'#27ae60'}
     ]);
     // 市容量分层饼图
     try{
