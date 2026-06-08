@@ -402,18 +402,24 @@ function renderT4(){
       {l:'有对手未出单',v:fm(hn.length),h:'上月'+fm(pvHn)+(pvN?' | 环比'+hb((hn.length-pvHn)/pvN):''),c:'#c0392b'},
       {l:'无对手出单',v:fm(ny.length),h:'上月'+fm(pvNy)+(pvN?' | 环比'+hb((ny.length-pvNy)/pvN):''),c:'#2980b9'},
       {l:'无对手未出单',v:fm(nn.length),h:'上月'+fm(pvNn)+(pvN?' | 环比'+hb((nn.length-pvNn)/pvN):''),c:'#e67e22'}]);
-    var qh='<table class=data-table><thead><tr><th>分类</th><th>SKU数</th><th>占比</th></tr></thead><tbody>';
-    qh+='<tr><td>有对手出单</td><td>'+hy.length+'</td><td>'+fp(hy.length/N)+'</td></tr>';
-    qh+='<tr><td>有对手未出单</td><td>'+hn.length+'</td><td>'+fp(hn.length/N)+'</td></tr>';
-    qh+='<tr><td>无对手出单</td><td>'+ny.length+'</td><td>'+fp(ny.length/N)+'</td></tr>';
-    qh+='<tr><td>无对手未出单</td><td>'+nn.length+'</td><td>'+fp(nn.length/N)+'</td></tr></tbody></table>';
+    var allOrd=hy.length+ny.length,hasOrd=hy.length+hn.length;
+    var qh='<table class=data-table><thead><tr><th>分类</th><th>SKU数</th><th>占比</th><th>出单率</th></tr></thead><tbody>';
+    qh+='<tr><td>有对手出单</td><td>'+hy.length+'</td><td>'+fp(hy.length/N)+'</td><td></td></tr>';
+    qh+='<tr><td>有对手未出单</td><td>'+hn.length+'</td><td>'+fp(hn.length/N)+'</td><td></td></tr>';
+    qh+='<tr><td>无对手出单</td><td>'+ny.length+'</td><td>'+fp(ny.length/N)+'</td><td></td></tr>';
+    qh+='<tr><td>无对手未出单</td><td>'+nn.length+'</td><td>'+fp(nn.length/N)+'</td><td></td></tr>';
+    qh+='<tfoot><tr class=total-row><td>总出单率</td><td colspan=2>('+(allOrd)+'/'+N+')</td><td>'+fp(allOrd/N)+'</td></tr>';
+    qh+='<tr class=total-row><td>有对手出单率</td><td colspan=2>('+hy.length+'/'+(hasOrd)+')</td><td>'+(hasOrd?fp(hy.length/hasOrd):'-')+'</td></tr></tfoot>';
+    qh+='</tbody></table>';
     document.getElementById('t4-quad').innerHTML=qh;
     function q4t(id,key,label){
         var dims={};
         rows.forEach(function(r){var k=key(r);if(!dims[k])dims[k]={t:0,hy:0,hn:0,ny:0,nn:0};dims[k].t++;var h=hr(r),o=od(r);
             if(h&&o)dims[k].hy++;else if(h)dims[k].hn++;else if(o)dims[k].ny++;else dims[k].nn++});
-        var h='<table class=data-table><thead><tr><th>'+label+'</th><th>总数</th><th>有对手出单</th><th>有对手未出单</th><th>无对手出单</th><th>无对手未出单</th></tr></thead><tbody>';
-        Object.keys(dims).sort().forEach(function(k){var d=dims[k];h+='<tr><td>'+k+'</td><td>'+d.t+'</td><td>'+d.hy+'</td><td>'+d.hn+'</td><td>'+d.ny+'</td><td>'+d.nn+'</td></tr>'});h+='</tbody></table>';
+        var h='<table class=data-table><thead><tr><th>'+label+'</th><th>总数</th><th>有对手出单</th><th>有对手未出单</th><th>无对手出单</th><th>无对手未出单</th><th>总出单率</th><th>有对手出单率</th></tr></thead><tbody>';
+        Object.keys(dims).sort().forEach(function(k){var d=dims[k];var allOrd=d.hy+d.ny,hasROrd=d.hy+d.hn;
+            h+='<tr><td>'+k+'</td><td>'+d.t+'</td><td>'+d.hy+'</td><td>'+d.hn+'</td><td>'+d.ny+'</td><td>'+d.nn+'</td><td>'+fp(allOrd/d.t)+'</td><td>'+(hasROrd?fp(d.hy/hasROrd):'-')+'</td></tr>'});
+        h+='</tbody></table>';
         document.getElementById(id).innerHTML=h;return dims;
     }
     var anDims4=q4t('t4-an',function(r){return r.analyst||'未知'},'分析人');
