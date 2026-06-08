@@ -252,7 +252,7 @@ function renderT1(){
     var n=rows.filter(function(r){return r.cur8dStatus==='N'}).length;
     var un=N-y-n;
     // 市占比: 过往月用实际数据, 5月新品补充PW数据
-    // = (Σ月自身 + ΣPW自店) ÷ (Σ月自身 + Σ月对手 + ΣPW自店 + ΣPW对手)
+    var pvRows=pv>0?getRows(pv):[];
     var ownSum=0,rivalSum=0,pwOurSum=0,pwRivalSum=0,hasPW=false;
     rows.forEach(function(r){
       ownSum+=r.curSalesQty||0;
@@ -269,7 +269,6 @@ function renderT1(){
       var prvShareVal=(prvOwnSum+prvRivalSum)>0?prvOwnSum/(prvOwnSum+prvRivalSum):0;
       mktShareHint='环比'+hb(prvShareVal?(mktShareVal-prvShareVal):'-');
     }
-    var pvRows=pv>0?getRows(pv):[];
     var prvOrdRate=pv>0?pvRows.filter(function(r){return r.cur8dStatus==='Y'||r.cur8dStatus==='N'}).length/pvRows.length:0;
     kpiGrid('t1-kpi',[
         {l:'累计SKU',v:fm(N),h:'上月'+fm(pvRows.length)+(pvRows.length?' | 环比'+hb((N-pvRows.length)/pvRows.length):'')},
