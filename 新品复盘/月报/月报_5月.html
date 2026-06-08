@@ -329,9 +329,9 @@ function renderT2(){
     var colors=['#0f3460','#8e44ad','#e67e22','#c0392b','#2980b9'];
     try{
         var ds=[];sb.forEach(function(ld,i){ds.push({label:ld.substring(5)+'月上架',data:batches[ld].rev,borderColor:colors[i%5],tension:.3})});
-        var c1=document.getElementById('chart-px-rev');if(c1)allCharts.push(new Chart(c1,{type:'line',data:{labels:['1月','2月','3月','4月','5月'],datasets:ds},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}}));
+        var c1=document.getElementById('chart-px-rev');if(c1)allCharts.push(new Chart(c1,{type:'line',data:{labels:['1月','2月','3月','4月','5月'],datasets:ds},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}},plugins:[totalLabelPlugin]));
         var eds=[];sb.forEach(function(ld,i){var d=batches[ld];eds.push({label:ld.substring(5)+'月上架',data:[0,1,2,3,4].map(function(mi){return d.sku?Math.round(d.rev[mi]/d.sku):0}),borderColor:colors[i%5],tension:.3})});
-        var c2=document.getElementById('chart-px-eff');if(c2)allCharts.push(new Chart(c2,{type:'line',data:{labels:['1月','2月','3月','4月','5月'],datasets:eds},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}}));
+        var c2=document.getElementById('chart-px-eff');if(c2)allCharts.push(new Chart(c2,{type:'line',data:{labels:['1月','2月','3月','4月','5月'],datasets:eds},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}},plugins:[totalLabelPlugin]));
     }catch(e){}
     // 品线集中度：月度维度 + 品线维度, 柱下方标注总数
     var concMonths=Object.keys(batches).sort(),concCats={},totalSKU=0;pxData.forEach(function(s){var ld=s.listDate.substring(0,7);if(!ld||!concMonths.includes(ld))return;var c=s.cat||'未分类';if(!concCats[c])concCats[c]={};concCats[c][ld]=(concCats[c][ld]||0)+1;totalSKU++;});
@@ -548,7 +548,7 @@ function renderT6(){
     try{
         var cp=document.getElementById('chart-ad-comp');if(cp)allCharts.push(new Chart(cp,{type:'doughnut',data:{labels:['PLP+PLG同开','单PLP','仅PLG','无广告'],datasets:[{data:[both.length,pOnly.length,gOnly.length,noAd],backgroundColor:['#c0392b','#2980b9','#e67e22','#95a5a6']}]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{font:{size:11,boxWidth:12}}}}}}));
         var anNames5=[];Object.keys(plpAnDims).sort().forEach(function(k){anNames5.push(k)});
-        var ca5=document.getElementById('chart-ad-an');if(ca5)allCharts.push(new Chart(ca5,{type:'bar',data:{labels:anNames5,datasets:[{label:'PLP花费',data:anNames5.map(function(k){return plpAnDims[k].c}),backgroundColor:'#2980b9'},{label:'PLG花费',data:anNames5.map(function(k){return plgAnDims[k].c}),backgroundColor:'#e67e22'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}}));
+        var ca5=document.getElementById('chart-ad-an');if(ca5)allCharts.push(new Chart(ca5,{type:'bar',data:{labels:anNames5,datasets:[{label:'PLP花费',data:anNames5.map(function(k){return plpAnDims[k].c}),backgroundColor:'#2980b9'},{label:'PLG花费',data:anNames5.map(function(k){return plgAnDims[k].c}),backgroundColor:'#e67e22'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}},plugins:[totalLabelPlugin]));
     }catch(e){}
 
     var links=DATA.plpLinks||[];
@@ -716,7 +716,7 @@ function renderT4(){
         {label:'低(≤6)',data:catLbl.map(function(k){return catDims[k].capDist['低市场']}),backgroundColor:'#c0392b'},
         {label:'中(7-15)',data:catLbl.map(function(k){return catDims[k].capDist['中市场']}),backgroundColor:'#e67e22'},
         {label:'高(≥16)',data:catLbl.map(function(k){return catDims[k].capDist['高市场']}),backgroundColor:'#27ae60'}
-      ]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true}},plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}}));
+      ]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true}},plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}},plugins:[totalLabelPlugin]));
     }catch(e){}
     var anLbl=Object.keys(anDims).sort();
     try{
@@ -725,7 +725,7 @@ function renderT4(){
         {label:'低(≤6)',data:anLbl.map(function(k){return anDims[k].capDist['低市场']}),backgroundColor:'#c0392b'},
         {label:'中(7-15)',data:anLbl.map(function(k){return anDims[k].capDist['中市场']}),backgroundColor:'#e67e22'},
         {label:'高(≥16)',data:anLbl.map(function(k){return anDims[k].capDist['高市场']}),backgroundColor:'#27ae60'}
-      ]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true}},plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}}));
+      ]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true}},plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}},plugins:[totalLabelPlugin]));
     }catch(e){}
 }
 
