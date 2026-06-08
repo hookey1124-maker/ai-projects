@@ -56,7 +56,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="tab-content" id="tab2"><div class="section"><h3>品效Cohort</h3>
 <div class="chart-row"><div class="chart-box"><h4 id="t2-chart1-title">批次月度销售额</h4><canvas id="chart-px-rev" style="max-height:260px"></canvas></div><div class="chart-box"><h4 id="t2-chart2-title">品效趋势$/SKU</h4><canvas id="chart-px-eff" style="max-height:260px"></canvas></div></div>
 <div id="t2-cohort"></div>
-<div style="margin-top:16px"><h4 style="font-size:13px;color:#555;margin-bottom:8px">上架品线集中度</h4><canvas id="chart-cat-conc" style="max-height:260px;margin-bottom:12px"></canvas></div>
+<div style="margin-top:16px"><h4 style="font-size:13px;color:#555;margin-bottom:8px">上架品线集中度</h4><canvas id="chart-cat-conc" style="max-height:260px;margin-bottom:12px"></canvas><div id="t2-cat-conc-table"></div></div>
 <div style="margin-top:16px"><h4 style="font-size:13px;color:#555;margin-bottom:8px">品效 x 品线 ($/SKU)</h4><canvas id="chart-px-cat" style="max-height:240px;margin-bottom:12px"></canvas><div id="t2-px-cat"></div></div></div></div>
 
 <div class="tab-content" id="tab3">
@@ -333,6 +333,10 @@ function renderT2(){
     var catColors2=['#0f3460','#8e44ad','#e67e22','#c0392b','#27ae60','#2980b9','#95a5a6'];
     var concDS=[];catList.forEach(function(c,i){concDS.push({label:c,data:concMonths.map(function(m){return concCats[c][m]||0}),backgroundColor:catColors2[i%7]});});
     try{var ccc=document.getElementById('chart-cat-conc');if(ccc)allCharts.push(new Chart(ccc,{type:'bar',data:{labels:moLbls,datasets:concDS},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true,title:{display:true,text:'SKU数'}}},plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}}));}catch(e){}
+    // 品线集中度明细表
+    var cch2='<table class=data-table><thead><tr><th>品线</th>';concMonths.forEach(function(m){cch2+='<th>'+m.substring(5)+'月上架</th>';});cch2+='<th>合计</th></tr></thead><tbody>';
+    catList.forEach(function(c){cch2+='<tr><td>'+c+'</td>';var tot=0;concMonths.forEach(function(m){var v=concCats[c][m]||0;tot+=v;cch2+='<td>'+v+'</td>';});cch2+='<td><b>'+tot+'</b></td></tr>';});
+    cch2+='</tbody></table>';document.getElementById('t2-cat-conc-table').innerHTML=cch2;
     // 品效 x 品线
     var pxByCat={},allBatches=Object.keys(batches).sort();
     pxData.forEach(function(s){var cat=s.cat||'未分类';var ld=s.listDate.substring(0,7);if(!pxByCat[cat])pxByCat[cat]={};if(!pxByCat[cat][ld])pxByCat[cat][ld]={sku:0,rev:0};pxByCat[cat][ld].sku++;pxByCat[cat][ld].rev+=s.r5||0;});
