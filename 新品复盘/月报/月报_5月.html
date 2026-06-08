@@ -361,7 +361,7 @@ function renderT2(){
     // 品效x品线柱状图
     var pxLbl=[],pxVal=[];
     Object.keys(pxByCat).sort().forEach(function(cat){var totalSku=0,totalRev=0;for(var b in pxByCat[cat]){totalSku+=pxByCat[cat][b].sku;totalRev+=pxByCat[cat][b].rev;}pxLbl.push(cat);pxVal.push(totalSku?Math.round(totalRev/totalSku):0);});
-    try{var pc=document.getElementById('chart-px-cat');if(pc)allCharts.push(new Chart(pc,{type:'bar',data:{labels:pxLbl,datasets:[{label:'$/SKU',data:pxVal,backgroundColor:'#8e44ad',borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,title:{display:true,text:'$/SKU'}}}}}));}catch(e){}
+    try{var pc=document.getElementById('chart-px-cat');if(pc)allCharts.push(new Chart(pc,{type:'line',data:{labels:pxLbl,datasets:[{label:'$/SKU',data:pxVal,borderColor:'#8e44ad',backgroundColor:'rgba(142,68,173,0.1)',fill:true,tension:.3,borderWidth:2.5,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,title:{display:true,text:'$/SKU'}}}}}));}catch(e){}
 }
 
 function renderT3(){
