@@ -62,6 +62,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="tab-content" id="tab3">
 <div class="section"><h3>品线维度</h3><div class="chart-box" style="margin-bottom:16px"><canvas id="chart-cat-combo" style="max-height:300px"></canvas></div><div id="t3-cat"></div></div>
 <div class="section"><h3>分析人维度</h3><div class="chart-box" style="margin-bottom:16px"><canvas id="chart-an-combo" style="max-height:300px"></canvas></div><div id="t3-an"></div><div id="t3-an-freq" style="margin-top:12px"></div></div>
+<div class="section"><h3>拓展类型</h3><div id="t3-exp"></div></div>
 </div>
 
 <div class="tab-content" id="tab4"><div class="section"><h3>🌐 市场容量 &amp; 市占比分布</h3><div class="kpi-grid" id="t4-kpi"></div><div class="chart-row"><div class="chart-box"><h4>市占分层分布</h4><canvas id="chart-share-tier" style="max-height:240px"></canvas></div><div class="chart-box"><h4>货值分布（月销售额/月销量）</h4><canvas id="chart-avgprice" style="max-height:240px"></canvas></div></div><div id="t4-tier-table"></div>
@@ -384,6 +385,11 @@ function renderT3(){
     var fh2='<table class=data-table><thead><tr><th>分析人</th><th>SKU数</th><th>'+pv+'月总频次</th><th>'+m+'月总频次</th><th>'+pv+'月均次/SKU</th><th>'+m+'月均次/SKU</th><th>环比</th></tr></thead><tbody>';
     Object.keys(freqDims).sort().forEach(function(k){var d=freqDims[k];fh2+='<tr><td>'+k+'</td><td>'+d.sk+'</td><td>'+(d.f4||0)+'</td><td>'+(d.f5||0)+'</td><td>'+(d.sk?(d.f4/d.sk).toFixed(1):'-')+'</td><td>'+(d.sk?(d.f5/d.sk).toFixed(1):'-')+'</td><td>'+hb(d.f4?((d.f5-d.f4)/d.f4):'-')+'</td></tr>'});
     fh2+='</tbody></table>';document.getElementById('t3-an-freq').innerHTML=fh2;
+    // 拓展类型
+    var expDims3={};skus.forEach(function(s){var e=s.exp||'其他';if(!expDims3[e])expDims3[e]={sk:0,sc:0,sp:0,rc:0,rp:0,oc:0};expDims3[e].sk++;expDims3[e].sc+=s['s'+m];expDims3[e].sp+=s['s'+pv];expDims3[e].rc+=s['r'+m];expDims3[e].rp+=s['r'+pv];if(s['o'+m]==='Y'||s['o'+m]==='N')expDims3[e].oc++;});
+    var eh='<table class=data-table><thead><tr><th>拓展类型</th><th>SKU数</th><th>'+pv+'月销量</th><th>'+m+'月销量</th><th>销量环比</th><th>'+pv+'月销售额</th><th>'+m+'月销售额</th><th>销售额环比</th><th>出单SKU</th><th>出单率</th></tr></thead><tbody>';
+    Object.keys(expDims3).sort().forEach(function(k){var d=expDims3[k];eh+='<tr><td>'+k+'</td><td>'+d.sk+'</td><td>'+fm(d.sp)+'</td><td>'+fm(d.sc)+'</td><td>'+hb(d.sp?((d.sc-d.sp)/d.sp):'-')+'</td><td>'+fmm(d.rp)+'</td><td>'+fmm(d.rc)+'</td><td>'+hb(d.rp?((d.rc-d.rp)/d.rp):'-')+'</td><td>'+d.oc+'</td><td>'+fp(d.oc/d.sk)+'</td></tr>'});
+    eh+='</tbody></table>';document.getElementById('t3-exp').innerHTML=eh;
     // 双轴组合图：柱状=销量(左轴), 折线=销售额(右轴)
     try{
         var cn=[];Object.keys(catDims).sort().forEach(function(k){cn.push(k)});
