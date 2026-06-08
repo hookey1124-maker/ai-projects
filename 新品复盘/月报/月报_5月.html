@@ -172,7 +172,7 @@ function parseMonthlyData(wb){
         d.mTot[m]={sales:ts,revenue:tr};
     }
     // 月度汇总 — 部门总数据（Row 2=统计行）
-    var deptSheet=wb.Sheets['月度汇总'];
+    var deptSheet=wb.Sheets['三部月度汇总'];
     if(deptSheet){
         var deptRows=XLSX.utils.sheet_to_json(deptSheet,{header:1});
         if(deptRows.length>1){
@@ -188,7 +188,7 @@ function parseMonthlyData(wb){
         }
     }
     // 维度汇总 — 品线+分析人月度销量
-    var dimSheet=wb.Sheets['维度汇总'];
+    var dimSheet=wb.Sheets['三部维度汇总'];
     d.dimCatSummary=[];d.dimAnSummary=[];
     if(dimSheet){
         var dimRows=XLSX.utils.sheet_to_json(dimSheet,{header:1});
@@ -267,7 +267,7 @@ function renderT1(){
       deptHtml+='<div class=kpi-card style=border-left:4px solid var(--c-revenue)><div class=label>新品'+m+'月销售额</div><div class=val>'+fmm(cur.revenue)+'</div><div class=hb>占部门'+fp(DATA.deptRevPct||0)+'</div></div>';
       deptHtml+='<div class=kpi-card style=border-left:4px solid #6c3483><div class=label>部门'+m+'月销售额</div><div class=val>'+fmm(dm.revenue[m]||0)+'</div><div class=hb>部门总计</div></div>';
     }else{
-      deptHtml+='<div class=kpi-card style=border-left:4px solid #ccc><div class=label>部门占比</div><div class=val style=font-size:14px;color:#999>需月度汇总数据</div><div class=hb>上传含"月度汇总"Sheet的Excel</div></div>';
+      deptHtml+='<div class=kpi-card style=border-left:4px solid #ccc><div class=label>部门占比</div><div class=val style=font-size:14px;color:#999>需月度汇总数据</div><div class=hb>上传含"三部月度汇总"Sheet的Excel</div></div>';
     }
     // PW市占（仅当月参考，过往月已有实际市占）
     deptHtml+='<div class=kpi-card style=border-left:4px solid #8e44ad><div class=label>PW加权市占(当月参考)</div><div class=val>'+fp(pwAvg)+'</div><div class=hb>'+pwCnt+'个有销量SKU | 仅当月有效</div></div>';
