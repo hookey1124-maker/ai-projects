@@ -695,7 +695,7 @@ function renderT8(){
 }
 
 function renderT7(){
-    var m=DATA.monthIndex,rows=getRows(m),N=rows.length,pv=m-1;
+    var m=DATA.monthIndex,rows=getRows(m),N=rows.length,pv=m-1,pvRows=pv>0?getRows(pv):[];
     var cur=DATA.mTot[m]||{},prv=DATA.mTot[pv]||{};
     var y=rows.filter(function(r){return r.cur8dStatus==='Y'}).length;
     var n=rows.filter(function(r){return r.cur8dStatus==='N'}).length;
