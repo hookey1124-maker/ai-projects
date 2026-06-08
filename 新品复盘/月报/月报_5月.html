@@ -585,6 +585,7 @@ function renderT6(){
 
 function renderT7(){
     var m=DATA.monthIndex,pv=m-1,skus=DATA.skuData;
+    skus=skus.filter(function(s){return s['a'+m]||(s['s'+m]||0)>0||(s['ri'+m]||0)>0;});
     function capTier6(cap){return cap<=6?'低':(cap<=15?'中':'高');}
     DATA._f7={analyst:'',category:'',ord8:'',batch:'',mktStatus:'',capTier:'',hasRival:''};
     DATA._applyT6=function(){
@@ -643,7 +644,9 @@ function renderT7(){
 
 
 function renderT4(){
-    var m=DATA.monthIndex,pv=m-1,rows=getRows(m),N=rows.length;
+    var m=DATA.monthIndex,pv=m-1,rows=getRows(m);
+    rows=rows.filter(function(r){return r.analyst||(r.curSalesQty||0)>0||(r.curRivalQty||0)>0;});
+    var N=rows.length;
     // 市容量规则：低≤6 / 中7-15 / 高≥16
     function capTier(cap){return cap<=6?'低市场':(cap<=15?'中市场':'高市场');}
     function shareTier(sh,rival){return !rival?'无对手':(sh>=0.75?'高(≥75%)':(sh>=0.5?'中(50-75%)':'低(<50%)'));}
