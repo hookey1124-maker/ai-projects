@@ -48,8 +48,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="kpi-grid" id="t1-kpi"></div>
 <div class="kpi-grid" id="t1-dept-kpi"></div>
 <div class="chart-row">
-<div class="chart-box"><h4>新品 vs 部门月度销量对比</h4><canvas id="chart-dept-bar" style="max-height:260px"></canvas></div><div class="chart-box"><h4>新品 vs 部门月度销售额对比</h4><canvas id="chart-dept-rev" style="max-height:260px"></canvas></div></div>
-<div class="chart-row"><div class="chart-box"><h4>月度销量趋势</h4><canvas id="chart-sales"></canvas></div><div class="chart-box"><h4>月度销售额趋势</h4><canvas id="chart-rev"></canvas></div></div>
+<div class="chart-box"><h4>月度销量对比（新品 vs 部门）</h4><canvas id="chart-sales-combo" style="max-height:260px"></canvas></div><div class="chart-box"><h4>月度销售额对比（新品 vs 部门）</h4><canvas id="chart-rev-combo" style="max-height:260px"></canvas></div></div>
+<div class="chart-row"><div class="chart-box"><h4>市占比趋势（月度）</h4><canvas id="chart-share-mo" style="max-height:240px"></canvas></div><div class="chart-box"><h4>市占比趋势（品线）</h4><canvas id="chart-share-cat" style="max-height:240px"></canvas></div></div>
 <div class="section"><h3>出单分布(5月)</h3><canvas id="chart-ord8" style="max-height:250px"></canvas></div>
 <div class="section"><h3>市场状态分布</h3><div id="t1-mkt"></div></div></div>
 
@@ -262,10 +262,25 @@ function renderT1(){
         {l:'出单率',v:fp((y+n)/N),h:prvOrdRate?'上月'+fp(prvOrdRate)+' | 环比'+hb((y+n)/N-prvOrdRate):'-'}]);
     var lb=[],sd=[],rd=[];
     for(var mi=1;mi<=m;mi++){lb.push(mi+'月');sd.push(DATA.mTot[mi]?DATA.mTot[mi].sales:0);rd.push(DATA.mTot[mi]?DATA.mTot[mi].revenue:0);}
+    // 1-5月新品vs部门 销量+销售额 组合柱状图
+    var dm2=DATA.deptMonthly,deptSD=[],deptRD=[];
+    for(var mi=1;mi<=m;mi++){deptSD.push(dm2?Math.round(dm2.sales[mi]||0):0);deptRD.push(dm2?Math.round(dm2.revenue[mi]||0):0);}
     try{
-        var c1=document.getElementById('chart-sales');if(c1)allCharts.push(new Chart(c1,{type:'line',data:{labels:lb,datasets:[{label:'销量',data:sd,borderColor:'#0f3460',backgroundColor:'rgba(15,52,96,0.1)',fill:true,tension:.3,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}}));
-        var c2=document.getElementById('chart-rev');if(c2)allCharts.push(new Chart(c2,{type:'line',data:{labels:lb,datasets:[{label:'销售额($)',data:rd,borderColor:'#8e44ad',backgroundColor:'rgba(142,68,173,0.1)',fill:true,tension:.3,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}}));
-        var c3=document.getElementById('chart-ord8');if(c3)allCharts.push(new Chart(c3,{type:'doughnut',data:{labels:['Y(8日内)','N(8日外)','未出单'],datasets:[{data:[y,n,un],backgroundColor:['#27ae60','#e67e22','#c0392b'],borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}}));
+      var cs1=document.getElementById('chart-sales-combo');if(cs1)allCharts.push(new Chart(cs1,{type:'bar',data:{labels:lb,datasets:[{label:'新品',data:sd,backgroundColor:'#0f3460',borderRadius:3},{label:'部门',data:deptSD,backgroundColor:'rgba(15,52,96,0.2)',borderColor:'#0f3460',borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}},scales:{y:{beginAtZero:true,title:{display:true,text:'销量',font:{size:10}}}}}}));
+      var cs2=document.getElementById('chart-rev-combo');if(cs2)allCharts.push(new Chart(cs2,{type:'bar',data:{labels:lb,datasets:[{label:'新品',data:rd,backgroundColor:'#8e44ad',borderRadius:3},{label:'部门',data:deptRD,backgroundColor:'rgba(142,68,173,0.2)',borderColor:'#8e44ad',borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}},scales:{y:{beginAtZero:true,title:{display:true,text:'销售额($)',font:{size:10}}}}}}));
+      var c3=document.getElementById('chart-ord8');if(c3)allCharts.push(new Chart(c3,{type:'doughnut',data:{labels:['Y(8日内)','N(8日外)','未出单'],datasets:[{data:[y,n,un],backgroundColor:['#27ae60','#e67e22','#c0392b'],borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}}));
+    }catch(e){}
+    // 市占比趋势 — 月度 + 品线 —
+    try{
+      // 月度市占比：1-5月新款总市占比趋势
+      var shareMo=[];for(var mi2=1;mi2<=m;mi2++){var ownMo=DATA.mTot[mi2]?DATA.mTot[mi2].sales:0,rivalMo=0;getRows(mi2).forEach(function(r){rivalMo+=r.curRivalQty||0;});shareMo.push((ownMo+rivalMo)>0?ownMo/(ownMo+rivalMo):0);}
+      var csm=document.getElementById('chart-share-mo');if(csm)allCharts.push(new Chart(csm,{type:'line',data:{labels:lb,datasets:[{label:'新品总市占比',data:shareMo,borderColor:'#0f3460',backgroundColor:'rgba(15,52,96,0.08)',fill:true,tension:.3,borderWidth:2.5,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:1,title:{display:true,text:'市占比'},ticks:{callback:function(v){return (v*100).toFixed(0)+'%'}}}}}}));
+      // 品线市占比走势：各品线1-5月市占比折线
+      var catShare={},catNames7=[];rows.forEach(function(r){var c=r.category||'未分类';if(catNames7.indexOf(c)<0)catNames7.push(c);});
+      catNames7.forEach(function(cn){catShare[cn]=[];for(var mi3=1;mi3<=m;mi3++){var rs7=getRows(mi3).filter(function(r){return r.category===cn});var os7=0,rs7r=0;rs7.forEach(function(r){os7+=r.curSalesQty||0;rs7r+=r.curRivalQty||0;});catShare[cn].push((os7+rs7r)>0?os7/(os7+rs7r):0);}});
+      var catClrs=['#0f3460','#8e44ad','#e67e22','#c0392b','#27ae60','#2980b9','#95a5a6'];var csDS=[];
+      catNames7.forEach(function(cn,i){if(catShare[cn].some(function(v){return v>0}))csDS.push({label:cn,data:catShare[cn],borderColor:catClrs[i%7],tension:.3,borderWidth:2,pointRadius:2,fill:false});});
+      var csc=document.getElementById('chart-share-cat');if(csc)allCharts.push(new Chart(csc,{type:'line',data:{labels:lb,datasets:csDS},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:9},usePointStyle:true,boxWidth:8}}},scales:{y:{min:0,max:1,title:{display:true,text:'市占比'},ticks:{callback:function(v){return (v*100).toFixed(0)+'%'}}}}}}));
     }catch(e){}
     var mks={};rows.forEach(function(r){var s=r.curMarketStatus||'';if(!s)s='-';mks[s]=(mks[s]||0)+1;});
     var mh='<table class=data-table><thead><tr><th>市场状态</th><th>SKU数</th><th>占比</th></tr></thead><tbody>';
@@ -287,18 +302,6 @@ function renderT1(){
       deptHtml+='<div class=kpi-card style=border-left:4px solid #ccc;grid-column:1/-1><div class=label>部门对比数据</div><div class=val style=font-size:14px;color:#999>需"三部月度汇总"Sheet</div></div>';
     }
     document.getElementById('t1-dept-kpi').innerHTML=deptHtml;
-    // 部门对比柱状图
-    if(dm&&dmCur>0){
-      try{
-        var deptSales=[],deptRev=[],newSales=[],newRev=[],deptLbl=[];
-        for(var mi2=1;mi2<=5;mi2++){
-          deptLbl.push(mi2+'月');newSales.push(DATA.mTot[mi2]?DATA.mTot[mi2].sales:0);newRev.push(DATA.mTot[mi2]?DATA.mTot[mi2].revenue:0);
-          deptSales.push(dm.sales[mi2]||0);deptRev.push(dm.revenue[mi2]||0);
-        }
-        var cd1=document.getElementById('chart-dept-bar');if(cd1)allCharts.push(new Chart(cd1,{type:'bar',data:{labels:deptLbl,datasets:[{label:'新品销量',data:newSales,backgroundColor:'#0f3460',borderRadius:3},{label:'部门销量',data:deptSales,backgroundColor:'rgba(15,52,96,0.25)',borderColor:'#0f3460',borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}},scales:{y:{beginAtZero:true,title:{display:true,text:'销量',font:{size:10}}}}}}));
-        var cd2=document.getElementById('chart-dept-rev');if(cd2)allCharts.push(new Chart(cd2,{type:'bar',data:{labels:deptLbl,datasets:[{label:'新品销售额($)',data:newRev,backgroundColor:'#8e44ad',borderRadius:3},{label:'部门销售额($)',data:deptRev,backgroundColor:'rgba(142,68,173,0.2)',borderColor:'#8e44ad',borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}},scales:{y:{beginAtZero:true,title:{display:true,text:'销售额($)',font:{size:10}}}}}}));
-      }catch(e){}
-    }
 }
 
 function renderT2(){
