@@ -595,8 +595,16 @@ function renderT6(){
     fh+='<span><select onchange=\"DATA._f6.mktStatus=this.value;DATA._applyT6()\"><option value=\"\">市场状态:全部</option>';mkts.sort().forEach(function(s){fh+='<option>'+s+'</option>'});fh+='</select></span>';
     fh+='<span><select onchange=\"DATA._f6.capTier=this.value;DATA._applyT6()\"><option value=\"\">月市容量:全部</option><option>低</option><option>中</option><option>高</option></select></span>';
     fh+='<span id=t6-count style=\"font-size:12px;color:#888\"></span>';
-    fh+='<button class=reset-btn onclick=\"DATA._f6={analyst:\"\",category:\"\",ord8:\"\",batch:\"\",mktStatus:\"\",capTier:\"\"};DATA._applyT6()\">重置</button>';
+    fh+='<button class=reset-btn id=t6-reset-btn>重置</button>';
     document.getElementById('t6-filter').innerHTML=fh;DATA._applyT6();
+    setTimeout(function(){
+      var rb=document.getElementById('t6-reset-btn');
+      if(rb)rb.onclick=function(){
+        DATA._f6={analyst:'',category:'',ord8:'',batch:'',mktStatus:'',capTier:''};
+        document.querySelectorAll('#t6-filter select').forEach(function(s){s.value='';});
+        DATA._applyT6();
+      };
+    },50);
 }
 
 
