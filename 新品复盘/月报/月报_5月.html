@@ -251,20 +251,23 @@ function renderT1(){
     var y=rows.filter(function(r){return r.cur8dStatus==='Y'}).length;
     var n=rows.filter(function(r){return r.cur8dStatus==='N'}).length;
     var un=N-y-n;
-    // 市占比 + 环比
-    var ownSum=0,rivalSum=0,prvOwnSum=0,prvRivalSum=0;
-    var pvRows=pv>0?getRows(pv):[];
-    rows.forEach(function(r){ownSum+=r.curSalesQty||0;rivalSum+=r.curRivalQty||0;});
-    pvRows.forEach(function(r){prvOwnSum+=r.curSalesQty||0;prvRivalSum+=r.curRivalQty||0;});
-    var mktShareVal=0,prvShareVal=0,mktShareLabel='',mktShareHint='';
-    if(rivalSum>0||m<5){
-      mktShareVal=(ownSum+rivalSum)>0?ownSum/(ownSum+rivalSum):0;
-      prvShareVal=(prvOwnSum+prvRivalSum)>0?prvOwnSum/(prvOwnSum+prvRivalSum):0;
-      mktShareLabel='市占比';mktShareHint='环比'+hb(prvShareVal?(mktShareVal-prvShareVal):'-');
-    }else{
-      var pwOur=0,pwRival=0;rows.forEach(function(r){pwOur+=r.pwOur||0;pwRival+=r.pwRival||0;});
-      mktShareVal=(pwOur+pwRival)>0?pwOur/(pwOur+pwRival):0;
-      mktShareLabel='PW市占(当月参考)';mktShareHint='对手数据未出，暂用PW';
+    // 市占比: 过往月用实际数据, 5月新品补充PW数据
+    // = (Σ月自身 + ΣPW自店) ÷ (Σ月自身 + Σ月对手 + ΣPW自店 + ΣPW对手)
+    var ownSum=0,rivalSum=0,pwOurSum=0,pwRivalSum=0,hasPW=false;
+    rows.forEach(function(r){
+      ownSum+=r.curSalesQty||0;
+      if(r.curRivalQty>0)rivalSum+=r.curRivalQty;
+      else if(m>=5){var pwO=r.pwOur||0,pwR=r.pwRival||0;if(pwO>0||pwR>0){pwOurSum+=pwO;pwRivalSum+=pwR;hasPW=true;}}
+    });
+    var totalOwn=ownSum+pwOurSum,totalCap=ownSum+rivalSum+pwOurSum+pwRivalSum;
+    var mktShareVal=totalCap>0?totalOwn/totalCap:0,mktShareLabel='市占比',mktShareHint='';
+    DATA._totalShare=mktShareVal; // 统一市占比，供Tab8使用
+    if(hasPW)mktShareHint='5月为PW数据 | 环比-';
+    else{
+      var prvOwnSum=0,prvRivalSum=0;var pvRows=pv>0?getRows(pv):[];
+      pvRows.forEach(function(r){prvOwnSum+=r.curSalesQty||0;prvRivalSum+=r.curRivalQty||0;});
+      var prvShareVal=(prvOwnSum+prvRivalSum)>0?prvOwnSum/(prvOwnSum+prvRivalSum):0;
+      mktShareHint='环比'+hb(prvShareVal?(mktShareVal-prvShareVal):'-');
     }
     var prvOrdRate=pv>0?getRows(pv).filter(function(r){return r.cur8dStatus==='Y'||r.cur8dStatus==='N'}).length/getRows(pv).length:0;
     kpiGrid('t1-kpi',[
@@ -644,6 +647,7 @@ function renderT8(){
         anDims[a].n++;anDims[a].own+=own;anDims[a].rival+=rival;anDims[a].cap+=cap;anDims[a].rev+=rev;anDims[a].capDist[ct]++;
     });
     var allShare=capTotal>0?ownTotal/capTotal:0;
+    var allShare=DATA._totalShare||0;
     var allAvg=ownTotal>0?revTotal/ownTotal:0;
     // KPI
     // 上月对比
