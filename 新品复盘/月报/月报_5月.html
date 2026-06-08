@@ -250,9 +250,9 @@ function renderT1(){
     var actShareRows=rows.filter(function(r){return r.isActualShare&&r.curSalesQty>0});
     if(actShareRows.length>0){
       var shW=0,shTS=0;actShareRows.forEach(function(r){shW+=r.curMarketShare*r.curSalesQty;shTS+=r.curSalesQty;});
-      mktShareVal=shTS?shW/shTS:0;mktShareLabel='加权市占';mktShareHint=actShareRows.length+'个有销量SKU | 实际数据';
+      mktShareVal=shTS?shW/shTS:0;mktShareLabel='加权市占';mktShareHint='∑(各SKU市占×销量)÷总销量 | '+actShareRows.length+'个有销量SKU';
     }else{
-      mktShareVal=pwAvg;mktShareLabel='PW市占(当月参考)';mktShareHint=pwCnt+'个SKU | 销量加权';
+      mktShareVal=pwAvg;mktShareLabel='PW市占(当月参考)';mktShareHint='∑(各SKU的PW市占×销量)÷总销量 | 当月实际对手数据未出';
     }
     kpiGrid('t1-kpi',[{l:'累计SKU',v:fm(N)},{l:m+'月销量',v:fm(cur.sales),h:'环比'+hb(prv.sales?((cur.sales-prv.sales)/prv.sales*100):'-')},
         {l:m+'月销售额',v:fmm(cur.revenue),h:'环比'+hb(prv.revenue?((cur.revenue-prv.revenue)/prv.revenue*100):'-')},
