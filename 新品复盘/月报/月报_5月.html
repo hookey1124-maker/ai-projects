@@ -569,7 +569,7 @@ function renderT6(){
         filtered.forEach(function(s){
           var hasRival=(s['ri'+m]||0)>0?'有':'无';
           var actShare=s['share'+m]||0,own=s['s'+m]||0;
-          var rival=s['ri'+m]||0;if(!rival&&pv>0&&s.listDate.substring(0,7)!=='2026-0'+m)rival=s['ri'+pv]||0;
+          var rival=s['ri'+m]||0;
           var cap=own+rival,capT=capTier6(cap);
           h+='<tr><td>'+s.sku+'</td><td>'+s.listDate.substring(0,10)+'</td><td>'+s['a'+m]+'</td><td>'+s.cat+'</td><td>'+fm(s['s'+pv])+'</td><td>'+fm(own)+'</td><td>'+fmm(s['r'+pv])+'</td><td>'+fmm(s['r'+m])+'</td><td>'+hasRival+'</td><td>'+fp(actShare)+'</td><td>'+fm(cap)+' ('+capT+')</td><td>'+s['o'+m]+'</td><td>'+s['m'+m]+'</td></tr>';
           tSp+=s['s'+pv];tSc+=own;tRp+=s['r'+pv];tRc+=s['r'+m];
@@ -610,11 +610,9 @@ function renderT8(){
     var capDist={低市场:0,中市场:0,高市场:0};
     var shareDist={}; // by capacity tier x share tier
     var catDims={},anDims={};
-    // 5月对手数据未出，用4月对手；过往月用实际数据
-    var rivalLookup={},newLaunch={};if(m>=5){var pvR2=getRows(m-1);pvR2.forEach(function(x){rivalLookup[x.sku]=x.curRivalQty||0;});}
-    rows.forEach(function(r){if(r.listDate&&r.listDate.substring(0,7)==='2026-0'+m)newLaunch[r.sku]=1;});
+    // 市容量 = 自身销量 + 对手销量（全部用实际月数据）
     rows.forEach(function(r){
-        var rival=r.curRivalQty||(newLaunch[r.sku]?0:rivalLookup[r.sku]||0);
+        var rival=r.curRivalQty||0;
         var own=r.curSalesQty||0,rev=r.curRevenue||0;
         var cap=own+rival,share=cap>0?own/cap:0;
         capTotal+=cap;ownTotal+=own;revTotal+=rev;
@@ -636,7 +634,7 @@ function renderT8(){
     var pvRows8=pv>0?getRows(pv):[],pvN2=pvRows8.length||N;
     var pvCap=0,pvOwn=0,pvRev=0,pvAllShare=0,pvAllAvg=0;
     var pvCapDist={低市场:0,中市场:0,高市场:0};
-    pvRows8.forEach(function(r){var rival=r.curRivalQty||0;var own=r.curSalesQty||0;var cap=own+rival;pvCap+=cap;pvOwn+=own;pvRev+=r.curRevenue||0;pvCapDist[capTier(cap)]++;});
+    pvRows8.forEach(function(r){var rival=r.curRivalQty||0,own=r.curSalesQty||0;pvCap+=own+rival;pvOwn+=own;pvRev+=r.curRevenue||0;pvCapDist[capTier(own+rival)]++;});
     pvAllShare=pvCap>0?pvOwn/pvCap:0;pvAllAvg=pvOwn>0?pvRev/pvOwn:0;
     kpiGrid('t8-kpi',[
         {l:'月市场总容量',v:fm(capTotal),h:pvCap?'上月'+fm(pvCap)+' | 环比'+hb((capTotal-pvCap)/pvCap):'-'},
