@@ -326,16 +326,15 @@ function renderT2(){
         var eds=[];sb.forEach(function(ld,i){var d=batches[ld];eds.push({label:ld.substring(5)+'月上架',data:[0,1,2,3,4].map(function(mi){return d.sku?Math.round(d.rev[mi]/d.sku):0}),borderColor:colors[i%5],tension:.3})});
         var c2=document.getElementById('chart-px-eff');if(c2)allCharts.push(new Chart(c2,{type:'line',data:{labels:['1月','2月','3月','4月','5月'],datasets:eds},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}}));
     }catch(e){}
-    // 品线集中度：X=上架月份, 堆叠=品线, Y=SKU数
-    var concMonths=Object.keys(batches).sort(),concCats={};pxData.forEach(function(s){var ld=s.listDate.substring(0,7);if(!ld||!concMonths.includes(ld))return;var c=s.cat||'未分类';if(!concCats[c])concCats[c]={};concCats[c][ld]=(concCats[c][ld]||0)+1;});
-    var catList=Object.keys(concCats).sort();
-    var moLbls=concMonths.map(function(m){return m.substring(5)+'月上架'});
+    // 品线集中度：X=品线(按SKU数降序), Y=SKU数(总计), 标注占比
+    var concMonths=Object.keys(batches).sort(),concCats={},totalSKU=0;pxData.forEach(function(s){var ld=s.listDate.substring(0,7);if(!ld||!concMonths.includes(ld))return;var c=s.cat||'未分类';if(!concCats[c])concCats[c]={};concCats[c][ld]=(concCats[c][ld]||0)+1;totalSKU++;});
+    var catList=Object.keys(concCats).sort(function(a,b){var ta=0,tb=0;concMonths.forEach(function(m){ta+=concCats[a][m]||0;tb+=concCats[b][m]||0;});return tb-ta;});
+    var catVals=catList.map(function(c){var t=0;concMonths.forEach(function(m){t+=concCats[c][m]||0;});return t;});
     var catColors2=['#0f3460','#8e44ad','#e67e22','#c0392b','#27ae60','#2980b9','#95a5a6'];
-    var concDS=[];catList.forEach(function(c,i){concDS.push({label:c,data:concMonths.map(function(m){return concCats[c][m]||0}),backgroundColor:catColors2[i%7]});});
-    try{var ccc=document.getElementById('chart-cat-conc');if(ccc)allCharts.push(new Chart(ccc,{type:'bar',data:{labels:moLbls,datasets:concDS},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true,title:{display:true,text:'SKU数'}}},plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}}));}catch(e){}
+    try{var ccc=document.getElementById('chart-cat-conc');if(ccc)allCharts.push(new Chart(ccc,{type:'bar',data:{labels:catList,datasets:[{label:'SKU数',data:catVals,backgroundColor:catColors2,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true,title:{display:true,text:'SKU数'}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.raw+' 个SKU ('+(c.raw/totalSKU*100).toFixed(1)+'%)';}}}}}}));}catch(e){}
     // 品线集中度明细表
-    var cch2='<table class=data-table><thead><tr><th>品线</th>';concMonths.forEach(function(m){cch2+='<th>'+m.substring(5)+'月上架</th>';});cch2+='<th>合计</th></tr></thead><tbody>';
-    catList.forEach(function(c){cch2+='<tr><td>'+c+'</td>';var tot=0;concMonths.forEach(function(m){var v=concCats[c][m]||0;tot+=v;cch2+='<td>'+v+'</td>';});cch2+='<td><b>'+tot+'</b></td></tr>';});
+    var cch2='<table class=data-table><thead><tr><th>品线</th>';concMonths.forEach(function(m){cch2+='<th>'+m.substring(5)+'月上架</th>';});cch2+='<th>合计</th><th>占比</th></tr></thead><tbody>';
+    catList.forEach(function(c){cch2+='<tr><td>'+c+'</td>';var tot=0;concMonths.forEach(function(m){var v=concCats[c][m]||0;tot+=v;cch2+='<td>'+v+'</td>';});cch2+='<td><b>'+tot+'</b></td><td>'+fm(tot/totalSKU*100)+'%</td></tr>';});
     cch2+='</tbody></table>';document.getElementById('t2-cat-conc-table').innerHTML=cch2;
     // 品效 x 品线
     var pxByCat={},allBatches=Object.keys(batches).sort();
