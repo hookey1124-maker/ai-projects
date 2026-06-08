@@ -46,7 +46,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="main" id="dashboard" style="display:none">
 <div class="tab-content active" id="tab1">
 <div class="kpi-grid" id="t1-kpi"></div>
-<div class="section"><h3>🏢 部门占比 &amp; PW市占对比</h3><div class="kpi-grid" id="t1-dept-kpi"></div><div class="chart-row"><div class="chart-box"><h4>新品 vs 部门月度销量对比</h4><canvas id="chart-dept-bar" style="max-height:260px"></canvas></div><div class="chart-box"><h4>新品 vs 部门月度销售额对比</h4><canvas id="chart-dept-rev" style="max-height:260px"></canvas></div></div></div>
+<div class="kpi-grid" id="t1-dept-kpi"></div>
+<div class="chart-row">
+<div class="chart-box"><h4>新品 vs 部门月度销量对比</h4><canvas id="chart-dept-bar" style="max-height:260px"></canvas></div><div class="chart-box"><h4>新品 vs 部门月度销售额对比</h4><canvas id="chart-dept-rev" style="max-height:260px"></canvas></div></div>
 <div class="chart-row"><div class="chart-box"><h4>月度销量趋势</h4><canvas id="chart-sales"></canvas></div><div class="chart-box"><h4>月度销售额趋势</h4><canvas id="chart-rev"></canvas></div></div>
 <div class="section"><h3>出单分布(5月)</h3><canvas id="chart-ord8" style="max-height:250px"></canvas></div>
 <div class="section"><h3>市场状态分布</h3><div id="t1-mkt"></div></div></div>
@@ -274,22 +276,24 @@ function renderT1(){
     var mh='<table class=data-table><thead><tr><th>市场状态</th><th>SKU数</th><th>占比</th></tr></thead><tbody>';
     ['正常','竞争无优势','无市场','站外出单','-'].forEach(function(s){mh+='<tr><td>'+s+'</td><td>'+(mks[s]||0)+'</td><td>'+fp((mks[s]||0)/N)+'</td></tr>'});mh+='</tbody></table>';
     document.getElementById('t1-mkt').innerHTML=mh;
-    // 部门占比 KPI
+    // 新品 vs 部门 KPI
     var dm=DATA.deptMonthly,dmCur=dm?dm.sales[m]:0;
     var deptHtml='';
     if(dm&&dmCur>0){
-      deptHtml+='<div class=kpi-card style=border-left:4px solid var(--c-primary)><div class=label>新品'+m+'月销量</div><div class=val>'+fm(cur.sales)+'</div><div class=hb>占部门'+fp(DATA.deptSalesPct||0)+'</div></div>';
-      deptHtml+='<div class=kpi-card style=border-left:4px solid #1a5276><div class=label>部门'+m+'月销量</div><div class=val>'+fm(dm.sales[m]||0)+'</div><div class=hb>部门总计</div></div>';
-      deptHtml+='<div class=kpi-card style=border-left:4px solid var(--c-revenue)><div class=label>新品'+m+'月销售额</div><div class=val>'+fmm(cur.revenue)+'</div><div class=hb>占部门'+fp(DATA.deptRevPct||0)+'</div></div>';
-      deptHtml+='<div class=kpi-card style=border-left:4px solid #6c3483><div class=label>部门'+m+'月销售额</div><div class=val>'+fmm(dm.revenue[m]||0)+'</div><div class=hb>部门总计</div></div>';
+      var dps=DATA.deptSalesPct||0,dpr=DATA.deptRevPct||0;
+      deptHtml+='<div class=kpi-card style=border-left:4px solid var(--c-primary)><div class=label>新品'+m+'月销量</div><div class=val>'+fm(cur.sales)+'</div></div>';
+      deptHtml+='<div class=kpi-card style=border-left:4px solid #1a5276><div class=label>部门'+m+'月销量</div><div class=val>'+fm(Math.round(dm.sales[m]))+'</div></div>';
+      deptHtml+='<div class=kpi-card style=border-left:4px solid var(--c-share)><div class=label>销量占部门比</div><div class=val>'+fp(dps)+'</div><div class=hb>新品÷部门 = '+fm(cur.sales)+'÷'+fm(Math.round(dm.sales[m]))+'</div></div>';
+      deptHtml+='<div class=kpi-card style=border-left:4px solid var(--c-revenue)><div class=label>新品'+m+'月销售额</div><div class=val>'+fmm(cur.revenue)+'</div></div>';
+      deptHtml+='<div class=kpi-card style=border-left:4px solid #6c3483><div class=label>部门'+m+'月销售额</div><div class=val>'+fmm(Math.round(dm.revenue[m]))+'</div></div>';
+      deptHtml+='<div class=kpi-card style=border-left:4px solid #08845a><div class=label>销售额占部门比</div><div class=val>'+fp(dpr)+'</div><div class=hb>新品÷部门 = $'+fmm(cur.revenue)+'÷$'+fmm(Math.round(dm.revenue[m]))+'</div></div>';
     }else{
-      deptHtml+='<div class=kpi-card style=border-left:4px solid #ccc><div class=label>部门占比</div><div class=val style=font-size:14px;color:#999>需月度汇总数据</div><div class=hb>上传含"三部月度汇总"Sheet的Excel</div></div>';
+      deptHtml+='<div class=kpi-card style=border-left:4px solid #ccc;grid-column:1/-1><div class=label>部门对比数据</div><div class=val style=font-size:14px;color:#999>需"三部月度汇总"Sheet</div></div>';
     }
     // PW市占（仅当月无对手数据时显示）
     if(!rivalSum&&m>=5){
       var pwW2=0,pwTS2=0;rows.forEach(function(r){if(r.pwShare>0&&r.curSalesQty>0){pwW2+=r.pwShare*r.curSalesQty;pwTS2+=r.curSalesQty;}});
-      var pwAvg2=pwTS2?pwW2/pwTS2:0;
-      deptHtml+='<div class=kpi-card style=border-left:4px solid #8e44ad><div class=label>PW市占(当月参考)</div><div class=val>'+fp(pwAvg2)+'</div><div class=hb>对手数据未出，暂用PW爬虫数据</div></div>';
+      deptHtml+='<div class=kpi-card style=border-left:4px solid #8e44ad><div class=label>PW市占(当月参考)</div><div class=val>'+fp(pwTS2?pwW2/pwTS2:0)+'</div><div class=hb>对手数据未出，暂用PW爬虫</div></div>';
     }
     document.getElementById('t1-dept-kpi').innerHTML=deptHtml;
     // 部门对比柱状图
