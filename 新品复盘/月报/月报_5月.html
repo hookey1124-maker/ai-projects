@@ -785,6 +785,25 @@ function renderT7(){
     var deptPct=DATA._totalShare||0;
     rpt+='新品整体市占比'+fp(deptPct)+'，'+(deptPct<0.6?'仍有较大提升空间':'表现良好')+'。\n\n';
 
+    // 品效维度
+    var pxData=DATA.pinxiaoData||[];
+    var batches7={};pxData.forEach(function(s){var ld=s.listDate.substring(0,7);if(!batches7[ld])batches7[ld]={sku:0,rev:[0,0,0,0,0]};batches7[ld].sku++;});
+    for(var ld in batches7){pxData.filter(function(s){return s.listDate.substring(0,7)===ld}).forEach(function(s){batches7[ld].rev[0]+=s.r1||0;batches7[ld].rev[1]+=s.r2||0;batches7[ld].rev[2]+=s.r3||0;batches7[ld].rev[3]+=s.r4||0;batches7[ld].rev[4]+=s.r5||0;});}
+    rpt+='▎品效维度（按上架月份）\n';
+    var sb7=Object.keys(batches7).sort();
+    sb7.forEach(function(ld){
+      var d=batches7[ld],ldShort=ld.substring(5)+'月';
+      var pxArr=[],pxLabel='';
+      for(var mi2=0;mi2<5;mi2++)pxArr.push(d.sku?Math.round(d.rev[mi2]/d.sku):0);
+      var nz=pxArr.filter(function(x){return x>0}).slice(-3);
+      var trend=nz.length>=2?(nz[nz.length-1]>nz[0]?'攀升':(nz[nz.length-1]<nz[0]?'衰减':'平稳')):'-';
+      var curPx=pxArr[m-1]||0,prvPx=pxArr[m-2]||0;
+      rpt+=ldShort+'上架'+d.sku+'款，'+m+'月品效$'+curPx+'/SKU';
+      if(prvPx)rpt+='（环比'+(prvPx?(((curPx-prvPx)/prvPx*100).toFixed(1)+'%'):'-')+'）';
+      rpt+='，趋势'+trend+'。\n';
+    });
+    rpt+='\n';
+
     rpt+='▎分析人维度\n';
     rpt+=m+'月新品主要由'+anMax+'承接（'+anDims7[anMax].n+'款），货值最高的是'+(Object.keys(anDims7).sort(function(a,b){return(anDims7[b].rev/anDims7[b].n)-(anDims7[a].rev/anDims7[a].n)})[0])+'。\n';
     rpt+='新品平均货值$'+Math.round(allAvgPrice)+'。\n';
