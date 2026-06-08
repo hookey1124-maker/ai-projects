@@ -154,9 +154,6 @@ function parseMonthlyData(wb){
     var histCatIdx=-1;for(var i=0;i<hH.length;i++){if(str(hRows[0],i)==='品类')histCatIdx=i;}
     var histCatLookup={};
     if(histCatIdx>=0) for(var ri=1;ri<hRows.length;ri++){var hr2=hRows[ri];var hs2=str(hr2,hi.sku);if(hs2)histCatLookup[hs2]=str(hr2,histCatIdx)||'未分类';}
-    // 将仅在历史数据中的1-2月上架SKU补入skuData（放在histCatLookup建完之后）
-    var existSKU={};skuData.forEach(function(s){existSKU[s.sku]=1;});
-    for(var hk in hLookup){if(!existSKU[hk]){var hl2=hLookup[hk];skuData.push({sku:hk,saleNo:'',listDate:hl2.listDate,firstOrder:'',a4:'',a5:'',cat:histCatLookup[hk]||'未分类',exp:'',f4:0,f5:0,o4:'',o5:'',m4:'',m5:'',s4:0,s5:0,r4:0,r5:0,ri4:0,ri5:0,share4:0,share5:0,ppS4:0,ppR4:0,ppC4:0,ppS5:0,ppR5:0,ppC5:0,pgC4:0,pgR4:0,pgC5:0,pgR5:0,a1:'',a2:'',a3:'',s1:0,s2:0,s3:0,r1:0,r2:0,r3:0,ri1:0,ri2:0,ri3:0,share1:0,share2:0,share3:0,o1:'',o2:'',o3:'',m1:'',m2:'',m3:'',f1:0,f2:0,f3:0,ppS1:0,ppS2:0,ppS3:0,ppR1:0,ppR2:0,ppR3:0,ppC1:0,ppC2:0,ppC3:0,pgC1:0,pgC2:0,pgC3:0,pgR1:0,pgR2:0,pgR3:0});var s2=skuData[skuData.length-1];for(var m=1;m<=5;m++){s2['s'+m]=hl2['s'+m]||0;s2['r'+m]=hl2['r'+m]||0;s2['ri'+m]=hl2['ri'+m]||0;s2['share'+m]=hl2['share'+m]||0;s2['a'+m]=hl2['a'+m]||'';}}}
     // 从hist表
     if(hLookup) for(var k in hLookup){pxSeen[k]=1;d.pinxiaoData.push({sku:k,listDate:hLookup[k].listDate,cat:histCatLookup[k]||'未分类',r1:hLookup[k].r1||0,r2:hLookup[k].r2||0,r3:hLookup[k].r3||0,r4:hLookup[k].r4||0,r5:hLookup[k].r5||0});}
     // 从main表 (4-5月 listing)
@@ -240,8 +237,7 @@ function getRows(m){return DATA.skuData.map(function(sku){return{
 function renderT1(){
     var m=DATA.monthIndex,pv=m-1,rows=getRows(m);
     // 累计SKU: 只统计当月及之前上架的
-    var N=rows.filter(function(r){return r.listDate&&r.listDate>='2026-0'+(m-2)+'-01'&&r.listDate<='2026-0'+m+'-31';}).length;
-    if(!N)N=rows.length;
+    var N=rows.length;
     var cur=DATA.mTot[m]||{},prv=DATA.mTot[pv]||{};
     var y=rows.filter(function(r){return r.cur8dStatus==='Y'}).length;
     var n=rows.filter(function(r){return r.cur8dStatus==='N'}).length;
@@ -263,9 +259,8 @@ function renderT1(){
         {l:m+'月销售额',v:fmm(cur.revenue),h:prv.revenue?'上月'+fmm(prv.revenue)+' | 环比'+hb((cur.revenue-prv.revenue)/prv.revenue):'-'},
         {l:'市占比',v:fp(mktShareVal),h:mktShareHint+(prvShareVal?' | 上月'+fp(prvShareVal):'')},
         {l:'出单率',v:fp((y+n)/N),h:prvOrdRate?'上月'+fp(prvOrdRate)+' | 环比'+hb((y+n)/N-prvOrdRate):'-'}]);
-    var lb=[],sd=[],rd=[0,0,0,0,0,0];
-    (DATA.pinxiaoData||[]).forEach(function(s){for(var mi2=1;mi2<=5;mi2++){rd[mi2]=(rd[mi2]||0)+(s['r'+mi2]||0);}});
-    for(var mi=1;mi<=m;mi++){lb.push(mi+'月');sd.push(DATA.mTot[mi]?DATA.mTot[mi].sales:0);if(!rd[mi])rd[mi]=DATA.mTot[mi]?DATA.mTot[mi].revenue:0;}
+    var lb=[],sd=[],rd=[];
+    for(var mi=1;mi<=m;mi++){lb.push(mi+'月');sd.push(DATA.mTot[mi]?DATA.mTot[mi].sales:0);rd.push(DATA.mTot[mi]?DATA.mTot[mi].revenue:0);}
     // 1-5月新品vs部门 销量+销售额 组合柱状图
     var dm2=DATA.deptMonthly,deptSD=[],deptRD=[];
     for(var mi=1;mi<=m;mi++){deptSD.push(dm2?Math.round(dm2.sales[mi]||0):0);deptRD.push(dm2?Math.round(dm2.revenue[mi]||0):0);}
