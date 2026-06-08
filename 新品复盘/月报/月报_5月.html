@@ -370,7 +370,6 @@ function renderT2(){
 
 function renderT3(){
     var m=DATA.monthIndex,pv=m-1,skus=DATA.skuData;
-    skus=skus.filter(function(s){return s['a'+m]||(s['s'+m]||0)>0;});
     var catDims={},anDims={};
     skus.forEach(function(s){
         var cat=s.cat;if(!catDims[cat])catDims[cat]={sk:0,sc:0,sp:0,rc:0,rp:0};catDims[cat].sk++;catDims[cat].sc+=s['s'+m];catDims[cat].sp+=s['s'+pv];catDims[cat].rc+=s['r'+m];catDims[cat].rp+=s['r'+pv];
@@ -455,9 +454,7 @@ function renderT5(){
         h+='</tbody></table>';
         document.getElementById(id).innerHTML=h;return dims;
     }
-    var _rowsSaved=rows;rows=rows.filter(function(r){return r.analyst;}); // 排除无分析人的历史SKU
-    var anDims4=q4t('t5-an',function(r){return r.analyst},'分析人');
-    rows=_rowsSaved; // 恢复
+    var anDims4=q4t('t5-an',function(r){return r.analyst||'未知'},'分析人');
     q4t('t5-cat',function(r){return r.category||'未分类'},'品线');
     // Charts
     try{
@@ -586,7 +583,6 @@ function renderT6(){
 
 function renderT7(){
     var m=DATA.monthIndex,pv=m-1,skus=DATA.skuData;
-    skus=skus.filter(function(s){return s['a'+m]||(s['s'+m]||0)>0||(s['ri'+m]||0)>0;});
     function capTier6(cap){return cap<=6?'低':(cap<=15?'中':'高');}
     DATA._f7={analyst:'',category:'',ord8:'',batch:'',mktStatus:'',capTier:'',hasRival:''};
     DATA._applyT6=function(){
@@ -646,7 +642,6 @@ function renderT7(){
 
 function renderT4(){
     var m=DATA.monthIndex,pv=m-1,rows=getRows(m);
-    rows=rows.filter(function(r){return r.analyst||(r.curSalesQty||0)>0||(r.curRivalQty||0)>0;});
     var N=rows.length;
     // 市容量规则：低≤6 / 中7-15 / 高≥16
     function capTier(cap){return cap<=6?'低市场':(cap<=15?'中市场':'高市场');}
@@ -720,7 +715,7 @@ function renderT4(){
 
 function renderT8(){
     var m=DATA.monthIndex,rows=getRows(m),pv=m-1,pvRows=pv>0?getRows(pv):[];
-    rows=rows.filter(function(r){return r.analyst||(r.curSalesQty||0)>0;});var N=rows.length;
+    var N=rows.length;
     var cur=DATA.mTot[m]||{},prv=DATA.mTot[pv]||{};
     var y=rows.filter(function(r){return r.cur8dStatus==='Y'}).length;
     var n=rows.filter(function(r){return r.cur8dStatus==='N'}).length;
