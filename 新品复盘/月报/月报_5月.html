@@ -772,12 +772,14 @@ function copyReport(btn){
 }
 
 function switchMonth(newMonth){
+  try{
     DATA.monthIndex=newMonth;
     document.getElementById('month-selector').value=newMonth;
     document.getElementById('h1-period').textContent=newMonth+'月';
     var rows=getRows(newMonth);var hasSales=rows.some(function(r){return r.curSalesQty>0});
     document.getElementById('h1-sku').textContent=rows.length+' SKU'+(hasSales?'':' (该月无销售数据)');
     destroyCharts();renderT1();renderT2();renderT3();renderT4();renderT5();renderT6();renderT7();renderT8();
+  }catch(e){alert('切换月份错误: '+e.message);console.error(e);}
 }
 
 // ===== XLSX 导出 =====
