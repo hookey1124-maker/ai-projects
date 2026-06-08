@@ -291,11 +291,6 @@ function renderT1(){
     }else{
       deptHtml+='<div class=kpi-card style=border-left:4px solid #ccc;grid-column:1/-1><div class=label>部门对比数据</div><div class=val style=font-size:14px;color:#999>需"三部月度汇总"Sheet</div></div>';
     }
-    // PW市占（仅当月无对手数据时显示）
-    if(!rivalSum&&m>=5){
-      var pwO2=0,pwR2=0;rows.forEach(function(r){pwO2+=r.pwOur||0;pwR2+=r.pwRival||0;});
-      deptHtml+='<div class=kpi-card style=border-left:4px solid #8e44ad><div class=label>PW市占(当月参考)</div><div class=val>'+fp((pwO2+pwR2)>0?pwO2/(pwO2+pwR2):0)+'</div><div class=hb>PW自店÷(自店+对手) | 对手数据未出</div></div>';
-    }
     document.getElementById('t1-dept-kpi').innerHTML=deptHtml;
     // 部门对比柱状图
     if(dm&&dmCur>0){
