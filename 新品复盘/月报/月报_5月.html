@@ -558,28 +558,44 @@ function renderT5(){
 
 function renderT6(){
     var m=DATA.monthIndex,pv=m-1,skus=DATA.skuData;
-    DATA._f6={analyst:'',category:'',ord8:'',batch:''};
-    // 挂在 DATA 上让 inline onclick 能访问
+    function capTier6(cap){return cap<=6?'低':(cap<=15?'中':'高');}
+    DATA._f6={analyst:'',category:'',ord8:'',batch:'',mktStatus:'',capTier:''};
     DATA._applyT6=function(){
         var f=DATA._f6;
         var filtered=skus.filter(function(s){
             if(f.analyst&&s['a'+m]!==f.analyst)return false;
             if(f.category&&s.cat!==f.category)return false;
             if(f.ord8==='Y'&&s['o'+m]!=='Y')return false;if(f.ord8==='N'&&s['o'+m]!=='N')return false;if(f.ord8==='未'&&(s['o'+m]==='Y'||s['o'+m]==='N'))return false;
-            if(f.batch&&s.listDate.substring(0,7)!==f.batch)return false;return true;});
-        var h='<table class=data-table><thead><tr><th>SKU</th><th>上架日期</th><th>分析人</th><th>品类</th><th>'+pv+'月销量</th><th>'+m+'月销量</th><th>'+pv+'月销售额</th><th>'+m+'月销售额</th><th>'+m+'月对手</th><th>8日出单</th><th>市场状态</th></tr></thead><tbody>';
-        var tSp=0,tSc=0,tRp=0,tRc=0,tRi=0;
-        filtered.forEach(function(s){h+='<tr><td>'+s.sku+'</td><td>'+s.listDate.substring(0,10)+'</td><td>'+s['a'+m]+'</td><td>'+s.cat+'</td><td>'+fm(s['s'+pv])+'</td><td>'+fm(s['s'+m])+'</td><td>'+fmm(s['r'+pv])+'</td><td>'+fmm(s['r'+m])+'</td><td>'+fm(s['ri'+m])+'</td><td>'+s['o'+m]+'</td><td>'+s['m'+m]+'</td></tr>';tSp+=s['s'+pv];tSc+=s['s'+m];tRp+=s['r'+pv];tRc+=s['r'+m];tRi+=s['ri'+m]});
-        h+='<tfoot><tr class=total-row><td>合计('+filtered.length+'条)</td><td></td><td></td><td></td><td>'+fm(tSp)+'</td><td>'+fm(tSc)+'</td><td>'+fmm(tRp)+'</td><td>'+fmm(tRc)+'</td><td>'+fm(tRi)+'</td><td></td><td></td></tr></tfoot></tbody></table>';
+            if(f.batch&&s.listDate.substring(0,7)!==f.batch)return false;
+            if(f.mktStatus&&s['m'+m]!==f.mktStatus)return false;
+            if(f.capTier){
+              var pw=DATA.pwBySku[s.sku]||{},rival=pw.rival||0,own=s['s'+m]||0,cap=own+rival;
+              if(capTier6(cap)!==f.capTier)return false;
+            }
+            return true;});
+        var h='<table class=data-table><thead><tr><th>SKU</th><th>上架日期</th><th>分析人</th><th>品类</th><th>'+pv+'月销量</th><th>'+m+'月销量</th><th>'+pv+'月销售额</th><th>'+m+'月销售额</th><th>对手(PW)</th><th>PW市占比</th><th>月市容量</th><th>8日出单</th><th>市场状态</th></tr></thead><tbody>';
+        var tSp=0,tSc=0,tRp=0,tRc=0;
+        filtered.forEach(function(s){
+          var pw=DATA.pwBySku[s.sku]||{},hasRival=(pw.rival||0)>0?'有':'无';
+          var pwShare=pw.share||0,own=s['s'+m]||0,rival=pw.rival||0;
+          var cap=own+rival,capT=capTier6(cap);
+          h+='<tr><td>'+s.sku+'</td><td>'+s.listDate.substring(0,10)+'</td><td>'+s['a'+m]+'</td><td>'+s.cat+'</td><td>'+fm(s['s'+pv])+'</td><td>'+fm(own)+'</td><td>'+fmm(s['r'+pv])+'</td><td>'+fmm(s['r'+m])+'</td><td>'+hasRival+'</td><td>'+fp(pwShare)+'</td><td>'+fm(cap)+' ('+capT+')</td><td>'+s['o'+m]+'</td><td>'+s['m'+m]+'</td></tr>';
+          tSp+=s['s'+pv];tSc+=own;tRp+=s['r'+pv];tRc+=s['r'+m];
+        });
+        h+='<tfoot><tr class=total-row><td>合计('+filtered.length+'条)</td><td></td><td></td><td></td><td>'+fm(tSp)+'</td><td>'+fm(tSc)+'</td><td>'+fmm(tRp)+'</td><td>'+fmm(tRc)+'</td><td></td><td></td><td></td><td></td><td></td></tr></tfoot></tbody></table>';
         document.getElementById('t6-table').innerHTML=h;
+        document.getElementById('t6-count').textContent='筛选:'+filtered.length+'/'+skus.length+'条';
     };
-    var ans=[],cats=[],bat=[];var sa={},sc={},sb2={};
-    skus.forEach(function(s){var a=s['a'+m];if(!sa[a]){sa[a]=1;ans.push(a)}var c=s.cat;if(!sc[c]){sc[c]=1;cats.push(c)}var ld=s.listDate.substring(0,7);if(!sb2[ld]){sb2[ld]=1;bat.push(ld)}});
+    var ans=[],cats=[],bat=[],mkts=[];var sa={},sc={},sb2={},sm={};
+    skus.forEach(function(s){var a=s['a'+m];if(!sa[a]){sa[a]=1;ans.push(a)}var c=s.cat;if(!sc[c]){sc[c]=1;cats.push(c)}var ld=s.listDate.substring(0,7);if(!sb2[ld]){sb2[ld]=1;bat.push(ld)}var ms=s['m'+m];if(ms&&!sm[ms]){sm[ms]=1;mkts.push(ms)}});
     var fh='<span><select onchange=\"DATA._f6.analyst=this.value;DATA._applyT6()\"><option value=\"\">分析人:全部</option>';ans.sort().forEach(function(a){fh+='<option>'+a+'</option>'});fh+='</select></span>';
     fh+='<span><select onchange=\"DATA._f6.category=this.value;DATA._applyT6()\"><option value=\"\">品线:全部</option>';cats.sort().forEach(function(c){fh+='<option>'+c+'</option>'});fh+='</select></span>';
     fh+='<span><select onchange=\"DATA._f6.ord8=this.value;DATA._applyT6()\"><option value=\"\">8日出单:全部</option><option>Y</option><option>N</option><option>未</option></select></span>';
     fh+='<span><select onchange=\"DATA._f6.batch=this.value;DATA._applyT6()\"><option value=\"\">上架:全部</option>';bat.sort().forEach(function(b){fh+='<option>'+b+'</option>'});fh+='</select></span>';
-    fh+='<button class=reset-btn onclick=\"DATA._f6={analyst:\"\",category:\"\",ord8:\"\",batch:\"\"};DATA._applyT6()\">重置</button>';
+    fh+='<span><select onchange=\"DATA._f6.mktStatus=this.value;DATA._applyT6()\"><option value=\"\">市场状态:全部</option>';mkts.sort().forEach(function(s){fh+='<option>'+s+'</option>'});fh+='</select></span>';
+    fh+='<span><select onchange=\"DATA._f6.capTier=this.value;DATA._applyT6()\"><option value=\"\">月市容量:全部</option><option>低</option><option>中</option><option>高</option></select></span>';
+    fh+='<span id=t6-count style=\"font-size:12px;color:#888\"></span>';
+    fh+='<button class=reset-btn onclick=\"DATA._f6={analyst:\"\",category:\"\",ord8:\"\",batch:\"\",mktStatus:\"\",capTier:\"\"};DATA._applyT6()\">重置</button>';
     document.getElementById('t6-filter').innerHTML=fh;DATA._applyT6();
 }
 
