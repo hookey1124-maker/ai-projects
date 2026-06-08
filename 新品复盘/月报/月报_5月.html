@@ -525,14 +525,35 @@ function renderT5(){
     }catch(e){}
 
     var links=DATA.plpLinks||[];
-    var lh='<div class=table-scroll><table class=data-table><thead><tr><th>活动</th><th>SKU</th><th>分析人</th><th>品类</th><th>曝光</th><th>点击</th><th>售出</th><th>花费</th><th>广告销售额</th><th>ACOS</th><th>ACOAS</th><th>标记</th></tr></thead><tbody>';
-    links.forEach(function(l){
-        var tags=[],bg='';
-        if(l.acos>.3)tags.push('高ACOS');if(l.cost>50&&l.sold===0)tags.push('高花费0出单');
-        if(l.imp<500&&l.cost>0)tags.push('低曝光');if(l.cost<5&&l.cost>0)tags.push('低花费');
-        if(tags.length>0)bg='background:#fff3e0';
-        lh+='<tr style=\"'+bg+'\"><td>'+l.campaign+'</td><td>'+l.SKU+'</td><td>'+l.analyst+'</td><td>'+l.category+'</td><td>'+fm(l.imp)+'</td><td>'+fm(l.click)+'</td><td>'+fm(l.sold)+'</td><td>'+fmm(l.cost)+'</td><td>'+fmm(l.adRev)+'</td><td style=\"'+(l.acos>.3?'color:#c0392b;font-weight:700':'')+'\">'+fp(l.acos)+'</td><td>'+fp(l.acoas)+'</td><td style=\"font-size:11px;color:#e67e22\">'+tags.join(' ')+'</td></tr>'});lh+='</tbody></table></div>';
-    document.getElementById('t5-plp-detail').innerHTML=lh;
+    // 标签规则
+    function tagLink(l){
+      var t=[];if(l.acos>.3)t.push('高ACOS');if(l.cost>50&&l.sold===0)t.push('花费不出单');
+      if(l.cost<5&&l.cost>0)t.push('低花费');return t.length?t:['正常'];
+    }
+    links.forEach(function(l){l._tags=tagLink(l);});
+    // 筛选状态
+    DATA._f5={tag:''};
+    function renderPlpDetail(){
+      var f=DATA._f5;
+      var filtered=links.filter(function(l){return !f.tag||l._tags.indexOf(f.tag)>=0;});
+      var lh='<div class=table-scroll><table class=data-table><thead><tr><th>活动</th><th>SKU</th><th>分析人</th><th>品类</th><th>曝光</th><th>点击</th><th>售出</th><th>花费</th><th>广告销售额</th><th>ACOS</th><th>ACOAS</th><th>标记</th></tr></thead><tbody>';
+      filtered.forEach(function(l){
+        var bg='',tags=l._tags;
+        if(tags.indexOf('高ACOS')>=0||tags.indexOf('花费不出单')>=0)bg='background:#fff3e0';
+        else if(tags.indexOf('低花费')>=0)bg='background:#f0f8ff';
+        lh+='<tr style=\"'+bg+'\"><td>'+l.campaign+'</td><td>'+l.SKU+'</td><td>'+l.analyst+'</td><td>'+l.category+'</td><td>'+fm(l.imp)+'</td><td>'+fm(l.click)+'</td><td>'+fm(l.sold)+'</td><td>'+fmm(l.cost)+'</td><td>'+fmm(l.adRev)+'</td><td style=\"'+(l.acos>.3?'color:#c0392b;font-weight:700':'')+'\">'+fp(l.acos)+'</td><td>'+fp(l.acoas)+'</td><td style=\"font-size:11px;color:'+(tags[0]==='正常'?'#27ae60':'#e67e22')+'\">'+tags.join(' ')+'</td></tr>'});
+      lh+='</tbody></table></div>';
+      document.getElementById('t5-plp-detail').innerHTML=lh;
+      document.getElementById('t5-plp-count').textContent='显示'+filtered.length+'/'+links.length+'条';
+    }
+    // 筛选栏 + 标题
+    var tagOpts=['正常','高ACOS','花费不出单','低花费'];
+    var fh='<span style=font-size:12px;color:#888>标签说明: 高ACOS(>30%) | 花费不出单(>$50且0售出) | 低花费(<$5) | 正常(其余)</span>';
+    fh+='<span style=margin-left:12px><select onchange=\"DATA._f5.tag=this.value;renderPlpDetail()\"><option value=\"\">全部标签</option>';
+    tagOpts.forEach(function(t){fh+='<option>'+t+'</option>'});
+    fh+='</select></span> <span id=t5-plp-count style=font-size:12px;color:#888></span>';
+    document.getElementById('t5-plp-detail').innerHTML='<div class=filter-bar>'+fh+'</div>';
+    renderPlpDetail();
 }
 
 function renderT6(){
