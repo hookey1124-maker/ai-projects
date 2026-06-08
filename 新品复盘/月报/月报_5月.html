@@ -580,7 +580,8 @@ function renderT6(){
 function renderT7(){
     var m=DATA.monthIndex,pv=m-1,skus=DATA.skuData;
     function capTier6(cap){return cap<=6?'低':(cap<=15?'中':'高');}
-    DATA._f7={analyst:'',category:'',ord8:'',batch:'',mktStatus:'',capTier:'',hasRival:''};
+    function shareTier7(sh,rival){return !rival?'无对手':(sh>=0.75?'高':(sh>=0.5?'中':'低'));}
+    DATA._f7={analyst:'',category:'',ord8:'',batch:'',mktStatus:'',capTier:'',hasRival:'',shareTier:''};
     DATA._applyT6=function(){
         var f=DATA._f7;
         var filtered=skus.filter(function(s){
@@ -598,18 +599,23 @@ function renderT7(){
               var rival6=s['ri'+m]||0,own6=s['s'+m]||0,cap6=own6+rival6;
               if(capTier6(cap6)!==f.capTier)return false;
             }
+            if(f.shareTier){
+              var sh7=s['share'+m]||0,ri7=s['ri'+m]||0;
+              if(shareTier7(sh7,ri7)!==f.shareTier)return false;
+            }
             return true;});
-        var h='<table class=data-table><thead><tr><th>SKU</th><th>上架日期</th><th>分析人</th><th>品类</th><th>'+pv+'月销量</th><th>'+m+'月销量</th><th>'+pv+'月销售额</th><th>'+m+'月销售额</th><th>对手</th><th>市占比</th><th>月市容量</th><th>8日出单</th><th>市场状态</th></tr></thead><tbody>';
+        var h='<table class=data-table><thead><tr><th>SKU</th><th>上架日期</th><th>分析人</th><th>品类</th><th>'+pv+'月销量</th><th>'+m+'月销量</th><th>'+pv+'月销售额</th><th>'+m+'月销售额</th><th>对手</th><th>市占比</th><th>占比标签</th><th>月市容量</th><th>8日出单</th><th>市场状态</th></tr></thead><tbody>';
         var tSp=0,tSc=0,tRp=0,tRc=0;
         filtered.forEach(function(s){
           var hasRival=(s['ri'+m]||0)>0?'有':'无';
           var actShare=s['share'+m]||0,own=s['s'+m]||0;
           var rival=s['ri'+m]||0;
           var cap=own+rival,capT=capTier6(cap);
-          h+='<tr><td>'+s.sku+'</td><td>'+s.listDate.substring(0,10)+'</td><td>'+s['a'+m]+'</td><td>'+s.cat+'</td><td>'+fm(s['s'+pv])+'</td><td>'+fm(own)+'</td><td>'+fmm(s['r'+pv])+'</td><td>'+fmm(s['r'+m])+'</td><td>'+hasRival+'</td><td>'+fp(actShare)+'</td><td>'+fm(cap)+' ('+capT+')</td><td>'+s['o'+m]+'</td><td>'+s['m'+m]+'</td></tr>';
+          var st7=shareTier7(actShare,rival);var stColor=st7==='高'?'#27ae60':(st7==='中'?'#e67e22':(st7==='低'?'#c0392b':'#888'));
+h+='<tr><td>'+s.sku+'</td><td>'+s.listDate.substring(0,10)+'</td><td>'+s['a'+m]+'</td><td>'+s.cat+'</td><td>'+fm(s['s'+pv])+'</td><td>'+fm(own)+'</td><td>'+fmm(s['r'+pv])+'</td><td>'+fmm(s['r'+m])+'</td><td>'+hasRival+'</td><td>'+fp(actShare)+'</td><td style=color:'+stColor+';font-weight:600>'+st7+'</td><td>'+fm(cap)+' ('+capT+')</td><td>'+s['o'+m]+'</td><td>'+s['m'+m]+'</td></tr>';
           tSp+=s['s'+pv];tSc+=own;tRp+=s['r'+pv];tRc+=s['r'+m];
         });
-        h+='<tfoot><tr class=total-row><td>合计('+filtered.length+'条)</td><td></td><td></td><td></td><td>'+fm(tSp)+'</td><td>'+fm(tSc)+'</td><td>'+fmm(tRp)+'</td><td>'+fmm(tRc)+'</td><td></td><td></td><td></td><td></td><td></td></tr></tfoot></tbody></table>';
+        h+='<tfoot><tr class=total-row><td>合计('+filtered.length+'条)</td><td></td><td></td><td></td><td>'+fm(tSp)+'</td><td>'+fm(tSc)+'</td><td>'+fmm(tRp)+'</td><td>'+fmm(tRc)+'</td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tfoot></tbody></table>';
         document.getElementById('t7-table').innerHTML=h;
         document.getElementById('t7-count').textContent='筛选:'+filtered.length+'/'+skus.length+'条';
     };
@@ -622,13 +628,14 @@ function renderT7(){
     fh+='<span><select onchange=\"DATA._f7.hasRival=this.value;DATA._applyT6()\"><option value=\"\">对手:全部</option><option>有</option><option>无</option></select></span>';
     fh+='<span><select onchange=\"DATA._f7.mktStatus=this.value;DATA._applyT6()\"><option value=\"\">市场状态:全部</option>';mkts.sort().forEach(function(s){fh+='<option>'+s+'</option>'});fh+='</select></span>';
     fh+='<span><select onchange=\"DATA._f7.capTier=this.value;DATA._applyT6()\"><option value=\"\">月市容量:全部</option><option>低</option><option>中</option><option>高</option></select></span>';
+    fh+='<span><select onchange=\"DATA._f7.shareTier=this.value;DATA._applyT6()\"><option value=\"\">市占标签:全部</option><option>高</option><option>中</option><option>低</option><option>无对手</option></select></span>';
     fh+='<span id=t7-count style=\"font-size:12px;color:#888\"></span>';
     fh+='<button class=reset-btn id=t7-reset-btn>重置</button>';
     document.getElementById('t7-filter').innerHTML=fh;DATA._applyT6();
     setTimeout(function(){
       var rb=document.getElementById('t7-reset-btn');
       if(rb)rb.onclick=function(){
-        DATA._f7={analyst:'',category:'',ord8:'',batch:'',mktStatus:'',capTier:'',hasRival:''};
+        DATA._f7={analyst:'',category:'',ord8:'',batch:'',mktStatus:'',capTier:'',hasRival:'',shareTier:''};
         document.querySelectorAll('#t7-filter select').forEach(function(s){s.value='';});
         DATA._applyT6();
       };
