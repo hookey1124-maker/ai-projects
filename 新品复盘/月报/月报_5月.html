@@ -465,13 +465,13 @@ function renderT5(){
         if(anOrd8.length>0){var ca=document.getElementById('chart-an-ord8');if(ca)allCharts.push(new Chart(ca,{type:'bar',data:{labels:anOrd8.map(function(x){return x.an}),datasets:[{label:'有对手出单',data:anOrd8.map(function(x){return x.hy}),backgroundColor:'#27ae60'},{label:'有对手未出单',data:anOrd8.map(function(x){return x.hn}),backgroundColor:'#c0392b'},{label:'无对手出单',data:anOrd8.map(function(x){return x.ny}),backgroundColor:'#2980b9'},{label:'无对手未出单',data:anOrd8.map(function(x){return x.nn}),backgroundColor:'#e67e22'}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true}}}}));}
     }catch(e){}
     // 未出单原因分析
-    var unsold=rows.filter(function(r){return r.cur8dStatus!=='Y'&&r.cur8dStatus!=='N'});
-    var reasons={};unsold.forEach(function(r){var s=r.curMarketStatus||'无数据';reasons[s]=(reasons[s]||0)+1});
+    var unsold=rows.filter(function(r){return(r.cur8dStatus!=='Y'&&r.cur8dStatus!=='N')&&r.curMarketStatus;});
+    var reasons={};unsold.forEach(function(r){var s=r.curMarketStatus;reasons[s]=(reasons[s]||0)+1});
     var rh2='<table class=data-table><thead><tr><th>未出单原因(市场状态)</th><th>SKU数</th><th>占未出单比</th><th>占总SKU比</th></tr></thead><tbody>';
-    ['竞争无优势','无市场','站外出单','正常','无数据'].forEach(function(s){var c=reasons[s]||0;rh2+='<tr><td>'+s+'</td><td>'+c+'</td><td>'+fp(c/unsold.length)+'</td><td>'+fp(c/N)+'</td></tr>'});
+    ['竞争无优势','无市场','站外出单','正常'].forEach(function(s){var c=reasons[s]||0;rh2+='<tr><td>'+s+'</td><td>'+c+'</td><td>'+fp(c/(unsold.length||1))+'</td><td>'+fp(c/N)+'</td></tr>'});
     rh2+='<tr class=total-row><td>合计</td><td>'+unsold.length+'</td><td>100%</td><td>'+fp(unsold.length/N)+'</td></tr></tbody></table>';
     document.getElementById('t5-unsold-reason').innerHTML=rh2;
-    try{var cr=document.getElementById('chart-unsold-reason');if(cr)allCharts.push(new Chart(cr,{type:'bar',data:{labels:['竞争无优势','无市场','站外出单','正常','无数据'],datasets:[{label:'未出单数',data:['竞争无优势','无市场','站外出单','正常','无数据'].map(function(s){return reasons[s]||0}),backgroundColor:['#e67e22','#c0392b','#8e44ad','#2980b9','#95a5a6']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}}));}catch(e){}
+    try{var cr=document.getElementById('chart-unsold-reason');if(cr)allCharts.push(new Chart(cr,{type:'bar',data:{labels:['竞争无优势','无市场','站外出单','正常'],datasets:[{label:'未出单数',data:['竞争无优势','无市场','站外出单','正常'].map(function(s){return reasons[s]||0}),backgroundColor:['#e67e22','#c0392b','#8e44ad','#2980b9']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}}));}catch(e){}
     // 低占比新品 (市占比<75% 且 有对手)
     var lowShare=rows.filter(function(r){return r.curMarketShare<0.75&&r.curRivalQty>0});
     var catsLow={};lowShare.forEach(function(r){var c=r.category||'未分类';catsLow[c]=(catsLow[c]||0)+1});
@@ -482,8 +482,9 @@ function renderT5(){
 }
 
 function renderT6(){
-    var m=DATA.monthIndex,pv=m-1,rows=getRows(m),N=rows.length;
-    var pp=rows.filter(function(r){return r.plpCost>0||r.plpRev>0});
+    var m=DATA.monthIndex,pv=m-1,rows=getRows(m);
+    rows=rows.filter(function(r){return(r.curSalesQty||0)>0||(r.plpCost||0)>0||(r.plgCost||0)>0;}); // 仅活跃SKU
+    var N=rows.length,pp=rows.filter(function(r){return r.plpCost>0||r.plpRev>0});
     var pg=rows.filter(function(r){return r.plgCost>0||r.plgRev>0});
     var both=rows.filter(function(r){return(r.plpCost>0||r.plpRev>0)&&(r.plgCost>0||r.plgRev>0)});
     var pOnly=rows.filter(function(r){return(r.plpCost>0||r.plpRev>0)&&!(r.plgCost>0||r.plgRev>0)});
