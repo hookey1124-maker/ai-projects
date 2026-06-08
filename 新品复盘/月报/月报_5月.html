@@ -549,7 +549,7 @@ function renderT6(){
     // 标签规则
     function tagLink(l){
       var t=[];if(l.acos>.15)t.push('高ACOS');if(l.cost>10&&l.sold===0)t.push('花费不出单');
-      if(l.cost<5&&l.cost>0)t.push('低花费');return t.length?t:['正常'];
+      if(l.cost<=10&&l.cost>0)t.push('低花费');return t.length?t:['正常'];
     }
     links.forEach(function(l){l._tags=tagLink(l);});
     // 筛选状态
@@ -569,7 +569,7 @@ function renderT6(){
     }
     // 筛选栏 + 标题
     var tagOpts=['正常','高ACOS','花费不出单','低花费'];
-    var fh='<span style=font-size:12px;color:#888>标签说明: 高ACOS(>15%) | 花费不出单(>$10且0售出) | 低花费(<$5) | 正常(其余)</span>';
+    var fh='<span style=font-size:12px;color:#888>标签说明: 高ACOS(>15%) | 花费不出单(>$10且0售出) | 低花费(≤$10) | 正常(其余)</span>';
     fh+='<span style=margin-left:12px><select onchange=\"DATA._f6.tag=this.value;DATA._renderPlpDetail()\"><option value=\"\">全部标签</option>';
     tagOpts.forEach(function(t){fh+='<option>'+t+'</option>'});
     fh+='</select></span> <span id=t6-plp-count style=font-size:12px;color:#888></span>';
