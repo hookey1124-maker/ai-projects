@@ -838,11 +838,11 @@ function renderT8(){
 
     // ===== 生成报告 =====
     var rpt='';
-    rpt+='【'+m+'月新品月度复盘】\n';
+    rpt+='【'+m+'月新品月度复盘】\n（数据来源：Tab1 月度总览 KPI）\n';
     rpt+=m+'月新品共'+N+'款，月销量'+fm(cur.sales)+'（环比'+hb(salesChg)+'），销售额'+fmm(cur.revenue)+'（环比'+hb(revChg)+'）。\n';
     rpt+='新品销售额占部门总销售额的'+(DATA.deptRevPct?fp(DATA.deptRevPct):'--')+'。\n\n';
 
-    rpt+='▎品线维度\n';
+    rpt+='▎品线维度（数据来源：Tab3 销售维度 + 近3月SKU）\n';
     rpt+='新品主要集中在'+catTop1+'（'+catDims7[catTop1].n+'款），销售额占新品总销售额的'+fp(catTop1Share)+'。\n';
     catTop.forEach(function(c,i){if(i<3)rpt+=catDims7[c].n+'款'+c+'：销量'+fm(catDims7[c].sales)+'，销售额'+fmm(catDims7[c].rev)+'（占新品'+fp(catDims7[c].rev/tR)+'）\n';});
     var deptPct=DATA._totalShare||0;
@@ -852,7 +852,7 @@ function renderT8(){
     var pxData=DATA.pinxiaoData||[];
     var batches7={};pxData.forEach(function(s){var ld=s.listDate.substring(0,7);if(!batches7[ld])batches7[ld]={sku:0,rev:[0,0,0,0,0]};batches7[ld].sku++;});
     for(var ld in batches7){pxData.filter(function(s){return s.listDate.substring(0,7)===ld}).forEach(function(s){batches7[ld].rev[0]+=s.r1||0;batches7[ld].rev[1]+=s.r2||0;batches7[ld].rev[2]+=s.r3||0;batches7[ld].rev[3]+=s.r4||0;batches7[ld].rev[4]+=s.r5||0;});}
-    rpt+='▎品效维度（按上架月份）\n';
+    rpt+='▎品效维度（数据来源：Tab2 Cohort + 全量pxData）\n';
     var sb7=Object.keys(batches7).sort();
     sb7.forEach(function(ld){
       var d=batches7[ld],ldShort=ld.substring(5)+'月';
@@ -867,12 +867,12 @@ function renderT8(){
     });
     rpt+='\n';
 
-    rpt+='▎分析人维度\n';
+    rpt+='▎分析人维度（数据来源：Tab3 销售维度）\n';
     rpt+=m+'月新品主要由'+anMax+'承接（'+anDims7[anMax].n+'款），货值最高的是'+(Object.keys(anDims7).sort(function(a,b){return(anDims7[b].rev/anDims7[b].n)-(anDims7[a].rev/anDims7[a].n)})[0])+'。\n';
     rpt+='新品平均货值$'+Math.round(allAvgPrice)+'。\n';
     rpt+='分析频次最多：'+anFreqMax+'（均'+(anDims7[anFreqMax].freq/anDims7[anFreqMax].n).toFixed(1)+'次/SKU），最少：'+anFreqMin+'（均'+(anDims7[anFreqMin].freq/anDims7[anFreqMin].n).toFixed(1)+'次/SKU），小组平均'+(freqTotal/N).toFixed(1)+'次/SKU。\n\n';
 
-    rpt+='▎拓展类型\n';
+    rpt+='▎拓展类型（数据来源：Tab3 销售维度）\n';
     Object.keys(expDims7).sort().forEach(function(e){
       var d=expDims7[e],pe=pvExp[e]||{};
       rpt+=e+''+d.n+'款：销量'+fm(d.sales)+'，销售额'+fmm(d.rev)+'，出单率'+fp(d.ord/d.n)+'';
@@ -882,12 +882,12 @@ function renderT8(){
     if(unsoldLate.length)rpt+='其中'+unsoldLate.length+'款下旬上架，时间累计周期不够，影响出单率。\n';
     rpt+='\n';
 
-    rpt+='▎新品出单情况\n';
+    rpt+='▎新品出单情况（数据来源：Tab5 出单分析）\n';
     rpt+='已出单'+(y+n)+'款（Y:'+y+' N:'+n+'），未出单'+unsold7.length+'款，出单率'+fp(soldRate)+'。\n';
     if(hasR.length)rpt+='有对手SKU中：已出单'+hy+'款，出单率'+fp(hy/hasR.length)+'。\n';
     rpt+='\n';
 
-    rpt+='▎低占比新品（市占比<75%）\n';
+    rpt+='▎低占比新品（数据来源：Tab5 低占比表）\n';
     rpt+='低占比新品共'+lowShare.length+'款（占'+fp(lowShare.length/N)+'）。\n';
     if(lowShare.length){
       var lsMkt={};lowShare.forEach(function(r){var s=r.curMarketStatus||'其他';lsMkt[s]=(lsMkt[s]||0)+1;});
@@ -897,7 +897,7 @@ function renderT8(){
     }
     rpt+='\n';
 
-    rpt+='▎未出单分析\n';
+    rpt+='▎未出单分析（数据来源：Tab5 出单分析）\n';
     if(unsold7.length){
       rpt+='未出单新品'+unsold7.length+'款（占'+fp(unsold7.length/N)+'）。\n';
       var usMkt={};unsold7.forEach(function(r){var s=r.curMarketStatus||'其他';usMkt[s]=(usMkt[s]||0)+1;});
@@ -907,13 +907,13 @@ function renderT8(){
     }else{rpt+='本月无未出单新品。\n';}
     rpt+='\n';
 
-    rpt+='▎广告追踪\n';
+    rpt+='▎广告追踪（数据来源：Tab6 广告追踪）\n';
     rpt+='PLP广告'+pp.length+'款（广告销量'+fm(pp.reduce(function(s,r){return s+(r.plpSales||0)},0))+'），花费'+fmm(pp.reduce(function(s,r){return s+(r.plpCost||0)},0))+'。\n';
     rpt+='PLG广告'+pg.length+'款，花费'+fmm(pg.reduce(function(s,r){return s+(r.plgCost||0)},0))+'。\n';
     rpt+='PLP+PLG同开'+both.length+'款，单PLP'+(pp.length-both.length)+'款，仅PLG'+(pg.length-both.length)+'款，无广告'+noAd.length+'款。\n';
     rpt+='总广告花费'+fmm(pC)+'，ACOAS '+fp(plpACOAS)+'。\n\n';
 
-    rpt+='▎下周动作\n';
+    rpt+='▎下周动作（综合各Tab分析）\n';
     if(hn>0)rpt+='1. 有对手未出单'+hn+'款需重点排查：逐一分析竞品定价、主图、评价，降价或开启优惠券测试。\n';
     if(lowShare.length)rpt+='2. 低占比新品'+(lowShare.length-lsUnsold.length)+'款（已出单）优先开启PLP广告或提高出价，目标市占提升至75%+。\n';
     if(noAd.length>0)rpt+='3. 无广告SKU中筛选有出单潜力的，开启PLP自动广告测试（日预算$5-10/款）。\n';
