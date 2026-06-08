@@ -331,7 +331,7 @@ function renderT2(){
     var allCatNames=Object.keys(concCats).sort(function(a,b){var ta=0,tb=0;concMonths.forEach(function(m){ta+=concCats[a][m]||0;tb+=concCats[b][m]||0;});return tb-ta;});
     var moLbls=concMonths.map(function(m){return m.substring(5)+'月上架'});
     var catColors2=['#0f3460','#8e44ad','#e67e22','#c0392b','#27ae60','#2980b9','#95a5a6'];
-    var optMo={responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true,title:{display:true,text:'SKU数'}}},plugins:{legend:{display:false}}};
+    var optMo={responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true,title:{display:true,text:'SKU数'}}},plugins:{legend:{position:'bottom',labels:{font:{size:9},usePointStyle:true,boxWidth:8}}}};
     // 月度维度：X=上架月份, 堆叠=品线
     var dsMo=[];allCatNames.forEach(function(c,i){dsMo.push({label:c,data:concMonths.map(function(m){return concCats[c][m]||0}),backgroundColor:catColors2[i%7]});});
     try{var cc1=document.getElementById('chart-cat-conc-mo');if(cc1)allCharts.push(new Chart(cc1,{type:'bar',data:{labels:moLbls,datasets:dsMo},options:optMo}));}catch(e){}
