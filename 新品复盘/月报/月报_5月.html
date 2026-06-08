@@ -69,7 +69,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="section"><h3>出单四象限</h3><div class="chart-row"><div class="chart-box"><canvas id="chart-quad" style="max-height:240px"></canvas></div><div class="chart-box"><canvas id="chart-an-ord8" style="max-height:240px"></canvas></div></div><div id="t4-quad"></div></div>
 <div class="section"><h3>按分析人</h3><div id="t4-an"></div></div><div class="section"><h3>按品线</h3><div id="t4-cat"></div></div>
 <div class="section"><h3>未出单原因分析</h3><div class="chart-row"><div class="chart-box"><canvas id="chart-unsold-reason" style="max-height:240px"></canvas></div><div class="chart-box"><div id="t4-unsold-reason"></div></div></div></div>
-<div class="section"><h3>低占比新品 (PW市占&lt;75%)</h3><div class="chart-box" style="margin-bottom:12px"><canvas id="chart-lowshare" style="max-height:200px"></canvas></div><div class="table-scroll" id="t4-lowshare-table"></div></div></div>
+<div class="section"><h3>低占比新品 (市占比&lt;75%)</h3><div class="chart-box" style="margin-bottom:12px"><canvas id="chart-lowshare" style="max-height:200px"></canvas></div><div class="table-scroll" id="t4-lowshare-table"></div></div></div>
 
 <div class="tab-content" id="tab5"><div class="section"><h3>PLP广告汇总</h3><div class="kpi-grid" id="t5-plp-kpi"></div></div><div class="section"><h3>PLG广告汇总</h3><div class="kpi-grid" id="t5-plg-kpi"></div></div>
 <div class="section"><h3>广告构成 & 投放对比</h3><div class="chart-row"><div class="chart-box"><canvas id="chart-ad-comp" style="max-height:240px"></canvas></div><div class="chart-box"><canvas id="chart-ad-an" style="max-height:240px"></canvas></div></div><div class="kpi-grid" id="t5-ad-comp"></div></div>
@@ -207,16 +207,6 @@ function parseMonthlyData(wb){
             var an=str(r2,10);if(an&&r2[11]&&!seenAn[an]){seenAn[an]=1;d.dimAnSummary.push({name:an,range:str(r2,11),m1:sf(r2[12]),m2:sf(r2[13]),m3:sf(r2[14]),m4:sf(r2[15]),m5:sf(r2[16])});}
         }
     }
-    // PW market share lookup (by sales code)
-    var pwSheet=wb.Sheets['5.31PW'];
-    d.pwByCode={};d.pwBySku={};
-    if(pwSheet){
-        var pwRows=XLSX.utils.sheet_to_json(pwSheet,{header:1});
-        for(var ri=1;ri<pwRows.length;ri++){var pwr=pwRows[ri];var code=str(pwr,1);if(code)d.pwByCode[code]={rival:sf(pwr[2]),our:sf(pwr[3]),share:sf(pwr[4])};}
-        // Map to SKU
-        skuData.forEach(function(s){if(d.pwByCode[s.saleNo])d.pwBySku[s.sku]=d.pwByCode[s.saleNo];});
-    }
-
     d.monthIndex=5;
     return d;
 }
@@ -234,15 +224,13 @@ function renderAll(data){
     destroyCharts();renderT1();renderT2();renderT3();renderT4();renderT5();renderT6();renderT7();renderT8();
 }
 
-function getRows(m){return DATA.skuData.map(function(sku){var pw=DATA.pwBySku[sku.sku]||{};var actShare=sku['share'+m];return{
+function getRows(m){return DATA.skuData.map(function(sku){return{
     sku:sku.sku,saleNo:sku.saleNo,listDate:sku.listDate,firstOrder:sku.firstOrder,
     analyst:sku['a'+m]||'',category:sku.cat,expand:sku.exp,
     curSalesQty:sku['s'+m],curRevenue:sku['r'+m],curRivalQty:sku['ri'+m],
-    curMarketShare:actShare>0?actShare:(pw.share||0),
-    curMarketStatus:sku['m'+m],cur8dStatus:sku['o'+m],freq:sku['f'+m],
+    curMarketShare:sku['share'+m]||0,curMarketStatus:sku['m'+m],cur8dStatus:sku['o'+m],freq:sku['f'+m],
     plpCost:sku['ppC'+m],plpRev:sku['ppR'+m],plpSales:sku['ppS'+m],
-    plgCost:sku['pgC'+m],plgRev:sku['pgR'+m],
-    pwRival:pw.rival||0,pwOur:pw.our||0,pwShare:pw.share||0,isActualShare:actShare>0
+    plgCost:sku['pgC'+m],plgRev:sku['pgR'+m]
 }});}
 
 function renderT1(){
@@ -254,30 +242,22 @@ function renderT1(){
     var y=rows.filter(function(r){return r.cur8dStatus==='Y'}).length;
     var n=rows.filter(function(r){return r.cur8dStatus==='N'}).length;
     var un=N-y-n;
-    // 市占比: 过往月用实际数据, 5月新品补充PW数据
+    // 市占比 = 总自身销量 ÷ (总自身+总对手)
     var pvRows=pv>0?getRows(pv):[];
-    var ownSum=0,rivalSum=0,pwOurSum=0,pwRivalSum=0,hasPW=false;
-    rows.forEach(function(r){
-      ownSum+=r.curSalesQty||0;
-      if(r.curRivalQty>0)rivalSum+=r.curRivalQty;
-      else if(m>=5){var pwO=r.pwOur||0,pwR=r.pwRival||0;if(pwO>0||pwR>0){pwOurSum+=pwO;pwRivalSum+=pwR;hasPW=true;}}
-    });
-    var totalOwn=ownSum+pwOurSum,totalCap=ownSum+rivalSum+pwOurSum+pwRivalSum;
-    var mktShareVal=totalCap>0?totalOwn/totalCap:0,mktShareLabel='市占比',mktShareHint='';
-    DATA._totalShare=mktShareVal; // 统一市占比，供Tab8使用
-    if(hasPW)mktShareHint='5月为PW数据 | 环比-';
-    else{
-      var prvOwnSum=0,prvRivalSum=0;
-      pvRows.forEach(function(r){prvOwnSum+=r.curSalesQty||0;prvRivalSum+=r.curRivalQty||0;});
-      var prvShareVal=(prvOwnSum+prvRivalSum)>0?prvOwnSum/(prvOwnSum+prvRivalSum):0;
-      mktShareHint='环比'+hb(prvShareVal?(mktShareVal-prvShareVal):'-');
-    }
+    var ownSum=0,rivalSum=0;
+    rows.forEach(function(r){ownSum+=r.curSalesQty||0;rivalSum+=r.curRivalQty||0;});
+    var mktShareVal=(ownSum+rivalSum)>0?ownSum/(ownSum+rivalSum):0;
+    DATA._totalShare=mktShareVal;
+    var prvOwnSum=0,prvRivalSum=0;
+    pvRows.forEach(function(r){prvOwnSum+=r.curSalesQty||0;prvRivalSum+=r.curRivalQty||0;});
+    var prvShareVal=(prvOwnSum+prvRivalSum)>0?prvOwnSum/(prvOwnSum+prvRivalSum):0;
+    var mktShareHint='环比'+hb(prvShareVal?(mktShareVal-prvShareVal):'-');
     var prvOrdRate=pv>0?pvRows.filter(function(r){return r.cur8dStatus==='Y'||r.cur8dStatus==='N'}).length/pvRows.length:0;
     kpiGrid('t1-kpi',[
         {l:'累计SKU',v:fm(N),h:'上月'+fm(pvRows.length)+(pvRows.length?' | 环比'+hb((N-pvRows.length)/pvRows.length):'')},
         {l:m+'月销量',v:fm(cur.sales),h:prv.sales?'上月'+fm(prv.sales)+' | 环比'+hb((cur.sales-prv.sales)/prv.sales):'-'},
         {l:m+'月销售额',v:fmm(cur.revenue),h:prv.revenue?'上月'+fmm(prv.revenue)+' | 环比'+hb((cur.revenue-prv.revenue)/prv.revenue):'-'},
-        {l:mktShareLabel,v:fp(mktShareVal),h:mktShareHint+(prvShareVal?' | 上月'+fp(prvShareVal):'')},
+        {l:'市占比',v:fp(mktShareVal),h:mktShareHint+(prvShareVal?' | 上月'+fp(prvShareVal):'')},
         {l:'出单率',v:fp((y+n)/N),h:prvOrdRate?'上月'+fp(prvOrdRate)+' | 环比'+hb((y+n)/N-prvOrdRate):'-'}]);
     var lb=[],sd=[],rd=[];
     for(var mi=1;mi<=m;mi++){lb.push(mi+'月');sd.push(DATA.mTot[mi]?DATA.mTot[mi].sales:0);rd.push(DATA.mTot[mi]?DATA.mTot[mi].revenue:0);}
@@ -406,7 +386,7 @@ function renderT3(){
 
 function renderT4(){
     var m=DATA.monthIndex,pv=m-1,rows=getRows(m),N=rows.length;
-    function hr(r){return r.pwRival>0}
+    function hr(r){return r.curRivalQty>0}
     function od(r){return r.cur8dStatus==='Y'||r.cur8dStatus==='N'}
     var hy=rows.filter(function(r){return hr(r)&&od(r)});
     var hn=rows.filter(function(r){return hr(r)&&!od(r)});
@@ -452,11 +432,11 @@ function renderT4(){
     rh2+='<tr class=total-row><td>合计</td><td>'+unsold.length+'</td><td>100%</td><td>'+fp(unsold.length/N)+'</td></tr></tbody></table>';
     document.getElementById('t4-unsold-reason').innerHTML=rh2;
     try{var cr=document.getElementById('chart-unsold-reason');if(cr)allCharts.push(new Chart(cr,{type:'bar',data:{labels:['竞争无优势','无市场','站外出单','正常','无数据'],datasets:[{label:'未出单数',data:['竞争无优势','无市场','站外出单','正常','无数据'].map(function(s){return reasons[s]||0}),backgroundColor:['#e67e22','#c0392b','#8e44ad','#2980b9','#95a5a6']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}}));}catch(e){}
-    // 低占比新品 (PW市占<75% 且 有对手)
-    var lowShare=rows.filter(function(r){return r.pwShare<0.75&&r.pwRival>0});
+    // 低占比新品 (市占比<75% 且 有对手)
+    var lowShare=rows.filter(function(r){return r.curMarketShare<0.75&&r.curRivalQty>0});
     var catsLow={};lowShare.forEach(function(r){var c=r.category||'未分类';catsLow[c]=(catsLow[c]||0)+1});
-    var lh='<table class=data-table><thead><tr><th>SKU</th><th>分析人</th><th>品类</th><th>'+m+'月销量</th><th>PW对手</th><th>PW市占</th><th>8日出单</th><th>市场状态</th></tr></thead><tbody>';
-    lowShare.forEach(function(r){lh+='<tr><td>'+r.sku+'</td><td>'+r.analyst+'</td><td>'+r.category+'</td><td>'+fm(r.curSalesQty)+'</td><td>'+fm(r.pwRival)+'</td><td>'+fp(r.pwShare)+'</td><td>'+r.cur8dStatus+'</td><td>'+r.curMarketStatus+'</td></tr>'});
+    var lh='<table class=data-table><thead><tr><th>SKU</th><th>分析人</th><th>品类</th><th>'+m+'月销量</th><th>对手</th><th>市占比</th><th>8日出单</th><th>市场状态</th></tr></thead><tbody>';
+    lowShare.forEach(function(r){lh+='<tr><td>'+r.sku+'</td><td>'+r.analyst+'</td><td>'+r.category+'</td><td>'+fm(r.curSalesQty)+'</td><td>'+fm(r.curRivalQty)+'</td><td>'+fp(r.curMarketShare)+'</td><td>'+r.cur8dStatus+'</td><td>'+r.curMarketStatus+'</td></tr>'});
     lh+='</tbody></table>';document.getElementById('t4-lowshare-table').innerHTML=lh;
     try{var cls=document.getElementById('chart-lowshare');if(cls)allCharts.push(new Chart(cls,{type:'bar',data:{labels:Object.keys(catsLow).sort(),datasets:[{label:'低占比SKU数',data:Object.keys(catsLow).sort().map(function(k){return catsLow[k]}),backgroundColor:'#e67e22'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}}));}catch(e){}
 }
@@ -575,24 +555,23 @@ function renderT6(){
             if(f.batch&&s.listDate.substring(0,7)!==f.batch)return false;
             if(f.mktStatus&&s['m'+m]!==f.mktStatus)return false;
             if(f.hasRival){
-              var pw6=DATA.pwBySku[s.sku]||{};
-              var hr6=(pw6.rival||0)>0;
+              var hr6=(s['ri'+m]||0)>0;
               if(f.hasRival==='有'&&!hr6)return false;
               if(f.hasRival==='无'&&hr6)return false;
             }
             if(f.capTier){
-              var pw=DATA.pwBySku[s.sku]||{},rival=pw.rival||0,own=s['s'+m]||0,cap=own+rival;
-              if(capTier6(cap)!==f.capTier)return false;
+              var rival6=s['ri'+m]||0,own6=s['s'+m]||0,cap6=own6+rival6;
+              if(capTier6(cap6)!==f.capTier)return false;
             }
             return true;});
-        var h='<table class=data-table><thead><tr><th>SKU</th><th>上架日期</th><th>分析人</th><th>品类</th><th>'+pv+'月销量</th><th>'+m+'月销量</th><th>'+pv+'月销售额</th><th>'+m+'月销售额</th><th>对手(PW)</th><th>PW市占比</th><th>月市容量</th><th>8日出单</th><th>市场状态</th></tr></thead><tbody>';
+        var h='<table class=data-table><thead><tr><th>SKU</th><th>上架日期</th><th>分析人</th><th>品类</th><th>'+pv+'月销量</th><th>'+m+'月销量</th><th>'+pv+'月销售额</th><th>'+m+'月销售额</th><th>对手</th><th>市占比</th><th>月市容量</th><th>8日出单</th><th>市场状态</th></tr></thead><tbody>';
         var tSp=0,tSc=0,tRp=0,tRc=0;
         filtered.forEach(function(s){
-          var pw=DATA.pwBySku[s.sku]||{},hasRival=(pw.rival||0)>0?'有':'无';
-          var pwShare=pw.share||0,own=s['s'+m]||0;
-          var rival=s['ri'+m]||0;if(!rival&&pv>0&&s.listDate.substring(0,7)!=='2026-0'+m)rival=s['ri'+pv]||0; // 无对手且非当月新上架→用上月
+          var hasRival=(s['ri'+m]||0)>0?'有':'无';
+          var actShare=s['share'+m]||0,own=s['s'+m]||0;
+          var rival=s['ri'+m]||0;if(!rival&&pv>0&&s.listDate.substring(0,7)!=='2026-0'+m)rival=s['ri'+pv]||0;
           var cap=own+rival,capT=capTier6(cap);
-          h+='<tr><td>'+s.sku+'</td><td>'+s.listDate.substring(0,10)+'</td><td>'+s['a'+m]+'</td><td>'+s.cat+'</td><td>'+fm(s['s'+pv])+'</td><td>'+fm(own)+'</td><td>'+fmm(s['r'+pv])+'</td><td>'+fmm(s['r'+m])+'</td><td>'+hasRival+'</td><td>'+fp(pwShare)+'</td><td>'+fm(cap)+' ('+capT+')</td><td>'+s['o'+m]+'</td><td>'+s['m'+m]+'</td></tr>';
+          h+='<tr><td>'+s.sku+'</td><td>'+s.listDate.substring(0,10)+'</td><td>'+s['a'+m]+'</td><td>'+s.cat+'</td><td>'+fm(s['s'+pv])+'</td><td>'+fm(own)+'</td><td>'+fmm(s['r'+pv])+'</td><td>'+fmm(s['r'+m])+'</td><td>'+hasRival+'</td><td>'+fp(actShare)+'</td><td>'+fm(cap)+' ('+capT+')</td><td>'+s['o'+m]+'</td><td>'+s['m'+m]+'</td></tr>';
           tSp+=s['s'+pv];tSc+=own;tRp+=s['r'+pv];tRc+=s['r'+m];
         });
         h+='<tfoot><tr class=total-row><td>合计('+filtered.length+'条)</td><td></td><td></td><td></td><td>'+fm(tSp)+'</td><td>'+fm(tSc)+'</td><td>'+fmm(tRp)+'</td><td>'+fmm(tRc)+'</td><td></td><td></td><td></td><td></td><td></td></tr></tfoot></tbody></table>';
@@ -605,7 +584,7 @@ function renderT6(){
     fh+='<span><select onchange=\"DATA._f6.category=this.value;DATA._applyT6()\"><option value=\"\">品线:全部</option>';cats.sort().forEach(function(c){fh+='<option>'+c+'</option>'});fh+='</select></span>';
     fh+='<span><select onchange=\"DATA._f6.ord8=this.value;DATA._applyT6()\"><option value=\"\">8日出单:全部</option><option>Y</option><option>N</option><option>未</option></select></span>';
     fh+='<span><select onchange=\"DATA._f6.batch=this.value;DATA._applyT6()\"><option value=\"\">上架:全部</option>';bat.sort().forEach(function(b){fh+='<option>'+b+'</option>'});fh+='</select></span>';
-    fh+='<span><select onchange=\"DATA._f6.hasRival=this.value;DATA._applyT6()\"><option value=\"\">对手(PW):全部</option><option>有</option><option>无</option></select></span>';
+    fh+='<span><select onchange=\"DATA._f6.hasRival=this.value;DATA._applyT6()\"><option value=\"\">对手:全部</option><option>有</option><option>无</option></select></span>';
     fh+='<span><select onchange=\"DATA._f6.mktStatus=this.value;DATA._applyT6()\"><option value=\"\">市场状态:全部</option>';mkts.sort().forEach(function(s){fh+='<option>'+s+'</option>'});fh+='</select></span>';
     fh+='<span><select onchange=\"DATA._f6.capTier=this.value;DATA._applyT6()\"><option value=\"\">月市容量:全部</option><option>低</option><option>中</option><option>高</option></select></span>';
     fh+='<span id=t6-count style=\"font-size:12px;color:#888\"></span>';
@@ -657,7 +636,7 @@ function renderT8(){
     var pvRows8=pv>0?getRows(pv):[],pvN2=pvRows8.length||N;
     var pvCap=0,pvOwn=0,pvRev=0,pvAllShare=0,pvAllAvg=0;
     var pvCapDist={低市场:0,中市场:0,高市场:0};
-    pvRows8.forEach(function(r){var rival=r.pwRival||r.curRivalQty||0;var own=r.curSalesQty||0;var cap=own+rival;pvCap+=cap;pvOwn+=own;pvRev+=r.curRevenue||0;pvCapDist[capTier(cap)]++;});
+    pvRows8.forEach(function(r){var rival=r.curRivalQty||r.curRivalQty||0;var own=r.curSalesQty||0;var cap=own+rival;pvCap+=cap;pvOwn+=own;pvRev+=r.curRevenue||0;pvCapDist[capTier(cap)]++;});
     pvAllShare=pvCap>0?pvOwn/pvCap:0;pvAllAvg=pvOwn>0?pvRev/pvOwn:0;
     kpiGrid('t8-kpi',[
         {l:'月市场总容量',v:fm(capTotal),h:pvCap?'上月'+fm(pvCap)+' | 环比'+hb((capTotal-pvCap)/pvCap):'-'},
@@ -714,14 +693,14 @@ function renderT7(){
     var cur=DATA.mTot[m]||{},prv=DATA.mTot[pv]||{};
     var y=rows.filter(function(r){return r.cur8dStatus==='Y'}).length;
     var n=rows.filter(function(r){return r.cur8dStatus==='N'}).length;
-    var hasR=rows.filter(function(r){return r.pwRival>0});
+    var hasR=rows.filter(function(r){return r.curRivalQty>0});
     var hy=hasR.filter(function(r){return r.cur8dStatus==='Y'||r.cur8dStatus==='N'}).length;
     var hn=hasR.length-hy;
     var pp=rows.filter(function(r){return r.plpCost>0||r.plpRev>0});
     var pg=rows.filter(function(r){return r.plgCost>0||r.plgRev>0});
     var both=rows.filter(function(r){return(r.plpCost>0||r.plpRev>0)&&(r.plgCost>0||r.plgRev>0)});
     var noAd=rows.filter(function(r){return!(r.plpCost>0||r.plpRev>0)&&!(r.plgCost>0||r.plgRev>0)});
-    var lowShare=rows.filter(function(r){return r.pwShare<0.75&&r.pwRival>0});
+    var lowShare=rows.filter(function(r){return r.curMarketShare<0.75&&r.curRivalQty>0});
     var tR=rows.reduce(function(s,r){return s+r.curRevenue},0);
     var pC=pp.reduce(function(s,r){return s+r.plpCost},0)+pg.reduce(function(s,r){return s+r.plgCost},0);
     var freqTotal=rows.reduce(function(s,r){return s+(r.freq||0)},0);
@@ -735,7 +714,7 @@ function renderT7(){
     var soldRate=(y+n)/N;
     if(soldRate<.75)risks.push({l:'high',t:'出单率严重偏低('+fp(soldRate)+')',d:'仅'+(y+n)+'款出单（Y:'+y+' N:'+n+'），'+'未出单'+(N-y-n)+'款。其中有对手未出单'+hn+'款——这些SKU有竞品但未出单，说明产品力或价格竞争力不足；无对手未出单'+(N-y-n-hn)+'款，需评估市场是否存在真实需求。'});
     else if(soldRate<.85)risks.push({l:'medium',t:'出单率有待提升('+fp(soldRate)+')',d:'有对手未出单'+hn+'款需重点关注，建议逐一排查竞品定价、主图和评价。'});
-    if(lowShare.length>N*.25)risks.push({l:'high',t:'低占比新品占比过高('+fp(lowShare.length/N)+')',d:lowShare.length+'款PW市占<75%，其中'+lowShare.filter(function(r){return r.cur8dStatus==='Y'||r.cur8dStatus==='N'}).length+'款已出单但市占不足，需优化广告投放和关键词排名。'});
+    if(lowShare.length>N*.25)risks.push({l:'high',t:'低占比新品占比过高('+fp(lowShare.length/N)+')',d:lowShare.length+'款市占比<75%，其中'+lowShare.filter(function(r){return r.cur8dStatus==='Y'||r.cur8dStatus==='N'}).length+'款已出单但市占不足，需优化广告投放和关键词排名。'});
     if(noAd.length>N*.2)risks.push({l:'medium',t:'无广告SKU偏高('+noAd.length+'款，'+fp(noAd.length/N)+')',d:'建议评估是否补充广告投放。已投放广告的SKU中，PLP+PLG同开仅'+both.length+'款，同开率'+fp(both.length/(pp.length+pg.length-both.length))+'，同开SKU通常市占更高。'});
     var plpACOAS=pC/tR;
     if(plpACOAS>.15)risks.push({l:'medium',t:'总广告花费占比偏高(ACOAS '+fp(plpACOAS)+')',d:'广告成本占销售额比重超过15%，需检查高ACOS的广告活动并优化投放策略。'});
@@ -756,7 +735,7 @@ function renderT7(){
     // Actions with priority
     var actions=[];
     if(hn>0)actions.push({p:'P0',t:'处理有对手未出单SKU',d:'逐SKU排查竞品对标：价格是否高于竞品？主图/A+是否到位？评价数和评分是否落后？建议降价或开启优惠券测试转化。涉及'+hn+'款。'});
-    if(lowShare.length>0)actions.push({p:'P1',t:'低占比SKU广告加推',d:'筛选已出单但PW市占<75%的'+lowShare.filter(function(r){return r.cur8dStatus==='Y'||r.cur8dStatus==='N'}).length+'款SKU，优先开启PLP广告或提高出价，目标下月市占提升至75%+。'});
+    if(lowShare.length>0)actions.push({p:'P1',t:'低占比SKU广告加推',d:'筛选已出单但市占比<75%的'+lowShare.filter(function(r){return r.cur8dStatus==='Y'||r.cur8dStatus==='N'}).length+'款SKU，优先开启PLP广告或提高出价，目标下月市占提升至75%+。'});
     if(noAd.length>0)actions.push({p:'P1',t:'扩大广告覆盖',d:'从无广告SKU中筛选有出单潜力的（竞品活跃、搜索量充足），开启PLP自动广告测试，初始日预算建议\$5-10/款。当前无广告'+noAd.length+'款。'});
     if(both.length<pp.length*.5)actions.push({p:'P2',t:'提升PLP+PLG同开率',d:'当前同开仅'+both.length+'款。PLP捕获搜索流量，PLG收割关联流量，同开SKU通常市占比单开高15-30%。建议对PLP效果好的SKU追加PLG投放。'});
     actions.push({p:'P2',t:'持续跟踪品效趋势',d:'重点关注'+m+'月上架新品的首月表现和3月批次SKU的5月衰减情况，及早发现品效下滑信号。'});
@@ -818,9 +797,9 @@ function exportXLSX(){
 
   // Sheet 2: SKU月度明细
   var s2=[['SKU月度明细 - '+m+'月']];
-  s2.push(['SKU','销售编号','上架日期','分析人','品类','拓展类型',pv+'月销量',m+'月销量',pv+'月销售额',m+'月销售额',pv+'月对手',m+'月对手','PW市占','8日出单','市场状态']);
+  s2.push(['SKU','销售编号','上架日期','分析人','品类','拓展类型',pv+'月销量',m+'月销量',pv+'月销售额',m+'月销售额',pv+'月对手',m+'月对手','市占比','8日出单','市场状态']);
   DATA.skuData.forEach(function(d){
-    s2.push([d.sku,d.saleNo||'',d.listDate,d['a'+m]||'',d.cat,d.exp||'',rawI(d['s'+pv]),rawI(d['s'+m]),rawM(d['r'+pv]),rawM(d['r'+m]),rawI(d['ri'+pv]),rawI(d['ri'+m]),(DATA.pwBySku[d.sku]?DATA.pwBySku[d.sku].share:0),d['o'+m]||'-',d['m'+m]||'-']);
+    s2.push([d.sku,d.saleNo||'',d.listDate,d['a'+m]||'',d.cat,d.exp||'',rawI(d['s'+pv]),rawI(d['s'+m]),rawM(d['r'+pv]),rawM(d['r'+m]),rawI(d['ri'+pv]),rawI(d['ri'+m]),(d['share'+m]||0),d['o'+m]||'-',d['m'+m]||'-']);
   });
   var ws2=XLSX.utils.aoa_to_sheet(s2);
   ws2['!cols']=[{wch:22},{wch:16},{wch:12},{wch:10},{wch:14},{wch:10},{wch:12,fmt:'int'},{wch:12,fmt:'int'},{wch:14,fmt:'money'},{wch:14,fmt:'money'},{wch:12,fmt:'int'},{wch:12,fmt:'int'},{wch:10},{wch:10},{wch:12}];
@@ -856,19 +835,19 @@ function exportXLSX(){
   XLSX.utils.book_append_sheet(wb,ws4,'销售维度');
 
   // Sheet 5: 出单分析
-  function hr2(r){return r.pwRival>0}
+  function hr2(r){return r.curRivalQty>0}
   function od2(r){return r.cur8dStatus==='Y'||r.cur8dStatus==='N'}
   var hy2=rows.filter(function(r){return hr2(r)&&od2(r)}),hn2=rows.filter(function(r){return hr2(r)&&!od2(r)});
   var ny2=rows.filter(function(r){return !hr2(r)&&od2(r)}),nn2=rows.filter(function(r){return !hr2(r)&&!od2(r)});
-  var s5=[['出单分析(依据PW)'],['分类','SKU数','占比'],[],['有对手出单',hy2.length,(hy2.length/N*100).toFixed(1)+'%'],['有对手未出单',hn2.length,(hn2.length/N*100).toFixed(1)+'%'],['无对手出单',ny2.length,(ny2.length/N*100).toFixed(1)+'%'],['无对手未出单',nn2.length,(nn2.length/N*100).toFixed(1)+'%']];
+  var s5=[['出单分析'],['分类','SKU数','占比'],[],['有对手出单',hy2.length,(hy2.length/N*100).toFixed(1)+'%'],['有对手未出单',hn2.length,(hn2.length/N*100).toFixed(1)+'%'],['无对手出单',ny2.length,(ny2.length/N*100).toFixed(1)+'%'],['无对手未出单',nn2.length,(nn2.length/N*100).toFixed(1)+'%']];
   var ws5=XLSX.utils.aoa_to_sheet(s5);ws5['!cols']=[{wch:18},{wch:12},{wch:12}];
   XLSX.utils.book_append_sheet(wb,ws5,'出单分析');
 
   // Sheet 6: 低占比新品
-  var lowShare=rows.filter(function(r){return r.pwShare<0.75&&r.pwRival>0});
-  var s6=[['低占比新品(PW市占<75%)']];
-  s6.push(['SKU','分析人','品类',m+'月销量',m+'月销售额','PW对手','PW市占','8日出单','市场状态']);
-  lowShare.forEach(function(r){s6.push([r.sku,r.analyst||'',r.category||'',rawI(r.curSalesQty),rawM(r.curRevenue),rawI(r.pwRival),r.pwShare,r.cur8dStatus||'-',r.curMarketStatus||'-'])});
+  var lowShare=rows.filter(function(r){return r.curMarketShare<0.75&&r.curRivalQty>0});
+  var s6=[['低占比新品(市占比<75%)']];
+  s6.push(['SKU','分析人','品类',m+'月销量',m+'月销售额','对手','市占比','8日出单','市场状态']);
+  lowShare.forEach(function(r){s6.push([r.sku,r.analyst||'',r.category||'',rawI(r.curSalesQty),rawM(r.curRevenue),rawI(r.curRivalQty),r.curMarketShare,r.cur8dStatus||'-',r.curMarketStatus||'-'])});
   var ws6=XLSX.utils.aoa_to_sheet(s6);ws6['!cols']=[{wch:22},{wch:10},{wch:14},{wch:10},{wch:14},{wch:10},{wch:10},{wch:10},{wch:12}];
   XLSX.utils.book_append_sheet(wb,ws6,'低占比新品');
 
