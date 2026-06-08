@@ -716,7 +716,7 @@ function renderT4(){
         {label:'低(≤6)',data:catLbl.map(function(k){return catDims[k].capDist['低市场']}),backgroundColor:'#c0392b'},
         {label:'中(7-15)',data:catLbl.map(function(k){return catDims[k].capDist['中市场']}),backgroundColor:'#e67e22'},
         {label:'高(≥16)',data:catLbl.map(function(k){return catDims[k].capDist['高市场']}),backgroundColor:'#27ae60'}
-      ]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true}},plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}}));
+      ]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true}},plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}},plugins:[totalLabelPlugin]));
     }catch(e){}
     var anLbl=Object.keys(anDims).sort();
     try{
@@ -725,7 +725,7 @@ function renderT4(){
         {label:'低(≤6)',data:anLbl.map(function(k){return anDims[k].capDist['低市场']}),backgroundColor:'#c0392b'},
         {label:'中(7-15)',data:anLbl.map(function(k){return anDims[k].capDist['中市场']}),backgroundColor:'#e67e22'},
         {label:'高(≥16)',data:anLbl.map(function(k){return anDims[k].capDist['高市场']}),backgroundColor:'#27ae60'}
-      ]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true}},plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}}));
+      ]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true}},plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}},plugins:[totalLabelPlugin]));
     }catch(e){}
 }
 
