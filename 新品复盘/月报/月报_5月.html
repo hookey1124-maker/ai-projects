@@ -543,8 +543,8 @@ function renderT5(){
         else if(tags.indexOf('低花费')>=0)bg='background:#f0f8ff';
         lh+='<tr style=\"'+bg+'\"><td>'+l.campaign+'</td><td>'+l.SKU+'</td><td>'+l.analyst+'</td><td>'+l.category+'</td><td>'+fm(l.imp)+'</td><td>'+fm(l.click)+'</td><td>'+fm(l.sold)+'</td><td>'+fmm(l.cost)+'</td><td>'+fmm(l.adRev)+'</td><td style=\"'+(l.acos>.3?'color:#c0392b;font-weight:700':'')+'\">'+fp(l.acos)+'</td><td>'+fp(l.acoas)+'</td><td style=\"font-size:11px;color:'+(tags[0]==='正常'?'#27ae60':'#e67e22')+'\">'+tags.join(' ')+'</td></tr>'});
       lh+='</tbody></table></div>';
-      document.getElementById('t5-plp-detail').innerHTML=lh;
-      document.getElementById('t5-plp-count').textContent='显示'+filtered.length+'/'+links.length+'条';
+      document.getElementById('t5-plp-table').innerHTML=lh;
+      var ce=document.getElementById('t5-plp-count');if(ce)ce.textContent='显示'+filtered.length+'/'+links.length+'条';
     }
     // 筛选栏 + 标题
     var tagOpts=['正常','高ACOS','花费不出单','低花费'];
@@ -552,7 +552,7 @@ function renderT5(){
     fh+='<span style=margin-left:12px><select onchange=\"DATA._f5.tag=this.value;renderPlpDetail()\"><option value=\"\">全部标签</option>';
     tagOpts.forEach(function(t){fh+='<option>'+t+'</option>'});
     fh+='</select></span> <span id=t5-plp-count style=font-size:12px;color:#888></span>';
-    document.getElementById('t5-plp-detail').innerHTML='<div class=filter-bar>'+fh+'</div>';
+    document.getElementById('t5-plp-detail').innerHTML='<div class=filter-bar>'+fh+'</div><div id=t5-plp-table></div>';
     renderPlpDetail();
 }
 
