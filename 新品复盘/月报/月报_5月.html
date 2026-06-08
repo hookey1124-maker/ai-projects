@@ -54,14 +54,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="tab-content" id="tab2"><div class="section"><h3>品效Cohort</h3>
 <div class="chart-row"><div class="chart-box"><h4 id="t2-chart1-title">批次月度销售额</h4><canvas id="chart-px-rev" style="max-height:260px"></canvas></div><div class="chart-box"><h4 id="t2-chart2-title">品效趋势$/SKU</h4><canvas id="chart-px-eff" style="max-height:260px"></canvas></div></div>
 <div id="t2-cohort"></div>
-<div style="margin-top:16px"><h4 style="font-size:13px;color:#555;margin-bottom:8px">品效 x 品线 ($/SKU)</h4><div id="t2-px-cat"></div></div></div></div>
+<div style="margin-top:16px"><h4 style="font-size:13px;color:#555;margin-bottom:8px">品效 x 品线 ($/SKU)</h4><canvas id="chart-px-cat" style="max-height:240px;margin-bottom:12px"></canvas><div id="t2-px-cat"></div></div></div></div>
 
 <div class="tab-content" id="tab3">
 <div class="section"><h3>品线维度</h3><div class="chart-box" style="margin-bottom:16px"><canvas id="chart-cat-combo" style="max-height:300px"></canvas></div><div id="t3-cat"></div></div>
 <div class="section"><h3>分析人维度</h3><div class="chart-box" style="margin-bottom:16px"><canvas id="chart-an-combo" style="max-height:300px"></canvas></div><div id="t3-an"></div></div>
 <div class="section"><h3>上架批次</h3><div id="t3-batch"></div></div></div>
 
-<div class="tab-content" id="tab8"><div class="section"><h3>🌐 市场容量 &amp; 市占比分布</h3><div class="kpi-grid" id="t8-kpi"></div><div class="chart-row"><div class="chart-box"><h4>市占分层分布</h4><canvas id="chart-share-tier" style="max-height:240px"></canvas></div><div class="chart-box"><h4>货值分布（月销售额/月销量）</h4><canvas id="chart-avgprice" style="max-height:240px"></canvas></div></div><div id="t8-tier-table"></div></div></div></div>
+<div class="tab-content" id="tab8"><div class="section"><h3>🌐 市场容量 &amp; 市占比分布</h3><div class="kpi-grid" id="t8-kpi"></div><div class="chart-row"><div class="chart-box"><h4>市占分层分布</h4><canvas id="chart-share-tier" style="max-height:240px"></canvas></div><div class="chart-box"><h4>货值分布（月销售额/月销量）</h4><canvas id="chart-avgprice" style="max-height:240px"></canvas></div></div><div id="t8-tier-table"></div>
+<div class="chart-row"><div class="chart-box"><h4>品线市容量分布</h4><canvas id="chart-mkt-cat" style="max-height:240px"></canvas></div><div class="chart-box"><h4>分析人市容量分布</h4><canvas id="chart-mkt-an" style="max-height:240px"></canvas></div></div></div></div>
 <div class="tab-content" id="tab4"><div class="kpi-grid" id="t4-kpi"></div>
 <div class="section"><h3>出单四象限</h3><div class="chart-row"><div class="chart-box"><canvas id="chart-quad" style="max-height:240px"></canvas></div><div class="chart-box"><canvas id="chart-an-ord8" style="max-height:240px"></canvas></div></div><div id="t4-quad"></div></div>
 <div class="section"><h3>按分析人</h3><div id="t4-an"></div></div><div class="section"><h3>按品线</h3><div id="t4-cat"></div></div>
@@ -74,7 +75,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 <div class="tab-content" id="tab6"><div class="filter-bar" id="t6-filter"></div><div class="section" style="padding:12px"><div class="table-scroll" style="max-height:calc(100vh - 280px)" id="t6-table"></div></div></div>
 
-<div class="tab-content" id="tab7"><div class="section"><h3>风险预警</h3><div id="t7-risk"></div></div><div class="section"><h3>核心发现</h3><div id="t7-findings"></div></div><div class="section"><h3>下月动作</h3><div id="t7-actions"></div></div><div class="section"><h3>汇报文案</h3><div id="t7-report"></div></div></div>
+<div class="tab-content" id="tab7"><div class="section"><h3>风险预警</h3><div id="t7-risk"></div></div><div class="section"><h3>核心发现</h3><div id="t7-findings"></div></div><div class="section"><h3>下月动作</h3><div id="t7-actions"></div></div><div class="section"><h3>汇报文案</h3><div id="t7-report"></div></div></div></div>
 
 <script>
 // ===== 工具函数 =====
@@ -335,6 +336,10 @@ function renderT2(){
     var pch='<table class=data-table><thead><tr>';pcCols.forEach(function(c){pch+='<th>'+c+'</th>'});pch+='</tr></thead><tbody>';
     pcRows.forEach(function(rd){pch+='<tr>';rd.forEach(function(v,i){pch+='<td>'+(i===0?v:fm(v))+'</td>'});pch+='</tr>'});
     pch+='</tbody></table>';document.getElementById('t2-px-cat').innerHTML=pch;
+    // 品效x品线柱状图
+    var pxLbl=[],pxVal=[];
+    Object.keys(pxByCat).sort().forEach(function(cat){var totalSku=0,totalRev=0;for(var b in pxByCat[cat]){totalSku+=pxByCat[cat][b].sku;totalRev+=pxByCat[cat][b].rev;}pxLbl.push(cat);pxVal.push(totalSku?Math.round(totalRev/totalSku):0);});
+    try{var pc=document.getElementById('chart-px-cat');if(pc)allCharts.push(new Chart(pc,{type:'bar',data:{labels:pxLbl,datasets:[{label:'$/SKU',data:pxVal,backgroundColor:'#8e44ad',borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,title:{display:true,text:'$/SKU'}}}}}));}catch(e){}
 }
 
 function renderT3(){
@@ -365,19 +370,21 @@ function renderT3(){
     var deptCat={};dcs.forEach(function(d){deptCat[d.name]=d;});
     var deptAn={};das.forEach(function(d){deptAn[d.name]=d;});
     // 品线对比
-    var cch='<div class=section><h3>📋 品线维度 — 新品 vs 部门对比（'+m+'月）</h3><table class=data-table><thead><tr><th>品线</th><th>新品SKU</th><th>新品月销量</th><th>部门月销量</th><th>新品占部门比</th></tr></thead><tbody>';
+    var cch='<div class=section><h3>📋 品线维度 — 新品 vs 部门对比（'+m+'月）</h3><table class=data-table><thead><tr><th>品线</th><th>新品SKU</th><th>新品月销量</th><th>部门月销量</th><th>新品占部门比(参考)</th></tr></thead><tbody>';
     Object.keys(catDims).sort().forEach(function(k){
       var nd=catDims[k],dd=deptCat[k];
-      var deptSales=dd?dd['m'+m]:0;
-      cch+='<tr><td>'+k+'</td><td>'+nd.sk+'</td><td>'+fm(nd.sc)+'</td><td>'+fm(deptSales)+'</td><td>'+(deptSales?fp(nd.sc/deptSales):'-')+'</td></tr>';
+      var deptSales=dd?Math.round(dd['m'+m]):0;
+      var ratio=deptSales?Math.min(1,Math.round(nd.sc)/deptSales):0;
+      cch+='<tr><td>'+k+'</td><td>'+nd.sk+'</td><td>'+fm(Math.round(nd.sc))+'</td><td>'+fm(deptSales)+'</td><td>'+(deptSales?fp(ratio)+((Math.round(nd.sc)>deptSales)?'⚠':'') :'-')+'</td></tr>';
     });
     cch+='</tbody></table></div>';document.getElementById('t3-cat').insertAdjacentHTML('beforeend',cch);
     // 分析人对比
-    var ach='<div class=section><h3>📋 分析人维度 — 新品 vs 部门对比（'+m+'月）</h3><table class=data-table><thead><tr><th>分析人</th><th>新品SKU</th><th>新品月销量</th><th>部门月销量</th><th>新品占部门比</th></tr></thead><tbody>';
+    var ach='<div class=section><h3>📋 分析人维度 — 新品 vs 部门对比（'+m+'月）</h3><table class=data-table><thead><tr><th>分析人</th><th>新品SKU</th><th>新品月销量</th><th>部门月销量</th><th>新品占部门比(参考)</th></tr></thead><tbody>';
     Object.keys(anDims).sort().forEach(function(k){
       var nd=anDims[k],dd=deptAn[k];
-      var deptSales=dd?dd['m'+m]:0;
-      ach+='<tr><td>'+k+'</td><td>'+nd.sk+'</td><td>'+fm(nd.sc)+'</td><td>'+fm(deptSales)+'</td><td>'+(deptSales?fp(nd.sc/deptSales):'-')+'</td></tr>';
+      var deptSales=dd?Math.round(dd['m'+m]):0;
+      var ratio=deptSales?Math.min(1,Math.round(nd.sc)/deptSales):0;
+      ach+='<tr><td>'+k+'</td><td>'+nd.sk+'</td><td>'+fm(Math.round(nd.sc))+'</td><td>'+fm(deptSales)+'</td><td>'+(deptSales?fp(ratio)+((Math.round(nd.sc)>deptSales)?'⚠':'') :'-')+'</td></tr>';
     });
     ach+='</tbody></table></div>';document.getElementById('t3-an').insertAdjacentHTML('beforeend',ach);
 }
@@ -566,6 +573,25 @@ function renderT8(){
     Object.keys(anDims).sort().forEach(function(k){var d=anDims[k];dh+='<tr><td>'+k+'</td><td>'+d.n+'</td><td>'+Math.round(d.cap/d.n)+'</td><td>'+fm(d.own)+'</td><td>'+Math.round(d.own>0?d.rev/d.own:0)+'</td><td>'+fp(d.cap>0?d.own/d.cap:0)+'</td><td>'+d.capDist['低市场']+'</td><td>'+d.capDist['中市场']+'</td><td>'+d.capDist['高市场']+'</td></tr>'});
     dh+='</tbody></table></div>';
     document.getElementById('t8-tier-table').innerHTML=dh;
+    // 市容量分布堆叠柱状图
+    var catLbl=Object.keys(catDims).sort();
+    try{
+      var ccm=document.getElementById('chart-mkt-cat');
+      if(ccm)allCharts.push(new Chart(ccm,{type:'bar',data:{labels:catLbl,datasets:[
+        {label:'低(≤6)',data:catLbl.map(function(k){return catDims[k].capDist['低市场']}),backgroundColor:'#c0392b'},
+        {label:'中(7-15)',data:catLbl.map(function(k){return catDims[k].capDist['中市场']}),backgroundColor:'#e67e22'},
+        {label:'高(≥16)',data:catLbl.map(function(k){return catDims[k].capDist['高市场']}),backgroundColor:'#27ae60'}
+      ]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true}},plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}}));
+    }catch(e){}
+    var anLbl=Object.keys(anDims).sort();
+    try{
+      var cam=document.getElementById('chart-mkt-an');
+      if(cam)allCharts.push(new Chart(cam,{type:'bar',data:{labels:anLbl,datasets:[
+        {label:'低(≤6)',data:anLbl.map(function(k){return anDims[k].capDist['低市场']}),backgroundColor:'#c0392b'},
+        {label:'中(7-15)',data:anLbl.map(function(k){return anDims[k].capDist['中市场']}),backgroundColor:'#e67e22'},
+        {label:'高(≥16)',data:anLbl.map(function(k){return anDims[k].capDist['高市场']}),backgroundColor:'#27ae60'}
+      ]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true}},plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}}));
+    }catch(e){}
 }
 
 function renderT7(){
