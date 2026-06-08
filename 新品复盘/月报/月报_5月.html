@@ -370,10 +370,11 @@ function renderT2(){
 
 function renderT3(){
     var m=DATA.monthIndex,pv=m-1,skus=DATA.skuData;
+    skus=skus.filter(function(s){return s['a'+m]||(s['s'+m]||0)>0;});
     var catDims={},anDims={};
     skus.forEach(function(s){
         var cat=s.cat;if(!catDims[cat])catDims[cat]={sk:0,sc:0,sp:0,rc:0,rp:0};catDims[cat].sk++;catDims[cat].sc+=s['s'+m];catDims[cat].sp+=s['s'+pv];catDims[cat].rc+=s['r'+m];catDims[cat].rp+=s['r'+pv];
-        var an=s['a'+m]||'未知';if(!anDims[an])anDims[an]={sk:0,sc:0,sp:0,rc:0,rp:0};anDims[an].sk++;anDims[an].sc+=s['s'+m];anDims[an].sp+=s['s'+pv];anDims[an].rc+=s['r'+m];anDims[an].rp+=s['r'+pv];
+        var an=s['a'+m];if(!an)return;if(!anDims[an])anDims[an]={sk:0,sc:0,sp:0,rc:0,rp:0};anDims[an].sk++;anDims[an].sc+=s['s'+m];anDims[an].sp+=s['s'+pv];anDims[an].rc+=s['r'+m];anDims[an].rp+=s['r'+pv];
     });
     function dm(id,dims,label){
         var h='<table class=data-table><thead><tr><th>'+label+'</th><th>SKU数</th><th>'+pv+'月销量</th><th>'+m+'月销量</th><th>环比</th><th>'+pv+'月销售额</th><th>'+m+'月销售额</th><th>环比</th></tr></thead><tbody>';
