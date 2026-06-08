@@ -398,14 +398,23 @@ function renderT3(){
 }
 
 function renderT4(){
-    var m=DATA.monthIndex,rows=getRows(m),N=rows.length;
+    var m=DATA.monthIndex,pv=m-1,rows=getRows(m),N=rows.length;
     function hr(r){return r.pwRival>0}
     function od(r){return r.cur8dStatus==='Y'||r.cur8dStatus==='N'}
     var hy=rows.filter(function(r){return hr(r)&&od(r)});
     var hn=rows.filter(function(r){return hr(r)&&!od(r)});
     var ny=rows.filter(function(r){return !hr(r)&&od(r)});
     var nn=rows.filter(function(r){return !hr(r)&&!od(r)});
-    kpiGrid('t4-kpi',[{l:'有对手出单',v:fm(hy.length),c:'#27ae60'},{l:'有对手未出单',v:fm(hn.length),c:'#c0392b'},{l:'无对手出单',v:fm(ny.length),c:'#2980b9'},{l:'无对手未出单',v:fm(nn.length),c:'#e67e22'}]);
+    var pvRows=pv>0?getRows(pv):[],pvN=pvRows.length||N;
+    var pvHy=pvRows.filter(function(r){return hr(r)&&od(r)}).length;
+    var pvHn=pvRows.filter(function(r){return hr(r)&&!od(r)}).length;
+    var pvNy=pvRows.filter(function(r){return !hr(r)&&od(r)}).length;
+    var pvNn=pvRows.filter(function(r){return !hr(r)&&!od(r)}).length;
+    kpiGrid('t4-kpi',[
+      {l:'有对手出单',v:fm(hy.length),h:'环比'+hb(pvN?((hy.length-pvHy)/pvN*100):'-'),c:'#27ae60'},
+      {l:'有对手未出单',v:fm(hn.length),h:'环比'+hb(pvN?((hn.length-pvHn)/pvN*100):'-'),c:'#c0392b'},
+      {l:'无对手出单',v:fm(ny.length),h:'环比'+hb(pvN?((ny.length-pvNy)/pvN*100):'-'),c:'#2980b9'},
+      {l:'无对手未出单',v:fm(nn.length),h:'环比'+hb(pvN?((nn.length-pvNn)/pvN*100):'-'),c:'#e67e22'}]);
     var qh='<table class=data-table><thead><tr><th>分类</th><th>SKU数</th><th>占比</th></tr></thead><tbody>';
     qh+='<tr><td>有对手出单</td><td>'+hy.length+'</td><td>'+fp(hy.length/N)+'</td></tr>';
     qh+='<tr><td>有对手未出单</td><td>'+hn.length+'</td><td>'+fp(hn.length/N)+'</td></tr>';
@@ -446,7 +455,7 @@ function renderT4(){
 }
 
 function renderT5(){
-    var m=DATA.monthIndex,rows=getRows(m),N=rows.length;
+    var m=DATA.monthIndex,pv=m-1,rows=getRows(m),N=rows.length;
     var pp=rows.filter(function(r){return r.plpCost>0||r.plpRev>0});
     var pg=rows.filter(function(r){return r.plgCost>0||r.plgRev>0});
     var both=rows.filter(function(r){return(r.plpCost>0||r.plpRev>0)&&(r.plgCost>0||r.plgRev>0)});
@@ -462,9 +471,36 @@ function renderT5(){
     function aco(c,t){return t>0?fp(c/t):'-'}
     function acos(c,r){return r>0?fp(c/r):'-'}
 
-    kpiGrid('t5-plp-kpi',[{l:'PLP SKU数',v:fm(pp.length)},{l:'广告销量',v:fm(pS)},{l:'广告销售额',v:fmm(pR)},{l:'广告花费',v:fmm(pC)},{l:'ACOS',v:aco(pC,pR)},{l:'ACOAS',v:aco(pC,tR)}]);
-    kpiGrid('t5-plg-kpi',[{l:'PLG SKU数',v:fm(pg.length)},{l:'广告销售额',v:fmm(gR)},{l:'广告花费',v:fmm(gC)},{l:'ACOS',v:aco(gC,gR)},{l:'ACOAS',v:aco(gC,tR)}]);
-    kpiGrid('t5-ad-comp',[{l:'PLP+PLG同开',v:fm(both.length),c:'#c0392b'},{l:'单PLP',v:fm(pOnly.length),c:'#2980b9'},{l:'仅PLG',v:fm(gOnly.length),c:'#e67e22'},{l:'无广告',v:fm(noAd),c:'#95a5a6'}]);
+    // 上月对比
+    var pvRows5=pv>0?getRows(pv):[];
+    var ppPv=pvRows5.filter(function(r){return r.plpCost>0||r.plpRev>0});
+    var pgPv=pvRows5.filter(function(r){return r.plgCost>0||r.plgRev>0});
+    var pSC=pvRows5.reduce(function(s,r){return s+(r.plpSales||0)},0);
+    var pRC=pvRows5.reduce(function(s,r){return s+(r.plpRev||0)},0);
+    var pCC=pvRows5.reduce(function(s,r){return s+(r.plpCost||0)},0);
+    var gRC=pvRows5.reduce(function(s,r){return s+(r.plgRev||0)},0);
+    var gCC=pvRows5.reduce(function(s,r){return s+(r.plgCost||0)},0);
+    var tRPv=pvRows5.reduce(function(s,r){return s+r.curRevenue},0);
+    var bothPv=pvRows5.filter(function(r){return(r.plpCost>0||r.plpRev>0)&&(r.plgCost>0||r.plgRev>0)}).length;
+
+    kpiGrid('t5-plp-kpi',[
+      {l:'PLP SKU数',v:fm(pp.length),h:'环比'+hb(ppPv.length?((pp.length-ppPv.length)/ppPv.length*100):'-')},
+      {l:'广告销量',v:fm(pS),h:'环比'+hb(pSC?((pS-pSC)/pSC*100):'-')},
+      {l:'广告销售额',v:fmm(pR),h:'环比'+hb(pRC?((pR-pRC)/pRC*100):'-')},
+      {l:'广告花费',v:fmm(pC),h:'环比'+hb(pCC?((pC-pCC)/pCC*100):'-')},
+      {l:'ACOS',v:aco(pC,pR),h:'上期'+aco(pCC,pRC)},
+      {l:'ACOAS',v:aco(pC,tR),h:'上期'+(tRPv?aco(pCC,tRPv):'-')}]);
+    kpiGrid('t5-plg-kpi',[
+      {l:'PLG SKU数',v:fm(pg.length),h:'环比'+hb(pgPv.length?((pg.length-pgPv.length)/pgPv.length*100):'-')},
+      {l:'广告销售额',v:fmm(gR),h:'环比'+hb(gRC?((gR-gRC)/gRC*100):'-')},
+      {l:'广告花费',v:fmm(gC),h:'环比'+hb(gCC?((gC-gCC)/gCC*100):'-')},
+      {l:'ACOS',v:aco(gC,gR),h:'上期'+aco(gCC,gRC)},
+      {l:'ACOAS',v:aco(gC,tR),h:'上期'+(tRPv?aco(gCC,tRPv):'-')}]);
+    kpiGrid('t5-ad-comp',[
+      {l:'PLP+PLG同开',v:fm(both.length),h:'环比'+hb(bothPv?((both.length-bothPv)/bothPv*100):'-'),c:'#c0392b'},
+      {l:'单PLP',v:fm(pOnly.length),h:'环比'+hb(ppPv.length-bothPv?(((pOnly.length)-(ppPv.length-bothPv))/(ppPv.length-bothPv)*100):'-'),c:'#2980b9'},
+      {l:'仅PLG',v:fm(gOnly.length),h:'环比'+hb(pgPv.length-bothPv?(((gOnly.length)-(pgPv.length-bothPv))/(pgPv.length-bothPv)*100):'-'),c:'#e67e22'},
+      {l:'无广告',v:fm(noAd),h:'环比'+hb(pvRows5.length-noAd?((noAd-(pvRows5.length-noAd))/(pvRows5.length-noAd)*100):'-'),c:'#95a5a6'}]);
 
     function adDim(id,key,label,cf,rf){
         var dims={};rows.forEach(function(r){var k=key(r);var c=cf(r),rv=rf(r);if(!dims[k])dims[k]={sk:0,c:0,r:0};if(c>0||rv>0){dims[k].sk++;dims[k].c+=c;dims[k].r+=rv}});
@@ -527,7 +563,7 @@ function renderT6(){
 
 
 function renderT8(){
-    var m=DATA.monthIndex,rows=getRows(m),N=rows.length;
+    var m=DATA.monthIndex,pv=m-1,rows=getRows(m),N=rows.length;
     // 市容量规则：低≤6 / 中7-15 / 高≥16
     function capTier(cap){return cap<=6?'低市场':(cap<=15?'中市场':'高市场');}
     function shareTier(sh,rival){return !rival?'无对手':(sh>=0.75?'高(≥75%)':(sh>=0.5?'中(50-75%)':'低(<50%)'));}
@@ -553,13 +589,19 @@ function renderT8(){
     var allShare=capTotal>0?ownTotal/capTotal:0;
     var allAvg=ownTotal>0?revTotal/ownTotal:0;
     // KPI
+    // 上月对比
+    var pvRows8=pv>0?getRows(pv):[],pvN2=pvRows8.length||N;
+    var pvCap=0,pvOwn=0,pvRev=0,pvAllShare=0,pvAllAvg=0;
+    var pvCapDist={低市场:0,中市场:0,高市场:0};
+    pvRows8.forEach(function(r){var rival=r.pwRival||r.curRivalQty||0;var own=r.curSalesQty||0;var cap=own+rival;pvCap+=cap;pvOwn+=own;pvRev+=r.curRevenue||0;pvCapDist[capTier(cap)]++;});
+    pvAllShare=pvCap>0?pvOwn/pvCap:0;pvAllAvg=pvOwn>0?pvRev/pvOwn:0;
     kpiGrid('t8-kpi',[
-        {l:'月市场总容量',v:fm(capTotal),h:'自身'+fm(ownTotal)+' + 对手'+fm(capTotal-ownTotal)+' (5月暂用4月对手)'},
-        {l:'新品总市占比',v:fp(allShare),h:'新品销量÷市场总容量 = '+fm(ownTotal)+'÷'+fm(capTotal)},
-        {l:'月均货值(均价)',v:'$'+Math.round(allAvg),h:'总销售额÷总销量 = $'+fmm(revTotal)+'÷'+fm(ownTotal)},
-        {l:'低市场(≤6)',v:capDist['低市场'],h:'占'+fp(capDist['低市场']/N),c:'#c0392b'},
-        {l:'中市场(7-15)',v:capDist['中市场'],h:'占'+fp(capDist['中市场']/N),c:'#e67e22'},
-        {l:'高市场(≥16)',v:capDist['高市场'],h:'占'+fp(capDist['高市场']/N),c:'#27ae60'}
+        {l:'月市场总容量',v:fm(capTotal),h:'环比'+hb(pvCap?((capTotal-pvCap)/pvCap*100):'-')},
+        {l:'新品总市占比',v:fp(allShare),h:'环比'+hb(pvAllShare?(allShare-pvAllShare):'-')},
+        {l:'月均货值(均价)',v:'$'+Math.round(allAvg),h:'环比'+hb(pvAllAvg?((allAvg-pvAllAvg)/pvAllAvg*100):'-')},
+        {l:'低市场(≤6)',v:capDist['低市场'],h:'环比'+hb(pvN2?((capDist['低市场']-pvCapDist['低市场'])/pvN2*100):'-'),c:'#c0392b'},
+        {l:'中市场(7-15)',v:capDist['中市场'],h:'环比'+hb(pvN2?((capDist['中市场']-pvCapDist['中市场'])/pvN2*100):'-'),c:'#e67e22'},
+        {l:'高市场(≥16)',v:capDist['高市场'],h:'环比'+hb(pvN2?((capDist['高市场']-pvCapDist['高市场'])/pvN2*100):'-'),c:'#27ae60'}
     ]);
     // 市容量分层饼图
     try{
