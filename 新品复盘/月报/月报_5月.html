@@ -33,11 +33,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <a href="javascript:void(0)" class="active" onclick="switchTab('tab1',this)">📈 月度总览</a>
 <a href="javascript:void(0)" onclick="switchTab('tab2',this)">📦 上架批次&品效</a>
 <a href="javascript:void(0)" onclick="switchTab('tab3',this)">📊 销售维度</a>
+<a href="javascript:void(0)" onclick="switchTab('tab8',this)">🌐 市场分布</a>
 <a href="javascript:void(0)" onclick="switchTab('tab4',this)">🔍 出单分析</a>
 <a href="javascript:void(0)" onclick="switchTab('tab5',this)">💰 广告追踪</a>
 <a href="javascript:void(0)" onclick="switchTab('tab6',this)">📋 全量明细</a>
-<a href="javascript:void(0)" onclick="switchTab('tab7',this)">📝 汇报输出</a>
-<a href="javascript:void(0)" onclick="switchTab('tab8',this)">🌐 市场分布</a></div>
+<a href="javascript:void(0)" onclick="switchTab('tab7',this)">📝 汇报输出</a></div>
 
 <div class="header">
 <div><h1>📊 新品月报看板 · <span id="h1-period">--</span> 🌱</h1><p>数据截至 <span id="h1-date">--</span> | <span id="h1-sku">--</span></p></div>
@@ -61,6 +61,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="section"><h3>分析人维度</h3><div class="chart-box" style="margin-bottom:16px"><canvas id="chart-an-combo" style="max-height:300px"></canvas></div><div id="t3-an"></div></div>
 <div class="section"><h3>上架批次</h3><div id="t3-batch"></div></div></div>
 
+<div class="tab-content" id="tab8"><div class="section"><h3>🌐 市场容量 &amp; 市占比分布</h3><div class="kpi-grid" id="t8-kpi"></div><div class="chart-row"><div class="chart-box"><h4>市占分层分布</h4><canvas id="chart-share-tier" style="max-height:240px"></canvas></div><div class="chart-box"><h4>货值分布（月销售额/月销量）</h4><canvas id="chart-avgprice" style="max-height:240px"></canvas></div></div><div id="t8-tier-table"></div></div></div></div>
 <div class="tab-content" id="tab4"><div class="kpi-grid" id="t4-kpi"></div>
 <div class="section"><h3>出单四象限</h3><div class="chart-row"><div class="chart-box"><canvas id="chart-quad" style="max-height:240px"></canvas></div><div class="chart-box"><canvas id="chart-an-ord8" style="max-height:240px"></canvas></div></div><div id="t4-quad"></div></div>
 <div class="section"><h3>按分析人</h3><div id="t4-an"></div></div><div class="section"><h3>按品线</h3><div id="t4-cat"></div></div>
@@ -74,7 +75,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="tab-content" id="tab6"><div class="filter-bar" id="t6-filter"></div><div class="section" style="padding:12px"><div class="table-scroll" style="max-height:calc(100vh - 280px)" id="t6-table"></div></div></div>
 
 <div class="tab-content" id="tab7"><div class="section"><h3>风险预警</h3><div id="t7-risk"></div></div><div class="section"><h3>核心发现</h3><div id="t7-findings"></div></div><div class="section"><h3>下月动作</h3><div id="t7-actions"></div></div><div class="section"><h3>汇报文案</h3><div id="t7-report"></div></div></div>
-<div class="tab-content" id="tab8"><div class="section"><h3>🌐 市场容量 &amp; 市占比分布</h3><div class="kpi-grid" id="t8-kpi"></div><div class="chart-row"><div class="chart-box"><h4>市占分层分布</h4><canvas id="chart-share-tier" style="max-height:240px"></canvas></div><div class="chart-box"><h4>货值分布（月销售额/月销量）</h4><canvas id="chart-avgprice" style="max-height:240px"></canvas></div></div><div id="t8-tier-table"></div></div></div></div>
 
 <script>
 // ===== 工具函数 =====
