@@ -176,21 +176,22 @@ function parseMonthlyData(wb){
         skuData.forEach(function(s){ts+=s['s'+m];tr+=s['r'+m]});
         d.mTot[m]={sales:ts,revenue:tr};
     }
-    // 月度汇总 — 部门总数据（Row 2=统计行）
+    // 月度汇总 — 部门总数据（从原始行求和，不读预设统计行）
     var deptSheet=wb.Sheets['三部月度汇总'];
     if(deptSheet){
         var deptRows=XLSX.utils.sheet_to_json(deptSheet,{header:1});
-        if(deptRows.length>1){
-            var dr=deptRows[1]; // 统计 | 统计 | 1-5月销量(col2-6) | 1-5月销售额(col7-11) | 1-4月对手(col12-15) | 1-4月市占(col16-19)
-            d.deptMonthly={sales:[0],revenue:[0],rival:[0],share:[0]};
-            for(var mi=1;mi<=5;mi++){d.deptMonthly.sales[mi]=sf(dr[1+mi]);d.deptMonthly.revenue[mi]=sf(dr[6+mi]);}
-            for(mi=1;mi<=4;mi++){d.deptMonthly.rival[mi]=sf(dr[11+mi]);d.deptMonthly.share[mi]=sf(dr[15+mi]);}
-            var cm=d.monthIndex||5;
-            d.deptSales=d.deptMonthly.sales[cm]||0;d.deptRev=d.deptMonthly.revenue[cm]||0;
-            var ns=d.mTot[cm]?d.mTot[cm].sales:0,nr=d.mTot[cm]?d.mTot[cm].revenue:0;
-            d.deptSalesPct=d.deptSales?ns/d.deptSales:0;d.deptRevPct=d.deptRev?nr/d.deptRev:0;
-            d.deptNewSales=ns;d.deptNewRev=nr;
+        d.deptMonthly={sales:[0,0,0,0,0,0],revenue:[0,0,0,0,0,0],rival:[0,0,0,0,0,0],share:[0,0,0,0,0,0]};
+        // 跳过 Row0=表头, Row1=统计行(不可信), 从 Row2+ 求和
+        for(var ri=2;ri<deptRows.length;ri++){
+            var dr=deptRows[ri];if(!dr||!dr[1])continue;
+            for(var mi=1;mi<=5;mi++){d.deptMonthly.sales[mi]+=sf(dr[1+mi]);d.deptMonthly.revenue[mi]+=sf(dr[6+mi]);}
+            for(mi=1;mi<=4;mi++){d.deptMonthly.rival[mi]+=sf(dr[11+mi]);d.deptMonthly.share[mi]+=sf(dr[15+mi]);}
         }
+        var cm=d.monthIndex||5;
+        d.deptSales=d.deptMonthly.sales[cm];d.deptRev=d.deptMonthly.revenue[cm];
+        var ns=d.mTot[cm]?d.mTot[cm].sales:0,nr=d.mTot[cm]?d.mTot[cm].revenue:0;
+        d.deptSalesPct=d.deptSales?ns/d.deptSales:0;d.deptRevPct=d.deptRev?nr/d.deptRev:0;
+        d.deptNewSales=ns;d.deptNewRev=nr;
     }
     // 维度汇总 — 品线+分析人月度销量（Sheet三区：销量→销售额→市占率，只取第一区销量）
     var dimSheet=wb.Sheets['三部维度汇总'];
