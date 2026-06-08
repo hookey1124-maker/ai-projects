@@ -557,7 +557,6 @@ function renderT5(){
 }
 
 function renderT6(){
-  try{
     var m=DATA.monthIndex,pv=m-1,skus=DATA.skuData;
     function capTier6(cap){return cap<=6?'低':(cap<=15?'中':'高');}
     DATA._f6={analyst:'',category:'',ord8:'',batch:'',mktStatus:'',capTier:''};
@@ -606,7 +605,6 @@ function renderT6(){
         DATA._applyT6();
       };
     },50);
-  }catch(e){console.error('renderT6 error:',e);document.getElementById('t6-table').innerHTML='<p style=color:red>渲染错误: '+e.message+'</p>';}
 }
 
 
@@ -694,7 +692,6 @@ function renderT8(){
 }
 
 function renderT7(){
-  try{
     var m=DATA.monthIndex,rows=getRows(m),N=rows.length,pv=m-1;
     var cur=DATA.mTot[m]||{},prv=DATA.mTot[pv]||{};
     var y=rows.filter(function(r){return r.cur8dStatus==='Y'}).length;
@@ -752,7 +749,6 @@ function renderT7(){
     var ah='';actions.forEach(function(a){var c=a.p==='P0'?'#c0392b':(a.p==='P1'?'#e67e22':'#0f3460');ah+='<div style=\"padding:12px 0;border-bottom:1px solid #eee\"><span style=\"background:'+c+';color:#fff;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:8px\">'+a.p+'</span><b>'+a.t+'</b><p style=\"font-size:13px;color:#555;margin-top:4px;line-height:1.8\">'+a.d+'</p></div>'});document.getElementById('t7-actions').innerHTML=ah;
     var rpt='【'+m+'月新品月报】\n新品'+N+'款，月销量'+fm(cur.sales)+'，销售额'+fmm(cur.revenue)+'，环比'+hb(salesChg)+'/'+hb(revChg)+'。\n出单率'+fp(soldRate)+'（Y:'+y+' N:'+n+' 未:'+(N-y-n)+'），有对手出单率'+fp(hy/hasR.length)+'。\n低占比新品'+lowShare.length+'款（'+fp(lowShare.length/N)+'）。\nPLP广告'+pp.length+'款，PLG广告'+pg.length+'款，同开'+both.length+'款，总广告花费'+fmm(pC)+'（ACOAS '+fp(plpACOAS)+'）。\n有对手未出单'+hn+'款需重点处理。';
     document.getElementById('t7-report').innerHTML='<button class=copy-btn onclick="copyReport(this)" style="margin-bottom:8px;padding:6px 14px;border-radius:6px;background:var(--c-primary);color:#fff;border:none;cursor:pointer;font-size:12px">📋 复制报告</button><pre style="white-space:pre-wrap;font-size:13px;line-height:1.8;background:#f8f9fa;padding:16px;border-radius:8px">'+rpt+'</pre>';
-  }catch(e){console.error('renderT7 error:',e);}
 }
 function copyReport(btn){
   var pre=btn.parentElement.querySelector('pre');
