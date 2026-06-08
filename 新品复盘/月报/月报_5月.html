@@ -718,7 +718,8 @@ function renderT4(){
 }
 
 function renderT8(){
-    var m=DATA.monthIndex,rows=getRows(m),N=rows.length,pv=m-1,pvRows=pv>0?getRows(pv):[];
+    var m=DATA.monthIndex,rows=getRows(m),pv=m-1,pvRows=pv>0?getRows(pv):[];
+    rows=rows.filter(function(r){return r.analyst||(r.curSalesQty||0)>0;});var N=rows.length;
     var cur=DATA.mTot[m]||{},prv=DATA.mTot[pv]||{};
     var y=rows.filter(function(r){return r.cur8dStatus==='Y'}).length;
     var n=rows.filter(function(r){return r.cur8dStatus==='N'}).length;
@@ -780,7 +781,7 @@ function renderT8(){
     var catTop1=catTop[0],catTop1Share=catDims7[catTop1].rev/tR;
     // ---- 按分析人 ----
     var anDims7={};
-    rows.forEach(function(r){var a=r.analyst||'未知';if(!anDims7[a])anDims7[a]={n:0,sales:0,rev:0,freq:0};anDims7[a].n++;anDims7[a].sales+=r.curSalesQty||0;anDims7[a].rev+=r.curRevenue||0;anDims7[a].freq+=r.freq||0;});
+    rows.forEach(function(r){var a=r.analyst;if(!a)return;if(!anDims7[a])anDims7[a]={n:0,sales:0,rev:0,freq:0};anDims7[a].n++;anDims7[a].sales+=r.curSalesQty||0;anDims7[a].rev+=r.curRevenue||0;anDims7[a].freq+=r.freq||0;});
     var anMax=Object.keys(anDims7).sort(function(a,b){return anDims7[b].n-anDims7[a].n})[0];
     var anFreqMax=Object.keys(anDims7).sort(function(a,b){return(anDims7[b].freq/anDims7[b].n)-(anDims7[a].freq/anDims7[a].n)})[0];
     var anFreqMin=Object.keys(anDims7).sort(function(a,b){return(anDims7[a].freq/anDims7[a].n)-(anDims7[b].freq/anDims7[b].n)})[0];
