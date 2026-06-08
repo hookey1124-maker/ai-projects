@@ -326,12 +326,13 @@ function renderT2(){
         var eds=[];sb.forEach(function(ld,i){var d=batches[ld];eds.push({label:ld.substring(5)+'月上架',data:[0,1,2,3,4].map(function(mi){return d.sku?Math.round(d.rev[mi]/d.sku):0}),borderColor:colors[i%5],tension:.3})});
         var c2=document.getElementById('chart-px-eff');if(c2)allCharts.push(new Chart(c2,{type:'line',data:{labels:['1月','2月','3月','4月','5月'],datasets:eds},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}}));
     }catch(e){}
-    // 品线集中度：X=品线, 分组柱=上架月份, Y=SKU数
+    // 品线集中度：X=上架月份, 堆叠=品线, Y=SKU数
     var concMonths=Object.keys(batches).sort(),concCats={};pxData.forEach(function(s){var ld=s.listDate.substring(0,7);if(!ld||!concMonths.includes(ld))return;var c=s.cat||'未分类';if(!concCats[c])concCats[c]={};concCats[c][ld]=(concCats[c][ld]||0)+1;});
     var catList=Object.keys(concCats).sort();
-    var moColors=['#0f3460','#8e44ad','#e67e22','#c0392b','#27ae60'];
-    var concDS=[];concMonths.forEach(function(m,i){concDS.push({label:m.substring(5)+'月上架',data:catList.map(function(c){return concCats[c][m]||0}),backgroundColor:moColors[i%5]});});
-    try{var ccc=document.getElementById('chart-cat-conc');if(ccc)allCharts.push(new Chart(ccc,{type:'bar',data:{labels:catList,datasets:concDS},options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true,title:{display:true,text:'SKU数'}}},plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}}));}catch(e){}
+    var moLbls=concMonths.map(function(m){return m.substring(5)+'月上架'});
+    var catColors2=['#0f3460','#8e44ad','#e67e22','#c0392b','#27ae60','#2980b9','#95a5a6'];
+    var concDS=[];catList.forEach(function(c,i){concDS.push({label:c,data:concMonths.map(function(m){return concCats[c][m]||0}),backgroundColor:catColors2[i%7]});});
+    try{var ccc=document.getElementById('chart-cat-conc');if(ccc)allCharts.push(new Chart(ccc,{type:'bar',data:{labels:moLbls,datasets:concDS},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true,title:{display:true,text:'SKU数'}}},plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}}));}catch(e){}
     // 品效 x 品线
     var pxByCat={},allBatches=Object.keys(batches).sort();
     pxData.forEach(function(s){var cat=s.cat||'未分类';var ld=s.listDate.substring(0,7);if(!pxByCat[cat])pxByCat[cat]={};if(!pxByCat[cat][ld])pxByCat[cat][ld]={sku:0,rev:0};pxByCat[cat][ld].sku++;pxByCat[cat][ld].rev+=s.r5||0;});
