@@ -56,6 +56,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="tab-content" id="tab2"><div class="section"><h3>品效Cohort</h3>
 <div class="chart-row"><div class="chart-box"><h4 id="t2-chart1-title">批次月度销售额</h4><canvas id="chart-px-rev" style="max-height:260px"></canvas></div><div class="chart-box"><h4 id="t2-chart2-title">品效趋势$/SKU</h4><canvas id="chart-px-eff" style="max-height:260px"></canvas></div></div>
 <div id="t2-cohort"></div>
+<div style="margin-top:16px"><h4 style="font-size:13px;color:#555;margin-bottom:8px">上架品线集中度</h4><canvas id="chart-cat-conc" style="max-height:260px;margin-bottom:12px"></canvas></div>
 <div style="margin-top:16px"><h4 style="font-size:13px;color:#555;margin-bottom:8px">品效 x 品线 ($/SKU)</h4><canvas id="chart-px-cat" style="max-height:240px;margin-bottom:12px"></canvas><div id="t2-px-cat"></div></div></div></div>
 
 <div class="tab-content" id="tab3">
@@ -325,6 +326,11 @@ function renderT2(){
         var eds=[];sb.forEach(function(ld,i){var d=batches[ld];eds.push({label:ld.substring(5)+'月上架',data:[0,1,2,3,4].map(function(mi){return d.sku?Math.round(d.rev[mi]/d.sku):0}),borderColor:colors[i%5],tension:.3})});
         var c2=document.getElementById('chart-px-eff');if(c2)allCharts.push(new Chart(c2,{type:'line',data:{labels:['1月','2月','3月','4月','5月'],datasets:eds},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}}));
     }catch(e){}
+    // 品线集中度：按上架月份 × 品线 SKU数堆叠柱状图
+    var concMonths=Object.keys(batches).sort(),concCats={};DATA.skuData.forEach(function(s){var ld=s.listDate.substring(0,7);var c=s.cat||'未分类';if(!concCats[c])concCats[c]={};concCats[c][ld]=(concCats[c][ld]||0)+1;});
+    var catColors2=['#0f3460','#8e44ad','#e67e22','#c0392b','#27ae60','#2980b9','#95a5a6','#f39c12'];
+    var concDS=[];Object.keys(concCats).sort().forEach(function(cat,i){concDS.push({label:cat,data:concMonths.map(function(m){return concCats[cat][m]||0}),backgroundColor:catColors2[i%8]});});
+    try{var ccc=document.getElementById('chart-cat-conc');if(ccc)allCharts.push(new Chart(ccc,{type:'bar',data:{labels:concMonths.map(function(m){return m.substring(5)+'月上架'}),datasets:concDS},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true,title:{display:true,text:'SKU数'}}},plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}}}}));}catch(e){}
     // 品效 x 品线
     var pxByCat={},allBatches=Object.keys(batches).sort();
     pxData.forEach(function(s){var cat=s.cat||'未分类';var ld=s.listDate.substring(0,7);if(!pxByCat[cat])pxByCat[cat]={};if(!pxByCat[cat][ld])pxByCat[cat][ld]={sku:0,rev:0};pxByCat[cat][ld].sku++;pxByCat[cat][ld].rev+=s.r5||0;});
