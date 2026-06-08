@@ -45,7 +45,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="main" id="dashboard" style="display:none">
 <div class="tab-content active" id="tab1">
 <div class="kpi-grid" id="t1-kpi"></div>
-<div class="section"><h3>🏢 部门占比 &amp; PW市占对比</h3><div class="kpi-grid" id="t1-dept-kpi"></div></div>
+<div class="section"><h3>🏢 部门占比 &amp; PW市占对比</h3><div class="kpi-grid" id="t1-dept-kpi"></div><div class="chart-row"><div class="chart-box"><h4>新品 vs 部门月度销量对比</h4><canvas id="chart-dept-bar" style="max-height:260px"></canvas></div><div class="chart-box"><h4>新品 vs 部门月度销售额对比</h4><canvas id="chart-dept-rev" style="max-height:260px"></canvas></div></div></div>
 <div class="chart-row"><div class="chart-box"><h4>月度销量趋势</h4><canvas id="chart-sales"></canvas></div><div class="chart-box"><h4>月度销售额趋势</h4><canvas id="chart-rev"></canvas></div></div>
 <div class="section"><h3>出单分布(5月)</h3><canvas id="chart-ord8" style="max-height:250px"></canvas></div>
 <div class="section"><h3>市场状态分布</h3><div id="t1-mkt"></div></div></div>
@@ -108,12 +108,12 @@ function parseMonthlyData(wb){
             f4:sf(r[8]),f5:sf(r[9]),
             o4:str(r,10),o5:str(r,11),m4:str(r,12),m5:str(r,13),
             s4:sf(r[14]),s5:sf(r[15]),r4:sf(r[16]),r5:sf(r[17]),
-            ri4:sf(r[18]),ri5:sf(r[19]),
+            ri4:sf(r[18]),ri5:sf(r[19]),share4:sf(r[22]),share5:sf(r[23]),
             ppS4:sf(r[24]),ppR4:sf(r[25]),ppC4:sf(r[26]),
             ppS5:sf(r[29]),ppR5:sf(r[30]),ppC5:sf(r[31]),
             pgC4:sf(r[34]),pgR4:sf(r[35]),pgC5:sf(r[39]),pgR5:sf(r[40]),
             // 1-3月 defaults
-            a1:'',a2:'',a3:'',s1:0,s2:0,s3:0,r1:0,r2:0,r3:0,ri1:0,ri2:0,ri3:0,
+            a1:'',a2:'',a3:'',s1:0,s2:0,s3:0,r1:0,r2:0,r3:0,ri1:0,ri2:0,ri3:0,share1:0,share2:0,share3:0,
             o1:'',o2:'',o3:'',m1:'',m2:'',m3:'',
             f1:0,f2:0,f3:0,ppS1:0,ppS2:0,ppS3:0,ppR1:0,ppR2:0,ppR3:0,ppC1:0,ppC2:0,ppC3:0,
             pgC1:0,pgC2:0,pgC3:0,pgR1:0,pgR2:0,pgR3:0
@@ -135,10 +135,10 @@ function parseMonthlyData(wb){
         for(var ri=1;ri<hRows.length;ri++){
             var hr=hRows[ri];var hsku=str(hr,hi.sku);if(!hsku)continue;
             hLookup[hsku]={listDate:dt(hr[hi.listDate])};
-            for(var m=1;m<=5;m++){var mc=hi[String(m)]||{};hLookup[hsku]['s'+m]=sf(hr[mc['销量']]);hLookup[hsku]['r'+m]=sf(hr[mc['销售额']]);hLookup[hsku]['ri'+m]=sf(hr[mc['对手出单']]);hLookup[hsku]['a'+m]=str(hr,mc['分析人']);}
+            for(var m=1;m<=5;m++){var mc=hi[String(m)]||{};hLookup[hsku]['s'+m]=sf(hr[mc['销量']]);hLookup[hsku]['r'+m]=sf(hr[mc['销售额']]);hLookup[hsku]['ri'+m]=sf(hr[mc['对手出单']]);hLookup[hsku]['share'+m]=sf(hr[mc['市占比']]);hLookup[hsku]['a'+m]=str(hr,mc['分析人']);}
         }
         // 补充主表1-3月
-        skuData.forEach(function(sku){var hl=hLookup[sku.sku];if(!hl)return;for(var m=1;m<=3;m++){sku['s'+m]=hl['s'+m]||0;sku['r'+m]=hl['r'+m]||0;sku['ri'+m]=hl['ri'+m]||0;sku['a'+m]=hl['a'+m]||'';}});
+        skuData.forEach(function(sku){var hl=hLookup[sku.sku];if(!hl)return;for(var m=1;m<=3;m++){sku['s'+m]=hl['s'+m]||0;sku['r'+m]=hl['r'+m]||0;sku['ri'+m]=hl['ri'+m]||0;sku['share'+m]=hl['share'+m]||0;sku['a'+m]=hl['a'+m]||'';}});
     }
 
     // 品效全量：合并两表，1-5月完整，带品类
@@ -171,16 +171,31 @@ function parseMonthlyData(wb){
         skuData.forEach(function(s){ts+=s['s'+m];tr+=s['r'+m]});
         d.mTot[m]={sales:ts,revenue:tr};
     }
-    // Department totals from 四三销售数据 (optional)
-    var dsSheet=wb.Sheets['四三销售数据'];
-    if(dsSheet){
-        var dsRows=XLSX.utils.sheet_to_json(dsSheet,{header:1});
-        if(dsRows.length>1){
-            var dr2=dsRows[1]; // Row 2: 统计 | 统计 | 总销量 | 总销售额
-            d.deptSales=sf(dr2[2]);d.deptRev=sf(dr2[3]);
-            var ns5=d.mTot[5]?d.mTot[5].sales:0,nr5=d.mTot[5]?d.mTot[5].revenue:0;
-            d.deptSalesPct=d.deptSales?ns5/d.deptSales:0;d.deptRevPct=d.deptRev?nr5/d.deptRev:0;
-            d.deptNewSales=ns5;d.deptNewRev=nr5;
+    // 月度汇总 — 部门总数据（Row 2=统计行）
+    var deptSheet=wb.Sheets['月度汇总'];
+    if(deptSheet){
+        var deptRows=XLSX.utils.sheet_to_json(deptSheet,{header:1});
+        if(deptRows.length>1){
+            var dr=deptRows[1]; // 统计 | 统计 | 1-5月销量(col2-6) | 1-5月销售额(col7-11) | 1-4月对手(col12-15) | 1-4月市占(col16-19)
+            d.deptMonthly={sales:[0],revenue:[0],rival:[0],share:[0]};
+            for(var mi=1;mi<=5;mi++){d.deptMonthly.sales[mi]=sf(dr[1+mi]);d.deptMonthly.revenue[mi]=sf(dr[6+mi]);}
+            for(mi=1;mi<=4;mi++){d.deptMonthly.rival[mi]=sf(dr[11+mi]);d.deptMonthly.share[mi]=sf(dr[15+mi]);}
+            var cm=d.monthIndex||5;
+            d.deptSales=d.deptMonthly.sales[cm]||0;d.deptRev=d.deptMonthly.revenue[cm]||0;
+            var ns=d.mTot[cm]?d.mTot[cm].sales:0,nr=d.mTot[cm]?d.mTot[cm].revenue:0;
+            d.deptSalesPct=d.deptSales?ns/d.deptSales:0;d.deptRevPct=d.deptRev?nr/d.deptRev:0;
+            d.deptNewSales=ns;d.deptNewRev=nr;
+        }
+    }
+    // 维度汇总 — 品线+分析人月度销量
+    var dimSheet=wb.Sheets['维度汇总'];
+    d.dimCatSummary=[];d.dimAnSummary=[];
+    if(dimSheet){
+        var dimRows=XLSX.utils.sheet_to_json(dimSheet,{header:1});
+        for(var ri2=1;ri2<dimRows.length;ri2++){
+            var r2=dimRows[ri2];
+            if(r2[1]&&r2[2])d.dimCatSummary.push({type:str(r2,0),name:str(r2,1),range:str(r2,2),m1:sf(r2[3]),m2:sf(r2[4]),m3:sf(r2[5]),m4:sf(r2[6]),m5:sf(r2[7])});
+            if(r2[10]&&r2[11])d.dimAnSummary.push({type:str(r2,9),name:str(r2,10),range:str(r2,11),m1:sf(r2[12]),m2:sf(r2[13]),m3:sf(r2[14]),m4:sf(r2[15]),m5:sf(r2[16])});
         }
     }
     // PW market share lookup (by sales code)
@@ -210,14 +225,15 @@ function renderAll(data){
     destroyCharts();renderT1();renderT2();renderT3();renderT4();renderT5();renderT6();renderT7();
 }
 
-function getRows(m){return DATA.skuData.map(function(sku){var pw=DATA.pwBySku[sku.sku]||{};return{
+function getRows(m){return DATA.skuData.map(function(sku){var pw=DATA.pwBySku[sku.sku]||{};var actShare=sku['share'+m];return{
     sku:sku.sku,saleNo:sku.saleNo,listDate:sku.listDate,firstOrder:sku.firstOrder,
     analyst:sku['a'+m]||'',category:sku.cat,expand:sku.exp,
     curSalesQty:sku['s'+m],curRevenue:sku['r'+m],curRivalQty:sku['ri'+m],
+    curMarketShare:actShare>0?actShare:(pw.share||0),
     curMarketStatus:sku['m'+m],cur8dStatus:sku['o'+m],freq:sku['f'+m],
     plpCost:sku['ppC'+m],plpRev:sku['ppR'+m],plpSales:sku['ppS'+m],
     plgCost:sku['pgC'+m],plgRev:sku['pgR'+m],
-    pwRival:pw.rival||0,pwShare:pw.share||0
+    pwRival:pw.rival||0,pwShare:pw.share||0,isActualShare:actShare>0
 }});}
 
 function renderT1(){
@@ -242,22 +258,32 @@ function renderT1(){
     var mh='<table class=data-table><thead><tr><th>市场状态</th><th>SKU数</th><th>占比</th></tr></thead><tbody>';
     ['正常','竞争无优势','无市场','站外出单','-'].forEach(function(s){mh+='<tr><td>'+s+'</td><td>'+(mks[s]||0)+'</td><td>'+fp((mks[s]||0)/N)+'</td></tr>'});mh+='</tbody></table>';
     document.getElementById('t1-mkt').innerHTML=mh;
-    // 部门占比 + PW对比
+    // 部门占比 KPI
+    var dm=DATA.deptMonthly,dmCur=dm?dm.sales[m]:0;
     var deptHtml='';
-    if(DATA.deptRev){
-      deptHtml+='<div class=kpi-card style=border-left:4px solid var(--c-primary)><div class=label>新品销量占部门比</div><div class=val>'+fp(DATA.deptSalesPct||0)+'</div><div class=hb>新品'+fm(DATA.deptNewSales||0)+' / 部门'+fm(DATA.deptSales||0)+'</div></div>';
-      deptHtml+='<div class=kpi-card style=border-left:4px solid var(--c-revenue)><div class=label>新品销售额占部门比</div><div class=val>'+fp(DATA.deptRevPct||0)+'</div><div class=hb>新品$'+fmm(DATA.deptNewRev||0)+' / 部门$'+fmm(DATA.deptRev||0)+'</div></div>';
+    if(dm&&dmCur>0){
+      deptHtml+='<div class=kpi-card style=border-left:4px solid var(--c-primary)><div class=label>新品'+m+'月销量</div><div class=val>'+fm(cur.sales)+'</div><div class=hb>占部门'+fp(DATA.deptSalesPct||0)+'</div></div>';
+      deptHtml+='<div class=kpi-card style=border-left:4px solid #1a5276><div class=label>部门'+m+'月销量</div><div class=val>'+fm(dm.sales[m]||0)+'</div><div class=hb>部门总计</div></div>';
+      deptHtml+='<div class=kpi-card style=border-left:4px solid var(--c-revenue)><div class=label>新品'+m+'月销售额</div><div class=val>'+fmm(cur.revenue)+'</div><div class=hb>占部门'+fp(DATA.deptRevPct||0)+'</div></div>';
+      deptHtml+='<div class=kpi-card style=border-left:4px solid #6c3483><div class=label>部门'+m+'月销售额</div><div class=val>'+fmm(dm.revenue[m]||0)+'</div><div class=hb>部门总计</div></div>';
     }else{
-      deptHtml+='<div class=kpi-card style=border-left:4px solid #ccc><div class=label>部门占比</div><div class=val style=font-size:14px;color:#999>需部门汇总数据</div><div class=hb>上传含"四三销售数据"Sheet的Excel</div></div>';
+      deptHtml+='<div class=kpi-card style=border-left:4px solid #ccc><div class=label>部门占比</div><div class=val style=font-size:14px;color:#999>需月度汇总数据</div><div class=hb>上传含"月度汇总"Sheet的Excel</div></div>';
     }
-    var wr=rows.filter(function(r){return r.pwRival>0&&r.curSalesQty>0});
-    var newShareW=0,newSalesW=0;
-    wr.forEach(function(r){newSalesW+=r.curSalesQty;newShareW+=r.curSalesQty/(r.curSalesQty+r.pwRival)});
-    var newWAvg=wr.length?newShareW/newSalesW:0;
-    deptHtml+='<div class=kpi-card style=border-left:4px solid #8e44ad><div class=label>PW加权市占</div><div class=val>'+fp(pwAvg)+'</div><div class=hb>'+pwCnt+'个SKU | 销量加权</div></div>';
-    deptHtml+='<div class=kpi-card style=border-left:4px solid var(--c-share)><div class=label>新品加权市占</div><div class=val>'+fp(newWAvg)+'</div><div class=hb>'+wr.length+'个有对手SKU | 我方'+fm(newSalesW)+'</div></div>';
-    deptHtml+='<div class=kpi-card style=border-left:4px solid '+(Math.abs(pwAvg-newWAvg)>10?'var(--c-danger)':'#2980b9')+'><div class=label>市占差值</div><div class=val>'+(Math.abs(pwAvg-newWAvg)).toFixed(1)+'%</div><div class=hb>PW vs 新品（维度不同，平行参考）</div></div>';
+    // PW市占（仅当月参考，过往月已有实际市占）
+    deptHtml+='<div class=kpi-card style=border-left:4px solid #8e44ad><div class=label>PW加权市占(当月参考)</div><div class=val>'+fp(pwAvg)+'</div><div class=hb>'+pwCnt+'个有销量SKU | 仅当月有效</div></div>';
     document.getElementById('t1-dept-kpi').innerHTML=deptHtml;
+    // 部门对比柱状图
+    if(dm&&dmCur>0){
+      try{
+        var deptSales=[],deptRev=[],newSales=[],newRev=[],deptLbl=[];
+        for(var mi2=1;mi2<=5;mi2++){
+          deptLbl.push(mi2+'月');newSales.push(DATA.mTot[mi2]?DATA.mTot[mi2].sales:0);newRev.push(DATA.mTot[mi2]?DATA.mTot[mi2].revenue:0);
+          deptSales.push(dm.sales[mi2]||0);deptRev.push(dm.revenue[mi2]||0);
+        }
+        var cd1=document.getElementById('chart-dept-bar');if(cd1)allCharts.push(new Chart(cd1,{type:'bar',data:{labels:deptLbl,datasets:[{label:'新品销量',data:newSales,backgroundColor:'#0f3460',borderRadius:3},{label:'部门销量',data:deptSales,backgroundColor:'rgba(15,52,96,0.25)',borderColor:'#0f3460',borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}},scales:{y:{beginAtZero:true,title:{display:true,text:'销量',font:{size:10}}}}}}));
+        var cd2=document.getElementById('chart-dept-rev');if(cd2)allCharts.push(new Chart(cd2,{type:'bar',data:{labels:deptLbl,datasets:[{label:'新品销售额($)',data:newRev,backgroundColor:'#8e44ad',borderRadius:3},{label:'部门销售额($)',data:deptRev,backgroundColor:'rgba(142,68,173,0.2)',borderColor:'#8e44ad',borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,boxWidth:10}}},scales:{y:{beginAtZero:true,title:{display:true,text:'销售额($)',font:{size:10}}}}}}));
+      }catch(e){}
+    }
 }
 
 function renderT2(){
@@ -317,6 +343,20 @@ function renderT3(){
         var an2=[];Object.keys(anDims).sort().forEach(function(k){an2.push(k)});
         var ac=document.getElementById('chart-an-combo');if(ac)allCharts.push(new Chart(ac,{type:'bar',data:{labels:an2,datasets:[{label:'销量',data:an2.map(function(k){return anDims[k].sc}),backgroundColor:'#0f3460',order:2},{label:'销售额($)',data:an2.map(function(k){return anDims[k].rc}),borderColor:'#8e44ad',backgroundColor:'rgba(142,68,173,0)',type:'line',tension:.3,borderWidth:2,pointRadius:3,yAxisID:'y1',order:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},usePointStyle:true}}},scales:{y:{beginAtZero:true,title:{display:true,text:'销量'}},y1:{beginAtZero:true,position:'right',title:{display:true,text:'销售额($)'},grid:{display:false}}}}}));
     }catch(e){}
+    // 维度汇总对照（来自Excel"维度汇总"Sheet）
+    var dcs=DATA.dimCatSummary||[],das=DATA.dimAnSummary||[];
+    if(dcs.length||das.length){
+      if(dcs.length){
+        var dch='<div class=section><h3>📋 品线维度汇总（月度销量）</h3><table class=data-table><thead><tr><th>品线</th><th>范围</th><th>1月</th><th>2月</th><th>3月</th><th>4月</th><th>5月</th></tr></thead><tbody>';
+        dcs.forEach(function(d){dch+='<tr><td>'+d.name+'</td><td>'+d.range+'</td><td>'+fm(d.m1)+'</td><td>'+fm(d.m2)+'</td><td>'+fm(d.m3)+'</td><td>'+fm(d.m4)+'</td><td>'+fm(d.m5)+'</td></tr>'});
+        dch+='</tbody></table></div>';document.getElementById('t3-cat').insertAdjacentHTML('beforeend',dch);
+      }
+      if(das.length){
+        var dah='<div class=section><h3>📋 分析人维度汇总（月度销量）</h3><table class=data-table><thead><tr><th>分析人</th><th>范围</th><th>1月</th><th>2月</th><th>3月</th><th>4月</th><th>5月</th></tr></thead><tbody>';
+        das.forEach(function(d){dah+='<tr><td>'+d.name+'</td><td>'+d.range+'</td><td>'+fm(d.m1)+'</td><td>'+fm(d.m2)+'</td><td>'+fm(d.m3)+'</td><td>'+fm(d.m4)+'</td><td>'+fm(d.m5)+'</td></tr>'});
+        dah+='</tbody></table></div>';document.getElementById('t3-an').insertAdjacentHTML('beforeend',dah);
+      }
+    }
 }
 
 function renderT4(){
@@ -631,6 +671,31 @@ function exportXLSX(){
   links.forEach(function(l){s8.push([l.campaign,l.SKU,l.analyst,l.category,rawI(l.imp),rawI(l.click),rawI(l.sold),rawM(l.cost),rawM(l.adRev),l.acos>0?(l.acos*100).toFixed(1)+'%':'-',l.acoas>0?(l.acoas*100).toFixed(1)+'%':'-'])});
   var ws8=XLSX.utils.aoa_to_sheet(s8);ws8['!cols']=[{wch:22},{wch:22},{wch:10},{wch:14},{wch:10},{wch:10},{wch:8},{wch:12},{wch:14},{wch:10},{wch:10}];
   XLSX.utils.book_append_sheet(wb,ws8,'PLP广告明细');
+
+  // Sheet 9: 部门月度对比
+  var dm2=DATA.deptMonthly;
+  if(dm2&&dm2.sales[5]>0){
+    var s9=[['部门月度对比 — 新品 vs 部门']];
+    s9.push(['月份','新品销量','部门销量','新品占部门比','新品销售额','部门销售额','新品占部门比(额)']);
+    for(var mi3=1;mi3<=5;mi3++){
+      var ns3=DATA.mTot[mi3]?DATA.mTot[mi3].sales:0,nr3=DATA.mTot[mi3]?DATA.mTot[mi3].revenue:0;
+      s9.push([mi3+'月',rawI(ns3),rawI(dm2.sales[mi3]||0),(dm2.sales[mi3]?ns3/dm2.sales[mi3]:0),rawM(nr3),rawM(dm2.revenue[mi3]||0),(dm2.revenue[mi3]?nr3/dm2.revenue[mi3]:0)]);
+    }
+    var ws9=XLSX.utils.aoa_to_sheet(s9);ws9['!cols']=[{wch:10},{wch:14},{wch:14},{wch:16},{wch:16},{wch:16},{wch:16}];
+    XLSX.utils.book_append_sheet(wb,ws9,'部门月度对比');
+  }
+  // Sheet 10: 维度汇总
+  var dcs2=DATA.dimCatSummary||[],das2=DATA.dimAnSummary||[];
+  if(dcs2.length||das2.length){
+    var s10=[['维度汇总（来自Excel）'],[''],['品线维度']];
+    s10.push(['品线','范围','1月','2月','3月','4月','5月']);
+    dcs2.forEach(function(d){s10.push([d.name,d.range,rawI(d.m1),rawI(d.m2),rawI(d.m3),rawI(d.m4),rawI(d.m5)])});
+    s10.push([''],['分析人维度']);
+    s10.push(['分析人','范围','1月','2月','3月','4月','5月']);
+    das2.forEach(function(d){s10.push([d.name,d.range,rawI(d.m1),rawI(d.m2),rawI(d.m3),rawI(d.m4),rawI(d.m5)])});
+    var ws10=XLSX.utils.aoa_to_sheet(s10);ws10['!cols']=[{wch:14},{wch:18},{wch:10},{wch:10},{wch:10},{wch:10},{wch:10}];
+    XLSX.utils.book_append_sheet(wb,ws10,'维度汇总');
+  }
 
   XLSX.writeFile(wb,'新品月报_'+m+'月.xlsx',{cellStyles:true});
 }
