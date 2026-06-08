@@ -555,11 +555,11 @@ function renderT8(){
         if(ca)allCharts.push(new Chart(ca,{type:'bar',data:{labels:cpLbl,datasets:[{label:'均价($)',data:cpVal,backgroundColor:'#8e44ad',borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,title:{display:true,text:'均价($)'}}}}}));
     }catch(e){}
     // 维度汇总表：按品线
-    var dh='<div class=section><h3>📋 按品线 — 市场容量 &amp; 市占比分布</h3><table class=data-table><thead><tr><th>品线</th><th>SKU</th><th>平均容量</th><th>新品销量</th><th>均价$</th><th>加权市占</th><th>低容量</th><th>中容量</th><th>高容量</th></tr></thead><tbody>';
+    var dh='<div class=section><h3>📋 按品线 — 市场容量 &amp; 市占比分布</h3><table class=data-table><thead><tr><th>品线</th><th>SKU</th><th>平均容量</th><th>新品销量</th><th>均价$</th><th>市占比</th><th>低容量</th><th>中容量</th><th>高容量</th></tr></thead><tbody>';
     Object.keys(catDims).sort().forEach(function(k){var d=catDims[k];dh+='<tr><td>'+k+'</td><td>'+d.n+'</td><td>'+Math.round(d.cap/d.n)+'</td><td>'+fm(d.own)+'</td><td>'+Math.round(d.own>0?d.rev/d.own:0)+'</td><td>'+fp(d.cap>0?d.own/d.cap:0)+'</td><td>'+d.capDist['低市场']+'</td><td>'+d.capDist['中市场']+'</td><td>'+d.capDist['高市场']+'</td></tr>'});
     dh+='</tbody></table></div>';
     // 按分析人
-    dh+='<div class=section><h3>📋 按分析人 — 市场容量 &amp; 市占比分布</h3><table class=data-table><thead><tr><th>分析人</th><th>SKU</th><th>平均容量</th><th>新品销量</th><th>均价$</th><th>加权市占</th><th>低容量</th><th>中容量</th><th>高容量</th></tr></thead><tbody>';
+    dh+='<div class=section><h3>📋 按分析人 — 市场容量 &amp; 市占比分布</h3><table class=data-table><thead><tr><th>分析人</th><th>SKU</th><th>平均容量</th><th>新品销量</th><th>均价$</th><th>市占比</th><th>低容量</th><th>中容量</th><th>高容量</th></tr></thead><tbody>';
     Object.keys(anDims).sort().forEach(function(k){var d=anDims[k];dh+='<tr><td>'+k+'</td><td>'+d.n+'</td><td>'+Math.round(d.cap/d.n)+'</td><td>'+fm(d.own)+'</td><td>'+Math.round(d.own>0?d.rev/d.own:0)+'</td><td>'+fp(d.cap>0?d.own/d.cap:0)+'</td><td>'+d.capDist['低市场']+'</td><td>'+d.capDist['中市场']+'</td><td>'+d.capDist['高市场']+'</td></tr>'});
     dh+='</tbody></table></div>';
     document.getElementById('t8-tier-table').innerHTML=dh;
