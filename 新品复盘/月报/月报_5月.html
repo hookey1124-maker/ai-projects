@@ -397,11 +397,14 @@ function renderT4(){
     var pvHn=pvRows.filter(function(r){return hr(r)&&!od(r)}).length;
     var pvNy=pvRows.filter(function(r){return !hr(r)&&od(r)}).length;
     var pvNn=pvRows.filter(function(r){return !hr(r)&&!od(r)}).length;
+    var allOrdRate=(hy.length+ny.length)/N,hasOrdRate=hy.length/(hy.length+hn.length||1);
     kpiGrid('t4-kpi',[
       {l:'有对手出单',v:fm(hy.length),h:'上月'+fm(pvHy)+(pvN?' | 环比'+hb((hy.length-pvHy)/pvN):''),c:'#27ae60'},
       {l:'有对手未出单',v:fm(hn.length),h:'上月'+fm(pvHn)+(pvN?' | 环比'+hb((hn.length-pvHn)/pvN):''),c:'#c0392b'},
       {l:'无对手出单',v:fm(ny.length),h:'上月'+fm(pvNy)+(pvN?' | 环比'+hb((ny.length-pvNy)/pvN):''),c:'#2980b9'},
-      {l:'无对手未出单',v:fm(nn.length),h:'上月'+fm(pvNn)+(pvN?' | 环比'+hb((nn.length-pvNn)/pvN):''),c:'#e67e22'}]);
+      {l:'无对手未出单',v:fm(nn.length),h:'上月'+fm(pvNn)+(pvN?' | 环比'+hb((nn.length-pvNn)/pvN):''),c:'#e67e22'},
+      {l:'总出单率',v:fp(allOrdRate),h:(hy.length+ny.length)+'/'+N+' SKU出单',c:'#0f3460'},
+      {l:'有对手出单率',v:fp(hasOrdRate),h:hy.length+'/'+(hy.length+hn.length)+' 有对手SKU出单',c:'var(--c-share)'}]);
     var allOrd=hy.length+ny.length,hasOrd=hy.length+hn.length;
     var qh='<table class=data-table><thead><tr><th>分类</th><th>SKU数</th><th>占比</th><th>出单率</th></tr></thead><tbody>';
     qh+='<tr><td>有对手出单</td><td>'+hy.length+'</td><td>'+fp(hy.length/N)+'</td><td></td></tr>';
@@ -632,8 +635,7 @@ function renderT8(){
         var a=r.analyst||'未知';if(!anDims[a])anDims[a]={n:0,own:0,rival:0,cap:0,rev:0,capDist:{低市场:0,中市场:0,高市场:0}};
         anDims[a].n++;anDims[a].own+=own;anDims[a].rival+=rival;anDims[a].cap+=cap;anDims[a].rev+=rev;anDims[a].capDist[ct]++;
     });
-    var allShare=capTotal>0?ownTotal/capTotal:0;
-    var allShare=DATA._totalShare||0;
+    var allShare=DATA._totalShare||(capTotal>0?ownTotal/capTotal:0);
     var allAvg=ownTotal>0?revTotal/ownTotal:0;
     // KPI
     // 上月对比
