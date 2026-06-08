@@ -358,10 +358,12 @@ function renderT2(){
     var pch='<table class=data-table><thead><tr>';pcCols.forEach(function(c){pch+='<th>'+c+'</th>'});pch+='</tr></thead><tbody>';
     pcRows.forEach(function(rd){pch+='<tr>';rd.forEach(function(v,i){pch+='<td>'+(i===0?v:fm(v))+'</td>'});pch+='</tr>'});
     pch+='</tbody></table>';document.getElementById('t2-px-cat').innerHTML=pch;
-    // 品效x品线柱状图
-    var pxLbl=[],pxVal=[];
-    Object.keys(pxByCat).sort().forEach(function(cat){var totalSku=0,totalRev=0;for(var b in pxByCat[cat]){totalSku+=pxByCat[cat][b].sku;totalRev+=pxByCat[cat][b].rev;}pxLbl.push(cat);pxVal.push(totalSku?Math.round(totalRev/totalSku):0);});
-    try{var pc=document.getElementById('chart-px-cat');if(pc)allCharts.push(new Chart(pc,{type:'line',data:{labels:pxLbl,datasets:[{label:'$/SKU',data:pxVal,borderColor:'#8e44ad',backgroundColor:'rgba(142,68,173,0.1)',fill:true,tension:.3,borderWidth:2.5,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,title:{display:true,text:'$/SKU'}}}}}));}catch(e){}
+    // 品效x品线多折线趋势: X=上架月份, 每条线=一个品线
+    var pxMoLbls=allBatches.map(function(b){return b.substring(5)+'月上架'});
+    var pxCatNames=Object.keys(pxByCat).sort();
+    var pxColors=['#0f3460','#8e44ad','#e67e22','#c0392b','#27ae60','#2980b9','#95a5a6'];
+    var pxDS=[];pxCatNames.forEach(function(cn,i){pxDS.push({label:cn,data:allBatches.map(function(b){var d=pxByCat[cn][b]||{sku:0,rev:0};return d.sku?Math.round(d.rev/d.sku):0}),borderColor:pxColors[i%7],tension:.3,borderWidth:2,pointRadius:3,fill:false});});
+    try{var pc=document.getElementById('chart-px-cat');if(pc)allCharts.push(new Chart(pc,{type:'line',data:{labels:pxMoLbls,datasets:pxDS},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:9},usePointStyle:true,boxWidth:8}}},scales:{y:{beginAtZero:true,title:{display:true,text:'$/SKU'}}}}}));}catch(e){}
 }
 
 function renderT3(){
