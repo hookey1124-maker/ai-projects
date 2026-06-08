@@ -533,7 +533,7 @@ function renderT5(){
     links.forEach(function(l){l._tags=tagLink(l);});
     // 筛选状态
     DATA._f5={tag:''};
-    function renderPlpDetail(){
+    DATA._renderPlpDetail=function(){
       var f=DATA._f5;
       var filtered=links.filter(function(l){return !f.tag||l._tags.indexOf(f.tag)>=0;});
       var lh='<div class=table-scroll><table class=data-table><thead><tr><th>活动</th><th>SKU</th><th>分析人</th><th>品类</th><th>曝光</th><th>点击</th><th>售出</th><th>花费</th><th>广告销售额</th><th>ACOS</th><th>ACOAS</th><th>标记</th></tr></thead><tbody>';
@@ -549,17 +549,17 @@ function renderT5(){
     // 筛选栏 + 标题
     var tagOpts=['正常','高ACOS','花费不出单','低花费'];
     var fh='<span style=font-size:12px;color:#888>标签说明: 高ACOS(>30%) | 花费不出单(>$50且0售出) | 低花费(<$5) | 正常(其余)</span>';
-    fh+='<span style=margin-left:12px><select onchange=\"DATA._f5.tag=this.value;renderPlpDetail()\"><option value=\"\">全部标签</option>';
+    fh+='<span style=margin-left:12px><select onchange=\"DATA._f5.tag=this.value;DATA._renderPlpDetail()\"><option value=\"\">全部标签</option>';
     tagOpts.forEach(function(t){fh+='<option>'+t+'</option>'});
     fh+='</select></span> <span id=t5-plp-count style=font-size:12px;color:#888></span>';
     document.getElementById('t5-plp-detail').innerHTML='<div class=filter-bar>'+fh+'</div><div id=t5-plp-table></div>';
-    renderPlpDetail();
+    DATA._renderPlpDetail();
 }
 
 function renderT6(){
     var m=DATA.monthIndex,pv=m-1,skus=DATA.skuData;
     function capTier6(cap){return cap<=6?'低':(cap<=15?'中':'高');}
-    DATA._f6={analyst:'',category:'',ord8:'',batch:'',mktStatus:'',capTier:''};
+    DATA._f6={analyst:'',category:'',ord8:'',batch:'',mktStatus:'',capTier:'',hasRival:''};
     DATA._applyT6=function(){
         var f=DATA._f6;
         var filtered=skus.filter(function(s){
@@ -568,6 +568,12 @@ function renderT6(){
             if(f.ord8==='Y'&&s['o'+m]!=='Y')return false;if(f.ord8==='N'&&s['o'+m]!=='N')return false;if(f.ord8==='未'&&(s['o'+m]==='Y'||s['o'+m]==='N'))return false;
             if(f.batch&&s.listDate.substring(0,7)!==f.batch)return false;
             if(f.mktStatus&&s['m'+m]!==f.mktStatus)return false;
+            if(f.hasRival){
+              var pw6=DATA.pwBySku[s.sku]||{};
+              var hr6=(pw6.rival||0)>0;
+              if(f.hasRival==='有'&&!hr6)return false;
+              if(f.hasRival==='无'&&hr6)return false;
+            }
             if(f.capTier){
               var pw=DATA.pwBySku[s.sku]||{},rival=pw.rival||0,own=s['s'+m]||0,cap=own+rival;
               if(capTier6(cap)!==f.capTier)return false;
@@ -592,6 +598,7 @@ function renderT6(){
     fh+='<span><select onchange=\"DATA._f6.category=this.value;DATA._applyT6()\"><option value=\"\">品线:全部</option>';cats.sort().forEach(function(c){fh+='<option>'+c+'</option>'});fh+='</select></span>';
     fh+='<span><select onchange=\"DATA._f6.ord8=this.value;DATA._applyT6()\"><option value=\"\">8日出单:全部</option><option>Y</option><option>N</option><option>未</option></select></span>';
     fh+='<span><select onchange=\"DATA._f6.batch=this.value;DATA._applyT6()\"><option value=\"\">上架:全部</option>';bat.sort().forEach(function(b){fh+='<option>'+b+'</option>'});fh+='</select></span>';
+    fh+='<span><select onchange=\"DATA._f6.hasRival=this.value;DATA._applyT6()\"><option value=\"\">对手(PW):全部</option><option>有</option><option>无</option></select></span>';
     fh+='<span><select onchange=\"DATA._f6.mktStatus=this.value;DATA._applyT6()\"><option value=\"\">市场状态:全部</option>';mkts.sort().forEach(function(s){fh+='<option>'+s+'</option>'});fh+='</select></span>';
     fh+='<span><select onchange=\"DATA._f6.capTier=this.value;DATA._applyT6()\"><option value=\"\">月市容量:全部</option><option>低</option><option>中</option><option>高</option></select></span>';
     fh+='<span id=t6-count style=\"font-size:12px;color:#888\"></span>';
@@ -600,7 +607,7 @@ function renderT6(){
     setTimeout(function(){
       var rb=document.getElementById('t6-reset-btn');
       if(rb)rb.onclick=function(){
-        DATA._f6={analyst:'',category:'',ord8:'',batch:'',mktStatus:'',capTier:''};
+        DATA._f6={analyst:'',category:'',ord8:'',batch:'',mktStatus:'',capTier:'',hasRival:''};
         document.querySelectorAll('#t6-filter select').forEach(function(s){s.value='';});
         DATA._applyT6();
       };
