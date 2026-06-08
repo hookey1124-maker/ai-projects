@@ -236,8 +236,9 @@ function getRows(m){return DATA.skuData.map(function(sku){return{
 
 function renderT1(){
     var m=DATA.monthIndex,pv=m-1,rows=getRows(m);
-    // 累计SKU: 只统计当月及之前上架的
-    var N=rows.length;
+    // 累计SKU: 近3月SKU中统计≤当月月末上架的
+    var N=rows.filter(function(r){return r.listDate&&r.listDate<='2026-0'+m+'-31';}).length;
+    if(!N)N=rows.length;
     var cur=DATA.mTot[m]||{},prv=DATA.mTot[pv]||{};
     var y=rows.filter(function(r){return r.cur8dStatus==='Y'}).length;
     var n=rows.filter(function(r){return r.cur8dStatus==='N'}).length;
