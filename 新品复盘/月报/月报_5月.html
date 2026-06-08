@@ -190,15 +190,18 @@ function parseMonthlyData(wb){
             d.deptNewSales=ns;d.deptNewRev=nr;
         }
     }
-    // 维度汇总 — 品线+分析人月度销量
+    // 维度汇总 — 品线+分析人月度销量（Sheet三区：销量→销售额→市占率，只取第一区销量）
     var dimSheet=wb.Sheets['三部维度汇总'];
     d.dimCatSummary=[];d.dimAnSummary=[];
     if(dimSheet){
         var dimRows=XLSX.utils.sheet_to_json(dimSheet,{header:1});
+        var seenCat={},seenAn={};
         for(var ri2=1;ri2<dimRows.length;ri2++){
             var r2=dimRows[ri2];
-            if(r2[1]&&r2[2])d.dimCatSummary.push({type:str(r2,0),name:str(r2,1),range:str(r2,2),m1:sf(r2[3]),m2:sf(r2[4]),m3:sf(r2[5]),m4:sf(r2[6]),m5:sf(r2[7])});
-            if(r2[10]&&r2[11])d.dimAnSummary.push({type:str(r2,9),name:str(r2,10),range:str(r2,11),m1:sf(r2[12]),m2:sf(r2[13]),m3:sf(r2[14]),m4:sf(r2[15]),m5:sf(r2[16])});
+            // 品线-销量区(col 0-8): 只取每个品线名首次出现
+            var cn=str(r2,1);if(cn&&r2[2]&&!seenCat[cn]){seenCat[cn]=1;d.dimCatSummary.push({name:cn,range:str(r2,2),m1:sf(r2[3]),m2:sf(r2[4]),m3:sf(r2[5]),m4:sf(r2[6]),m5:sf(r2[7])});}
+            // 分析人-销量区(col 9-17): 只取每个分析人名首次出现
+            var an=str(r2,10);if(an&&r2[11]&&!seenAn[an]){seenAn[an]=1;d.dimAnSummary.push({name:an,range:str(r2,11),m1:sf(r2[12]),m2:sf(r2[13]),m3:sf(r2[14]),m4:sf(r2[15]),m5:sf(r2[16])});}
         }
     }
     // PW market share lookup (by sales code)
@@ -370,21 +373,19 @@ function renderT3(){
     var deptCat={};dcs.forEach(function(d){deptCat[d.name]=d;});
     var deptAn={};das.forEach(function(d){deptAn[d.name]=d;});
     // 品线对比
-    var cch='<div class=section><h3>📋 品线维度 — 新品 vs 部门对比（'+m+'月）</h3><table class=data-table><thead><tr><th>品线</th><th>新品SKU</th><th>新品月销量</th><th>部门月销量</th><th>新品占部门比(参考)</th></tr></thead><tbody>';
+    var cch='<div class=section><h3>📋 品线维度 — 新品 vs 部门对比（'+m+'月）</h3><table class=data-table><thead><tr><th>品线</th><th>新品SKU</th><th>新品月销量</th><th>部门月销量</th><th>新品占部门比</th></tr></thead><tbody>';
     Object.keys(catDims).sort().forEach(function(k){
       var nd=catDims[k],dd=deptCat[k];
       var deptSales=dd?Math.round(dd['m'+m]):0;
-      var ratio=deptSales?Math.min(1,Math.round(nd.sc)/deptSales):0;
-      cch+='<tr><td>'+k+'</td><td>'+nd.sk+'</td><td>'+fm(Math.round(nd.sc))+'</td><td>'+fm(deptSales)+'</td><td>'+(deptSales?fp(ratio)+((Math.round(nd.sc)>deptSales)?'⚠':'') :'-')+'</td></tr>';
+      cch+='<tr><td>'+k+'</td><td>'+nd.sk+'</td><td>'+fm(Math.round(nd.sc))+'</td><td>'+fm(deptSales)+'</td><td>'+(deptSales?fp(Math.round(nd.sc)/deptSales):'-')+'</td></tr>';
     });
     cch+='</tbody></table></div>';document.getElementById('t3-cat').insertAdjacentHTML('beforeend',cch);
     // 分析人对比
-    var ach='<div class=section><h3>📋 分析人维度 — 新品 vs 部门对比（'+m+'月）</h3><table class=data-table><thead><tr><th>分析人</th><th>新品SKU</th><th>新品月销量</th><th>部门月销量</th><th>新品占部门比(参考)</th></tr></thead><tbody>';
+    var ach='<div class=section><h3>📋 分析人维度 — 新品 vs 部门对比（'+m+'月）</h3><table class=data-table><thead><tr><th>分析人</th><th>新品SKU</th><th>新品月销量</th><th>部门月销量</th><th>新品占部门比</th></tr></thead><tbody>';
     Object.keys(anDims).sort().forEach(function(k){
       var nd=anDims[k],dd=deptAn[k];
       var deptSales=dd?Math.round(dd['m'+m]):0;
-      var ratio=deptSales?Math.min(1,Math.round(nd.sc)/deptSales):0;
-      ach+='<tr><td>'+k+'</td><td>'+nd.sk+'</td><td>'+fm(Math.round(nd.sc))+'</td><td>'+fm(deptSales)+'</td><td>'+(deptSales?fp(ratio)+((Math.round(nd.sc)>deptSales)?'⚠':'') :'-')+'</td></tr>';
+      ach+='<tr><td>'+k+'</td><td>'+nd.sk+'</td><td>'+fm(Math.round(nd.sc))+'</td><td>'+fm(deptSales)+'</td><td>'+(deptSales?fp(Math.round(nd.sc)/deptSales):'-')+'</td></tr>';
     });
     ach+='</tbody></table></div>';document.getElementById('t3-an').insertAdjacentHTML('beforeend',ach);
 }
