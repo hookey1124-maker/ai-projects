@@ -145,6 +145,9 @@ function parseMonthlyData(wb){
         }
         // 补充主表1-3月
         skuData.forEach(function(sku){var hl=hLookup[sku.sku];if(!hl)return;for(var m=1;m<=3;m++){sku['s'+m]=hl['s'+m]||0;sku['r'+m]=hl['r'+m]||0;sku['ri'+m]=hl['ri'+m]||0;sku['share'+m]=hl['share'+m]||0;sku['a'+m]=hl['a'+m]||'';}});
+        // 将仅在历史数据中的1-2月上架SKU补入skuData
+        var existSKU={};skuData.forEach(function(s){existSKU[s.sku]=1;});
+        for(var hk in hLookup){if(!existSKU[hk]){var hl2=hLookup[hk];skuData.push({sku:hk,saleNo:'',listDate:hl2.listDate,firstOrder:'',a4:'',a5:'',cat:histCatLookup[hk]||'未分类',exp:'',f4:0,f5:0,o4:'',o5:'',m4:'',m5:'',s4:0,s5:0,r4:0,r5:0,ri4:0,ri5:0,share4:0,share5:0,ppS4:0,ppR4:0,ppC4:0,ppS5:0,ppR5:0,ppC5:0,pgC4:0,pgR4:0,pgC5:0,pgR5:0,a1:'',a2:'',a3:'',s1:0,s2:0,s3:0,r1:0,r2:0,r3:0,ri1:0,ri2:0,ri3:0,share1:0,share2:0,share3:0,o1:'',o2:'',o3:'',m1:'',m2:'',m3:'',f1:0,f2:0,f3:0,ppS1:0,ppS2:0,ppS3:0,ppR1:0,ppR2:0,ppR3:0,ppC1:0,ppC2:0,ppC3:0,pgC1:0,pgC2:0,pgC3:0,pgR1:0,pgR2:0,pgR3:0});var s2=skuData[skuData.length-1];for(var m=1;m<=5;m++){s2['s'+m]=hl2['s'+m]||0;s2['r'+m]=hl2['r'+m]||0;s2['ri'+m]=hl2['ri'+m]||0;s2['share'+m]=hl2['share'+m]||0;s2['a'+m]=hl2['a'+m]||'';}}}
     }
 
     // 品效全量：合并两表，1-5月完整，带品类
