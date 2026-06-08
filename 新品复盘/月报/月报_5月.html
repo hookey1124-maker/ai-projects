@@ -848,6 +848,14 @@ function renderT8(){
     var deptPct=DATA._totalShare||0;
     rpt+='新品整体市占比'+fp(deptPct)+'，'+(deptPct<0.6?'仍有较大提升空间':'表现良好')+'。\n\n';
 
+    // 品线集中度
+    var concCatsRpt={},concTotal=0;pxData.forEach(function(s){var ld=s.listDate.substring(0,7);if(!ld)return;var c=s.cat||'未分类';if(!concCatsRpt[c])concCatsRpt[c]=0;concCatsRpt[c]++;concTotal++;});
+    var concSorted=Object.keys(concCatsRpt).sort(function(a,b){return concCatsRpt[b]-concCatsRpt[a];});
+    rpt+='▎品线集中度（数据来源：Tab2 品线集中度 + 全量pxData）\n';
+    rpt+='全量新品共'+concTotal+'款，主要集中在'+concSorted[0]+'（'+concCatsRpt[concSorted[0]]+'款，占'+fm(concCatsRpt[concSorted[0]]/concTotal*100)+'%）';
+    if(concSorted.length>1)rpt+='，其次为'+concSorted[1]+'（'+concCatsRpt[concSorted[1]]+'款，占'+fm(concCatsRpt[concSorted[1]]/concTotal*100)+'%）';
+    rpt+='。\n前3品线合计占比'+fm((concCatsRpt[concSorted[0]]+concCatsRpt[concSorted[1]]+(concCatsRpt[concSorted[2]]||0))/concTotal*100)+'%，集中度'+(concCatsRpt[concSorted[0]]/concTotal>0.35?'较高':'中等')+'。\n\n';
+
     // 品效维度
     var pxData=DATA.pinxiaoData||[];
     var batches7={};pxData.forEach(function(s){var ld=s.listDate.substring(0,7);if(!batches7[ld])batches7[ld]={sku:0,rev:[0,0,0,0,0]};batches7[ld].sku++;});
