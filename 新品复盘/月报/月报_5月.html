@@ -494,7 +494,8 @@ function renderT5(){
 function renderT6(){
     var m=DATA.monthIndex,pv=m-1,skus=DATA.skuData;
     DATA._f6={analyst:'',category:'',ord8:'',batch:''};
-    function apply(){
+    // 挂在 DATA 上让 inline onclick 能访问
+    DATA._applyT6=function(){
         var f=DATA._f6;
         var filtered=skus.filter(function(s){
             if(f.analyst&&s['a'+m]!==f.analyst)return false;
@@ -506,15 +507,15 @@ function renderT6(){
         filtered.forEach(function(s){h+='<tr><td>'+s.sku+'</td><td>'+s.listDate.substring(0,10)+'</td><td>'+s['a'+m]+'</td><td>'+s.cat+'</td><td>'+fm(s['s'+pv])+'</td><td>'+fm(s['s'+m])+'</td><td>'+fmm(s['r'+pv])+'</td><td>'+fmm(s['r'+m])+'</td><td>'+fm(s['ri'+m])+'</td><td>'+s['o'+m]+'</td><td>'+s['m'+m]+'</td></tr>';tSp+=s['s'+pv];tSc+=s['s'+m];tRp+=s['r'+pv];tRc+=s['r'+m];tRi+=s['ri'+m]});
         h+='<tfoot><tr class=total-row><td>合计('+filtered.length+'条)</td><td></td><td></td><td></td><td>'+fm(tSp)+'</td><td>'+fm(tSc)+'</td><td>'+fmm(tRp)+'</td><td>'+fmm(tRc)+'</td><td>'+fm(tRi)+'</td><td></td><td></td></tr></tfoot></tbody></table>';
         document.getElementById('t6-table').innerHTML=h;
-    }
+    };
     var ans=[],cats=[],bat=[];var sa={},sc={},sb2={};
     skus.forEach(function(s){var a=s['a'+m];if(!sa[a]){sa[a]=1;ans.push(a)}var c=s.cat;if(!sc[c]){sc[c]=1;cats.push(c)}var ld=s.listDate.substring(0,7);if(!sb2[ld]){sb2[ld]=1;bat.push(ld)}});
-    var fh='<span><select onchange=\"DATA._f6.analyst=this.value;apply()\"><option value=\"\">分析人:全部</option>';ans.sort().forEach(function(a){fh+='<option>'+a+'</option>'});fh+='</select></span>';
-    fh+='<span><select onchange=\"DATA._f6.category=this.value;apply()\"><option value=\"\">品线:全部</option>';cats.sort().forEach(function(c){fh+='<option>'+c+'</option>'});fh+='</select></span>';
-    fh+='<span><select onchange=\"DATA._f6.ord8=this.value;apply()\"><option value=\"\">8日出单:全部</option><option>Y</option><option>N</option><option>未</option></select></span>';
-    fh+='<span><select onchange=\"DATA._f6.batch=this.value;apply()\"><option value=\"\">上架:全部</option>';bat.sort().forEach(function(b){fh+='<option>'+b+'</option>'});fh+='</select></span>';
-    fh+='<button class=reset-btn onclick=\"DATA._f6={analyst:\"\",category:\"\",ord8:\"\",batch:\"\"};apply()\">重置</button>';
-    document.getElementById('t6-filter').innerHTML=fh;apply();
+    var fh='<span><select onchange=\"DATA._f6.analyst=this.value;DATA._applyT6()\"><option value=\"\">分析人:全部</option>';ans.sort().forEach(function(a){fh+='<option>'+a+'</option>'});fh+='</select></span>';
+    fh+='<span><select onchange=\"DATA._f6.category=this.value;DATA._applyT6()\"><option value=\"\">品线:全部</option>';cats.sort().forEach(function(c){fh+='<option>'+c+'</option>'});fh+='</select></span>';
+    fh+='<span><select onchange=\"DATA._f6.ord8=this.value;DATA._applyT6()\"><option value=\"\">8日出单:全部</option><option>Y</option><option>N</option><option>未</option></select></span>';
+    fh+='<span><select onchange=\"DATA._f6.batch=this.value;DATA._applyT6()\"><option value=\"\">上架:全部</option>';bat.sort().forEach(function(b){fh+='<option>'+b+'</option>'});fh+='</select></span>';
+    fh+='<button class=reset-btn onclick=\"DATA._f6={analyst:\"\",category:\"\",ord8:\"\",batch:\"\"};DATA._applyT6()\">重置</button>';
+    document.getElementById('t6-filter').innerHTML=fh;DATA._applyT6();
 }
 
 
