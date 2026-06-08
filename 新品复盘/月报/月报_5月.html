@@ -66,7 +66,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 <div class="tab-content" id="tab4"><div class="section"><h3>🌐 市场容量 &amp; 市占比分布</h3><div class="kpi-grid" id="t4-kpi"></div><div class="chart-row"><div class="chart-box"><h4>市占分层分布</h4><canvas id="chart-share-tier" style="max-height:240px"></canvas></div><div class="chart-box"><h4>货值分布（月销售额/月销量）</h4><canvas id="chart-avgprice" style="max-height:240px"></canvas></div></div><div id="t4-tier-table"></div>
 <div class="chart-row"><div class="chart-box"><h4>品线市容量分布</h4><canvas id="chart-mkt-cat" style="max-height:240px"></canvas></div><div class="chart-box"><h4>分析人市容量分布</h4><canvas id="chart-mkt-an" style="max-height:240px"></canvas></div></div></div></div>
-<div class="tab-content" id="tab5"><div class="kpi-grid" id="t5-kpi"></div>
+<div class="tab-content" id="tab5"><div class="kpi-grid" id="t5-kpi"></div><div class="kpi-grid" id="t5-kpi2"></div>
 <div class="section"><h3>出单四象限</h3><div class="chart-row"><div class="chart-box"><canvas id="chart-quad" style="max-height:240px"></canvas></div><div class="chart-box"><canvas id="chart-an-ord8" style="max-height:240px"></canvas></div></div><div id="t5-quad"></div></div>
 <div class="section"><h3>按分析人</h3><div id="t5-an"></div></div><div class="section"><h3>按品线</h3><div id="t5-cat"></div></div>
 <div class="section"><h3>未出单原因分析</h3><div class="chart-row"><div class="chart-box"><canvas id="chart-unsold-reason" style="max-height:240px"></canvas></div><div class="chart-box"><div id="t5-unsold-reason"></div></div></div></div>
@@ -428,8 +428,17 @@ function renderT5(){
       {l:'有对手未出单',v:fm(hn.length),h:'上月'+fm(pvHn)+(pvN?' | 环比'+hb((hn.length-pvHn)/pvN):''),c:'#c0392b'},
       {l:'无对手出单',v:fm(ny.length),h:'上月'+fm(pvNy)+(pvN?' | 环比'+hb((ny.length-pvNy)/pvN):''),c:'#2980b9'},
       {l:'无对手未出单',v:fm(nn.length),h:'上月'+fm(pvNn)+(pvN?' | 环比'+hb((nn.length-pvNn)/pvN):''),c:'#e67e22'},
-      {l:'总出单率',v:fp(allOrdRate),h:(hy.length+ny.length)+'/'+N+' SKU出单',c:'#0f3460'},
-      {l:'有对手出单率',v:fp(hasOrdRate),h:hy.length+'/'+(hy.length+hn.length)+' 有对手SKU出单',c:'var(--c-share)'}]);
+      {l:'总出单率(全量)',v:fp(allOrdRate),h:(hy.length+ny.length)+'/'+N+' SKU出单',c:'#0f3460'},
+      {l:'有对手出单率(全量)',v:fp(hasOrdRate),h:hy.length+'/'+(hy.length+hn.length)+' 有对手SKU出单',c:'var(--c-share)'}]);
+    // 当月新上架出单率
+    var curMoRows=rows.filter(function(r){return r.listDate&&r.listDate.substring(0,7)==='2026-0'+m;});
+    var curMoN=curMoRows.length||1;
+    var curMoY=curMoRows.filter(function(r){return r.cur8dStatus==='Y'||r.cur8dStatus==='N'}).length;
+    var curMoHR=curMoRows.filter(function(r){return r.curRivalQty>0});
+    var curMoHY=curMoHR.filter(function(r){return r.cur8dStatus==='Y'||r.cur8dStatus==='N'}).length;
+    kpiGrid('t5-kpi2',[
+      {l:m+'月新上架出单率',v:fp(curMoY/curMoN),h:curMoY+'/'+curMoN+' 新上架SKU出单',c:'#27ae60'},
+      {l:m+'月新上架有对手出单率',v:fp(curMoHR.length?curMoHY/curMoHR.length:0),h:curMoHY+'/'+curMoHR.length+' 有对手',c:'var(--c-share)'}]);
     var allOrd=hy.length+ny.length,hasOrd=hy.length+hn.length;
     var qh='<table class=data-table><thead><tr><th>分类</th><th>SKU数</th><th>占比</th><th>出单率</th></tr></thead><tbody>';
     qh+='<tr><td>有对手出单</td><td>'+hy.length+'</td><td>'+fp(hy.length/N)+'</td><td></td></tr>';
