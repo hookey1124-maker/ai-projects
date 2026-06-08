@@ -260,8 +260,9 @@ function renderT1(){
         {l:m+'月销售额',v:fmm(cur.revenue),h:prv.revenue?'上月'+fmm(prv.revenue)+' | 环比'+hb((cur.revenue-prv.revenue)/prv.revenue):'-'},
         {l:'市占比',v:fp(mktShareVal),h:mktShareHint+(prvShareVal?' | 上月'+fp(prvShareVal):'')},
         {l:'出单率',v:fp((y+n)/N),h:prvOrdRate?'上月'+fp(prvOrdRate)+' | 环比'+hb((y+n)/N-prvOrdRate):'-'}]);
-    var lb=[],sd=[],rd=[];
-    for(var mi=1;mi<=m;mi++){lb.push(mi+'月');sd.push(DATA.mTot[mi]?DATA.mTot[mi].sales:0);rd.push(DATA.mTot[mi]?DATA.mTot[mi].revenue:0);}
+    var lb=[],sd=[],rd=[0,0,0,0,0,0];
+    (DATA.pinxiaoData||[]).forEach(function(s){for(var mi2=1;mi2<=5;mi2++){rd[mi2]=(rd[mi2]||0)+(s['r'+mi2]||0);}});
+    for(var mi=1;mi<=m;mi++){lb.push(mi+'月');sd.push(DATA.mTot[mi]?DATA.mTot[mi].sales:0);if(!rd[mi])rd[mi]=DATA.mTot[mi]?DATA.mTot[mi].revenue:0;}
     // 1-5月新品vs部门 销量+销售额 组合柱状图
     var dm2=DATA.deptMonthly,deptSD=[],deptRD=[];
     for(var mi=1;mi<=m;mi++){deptSD.push(dm2?Math.round(dm2.sales[mi]||0):0);deptRD.push(dm2?Math.round(dm2.revenue[mi]||0):0);}
