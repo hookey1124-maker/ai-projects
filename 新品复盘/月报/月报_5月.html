@@ -212,7 +212,7 @@ function parseMonthlyData(wb){
     d.pwByCode={};d.pwBySku={};
     if(pwSheet){
         var pwRows=XLSX.utils.sheet_to_json(pwSheet,{header:1});
-        for(var ri=1;ri<pwRows.length;ri++){var pwr=pwRows[ri];var code=str(pwr,1);if(code)d.pwByCode[code]={rival:sf(pwr[2]),share:sf(pwr[4])};}
+        for(var ri=1;ri<pwRows.length;ri++){var pwr=pwRows[ri];var code=str(pwr,1);if(code)d.pwByCode[code]={rival:sf(pwr[2]),our:sf(pwr[3]),share:sf(pwr[4])};}
         // Map to SKU
         skuData.forEach(function(s){if(d.pwByCode[s.saleNo])d.pwBySku[s.sku]=d.pwByCode[s.saleNo];});
     }
@@ -242,7 +242,7 @@ function getRows(m){return DATA.skuData.map(function(sku){var pw=DATA.pwBySku[sk
     curMarketStatus:sku['m'+m],cur8dStatus:sku['o'+m],freq:sku['f'+m],
     plpCost:sku['ppC'+m],plpRev:sku['ppR'+m],plpSales:sku['ppS'+m],
     plgCost:sku['pgC'+m],plgRev:sku['pgR'+m],
-    pwRival:pw.rival||0,pwShare:pw.share||0,isActualShare:actShare>0
+    pwRival:pw.rival||0,pwOur:pw.our||0,pwShare:pw.share||0,isActualShare:actShare>0
 }});}
 
 function renderT1(){
@@ -252,15 +252,15 @@ function renderT1(){
     var n=rows.filter(function(r){return r.cur8dStatus==='N'}).length;
     var un=N-y-n;
     // 市占比 = 新品总销量 ÷ (新品总销量 + 对手总销量)
-    var ownSum=0,rivalSum=0,pwCnt=0;
-    rows.forEach(function(r){ownSum+=r.curSalesQty||0;rivalSum+=r.curRivalQty||0;if(r.pwShare>0&&r.curSalesQty>0)pwCnt++;});
+    var ownSum=0,rivalSum=0;
+    rows.forEach(function(r){ownSum+=r.curSalesQty||0;rivalSum+=r.curRivalQty||0;});
     var mktShareVal=0,mktShareLabel='',mktShareHint='';
     if(rivalSum>0||m<5){
       mktShareVal=(ownSum+rivalSum)>0?ownSum/(ownSum+rivalSum):0;mktShareLabel='市占比';mktShareHint='新品销量÷(新品+对手) = '+fm(ownSum)+'÷'+fm(ownSum+rivalSum);
     }else{
-      // 当月无对手数据，暂用PW爬虫市占
-      var pwW=0,pwTS=0;rows.forEach(function(r){if(r.pwShare>0&&r.curSalesQty>0){pwW+=r.pwShare*r.curSalesQty;pwTS+=r.curSalesQty;}});
-      mktShareVal=pwTS?pwW/pwTS:0;mktShareLabel='PW市占(当月参考)';mktShareHint='对手数据未出，暂用PW | '+pwCnt+'个SKU';
+      // 当月无对手数据，用PW自店÷(自店+对手)
+      var pwOur=0,pwRival=0;rows.forEach(function(r){pwOur+=r.pwOur||0;pwRival+=r.pwRival||0;});
+      mktShareVal=(pwOur+pwRival)>0?pwOur/(pwOur+pwRival):0;mktShareLabel='PW市占(当月参考)';mktShareHint='PW自店÷(自店+对手) = '+fm(pwOur)+'÷'+fm(pwOur+pwRival);
     }
     kpiGrid('t1-kpi',[{l:'累计SKU',v:fm(N)},{l:m+'月销量',v:fm(cur.sales),h:'环比'+hb(prv.sales?((cur.sales-prv.sales)/prv.sales*100):'-')},
         {l:m+'月销售额',v:fmm(cur.revenue),h:'环比'+hb(prv.revenue?((cur.revenue-prv.revenue)/prv.revenue*100):'-')},
@@ -293,8 +293,8 @@ function renderT1(){
     }
     // PW市占（仅当月无对手数据时显示）
     if(!rivalSum&&m>=5){
-      var pwW2=0,pwTS2=0;rows.forEach(function(r){if(r.pwShare>0&&r.curSalesQty>0){pwW2+=r.pwShare*r.curSalesQty;pwTS2+=r.curSalesQty;}});
-      deptHtml+='<div class=kpi-card style=border-left:4px solid #8e44ad><div class=label>PW市占(当月参考)</div><div class=val>'+fp(pwTS2?pwW2/pwTS2:0)+'</div><div class=hb>对手数据未出，暂用PW爬虫</div></div>';
+      var pwO2=0,pwR2=0;rows.forEach(function(r){pwO2+=r.pwOur||0;pwR2+=r.pwRival||0;});
+      deptHtml+='<div class=kpi-card style=border-left:4px solid #8e44ad><div class=label>PW市占(当月参考)</div><div class=val>'+fp((pwO2+pwR2)>0?pwO2/(pwO2+pwR2):0)+'</div><div class=hb>PW自店÷(自店+对手) | 对手数据未出</div></div>';
     }
     document.getElementById('t1-dept-kpi').innerHTML=deptHtml;
     // 部门对比柱状图
