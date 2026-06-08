@@ -466,12 +466,34 @@ function renderT5(){
     rh2+='<tr class=total-row><td>合计</td><td>'+unsold.length+'</td><td>100%</td><td>'+fp(unsold.length/N)+'</td></tr></tbody></table>';
     document.getElementById('t5-unsold-reason').innerHTML=rh2;
     try{var cr=document.getElementById('chart-unsold-reason');if(cr)allCharts.push(new Chart(cr,{type:'bar',data:{labels:['竞争无优势','无市场','站外出单','正常'],datasets:[{label:'未出单数',data:['竞争无优势','无市场','站外出单','正常'].map(function(s){return reasons[s]||0}),backgroundColor:['#e67e22','#c0392b','#8e44ad','#2980b9']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}}));}catch(e){}
-    // 低占比新品 (市占比<75% 且 有对手)
+    // 低占比新品 + 问题标签 + 筛选
     var lowShare=rows.filter(function(r){return r.curMarketShare<0.75&&r.curRivalQty>0});
-    var catsLow={};lowShare.forEach(function(r){var c=r.category||'未分类';catsLow[c]=(catsLow[c]||0)+1});
-    var lh='<table class=data-table><thead><tr><th>SKU</th><th>分析人</th><th>品类</th><th>'+m+'月销量</th><th>对手</th><th>市占比</th><th>8日出单</th><th>市场状态</th></tr></thead><tbody>';
-    lowShare.forEach(function(r){lh+='<tr><td>'+r.sku+'</td><td>'+r.analyst+'</td><td>'+r.category+'</td><td>'+fm(r.curSalesQty)+'</td><td>'+fm(r.curRivalQty)+'</td><td>'+fp(r.curMarketShare)+'</td><td>'+r.cur8dStatus+'</td><td>'+r.curMarketStatus+'</td></tr>'});
-    lh+='</tbody></table>';document.getElementById('t5-lowshare-table').innerHTML=lh;
+    var pvLookup={};if(pvRows.length)pvRows.forEach(function(r){pvLookup[r.sku]={share:r.curMarketShare||0,rev:r.curRevenue||0,sales:r.curSalesQty||0};});
+    function lsTag(r){
+      var pv=pvLookup[r.sku]||{};
+      if(r.cur8dStatus!=='Y'&&r.cur8dStatus!=='N')return '低占比-未出单';
+      var shChg=r.curMarketShare-(pv.share||0);if(shChg<-0.1)return '低占比-占比下滑多';
+      var revChg2=r.curRevenue-(pv.rev||0);if(revChg2<-200)return '低占比-销售额下滑';
+      var sChg=pv.sales?((r.curSalesQty||0)-pv.sales)/pv.sales:0;if(sChg<0)return '低占比-销量下滑';
+      if((r.freq||0)<4)return '低占比-低频分析';
+      if(shChg<0.1)return '低占比-占比上升慢';
+      return '低占比';
+    }
+    lowShare.forEach(function(r){r._lsTag=lsTag(r);});
+    var allTags=['低占比-未出单','低占比-占比下滑多','低占比-销售额下滑','低占比-销量下滑','低占比-低频分析','低占比-占比上升慢','低占比'];
+    DATA._lsTag='';
+    function renderLowShare(){
+      var filtered=lowShare.filter(function(r){return !DATA._lsTag||r._lsTag===DATA._lsTag;});
+      var catsLow={};filtered.forEach(function(r){var c=r.category||'未分类';catsLow[c]=(catsLow[c]||0)+1});
+      var lh='<div class=filter-bar style=margin-bottom:8px><select onchange=\"DATA._lsTag=this.value;renderLowShare()\"><option value=\"\">全部标签</option>';
+      allTags.forEach(function(t){lh+='<option>'+t+'</option>';});
+      lh+='</select> <span style=font-size:12px;color:#888>显示'+filtered.length+'/'+lowShare.length+'条</span></div>';
+      lh+='<table class=data-table><thead><tr><th>SKU</th><th>分析人</th><th>品类</th><th>'+m+'月销量</th><th>对手</th><th>市占比</th><th>8日出单</th><th>市场状态</th><th>问题标签</th></tr></thead><tbody>';
+      filtered.forEach(function(r){var tc=r._lsTag==='低占比'?'#27ae60':(r._lsTag.indexOf('未出单')>=0?'#c0392b':'#e67e22');lh+='<tr><td>'+r.sku+'</td><td>'+r.analyst+'</td><td>'+r.category+'</td><td>'+fm(r.curSalesQty)+'</td><td>'+fm(r.curRivalQty)+'</td><td>'+fp(r.curMarketShare)+'</td><td>'+r.cur8dStatus+'</td><td>'+r.curMarketStatus+'</td><td style=color:'+tc+';font-weight:600;font-size:11px>'+r._lsTag+'</td></tr>'});
+      lh+='</tbody></table>';document.getElementById('t5-lowshare-table').innerHTML=lh;
+      try{var cls=document.getElementById('chart-lowshare');if(cls){var cInst=Chart.getChart(cls);if(cInst)cInst.destroy();allCharts.push(new Chart(cls,{type:'bar',data:{labels:Object.keys(catsLow).sort(),datasets:[{label:'低占比SKU数',data:Object.keys(catsLow).sort().map(function(k){return catsLow[k]}),backgroundColor:'#e67e22'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}}));}}catch(e){}
+    }
+    renderLowShare();
     try{var cls=document.getElementById('chart-lowshare');if(cls)allCharts.push(new Chart(cls,{type:'bar',data:{labels:Object.keys(catsLow).sort(),datasets:[{label:'低占比SKU数',data:Object.keys(catsLow).sort().map(function(k){return catsLow[k]}),backgroundColor:'#e67e22'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}}));}catch(e){}
 }
 
