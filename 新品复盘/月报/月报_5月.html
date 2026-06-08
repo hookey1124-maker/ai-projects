@@ -454,7 +454,9 @@ function renderT5(){
         h+='</tbody></table>';
         document.getElementById(id).innerHTML=h;return dims;
     }
-    var anDims4=q4t('t5-an',function(r){return r.analyst||'未知'},'分析人');
+    var _rowsSaved=rows;rows=rows.filter(function(r){return r.analyst;}); // 排除无分析人的历史SKU
+    var anDims4=q4t('t5-an',function(r){return r.analyst},'分析人');
+    rows=_rowsSaved; // 恢复
     q4t('t5-cat',function(r){return r.category||'未分类'},'品线');
     // Charts
     try{
