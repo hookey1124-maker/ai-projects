@@ -244,15 +244,16 @@ function renderT1(){
     var y=rows.filter(function(r){return r.cur8dStatus==='Y'}).length;
     var n=rows.filter(function(r){return r.cur8dStatus==='N'}).length;
     var un=N-y-n;
-    var pwW=0,pwTS=0,pwCnt=0;rows.forEach(function(r){if(r.pwShare>0&&r.curSalesQty>0){pwW+=r.pwShare*r.curSalesQty;pwTS+=r.curSalesQty;pwCnt++;}});var pwAvg=pwTS?pwW/pwTS:0;
+    // 市占比 = 新品总销量 ÷ (新品总销量 + 对手总销量)
+    var ownSum=0,rivalSum=0,pwCnt=0;
+    rows.forEach(function(r){ownSum+=r.curSalesQty||0;rivalSum+=r.curRivalQty||0;if(r.pwShare>0&&r.curSalesQty>0)pwCnt++;});
     var mktShareVal=0,mktShareLabel='',mktShareHint='';
-    // 区分过往月(有实际市占比) vs 当月(只有PW)
-    var actShareRows=rows.filter(function(r){return r.isActualShare&&r.curSalesQty>0});
-    if(actShareRows.length>0){
-      var shW=0,shTS=0;actShareRows.forEach(function(r){shW+=r.curMarketShare*r.curSalesQty;shTS+=r.curSalesQty;});
-      mktShareVal=shTS?shW/shTS:0;mktShareLabel='市占比';mktShareHint='∑(各SKU市占×销量)÷总销量 | '+actShareRows.length+'个有销量SKU';
+    if(rivalSum>0||m<5){
+      mktShareVal=(ownSum+rivalSum)>0?ownSum/(ownSum+rivalSum):0;mktShareLabel='市占比';mktShareHint='新品销量÷(新品+对手) = '+fm(ownSum)+'÷'+fm(ownSum+rivalSum);
     }else{
-      mktShareVal=pwAvg;mktShareLabel='PW市占(当月参考)';mktShareHint='∑(各SKU的PW市占×销量)÷总销量 | 当月实际对手数据未出';
+      // 当月无对手数据，暂用PW爬虫市占
+      var pwW=0,pwTS=0;rows.forEach(function(r){if(r.pwShare>0&&r.curSalesQty>0){pwW+=r.pwShare*r.curSalesQty;pwTS+=r.curSalesQty;}});
+      mktShareVal=pwTS?pwW/pwTS:0;mktShareLabel='PW市占(当月参考)';mktShareHint='对手数据未出，暂用PW | '+pwCnt+'个SKU';
     }
     kpiGrid('t1-kpi',[{l:'累计SKU',v:fm(N)},{l:m+'月销量',v:fm(cur.sales),h:'环比'+hb(prv.sales?((cur.sales-prv.sales)/prv.sales*100):'-')},
         {l:m+'月销售额',v:fmm(cur.revenue),h:'环比'+hb(prv.revenue?((cur.revenue-prv.revenue)/prv.revenue*100):'-')},
@@ -280,9 +281,11 @@ function renderT1(){
     }else{
       deptHtml+='<div class=kpi-card style=border-left:4px solid #ccc><div class=label>部门占比</div><div class=val style=font-size:14px;color:#999>需月度汇总数据</div><div class=hb>上传含"三部月度汇总"Sheet的Excel</div></div>';
     }
-    // PW市占（仅当月无实际数据时显示）
-    if(!actShareRows.length){
-      deptHtml+='<div class=kpi-card style=border-left:4px solid #8e44ad><div class=label>PW市占(当月参考)</div><div class=val>'+fp(pwAvg)+'</div><div class=hb>'+pwCnt+'个有销量SKU | 实际市占数据待更新</div></div>';
+    // PW市占（仅当月无对手数据时显示）
+    if(!rivalSum&&m>=5){
+      var pwW2=0,pwTS2=0;rows.forEach(function(r){if(r.pwShare>0&&r.curSalesQty>0){pwW2+=r.pwShare*r.curSalesQty;pwTS2+=r.curSalesQty;}});
+      var pwAvg2=pwTS2?pwW2/pwTS2:0;
+      deptHtml+='<div class=kpi-card style=border-left:4px solid #8e44ad><div class=label>PW市占(当月参考)</div><div class=val>'+fp(pwAvg2)+'</div><div class=hb>对手数据未出，暂用PW爬虫数据</div></div>';
     }
     document.getElementById('t1-dept-kpi').innerHTML=deptHtml;
     // 部门对比柱状图
