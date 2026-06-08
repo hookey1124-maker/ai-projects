@@ -509,68 +509,59 @@ function renderT6(){
 
 function renderT8(){
     var m=DATA.monthIndex,rows=getRows(m),N=rows.length;
-    // 市容量 = 自身销量 + 对手销量(4月数据,因为5月对手未出)
-    // 货值(均价) = 销售额/销量
-    // 市占比 = 自身销量/(自身+对手), 5月暂用4月对手
+    // 市容量规则：低≤6 / 中7-15 / 高≥16
+    function capTier(cap){return cap<=6?'低市场':(cap<=15?'中市场':'高市场');}
+    function shareTier(sh,rival){return !rival?'无对手':(sh>=0.75?'高(≥75%)':(sh>=0.5?'中(50-75%)':'低(<50%)'));}
     var capTotal=0,ownTotal=0,revTotal=0;
-    var tiers={high:[],mid:[],low:[],none:[]};
+    var capDist={低市场:0,中市场:0,高市场:0};
+    var shareDist={}; // by capacity tier x share tier
+    var catDims={},anDims={};
     rows.forEach(function(r){
         var rival=r.pwRival||r.curRivalQty||0;
         var own=r.curSalesQty||0,rev=r.curRevenue||0;
         var cap=own+rival,share=cap>0?own/cap:0;
-        var avgPrice=own>0?rev/own:0;
         capTotal+=cap;ownTotal+=own;revTotal+=rev;
-        var item={sku:r.sku,analyst:r.analyst,category:r.category,own:own,rival:rival,cap:cap,share:share,avgPrice:avgPrice,rev:rev};
-        if(!rival) tiers.none.push(item);
-        else if(share>=0.75) tiers.high.push(item);
-        else if(share>=0.5) tiers.mid.push(item);
-        else tiers.low.push(item);
+        var ct=capTier(cap),st=shareTier(share,rival);
+        capDist[ct]++;if(!shareDist[ct])shareDist[ct]={};
+        shareDist[ct][st]=(shareDist[ct][st]||0)+1;
+        // Category dimension
+        var c=r.category||'未分类';if(!catDims[c])catDims[c]={n:0,own:0,rival:0,cap:0,rev:0,capDist:{低市场:0,中市场:0,高市场:0}};
+        catDims[c].n++;catDims[c].own+=own;catDims[c].rival+=rival;catDims[c].cap+=cap;catDims[c].rev+=rev;catDims[c].capDist[ct]++;
+        // Analyst dimension
+        var a=r.analyst||'未知';if(!anDims[a])anDims[a]={n:0,own:0,rival:0,cap:0,rev:0,capDist:{低市场:0,中市场:0,高市场:0}};
+        anDims[a].n++;anDims[a].own+=own;anDims[a].rival+=rival;anDims[a].cap+=cap;anDims[a].rev+=rev;anDims[a].capDist[ct]++;
     });
     var allShare=capTotal>0?ownTotal/capTotal:0;
     var allAvg=ownTotal>0?revTotal/ownTotal:0;
     // KPI
     kpiGrid('t8-kpi',[
-        {l:'月市场总容量',v:fm(capTotal),h:'自身'+fm(ownTotal)+' + 对手(4月)'+fm(capTotal-ownTotal)},
-        {l:'新品总市占比',v:fp(allShare),h:'按市容量加权'},
-        {l:'月均货值(均价)',v:'$'+Math.round(allAvg),h:'销售额/'+(ownTotal||1)+'销量'},
-        {l:'高市占(≥75%)',v:tiers.high.length,h:'占'+fp(tiers.high.length/N),c:'#27ae60'},
-        {l:'中市占(50-75%)',v:tiers.mid.length,h:'占'+fp(tiers.mid.length/N),c:'#e67e22'},
-        {l:'低市占(<50%)',v:tiers.low.length,h:'占'+fp(tiers.low.length/N),c:'#c0392b'},
-        {l:'无对手SKU',v:tiers.none.length,h:'占'+fp(tiers.none.length/N),c:'#95a5a6'}
+        {l:'月市场总容量',v:fm(capTotal),h:'自身'+fm(ownTotal)+' + 对手(4月)'},
+        {l:'新品加权市占比',v:fp(allShare),h:'均价$'+Math.round(allAvg)},
+        {l:'低市场(≤6)',v:capDist['低市场'],h:'占'+fp(capDist['低市场']/N),c:'#c0392b'},
+        {l:'中市场(7-15)',v:capDist['中市场'],h:'占'+fp(capDist['中市场']/N),c:'#e67e22'},
+        {l:'高市场(≥16)',v:capDist['高市场'],h:'占'+fp(capDist['高市场']/N),c:'#27ae60'}
     ]);
-    // 市占分层饼图
+    // 市容量分层饼图
     try{
-        var ct=document.getElementById('chart-share-tier');
-        if(ct)allCharts.push(new Chart(ct,{type:'doughnut',data:{labels:['高(≥75%)','中(50-75%)','低(<50%)','无对手'],datasets:[{data:[tiers.high.length,tiers.mid.length,tiers.low.length,tiers.none.length],backgroundColor:['#27ae60','#e67e22','#c0392b','#95a5a6']}]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}}));
+        var ct1=document.getElementById('chart-share-tier');
+        if(ct1)allCharts.push(new Chart(ct1,{type:'doughnut',data:{labels:['低市场(≤6)','中市场(7-15)','高市场(≥16)'],datasets:[{data:[capDist['低市场'],capDist['中市场'],capDist['高市场']],backgroundColor:['#c0392b','#e67e22','#27ae60']}]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}}));
     }catch(e){}
-    // 货值分布: 按品线均价柱状图
-    var catPrice={};
-    rows.forEach(function(r){
-        var c=r.category||'未分类';if(!catPrice[c])catPrice[c]={rev:0,sales:0};
-        catPrice[c].rev+=r.curRevenue||0;catPrice[c].sales+=r.curSalesQty||0;
-    });
+    // 品线均价柱状图
     var cpLbl=[],cpVal=[];
-    Object.keys(catPrice).sort().forEach(function(k){
-        var d=catPrice[k];cpLbl.push(k);cpVal.push(d.sales>0?Math.round(d.rev/d.sales):0);
-    });
+    Object.keys(catDims).sort().forEach(function(k){var d=catDims[k];cpLbl.push(k);cpVal.push(d.own>0?Math.round(d.rev/d.own):0);});
     try{
         var ca=document.getElementById('chart-avgprice');
         if(ca)allCharts.push(new Chart(ca,{type:'bar',data:{labels:cpLbl,datasets:[{label:'均价($)',data:cpVal,backgroundColor:'#8e44ad',borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,title:{display:true,text:'均价($)'}}}}}));
     }catch(e){}
-    // 分层明细表
-    function tierTable(title,items,color){
-        if(!items.length)return '<h4 style=color:'+color+'>'+title+'：0个SKU</h4>';
-        var h='<h4 style=color:'+color+';margin:12px 0 6px>'+title+'：'+items.length+'个SKU</h4>';
-        h+='<div class=table-scroll style=max-height:300px><table class=data-table><thead><tr><th>SKU</th><th>分析人</th><th>品类</th><th>月销量</th><th>对手(4月)</th><th>市场容量</th><th>市占比</th><th>均价($)</th></tr></thead><tbody>';
-        items.forEach(function(d){h+='<tr><td>'+d.sku+'</td><td>'+d.analyst+'</td><td>'+d.category+'</td><td>'+fm(d.own)+'</td><td>'+fm(d.rival)+'</td><td>'+fm(d.cap)+'</td><td>'+fp(d.share)+'</td><td>'+Math.round(d.avgPrice)+'</td></tr>'});
-        h+='</tbody></table></div>';return h;
-    }
-    var th='';
-    th+=tierTable('🟢 高市占(≥75%)',tiers.high,'#27ae60');
-    th+=tierTable('🟡 中市占(50-75%)',tiers.mid,'#e67e22');
-    th+=tierTable('🔴 低市占(<50%)',tiers.low,'#c0392b');
-    th+=tierTable('⚪ 无对手(独占市场)',tiers.none,'#95a5a6');
-    document.getElementById('t8-tier-table').innerHTML=th;
+    // 维度汇总表：按品线
+    var dh='<div class=section><h3>📋 按品线 — 市场容量 &amp; 市占比分布</h3><table class=data-table><thead><tr><th>品线</th><th>SKU</th><th>总容量</th><th>新品销量</th><th>均价$</th><th>加权市占</th><th>低容量</th><th>中容量</th><th>高容量</th></tr></thead><tbody>';
+    Object.keys(catDims).sort().forEach(function(k){var d=catDims[k];dh+='<tr><td>'+k+'</td><td>'+d.n+'</td><td>'+fm(d.cap)+'</td><td>'+fm(d.own)+'</td><td>'+Math.round(d.own>0?d.rev/d.own:0)+'</td><td>'+fp(d.cap>0?d.own/d.cap:0)+'</td><td>'+d.capDist['低市场']+'</td><td>'+d.capDist['中市场']+'</td><td>'+d.capDist['高市场']+'</td></tr>'});
+    dh+='</tbody></table></div>';
+    // 按分析人
+    dh+='<div class=section><h3>📋 按分析人 — 市场容量 &amp; 市占比分布</h3><table class=data-table><thead><tr><th>分析人</th><th>SKU</th><th>总容量</th><th>新品销量</th><th>均价$</th><th>加权市占</th><th>低容量</th><th>中容量</th><th>高容量</th></tr></thead><tbody>';
+    Object.keys(anDims).sort().forEach(function(k){var d=anDims[k];dh+='<tr><td>'+k+'</td><td>'+d.n+'</td><td>'+fm(d.cap)+'</td><td>'+fm(d.own)+'</td><td>'+Math.round(d.own>0?d.rev/d.own:0)+'</td><td>'+fp(d.cap>0?d.own/d.cap:0)+'</td><td>'+d.capDist['低市场']+'</td><td>'+d.capDist['中市场']+'</td><td>'+d.capDist['高市场']+'</td></tr>'});
+    dh+='</tbody></table></div>';
+    document.getElementById('t8-tier-table').innerHTML=dh;
 }
 
 function renderT7(){
