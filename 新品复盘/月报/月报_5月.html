@@ -243,9 +243,18 @@ function renderT1(){
     var n=rows.filter(function(r){return r.cur8dStatus==='N'}).length;
     var un=N-y-n;
     var pwW=0,pwTS=0,pwCnt=0;rows.forEach(function(r){if(r.pwShare>0&&r.curSalesQty>0){pwW+=r.pwShare*r.curSalesQty;pwTS+=r.curSalesQty;pwCnt++;}});var pwAvg=pwTS?pwW/pwTS:0;
+    var mktShareVal=0,mktShareLabel='',mktShareHint='';
+    // 区分过往月(有实际市占比) vs 当月(只有PW)
+    var actShareRows=rows.filter(function(r){return r.isActualShare&&r.curSalesQty>0});
+    if(actShareRows.length>0){
+      var shW=0,shTS=0;actShareRows.forEach(function(r){shW+=r.curMarketShare*r.curSalesQty;shTS+=r.curSalesQty;});
+      mktShareVal=shTS?shW/shTS:0;mktShareLabel='加权市占';mktShareHint=actShareRows.length+'个有销量SKU | 实际数据';
+    }else{
+      mktShareVal=pwAvg;mktShareLabel='PW市占(当月参考)';mktShareHint=pwCnt+'个SKU | 销量加权';
+    }
     kpiGrid('t1-kpi',[{l:'累计SKU',v:fm(N)},{l:m+'月销量',v:fm(cur.sales),h:'环比'+hb(prv.sales?((cur.sales-prv.sales)/prv.sales*100):'-')},
         {l:m+'月销售额',v:fmm(cur.revenue),h:'环比'+hb(prv.revenue?((cur.revenue-prv.revenue)/prv.revenue*100):'-')},
-        {l:'PW加权市占',v:fp(pwAvg),h:pwCnt+'个有销量SKU | 加权平均'},
+        {l:mktShareLabel,v:fp(mktShareVal),h:mktShareHint},
         {l:'出单率',v:fp((y+n)/N),h:'Y:'+y+' N:'+n+' 未:'+un}]);
     var lb=[],sd=[],rd=[];
     for(var mi=1;mi<=m;mi++){lb.push(mi+'月');sd.push(DATA.mTot[mi]?DATA.mTot[mi].sales:0);rd.push(DATA.mTot[mi]?DATA.mTot[mi].revenue:0);}
@@ -269,8 +278,10 @@ function renderT1(){
     }else{
       deptHtml+='<div class=kpi-card style=border-left:4px solid #ccc><div class=label>部门占比</div><div class=val style=font-size:14px;color:#999>需月度汇总数据</div><div class=hb>上传含"三部月度汇总"Sheet的Excel</div></div>';
     }
-    // PW市占（仅当月参考，过往月已有实际市占）
-    deptHtml+='<div class=kpi-card style=border-left:4px solid #8e44ad><div class=label>PW加权市占(当月参考)</div><div class=val>'+fp(pwAvg)+'</div><div class=hb>'+pwCnt+'个有销量SKU | 仅当月有效</div></div>';
+    // PW市占（仅当月无实际数据时显示）
+    if(!actShareRows.length){
+      deptHtml+='<div class=kpi-card style=border-left:4px solid #8e44ad><div class=label>PW市占(当月参考)</div><div class=val>'+fp(pwAvg)+'</div><div class=hb>'+pwCnt+'个有销量SKU | 实际市占数据待更新</div></div>';
+    }
     document.getElementById('t1-dept-kpi').innerHTML=deptHtml;
     // 部门对比柱状图
     if(dm&&dmCur>0){
