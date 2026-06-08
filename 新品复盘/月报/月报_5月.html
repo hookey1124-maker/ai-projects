@@ -852,9 +852,12 @@ function renderT8(){
     var concCatsRpt={},concTotal=0;(DATA.pinxiaoData||[]).forEach(function(s){var ld=s.listDate.substring(0,7);if(!ld)return;var c=s.cat||'未分类';if(!concCatsRpt[c])concCatsRpt[c]=0;concCatsRpt[c]++;concTotal++;});
     var concSorted=Object.keys(concCatsRpt).sort(function(a,b){return concCatsRpt[b]-concCatsRpt[a];});
     rpt+='▎品线集中度（数据来源：Tab2 品线集中度 + 全量pxData）\n';
-    rpt+='全量新品共'+concTotal+'款，主要集中在'+concSorted[0]+'（'+concCatsRpt[concSorted[0]]+'款，占'+fm(concCatsRpt[concSorted[0]]/concTotal*100)+'%）';
-    if(concSorted.length>1)rpt+='，其次为'+concSorted[1]+'（'+concCatsRpt[concSorted[1]]+'款，占'+fm(concCatsRpt[concSorted[1]]/concTotal*100)+'%）';
-    rpt+='。\n前3品线合计占比'+fm((concCatsRpt[concSorted[0]]+concCatsRpt[concSorted[1]]+(concCatsRpt[concSorted[2]]||0))/concTotal*100)+'%，集中度'+(concCatsRpt[concSorted[0]]/concTotal>0.35?'较高':'中等')+'。\n\n';
+    rpt+='全量新品共'+concTotal+'款，品线分布如下：\n';
+    concSorted.forEach(function(c,i){if(i<3)rpt+='  '+(i+1)+'. '+c+'：'+concCatsRpt[c]+'款（占'+fm(concCatsRpt[c]/concTotal*100)+'%）\n';});
+    rpt+='前3品线合计占比'+fm((concCatsRpt[concSorted[0]]+concCatsRpt[concSorted[1]]+(concCatsRpt[concSorted[2]]||0))/concTotal*100)+'%，集中度'+(concCatsRpt[concSorted[0]]/concTotal>0.35?'较高':'中等')+'。\n';
+    // 近3月每月上架最多的品线
+    var moTopCat={};for(var mi2=m-2;mi2<=m;mi2++){var moKey='2026-0'+mi2;var moCounts={}; (DATA.pinxiaoData||[]).forEach(function(s){var ld=s.listDate.substring(0,7);if(ld===moKey){var c2=s.cat||'未分类';moCounts[c2]=(moCounts[c2]||0)+1;}}); var top=Object.keys(moCounts).sort(function(a,b){return moCounts[b]-moCounts[a];})[0]; if(top)moTopCat[mi2+'月']=top+'（'+moCounts[top]+'款）';}
+    rpt+='近3月单月上架数量最多品线：'+Object.keys(moTopCat).map(function(k){return k+moTopCat[k];}).join('、')+'。\n\n';
 
     // 品效维度
     var pxData=DATA.pinxiaoData||[];
