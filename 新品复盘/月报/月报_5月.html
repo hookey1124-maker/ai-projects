@@ -4,12 +4,12 @@
 <style>
 :root{--sidebar-w:200px;--c-primary:#0f3460;--c-revenue:#8e44ad;--c-share:#08845a;--c-danger:#c0392b;--c-warn:#e67e22;--c-plp:#2980b9;--c-plg:#e67e22;--c-noAd:#95a5a6}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f2f5;color:#333;display:flex}
-.header{background:linear-gradient(135deg,var(--c-primary),#1a5276);color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;margin-left:var(--sidebar-w);flex:1}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f2f5;color:#333}
+.header{background:linear-gradient(135deg,var(--c-primary),#1a5276);color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;margin-left:var(--sidebar-w)}
 .header h1{font-size:20px}.header p{font-size:12px;opacity:.8;margin-top:4px}
 .actions{display:flex;gap:8px;align-items:center}.actions select,.actions button{padding:8px 14px;border-radius:6px;font-size:13px;cursor:pointer;border:none}.actions select{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)}.actions button{background:#fff;color:var(--c-primary);font-weight:600}
 .sidebar{width:var(--sidebar-w);background:#fff;position:fixed;top:0;left:0;bottom:0;padding-top:80px;box-shadow:2px 0 8px rgba(0,0,0,.08);z-index:50}.sidebar a{display:block;padding:12px 20px;color:#555;text-decoration:none;font-size:13px;border-left:3px solid transparent}.sidebar a.active,.sidebar a:hover{color:var(--c-primary);background:#f0f4ff;border-left-color:var(--c-primary);font-weight:600}
-.main{margin-left:var(--sidebar-w);padding:20px;flex:1}.tab-content{display:none}.tab-content.active{display:block}
+.main{margin-left:var(--sidebar-w);padding:20px}.tab-content{display:none}.tab-content.active{display:block}
 .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:20px}
 .kpi-card{background:#fff;border-radius:8px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.06)}.kpi-card .label{font-size:12px;color:#888;margin-bottom:6px}.kpi-card .val{font-size:22px;font-weight:700;color:#0f3460}.kpi-card .hb{font-size:11px;color:#999;margin-top:4px}
 .section{background:#fff;border-radius:10px;padding:20px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.06)}.section h3{font-size:15px;color:#0f3460;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #e8f0fe}
