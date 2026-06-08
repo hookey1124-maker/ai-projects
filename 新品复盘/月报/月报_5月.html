@@ -485,7 +485,7 @@ function renderT5(){
     function renderLowShare(){
       var filtered=lowShare.filter(function(r){return !DATA._lsTag||r._lsTag===DATA._lsTag;});
       var catsLow={};filtered.forEach(function(r){var c=r.category||'未分类';catsLow[c]=(catsLow[c]||0)+1});
-      var lh='<div class=filter-bar style=margin-bottom:8px><select onchange=\"DATA._lsTag=this.value;renderLowShare()\"><option value=\"\">全部标签</option>';
+      var lh='<div class=filter-bar style=margin-bottom:8px;position:sticky;top:0;z-index:5><select onchange=\"DATA._lsTag=this.value;renderLowShare()\"><option value=\"\">全部标签</option>';
       allTags.forEach(function(t){lh+='<option>'+t+'</option>';});
       lh+='</select> <span style=font-size:12px;color:#888>显示'+filtered.length+'/'+lowShare.length+'条</span></div>';
       lh+='<table class=data-table><thead><tr><th>SKU</th><th>分析人</th><th>品类</th><th>'+m+'月销量</th><th>对手</th><th>市占比</th><th>8日出单</th><th>市场状态</th><th>问题标签</th></tr></thead><tbody>';
