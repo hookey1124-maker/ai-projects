@@ -535,8 +535,9 @@ function renderT8(){
     var allAvg=ownTotal>0?revTotal/ownTotal:0;
     // KPI
     kpiGrid('t8-kpi',[
-        {l:'月市场总容量',v:fm(capTotal),h:'自身'+fm(ownTotal)+' + 对手(4月)'},
-        {l:'新品加权市占比',v:fp(allShare),h:'均价$'+Math.round(allAvg)},
+        {l:'月市场总容量',v:fm(capTotal),h:'自身'+fm(ownTotal)+' + 对手'+fm(capTotal-ownTotal)+' (5月暂用4月对手)'},
+        {l:'新品总市占比',v:fp(allShare),h:'新品销量÷市场总容量 = '+fm(ownTotal)+'÷'+fm(capTotal)},
+        {l:'月均货值(均价)',v:'$'+Math.round(allAvg),h:'总销售额÷总销量 = $'+fmm(revTotal)+'÷'+fm(ownTotal)},
         {l:'低市场(≤6)',v:capDist['低市场'],h:'占'+fp(capDist['低市场']/N),c:'#c0392b'},
         {l:'中市场(7-15)',v:capDist['中市场'],h:'占'+fp(capDist['中市场']/N),c:'#e67e22'},
         {l:'高市场(≥16)',v:capDist['高市场'],h:'占'+fp(capDist['高市场']/N),c:'#27ae60'}
