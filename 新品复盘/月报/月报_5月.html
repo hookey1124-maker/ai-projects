@@ -903,6 +903,16 @@ function renderT8(){
     if(hasR.length)rpt+='有对手SKU中：已出单'+hy+'款，出单率'+fp(hy/hasR.length)+'。\n';
     rpt+='\n';
 
+    // 市场分布
+    var mktRows=rows.filter(function(r){return(r.curSalesQty||0)>0||(r.curRivalQty||0)>0;});
+    var mktCapDist={低:0,中:0,高:0},mktCapTotal=0,mktOwnTotal=0;
+    mktRows.forEach(function(r){var cap=(r.curSalesQty||0)+(r.curRivalQty||0);mktCapTotal+=cap;mktOwnTotal+=r.curSalesQty||0;if(cap<=6)mktCapDist['低']++;else if(cap<=15)mktCapDist['中']++;else mktCapDist['高']++;});
+    var mktN=mktRows.length||1;
+    rpt+='▎市场分布（数据来源：Tab4 市场分布）\n';
+    rpt+='活跃SKU共'+mktN+'款，月市场总容量'+fm(mktCapTotal)+'（自身'+fm(mktOwnTotal)+'）。\n';
+    rpt+='市容量分档：低(≤6)'+mktCapDist['低']+'款（占'+fp(mktCapDist['低']/mktN)+'）、中(7-15)'+mktCapDist['中']+'款（占'+fp(mktCapDist['中']/mktN)+'）、高(≥16)'+mktCapDist['高']+'款（占'+fp(mktCapDist['高']/mktN)+'）。\n';
+    rpt+='高容量市场集中度'+(mktCapDist['高']/mktN>0.3?'较高':'一般')+'，'+(mktCapDist['低']/mktN>0.5?'低容量市场占比偏高，需关注长尾SKU':'市场结构健康')+'。\n\n';
+
     rpt+='▎低占比新品（数据来源：Tab5 低占比表）\n';
     rpt+='低占比新品共'+lowShare.length+'款（占'+fp(lowShare.length/N)+'）。\n';
     if(lowShare.length){
