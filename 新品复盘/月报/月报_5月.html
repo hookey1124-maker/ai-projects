@@ -636,7 +636,7 @@ function renderT8(){
     var pvRows8=pv>0?getRows(pv):[],pvN2=pvRows8.length||N;
     var pvCap=0,pvOwn=0,pvRev=0,pvAllShare=0,pvAllAvg=0;
     var pvCapDist={低市场:0,中市场:0,高市场:0};
-    pvRows8.forEach(function(r){var rival=r.curRivalQty||r.curRivalQty||0;var own=r.curSalesQty||0;var cap=own+rival;pvCap+=cap;pvOwn+=own;pvRev+=r.curRevenue||0;pvCapDist[capTier(cap)]++;});
+    pvRows8.forEach(function(r){var rival=r.curRivalQty||0;var own=r.curSalesQty||0;var cap=own+rival;pvCap+=cap;pvOwn+=own;pvRev+=r.curRevenue||0;pvCapDist[capTier(cap)]++;});
     pvAllShare=pvCap>0?pvOwn/pvCap:0;pvAllAvg=pvOwn>0?pvRev/pvOwn:0;
     kpiGrid('t8-kpi',[
         {l:'月市场总容量',v:fm(capTotal),h:pvCap?'上月'+fm(pvCap)+' | 环比'+hb((capTotal-pvCap)/pvCap):'-'},
