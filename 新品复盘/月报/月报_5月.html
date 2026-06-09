@@ -535,15 +535,23 @@ function exportLowShare(){
   var hdr=['销售编号','SKU','最新上架日期','首次出单日期',pv+'月分析人',m+'月分析人','品类','产品拓展',pv+'月分析频次',m+'月分析频次',pv+'月 8日出单',m+'月 8日出单',pv+'月销量',m+'月销量','环比',pv+'月对手出单',m+'月对手出单','环比',pv+'月销售额',m+'月销售额','环比',pv+'月市占比',m+'月市占比','环比'];
   var rows=[hdr];
   list.forEach(function(r){var s=skuMap[r.sku]||{};
-    var sPv=s['s'+pv]||0,sCur=s['s'+m]||0,rPv=s['ri'+pv]||0,rCur=s['ri'+m]||0,revPv=s['r'+pv]||0,revCur=s['r'+m]||0,shPv=s['share'+pv]||0,shCur=s['share'+m]||0;
-    var sChg=sPv?((sCur-sPv)/sPv*100).toFixed(1)+'%':'',rChg=rPv?((rCur-rPv)/rPv*100).toFixed(1)+'%':'',revChg=revPv?((revCur-revPv)/revPv*100).toFixed(1)+'%':'',shChgPp=shPv?((shCur-shPv)*100).toFixed(1)+'pp':'';
-    rows.push([s.saleNo||'',r.sku,s.listDate||'',s.firstOrder||'',s.a4||'',s.a5||'',r.category||'',s.exp||'',rawI(s.f4),rawI(s.f5),s.o4||'',s.o5||'',rawI(sPv),rawI(sCur),sChg,rawI(rPv),rawI(rCur),rChg,rawM(revPv),rawM(revCur),revChg,shPv||0,shCur||0,shChgPp]);
+    var sPv=rawI(s['s'+pv]),sCur=rawI(s['s'+m]),rPv=rawI(s['ri'+pv]),rCur=rawI(s['ri'+m]),revPv=rawM(s['r'+pv]),revCur=rawM(s['r'+m]),shPv=s['share'+pv]||0,shCur=s['share'+m]||0;
+    var sChg=sPv?(sCur-sPv)/sPv:null,rChg=rPv?(rCur-rPv)/rPv:null,revChg=revPv?(revCur-revPv)/revPv:null,shChg=(shPv&&shCur!==0)?shCur-shPv:null;
+    rows.push([s.saleNo||'',r.sku,s.listDate||'',s.firstOrder||'',s.a4||'',s.a5||'',r.category||'',s.exp||'',rawI(s.f4),rawI(s.f5),s.o4||'',s.o5||'',sPv,sCur,sChg,rPv,rCur,rChg,revPv,revCur,revChg,shPv,shCur,shChg]);
   });
   var ws=XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols']=[{wch:14},{wch:22},{wch:14},{wch:14},{wch:10},{wch:10},{wch:14},{wch:10},{wch:12},{wch:12},{wch:12},{wch:12},{wch:10},{wch:10},{wch:8},{wch:12},{wch:12},{wch:8},{wch:14},{wch:14},{wch:8},{wch:10},{wch:10},{wch:8}];
+  // Number formatting for data rows (skip header row 0)
+  var fmtCols=[null,null,null,null,null,null,null,null,null,null,null,null,{z:'#,##0'},{z:'#,##0'},{z:'0.0%'},{z:'#,##0'},{z:'#,##0'},{z:'0.0%'},{z:'$#,##0.00'},{z:'$#,##0.00'},{z:'0.0%'},{z:'0.0%'},{z:'0.0%'},{z:'0.0%'}];
+  var rng=XLSX.utils.decode_range(ws['!ref']);
+  for(var R=1;R<=rng.e.r;R++){for(var C=0;C<fmtCols.length;C++){if(!fmtCols[C])continue;var addr=XLSX.utils.encode_cell({r:R,c:C}),cell=ws[addr];if(cell&&typeof cell.v==='number'){cell.t='n';cell.z=fmtCols[C].z;}}}
+  ws['!cols']=[{wch:14},{wch:22},{wch:14},{wch:14},{wch:10},{wch:10},{wch:14},{wch:10},{wch:12},{wch:12},{wch:12},{wch:12},{wch:10},{wch:10},{wch:10},{wch:12},{wch:12},{wch:10},{wch:14},{wch:14},{wch:10},{wch:12},{wch:12},{wch:10}];
   ws['!freeze']={xsplit:0,ysplit:1};
   XLSX.utils.book_append_sheet(wb,ws,'低占比新品检查表');
-  XLSX.writeFile(wb,'低占比新品检查表_'+m+'月.xlsx');
+  // Use Blob URL for file:// compatibility
+  var wbout=XLSX.write(wb,{bookType:'xlsx',type:'array'});
+  var blob=new Blob([wbout],{type:'application/octet-stream'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');a.href=url;a.download='低占比新品检查表_'+m+'月.xlsx';document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url);},1000);
 }
 
 function renderT6(){
