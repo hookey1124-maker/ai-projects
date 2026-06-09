@@ -71,7 +71,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="section"><h3>出单四象限</h3><div class="chart-row"><div class="chart-box"><canvas id="chart-quad" style="max-height:240px"></canvas></div><div class="chart-box"><canvas id="chart-an-ord8" style="max-height:240px"></canvas></div></div><div id="t5-quad"></div></div>
 <div class="section"><h3>按分析人</h3><div id="t5-an"></div></div><div class="section"><h3>按品线</h3><div id="t5-cat"></div></div>
 <div class="section"><h3>未出单原因分析</h3><div class="chart-row"><div class="chart-box"><canvas id="chart-unsold-reason" style="max-height:240px"></canvas></div><div class="chart-box"><div id="t5-unsold-reason"></div></div></div></div>
-<div class="section"><h3>低占比新品 (市占比&lt;75%) <button onclick="exportLowShare()" style="float:right;padding:4px 10px;border-radius:4px;background:var(--c-primary);color:#fff;border:none;cursor:pointer;font-size:11px">📥 导出检查表</button></h3><div class="chart-box" style="margin-bottom:12px"><canvas id="chart-lowshare" style="max-height:200px"></canvas></div><div class="table-scroll" id="t5-lowshare-table"></div></div></div>
+<div class="section"><h3>低占比新品 (市占比&lt;75%)</h3><div class="chart-box" style="margin-bottom:12px"><canvas id="chart-lowshare" style="max-height:200px"></canvas></div><div class="table-scroll" id="t5-lowshare-table"></div></div></div>
 
 <div class="tab-content" id="tab6"><div class="section"><h3>PLP广告汇总</h3><div class="kpi-grid" id="t6-plp-kpi"></div></div><div class="section"><h3>PLG广告汇总</h3><div class="kpi-grid" id="t6-plg-kpi"></div></div>
 <div class="section"><h3>广告构成 & 投放对比</h3><div class="chart-row"><div class="chart-box"><canvas id="chart-ad-comp" style="max-height:240px"></canvas></div><div class="chart-box"><canvas id="chart-ad-an" style="max-height:240px"></canvas></div></div><div class="kpi-grid" id="t6-ad-comp"></div></div>
@@ -508,7 +508,7 @@ function renderT5(){
       var catsLow={};filtered.forEach(function(r){var c=r.category||'未分类';catsLow[c]=(catsLow[c]||0)+1});
       var lh='<div class=filter-bar style=margin-bottom:8px;position:sticky;top:0;z-index:5><select onchange=\"DATA._lsTag=this.value;DATA._renderLowShare()\"><option value=\"\">全部标签</option>';
       allTags.forEach(function(t){lh+='<option>'+t+'</option>';});
-      lh+='</select> <span style=font-size:12px;color:#888>显示'+filtered.length+'/'+lowShare.length+'条</span></div>';
+      lh+='</select> <span style=font-size:12px;color:#888>显示'+filtered.length+'/'+lowShare.length+'条</span>';lh+='<button onclick="exportLowShare()" style="float:right;padding:4px 10px;border-radius:4px;background:var(--c-primary);color:#fff;border:none;cursor:pointer;font-size:11px">📥 导出检查表</button></div>';
       lh+='<table class=data-table><thead><tr><th>SKU</th><th>分析人</th><th>品类</th><th>'+pv+'月销量</th><th>'+m+'月销量</th><th>销量环比</th><th>'+pv+'月对手</th><th>'+m+'月对手</th><th>'+pv+'月销售额</th><th>'+m+'月销售额</th><th>销售额环比</th><th>'+pv+'月市占比</th><th>'+m+'月市占比</th><th>市占环比</th><th>'+pv+'月频次</th><th>'+m+'月频次</th><th>8日出单</th><th>市场状态</th><th>问题标签</th></tr></thead><tbody>';
       filtered.forEach(function(r){var pv2=pvLookup[r.sku]||{};var tc=r._lsTag==='低占比'?'#27ae60':(r._lsTag.indexOf('未出单')>=0?'#c0392b':'#e67e22');var sc=pv2.sales?((r.curSalesQty-pv2.sales)/pv2.sales):0;var rc=pv2.rev?((r.curRevenue-pv2.rev)/pv2.rev):0;var shC=r.curMarketShare-(pv2.share||0);
         var hi=function(cond){return cond?'style=color:#c0392b;font-weight:600':'';};
