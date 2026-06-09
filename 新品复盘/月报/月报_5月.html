@@ -527,18 +527,20 @@ function renderT5(){
 
 function exportLowShare(){
   var d=DATA._lowShareData;if(!d)return alert('暂无低占比数据');
-  var list=d.list,lookup=d.lookup,m=DATA.monthIndex,pv=m-1;
+  var list=d.list,m=DATA.monthIndex,pv=m-1;
   var wb=XLSX.utils.book_new();
   var rawI=function(n){return(n!=null&&!isNaN(n))?Number(n):0;};
   var rawM=function(n){return(n!=null&&!isNaN(n))?Number(n):0;};
-  var header=['SKU','分析人','品类',pv+'月销量',m+'月销量','销量环比',pv+'月对手',m+'月对手',pv+'月销售额',m+'月销售额','销售额环比',pv+'月市占比',m+'月市占比','市占环比',pv+'月频次',m+'月频次','8日出单','市场状态','问题标签'];
-  var rows=[header];
-  list.forEach(function(r){var pv2=lookup[r.sku]||{};
-    var sc=pv2.sales?((r.curSalesQty-pv2.sales)/pv2.sales*100):null,rc=pv2.rev?((r.curRevenue-pv2.rev)/pv2.rev*100):null,shC=r.curMarketShare-(pv2.share||0);
-    rows.push([r.sku,r.analyst||'',r.category||'',rawI(pv2.sales),rawI(r.curSalesQty),sc!=null?sc.toFixed(1)+'%':'',rawI(pv2.rival),rawI(r.curRivalQty),rawM(pv2.rev),rawM(r.curRevenue),rc!=null?rc.toFixed(1)+'%':'',pv2.share||0,r.curMarketShare,shC!=null?(shC*100).toFixed(1)+'pp':'',rawI(pv2.freq),rawI(r.freq),r.cur8dStatus||'',r.curMarketStatus||'',r._lsTag||'']);
+  var skuMap={};DATA.skuData.forEach(function(s){skuMap[s.sku]=s;});
+  var hdr=['销售编号','SKU','最新上架日期','首次出单日期',pv+'月分析人',m+'月分析人','品类','产品拓展',pv+'月分析频次',m+'月分析频次',pv+'月 8日出单',m+'月 8日出单',pv+'月销量',m+'月销量','环比',pv+'月对手出单',m+'月对手出单','环比',pv+'月销售额',m+'月销售额','环比',pv+'月市占比',m+'月市占比','环比'];
+  var rows=[hdr];
+  list.forEach(function(r){var s=skuMap[r.sku]||{};
+    var sPv=s['s'+pv]||0,sCur=s['s'+m]||0,rPv=s['ri'+pv]||0,rCur=s['ri'+m]||0,revPv=s['r'+pv]||0,revCur=s['r'+m]||0,shPv=s['share'+pv]||0,shCur=s['share'+m]||0;
+    var sChg=sPv?((sCur-sPv)/sPv*100).toFixed(1)+'%':'',rChg=rPv?((rCur-rPv)/rPv*100).toFixed(1)+'%':'',revChg=revPv?((revCur-revPv)/revPv*100).toFixed(1)+'%':'',shChgPp=shPv?((shCur-shPv)*100).toFixed(1)+'pp':'';
+    rows.push([s.saleNo||'',r.sku,s.listDate||'',s.firstOrder||'',s.a4||'',s.a5||'',r.category||'',s.exp||'',rawI(s.f4),rawI(s.f5),s.o4||'',s.o5||'',rawI(sPv),rawI(sCur),sChg,rawI(rPv),rawI(rCur),rChg,rawM(revPv),rawM(revCur),revChg,shPv||0,shCur||0,shChgPp]);
   });
   var ws=XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols']=[{wch:22},{wch:10},{wch:14},{wch:12},{wch:12},{wch:10},{wch:12},{wch:12},{wch:14},{wch:14},{wch:10},{wch:12},{wch:12},{wch:10},{wch:10},{wch:10},{wch:10},{wch:12},{wch:16}];
+  ws['!cols']=[{wch:14},{wch:22},{wch:14},{wch:14},{wch:10},{wch:10},{wch:14},{wch:10},{wch:12},{wch:12},{wch:12},{wch:12},{wch:10},{wch:10},{wch:8},{wch:12},{wch:12},{wch:8},{wch:14},{wch:14},{wch:8},{wch:10},{wch:10},{wch:8}];
   ws['!freeze']={xsplit:0,ysplit:1};
   XLSX.utils.book_append_sheet(wb,ws,'低占比新品检查表');
   XLSX.writeFile(wb,'低占比新品检查表_'+m+'月.xlsx');
