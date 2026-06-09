@@ -71,7 +71,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="section"><h3>出单四象限</h3><div class="chart-row"><div class="chart-box"><canvas id="chart-quad" style="max-height:240px"></canvas></div><div class="chart-box"><canvas id="chart-an-ord8" style="max-height:240px"></canvas></div></div><div id="t5-quad"></div></div>
 <div class="section"><h3>按分析人</h3><div id="t5-an"></div></div><div class="section"><h3>按品线</h3><div id="t5-cat"></div></div>
 <div class="section"><h3>未出单原因分析</h3><div class="chart-row"><div class="chart-box"><canvas id="chart-unsold-reason" style="max-height:240px"></canvas></div><div class="chart-box"><div id="t5-unsold-reason"></div></div></div></div>
-<div class="section"><h3>低占比新品 (市占比&lt;75%)</h3><div class="chart-box" style="margin-bottom:12px"><canvas id="chart-lowshare" style="max-height:200px"></canvas></div><div class="table-scroll" id="t5-lowshare-table"></div></div></div>
+<div class="section"><h3>低占比新品 (市占比&lt;75%) <button onclick="exportLowShare()" style="float:right;padding:4px 10px;border-radius:4px;background:var(--c-primary);color:#fff;border:none;cursor:pointer;font-size:11px">📥 导出检查表</button></h3><div class="chart-box" style="margin-bottom:12px"><canvas id="chart-lowshare" style="max-height:200px"></canvas></div><div class="table-scroll" id="t5-lowshare-table"></div></div></div>
 
 <div class="tab-content" id="tab6"><div class="section"><h3>PLP广告汇总</h3><div class="kpi-grid" id="t6-plp-kpi"></div></div><div class="section"><h3>PLG广告汇总</h3><div class="kpi-grid" id="t6-plg-kpi"></div></div>
 <div class="section"><h3>广告构成 & 投放对比</h3><div class="chart-row"><div class="chart-box"><canvas id="chart-ad-comp" style="max-height:240px"></canvas></div><div class="chart-box"><canvas id="chart-ad-an" style="max-height:240px"></canvas></div></div><div class="kpi-grid" id="t6-ad-comp"></div></div>
@@ -502,6 +502,7 @@ function renderT5(){
     lowShare.forEach(function(r){r._lsTag=lsTag(r);});
     var allTags=['低占比-未出单','低占比-占比下滑多','低占比-销售额下滑','低占比-销量下滑','低占比-低频分析','低占比-占比上升慢','低占比'];
     DATA._lsTag='';
+    DATA._lowShareData={list:lowShare,lookup:pvLookup};
     DATA._renderLowShare=function(){
       var filtered=lowShare.filter(function(r){return !DATA._lsTag||r._lsTag===DATA._lsTag;});
       var catsLow={};filtered.forEach(function(r){var c=r.category||'未分类';catsLow[c]=(catsLow[c]||0)+1});
@@ -522,6 +523,25 @@ function renderT5(){
       try{var cls=document.getElementById('chart-lowshare');if(cls){var cInst=Chart.getChart(cls);if(cInst)cInst.destroy();allCharts.push(new Chart(cls,{type:'bar',data:{labels:Object.keys(catsLow).sort(),datasets:[{label:'低占比SKU数',data:Object.keys(catsLow).sort().map(function(k){return catsLow[k]}),backgroundColor:'#e67e22'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}}));}}catch(e){}
     }
     DATA._renderLowShare();
+}
+
+function exportLowShare(){
+  var d=DATA._lowShareData;if(!d)return alert('暂无低占比数据');
+  var list=d.list,lookup=d.lookup,m=DATA.monthIndex,pv=m-1;
+  var wb=XLSX.utils.book_new();
+  var rawI=function(n){return(n!=null&&!isNaN(n))?Number(n):0;};
+  var rawM=function(n){return(n!=null&&!isNaN(n))?Number(n):0;};
+  var header=['SKU','分析人','品类',pv+'月销量',m+'月销量','销量环比',pv+'月对手',m+'月对手',pv+'月销售额',m+'月销售额','销售额环比',pv+'月市占比',m+'月市占比','市占环比',pv+'月频次',m+'月频次','8日出单','市场状态','问题标签'];
+  var rows=[header];
+  list.forEach(function(r){var pv2=lookup[r.sku]||{};
+    var sc=pv2.sales?((r.curSalesQty-pv2.sales)/pv2.sales*100):null,rc=pv2.rev?((r.curRevenue-pv2.rev)/pv2.rev*100):null,shC=r.curMarketShare-(pv2.share||0);
+    rows.push([r.sku,r.analyst||'',r.category||'',rawI(pv2.sales),rawI(r.curSalesQty),sc!=null?sc.toFixed(1)+'%':'',rawI(pv2.rival),rawI(r.curRivalQty),rawM(pv2.rev),rawM(r.curRevenue),rc!=null?rc.toFixed(1)+'%':'',pv2.share||0,r.curMarketShare,shC!=null?(shC*100).toFixed(1)+'pp':'',rawI(pv2.freq),rawI(r.freq),r.cur8dStatus||'',r.curMarketStatus||'',r._lsTag||'']);
+  });
+  var ws=XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols']=[{wch:22},{wch:10},{wch:14},{wch:12},{wch:12},{wch:10},{wch:12},{wch:12},{wch:14},{wch:14},{wch:10},{wch:12},{wch:12},{wch:10},{wch:10},{wch:10},{wch:10},{wch:12},{wch:16}];
+  ws['!freeze']={xsplit:0,ysplit:1};
+  XLSX.utils.book_append_sheet(wb,ws,'低占比新品检查表');
+  XLSX.writeFile(wb,'低占比新品检查表_'+m+'月.xlsx');
 }
 
 function renderT6(){
